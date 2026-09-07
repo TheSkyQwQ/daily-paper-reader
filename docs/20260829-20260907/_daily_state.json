@@ -1,8 +1,105 @@
 {
   "date": "20260829-20260907",
   "date_label": "2026-08-29 ~ 2026-09-07",
-  "generated_at": "2026-09-07 04:08:00 UTC",
+  "generated_at": "2026-09-07 04:36:19 UTC",
   "recommend_exists": true,
-  "run_count": 1,
-  "papers": []
+  "run_count": 2,
+  "papers": [
+    {
+      "paper_id": "2608.28966v1",
+      "route": "20260829-20260907/2608.28966v1-when-vocal-tone-and-literal-meaning-diverge-an-acoustic-semantic-incongruity-study-for-large-audio-language-models",
+      "title": "When Vocal Tone and Literal Meaning Diverge: An Acoustic-Semantic Incongruity Study for Large Audio-Language Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "评估大型音频语言模型在声学语义不一致的语音情绪识别上的表现，直接关联音频语言特征与情感语音理解。",
+      "first_seen_at": "2026-09-07 04:36:19 UTC",
+      "updated_at": "2026-09-07 04:36:19 UTC"
+    },
+    {
+      "paper_id": "2609.00727v1",
+      "route": "20260829-20260907/2609.00727v1-heard-but-not-heeded-paralinguistic-information-encoding-and-loss-in-audio-language-models",
+      "title": "Heard but Not Heeded: Paralinguistic Information Encoding and Loss in Audio-Language Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "机制性追踪音频语言模型对副语言说话风格信息的编码和丢失，为情感语音表征的特征提取层提供依据",
+      "first_seen_at": "2026-09-07 04:36:19 UTC",
+      "updated_at": "2026-09-07 04:36:19 UTC"
+    },
+    {
+      "paper_id": "2609.02941v1",
+      "route": "20260829-20260907/2609.02941v1-siser-speaker-invariant-speech-emotion-recognition-with-entropy-based-adversarial-training",
+      "title": "SISER: Speaker-Invariant Speech Emotion Recognition with Entropy-Based Adversarial Training",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过对抗训练移除说话人身份差异，减少语音情感分类中的分布失配，属域适应方法。",
+      "first_seen_at": "2026-09-07 04:36:19 UTC",
+      "updated_at": "2026-09-07 04:36:19 UTC"
+    },
+    {
+      "paper_id": "2608.30204v1",
+      "route": "20260829-20260907/2608.30204v1-when-models-hear-what-they-expect-diagnosing-prosodic-heuristics-in-multimodal-sarcasm-detection",
+      "title": "When Models Hear What They Expect: Diagnosing Prosodic Heuristics in Multimodal Sarcasm Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "针对讽刺检测这一副语言/语用任务，系统检验多模态大模型是否利用韵律线索，并揭示表现性韵律刻板导致的系统性错误",
+      "first_seen_at": "2026-09-07 04:36:19 UTC",
+      "updated_at": "2026-09-07 04:36:19 UTC"
+    },
+    {
+      "paper_id": "2608.30622v1",
+      "route": "20260829-20260907/2608.30622v1-textual-acoustic-grounding-for-generalizable-llm-based-deepfake-voice-detection",
+      "title": "Textual Acoustic Grounding for Generalizable LLM-Based Deepfake Voice Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向音频大模型的跨域泛化，提出文本声学子空间注入的方法；虽然不是情感任务，但其核心方法与声学提示可用于跨域情感表征学习。",
+      "first_seen_at": "2026-09-07 04:36:19 UTC",
+      "updated_at": "2026-09-07 04:36:19 UTC"
+    },
+    {
+      "paper_id": "2609.00562v1",
+      "route": "20260829-20260907/2609.00562v1-bimtokenizer-preserving-semantic-acoustic-balance-in-low-bitrate-speech-tokenization-via-bidirectional-state-space-modeling",
+      "title": "BiMTokenizer: Preserving Semantic-Acoustic Balance in Low-Bitrate Speech Tokenization via Bidirectional State-Space Modeling",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "提出面向大语言模型的低码率单塔语音分词器，在语义与声学平衡上为语音大模型提供通用输入表征。",
+      "first_seen_at": "2026-09-07 04:36:19 UTC",
+      "updated_at": "2026-09-07 04:36:19 UTC"
+    }
+  ]
 }

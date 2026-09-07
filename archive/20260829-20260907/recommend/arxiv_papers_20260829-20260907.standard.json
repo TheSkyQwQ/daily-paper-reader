@@ -1,16 +1,250 @@
 {
   "mode": "standard",
-  "generated_at": "2026-09-07T04:08:00.570185+00:00",
+  "generated_at": "2026-09-07T04:31:37.079004+00:00",
   "stats": {
     "mode": "standard",
-    "tag_count": 0,
-    "deep_divecandidates": 0,
-    "deep_cap": null,
-    "deep_selected": 0,
-    "quick_candidates": 0,
-    "quick_skim_target": 10,
-    "quick_selected": 0
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
   },
-  "deep_dive": [],
-  "quick_skim": []
+  "deep_dive": [
+    {
+      "id": "2608.28966v1",
+      "source": "arxiv",
+      "title": "When Vocal Tone and Literal Meaning Diverge: An Acoustic-Semantic Incongruity Study for Large Audio-Language Models",
+      "abstract": "Affective cues across modalities may be incongruous (e.g., sarcasm or mocking praise), potentially leading to misinterpretation when relying on a single modality. Large Audio-Language Models (LALMs) have recently gained popularity and been applied to multimodal emotion recognition, but their ability to disentangle acoustic and semantic cues, especially in incongruent cases, remains underexplored. To address this gap, we introduce CREMA-ASIS, a dataset specifically created to investigate incongruence between acoustic emotion and semantic sentiment cues. It pairs acoustic emotion labels with semantic sentiment polarities. Using this dataset, we evaluate LALM biases within a multitask framework and conduct a layer-wise analysis to identify modality dominance across layers. Our findings reveal that LALMs struggle with semantic-acoustic incongruent cases, rarely predicting incongruity, and that LALMs are predominantly influenced by semantic information. However, supervised fine-tuning significantly improves LALM performance on our CREMA-ASIS test set while preserving transcription accuracy and joint emotion recognition. Results demonstrate potential for enhancing both acoustic and semantic understanding on out-of-domain data.",
+      "authors": [
+        "Yu-Wen Chen",
+        "William Ho",
+        "Maxim Topaz",
+        "Zoran Kostic",
+        "Julia Hirschberg"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-08-29T00:36:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.28966v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Evaluates Large Audio-Language Models on speech emotion recognition with acoustic-semantic incongruity, directly tying audio-language features to emotional speech understanding.",
+      "llm_evidence_cn": "评估大型音频语言模型在声学语义不一致的语音情绪识别上的表现，直接关联音频语言特征与情感语音理解。",
+      "llm_evidence": "评估大型音频语言模型在声学语义不一致的语音情绪识别上的表现，直接关联音频语言特征与情感语音理解。",
+      "canonical_evidence": "评估大型音频语言模型在声学语义不一致的语音情绪识别上的表现，直接关联音频语言特征与情感语音理解。",
+      "llm_tldr_en": "Introduces CREMA-ASIS to study when vocal tone and literal meaning diverge, evaluating Large Audio-Language Models in a multitask emotion recognition framework with acoustic and semantic cues.",
+      "llm_tldr_cn": "语音中的声学情感与文本语义情感可能不一致，如讽刺或言不由衷，大型音频语言模型在多模态情感识别中对此的解耦能力仍缺少研究。作者构造CREMA-ASIS数据集，将声学情感标签与语义情感极性配对，并在多任务框架下评估LALMs的偏置与解码能力。结果显示大模型在声学-语义不一致时可能产生系统性错误。该工作为音频语言模型鲁棒情感理解与表征学习提供了新的评测方向和训练信号。",
+      "llm_tldr": "语音中的声学情感与文本语义情感可能不一致，如讽刺或言不由衷，大型音频语言模型在多模态情感识别中对此的解耦能力仍缺少研究。作者构造CREMA-ASIS数据集，将声学情感标签与语义情感极性配对，并在多任务框架下评估LALMs的偏置与解码能力。结果显示大模型在声学-语义不一致时可能产生系统性错误。该工作为音频语言模型鲁棒情感理解与表征学习提供了新的评测方向和训练信号。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00727v1",
+      "source": "arxiv",
+      "title": "Heard but Not Heeded: Paralinguistic Information Encoding and Loss in Audio-Language Models",
+      "abstract": "Audio language models are designed to understand speech, yet it remains unclear whether they capture how something is said beyond what is said. We present a mechanistic analysis of paralinguistic information in four open source models, Whisper-large-v2, Qwen2-Audio-7B Instruct, Qwen2.5-Omni-7B, and Chroma-4B, using the Expresso dataset with controlled speaking styles. We combine centered kernel alignment, linear probing with leave one speaker out evaluation, open ended tone prediction, and a content prosody leakage metric to trace how style information moves from the audio encoder to the final output. All models strongly encode speaking style in the late encoder, that is, the top third of the audio encoder's layers, but this information is consistently degraded before reaching the output. The projector reshapes representation geometry without removing information, while decoders differ in how much style they preserve depending on architecture and training objective. At the output level, models fall into two behaviors. Some are content driven, where predictions depend mainly on text. Others are acoustic driven, where predictions vary with speaking style. The leakage metric quantifies this difference, and qualitative results confirm it. Overall, we identify a gap between what models encode and what they use, highlighting a key limitation in current audio language models.",
+      "authors": [
+        "Bhuvan Koduru",
+        "Dareen Safar B Alharthi",
+        "Rita Singh",
+        "Bhiksha Raj"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-09-01T05:03:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.00727v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Mechanistic trace of paralinguistic speaking-style information in audio-language models over an expressive dataset, identifying encoded but under-delivered style features relevant to emotion representations",
+      "llm_evidence_cn": "机制性追踪音频语言模型对副语言说话风格信息的编码和丢失，为情感语音表征的特征提取层提供依据",
+      "llm_evidence": "机制性追踪音频语言模型对副语言说话风格信息的编码和丢失，为情感语音表征的特征提取层提供依据",
+      "canonical_evidence": "机制性追踪音频语言模型对副语言说话风格信息的编码和丢失，为情感语音表征的特征提取层提供依据",
+      "llm_tldr_en": "Using four open-source audio-language models and Expresso styles, CKA, leave-one-speaker-out probing, open-ended tone prediction, and leakage metrics trace style information. All models strongly encode speaking style in late encoder layers yet lose it toward final output, pinpointing feature extraction layers for emotion/prosody downstream use.",
+      "llm_tldr_cn": "音频语言模型旨在理解言语，但能否捕捉“怎么说”的副语言风格尚不清楚。本文使用四个开源模型（Whisper-large-v2、Qwen2-Audio、Qwen2.5-Omni、Chroma）和带受控说话风格的Expresso数据集，结合中心核对齐、留一说话人线性探测、开放式语气预测和内容-韵律泄漏指标，追踪副语言风格信息从音频编码器到最终输出的流动。结果显示所有模型都在编码器后部强编码说话风格，但输出端对该信息有明显衰减。这为从语音大模型抽取可用于情感识别与跨域迁移的韵律表征提供了层级上的经验指导。",
+      "llm_tldr": "音频语言模型旨在理解言语，但能否捕捉“怎么说”的副语言风格尚不清楚。本文使用四个开源模型（Whisper-large-v2、Qwen2-Audio、Qwen2.5-Omni、Chroma）和带受控说话风格的Expresso数据集，结合中心核对齐、留一说话人线性探测、开放式语气预测和内容-韵律泄漏指标，追踪副语言风格信息从音频编码器到最终输出的流动。结果显示所有模型都在编码器后部强编码说话风格，但输出端对该信息有明显衰减。这为从语音大模型抽取可用于情感识别与跨域迁移的韵律表征提供了层级上的经验指导。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.02941v1",
+      "source": "arxiv",
+      "title": "SISER: Speaker-Invariant Speech Emotion Recognition with Entropy-Based Adversarial Training",
+      "abstract": "Speech emotion recognition (SER) faces two fundamental challenges: scarcity of labeled data and inter-speaker variability, both of which hinder generalization of emotion recognition systems. While prior adversarial approaches address speaker variability, they fall short in leveraging powerful pre-trained representations. We propose SISER (Speaker-Invariant Speech Emotion Recognition), integrating wav2vec 2.0 as a feature encoder and ECAPA-TDNN as a speaker discriminator within an entropy-based adversarial training scheme. wav2vec 2.0 provides rich self-supervised representations that alleviate dependency on large labeled datasets, while ECAPA-TDNN enables suppression of speaker identity via a stronger adversarial signal than shallow classifiers. Evaluated on IEMOCAP, SISER achieves a UA of 60.63%, outperforming the baseline (51.15%) and wav2vec 2.0 without speaker suppression (56.46%), with ablation emphasizing that the choice of speaker classifier architecture is a key factor.",
+      "authors": [
+        "Eunseo Choi",
+        "Hyunku Kang",
+        "Chanwoo Kim"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CL"
+      ],
+      "published": "2026-08-31T16:48:43+00:00",
+      "link": "https://arxiv.org/pdf/2609.02941v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Adversarial training removes speaker-specific distribution shift for robust speech emotion classification.",
+      "llm_evidence_cn": "通过对抗训练移除说话人身份差异，减少语音情感分类中的分布失配，属域适应方法。",
+      "llm_evidence": "通过对抗训练移除说话人身份差异，减少语音情感分类中的分布失配，属域适应方法。",
+      "canonical_evidence": "通过对抗训练移除说话人身份差异，减少语音情感分类中的分布失配，属域适应方法。",
+      "llm_tldr_en": "SISER applies wav2vec 2.0 encoding and ECAPA-TDNN adversarial speaker discrimination with entropy-based training to learn speaker-invariant speech emotion features and improve generalization.",
+      "llm_tldr_cn": "语音情感识别常因标注数据缺乏和说话人间差异而难以泛化，SISER将wav2vec 2.0自监督表征与ECAPA-TDNN说话人判别器结合，用熵引导对抗训练抑制说话人身份信息。在公开语音情感数据上相比浅层对抗设计显著增强情感特征的说话人不变性，从而改善跨说话人泛化能力。该工作为预训练表征与对抗式域不变学习结合提供了可行范例。",
+      "llm_tldr": "语音情感识别常因标注数据缺乏和说话人间差异而难以泛化，SISER将wav2vec 2.0自监督表征与ECAPA-TDNN说话人判别器结合，用熵引导对抗训练抑制说话人身份信息。在公开语音情感数据上相比浅层对抗设计显著增强情感特征的说话人不变性，从而改善跨说话人泛化能力。该工作为预训练表征与对抗式域不变学习结合提供了可行范例。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.30204v1",
+      "source": "arxiv",
+      "title": "When Models Hear What They Expect: Diagnosing Prosodic Heuristics in Multimodal Sarcasm Detection",
+      "abstract": "Multimodal Large Language Models (MLLMs) process speech and text jointly, yet whether they exploit prosodic cues for pragmatic inference or rely on surface acoustic patterns has received little systematic investigation. We address this through sarcasm detection, evaluating Qwen2.5-Omni and Qwen3-Omni on Mandarin Chinese and English under five modality conditions that decompose the contributions of lexical content, vocal semantics, and prosodic structure. Adding audio systematically inflates false positives without improving true positive detection. Acoustic error diagnosis reveals that model errors cluster on a shared stereotype of expressive prosody, namely elevated pitch and irregular pausing, that diverges from the actual cues marking sarcasm in both languages. Targeted manipulation of only these two dimensions causally confirms the heuristic, inducing false positive rates of up to 60%. Applying the same manipulation template to Gemini~3 Flash Preview without modification replicates the effect, suggesting that the stereotype extends beyond the Qwen Omni family rather than arising from a single model architecture.",
+      "authors": [
+        "Yongjian Chen",
+        "Pengfei Wei",
+        "Yiqun Sun",
+        "Zhu Li",
+        "Lawrence B. Hsieh"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-31T03:34:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.30204v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Diagnoses whether MLLMs use prosody for paralinguistic sarcasm inference, revealing expressive-prosody heuristics",
+      "llm_evidence_cn": "针对讽刺检测这一副语言/语用任务，系统检验多模态大模型是否利用韵律线索，并揭示表现性韵律刻板导致的系统性错误",
+      "llm_evidence": "针对讽刺检测这一副语言/语用任务，系统检验多模态大模型是否利用韵律线索，并揭示表现性韵律刻板导致的系统性错误",
+      "canonical_evidence": "针对讽刺检测这一副语言/语用任务，系统检验多模态大模型是否利用韵律线索，并揭示表现性韵律刻板导致的系统性错误",
+      "llm_tldr_en": "Do multimodal LLMs exploit prosody or surface patterns? In Chinese/English sarcasm detection, adding audio systematically inflates false positives; errors follow a stereotype of expressive prosody (pitch/pausing). Diagnostic method transferable to paralinguistic emotion understanding.",
+      "llm_tldr_cn": "现有研究对多模态大模型是否真正利用韵律线索进行语用推理缺乏系统检验。本文以中英文讽刺检测为任务，将音频分解为词汇、语音语义和韵律结构等模态条件，系统诊断Qwen系列模型的判断依据。结果表明加入音频只会系统性增加假阳性，且错误集中于过高音高与停顿不规律的表现性韵律刻板。工作为理解语音大模型在副语言与情感类任务中的不可靠线索提供了可复用的诊断方法。",
+      "llm_tldr": "现有研究对多模态大模型是否真正利用韵律线索进行语用推理缺乏系统检验。本文以中英文讽刺检测为任务，将音频分解为词汇、语音语义和韵律结构等模态条件，系统诊断Qwen系列模型的判断依据。结果表明加入音频只会系统性增加假阳性，且错误集中于过高音高与停顿不规律的表现性韵律刻板。工作为理解语音大模型在副语言与情感类任务中的不可靠线索提供了可复用的诊断方法。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.30622v1",
+      "source": "arxiv",
+      "title": "Textual Acoustic Grounding for Generalizable LLM-Based Deepfake Voice Detection",
+      "abstract": "Deepfake voice detection suffers from poor generalization across unseen domains. While Audio Large Language Models (ALLMs) show promise, the modality gap between continuous audio embeddings which capture the subtle acoustic details necessary for deepfake detection and the semantic space of LLMs remains a critical, underexplored bottleneck. We address this by benchmarking diverse audio encoders integrated with Qwen LLMs (0.5B to 7B parameters). First, we demonstrate that fine-tuning the LLM alone risks out-of-domain overfitting, making a frozen LLM a stronger, resource-efficient baseline. Second, to explicitly bridge the modality gap, we introduce a cross-modal prompting strategy that injects linguistic-knowledge-driven acoustic features (via openSMILE) as structured text tokens. This explicit textual grounding not only enhances the frozen baseline but also makes LLM fine-tuning more effective. Ultimately, our approach demonstrates state-of-the-art resilience on the out-of-domain ITW and MLAAD benchmarks, yielding over \\textbf{16.2\\%} absolute improvement in Macro-F1 over existing ALLM baselines while maintaining competitive in-domain performance. All models reported in this work are \\href{https://huggingface.co/01Yassine/AudioLLM-Deepfake-Detection}{publicly available}.",
+      "authors": [
+        "Yassine El Kheir",
+        "Xin Wang",
+        "Wanqing Ge",
+        "Tim Polzehl",
+        "Sebastian Moeller",
+        "Junichi Yamagishi"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "eess.AS"
+      ],
+      "published": "2026-08-31T11:29:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.30622v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Bridges audio LLM and acoustic detail via cross-modal acoustic prompting for OOD-robust voice classification; method and analysis are directly relevant to transferable speech emotion representation learning.",
+      "llm_evidence_cn": "面向音频大模型的跨域泛化，提出文本声学子空间注入的方法；虽然不是情感任务，但其核心方法与声学提示可用于跨域情感表征学习。",
+      "llm_evidence": "面向音频大模型的跨域泛化，提出文本声学子空间注入的方法；虽然不是情感任务，但其核心方法与声学提示可用于跨域情感表征学习。",
+      "canonical_evidence": "面向音频大模型的跨域泛化，提出文本声学子空间注入的方法；虽然不是情感任务，但其核心方法与声学提示可用于跨域情感表征学习。",
+      "llm_tldr_en": "Deepfake detection needs OOD robustness; this work benchmarks Qwen LLMs plus audio encoders, finds frozen LLMs outperform fine-tuned ones, and proposes cross-modal acoustic prompting that injects linguistic-knowledge-driven acoustic features, closing the audio-semantic gap and improving cross-domain generalization.",
+      "llm_tldr_cn": "音频大模型在伪造语音检测中跨域泛化差，连续音频嵌入的声学细节与LLM语义空间之间存在模态鸿沟。作者比较多种音频编码器与Qwen（0.5B至7B）组合，证明微调LLM容易过拟合，冻结LLM反而更鲁棒且高效；接着提出跨模态提示，向LLM注入由语言知识驱动的声学特征以弥合鸿沟。多个域外伪造语音评测显示该策略提升泛化，但面向情感语音的适用性仍需重新适配。",
+      "llm_tldr": "音频大模型在伪造语音检测中跨域泛化差，连续音频嵌入的声学细节与LLM语义空间之间存在模态鸿沟。作者比较多种音频编码器与Qwen（0.5B至7B）组合，证明微调LLM容易过拟合，冻结LLM反而更鲁棒且高效；接着提出跨模态提示，向LLM注入由语言知识驱动的声学特征以弥合鸿沟。多个域外伪造语音评测显示该策略提升泛化，但面向情感语音的适用性仍需重新适配。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.00562v1",
+      "source": "arxiv",
+      "title": "BiMTokenizer: Preserving Semantic-Acoustic Balance in Low-Bitrate Speech Tokenization via Bidirectional State-Space Modeling",
+      "abstract": "Speech codecs serve as bridges between continuous speech signals and large language models, yet face an inherent conflict between acoustic fidelity and semantic preservation. To mitigate this conflict, recent works increasingly adopt dual-tower architectures to decouple semantic and acoustic modeling with separate encoders. However, these dual-tower designs incur substantial architectural overhead. To avoid such complexity, we revisit the single-tower paradigm and propose BiMTokenizer, a low-bitrate speech codec (around 1.1 kbps) combining a bidirectional state-space backbone with Residual Spherical Leech Quantization (RSLQ). The bidirectional backbone strengthens temporal modeling, while RSLQ offers a fixed, well-separated lattice bottleneck for robust semantic and acoustic tokenization without learned-codebook collapse. Experiments show that BiMTokenizer achieves superior acoustic reconstruction and the lowest WER among low-bitrate codec baselines across both clean and noisy environments, while using less than half the parameters of recent dual-tower baselines. Furthermore, its robust semantic representations yield strong performance on downstream speech understanding tasks, confirming that a well-designed single-tower codec can preserve the semantic-acoustic balance at low bitrates. The code and model weights are available at https://github.com/ZhangXinWhut/BiMTokenizer.",
+      "authors": [
+        "Xin Zhang",
+        "Lin Li",
+        "Chuanbo Liu",
+        "Jianquan Liu",
+        "Kong Aik Lee"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-09-01T01:56:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.00562v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes a low-bitrate single-tower speech codec directly positioned as a bridge between speech signals and large language models, preserving semantic and acoustic balance useful for Speech LLMs.",
+      "llm_evidence_cn": "提出面向大语言模型的低码率单塔语音分词器，在语义与声学平衡上为语音大模型提供通用输入表征。",
+      "llm_evidence": "提出面向大语言模型的低码率单塔语音分词器，在语义与声学平衡上为语音大模型提供通用输入表征。",
+      "canonical_evidence": "提出面向大语言模型的低码率单塔语音分词器，在语义与声学平衡上为语音大模型提供通用输入表征。",
+      "llm_tldr_en": "BiMTokenizer introduces a low-bitrate (about 1.1 kbps) single-tower speech codec with bidirectional state-space modeling and Residual Spherical Leech Quantization, preserving semantic-acoustic balance without dual-tower overhead. It acts as a bridge between continuous speech and large language models, benefiting future speech LLM input representations.",
+      "llm_tldr_cn": "面向大语言模型的语音编码器常需在声学保真与语义保持之间折中，现有双塔方案又会带来明显架构开销。本文提出单塔低位率语音分词器BiMTokenizer，用双向状态空间主干增强时序建模，并结合残差球面Leech量化，以约1.1kbps的码率在无专用语义编码器的情况下平衡语义和声学信息。相比双塔编码器它降低了结构复杂度，同时保持较好的重建质量。该工作为语音大模型提供更高效且保留声学细节的输入表征，但尚需在情感或韵律下游任务上验证。",
+      "llm_tldr": "面向大语言模型的语音编码器常需在声学保真与语义保持之间折中，现有双塔方案又会带来明显架构开销。本文提出单塔低位率语音分词器BiMTokenizer，用双向状态空间主干增强时序建模，并结合残差球面Leech量化，以约1.1kbps的码率在无专用语义编码器的情况下平衡语义和声学信息。相比双塔编码器它降低了结构复杂度，同时保持较好的重建质量。该工作为语音大模型提供更高效且保留声学细节的输入表征，但尚需在情感或韵律下游任务上验证。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
 }

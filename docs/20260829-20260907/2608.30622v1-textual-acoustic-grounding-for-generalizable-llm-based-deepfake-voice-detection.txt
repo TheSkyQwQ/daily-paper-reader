@@ -1,0 +1,273 @@
+Title: Textual Acoustic Grounding for Generalizable LLM-Based Deepfake Voice Detection
+
+URL Source: https://arxiv.org/pdf/2608.30622v1
+
+Published Time: Tue, 01 Sep 2026 02:28:22 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Textual Acoustic Grounding for Generalizable LLM-Based Deepfake Voice Detection 
+
+Yassine El Kheir ∗,‡, Xin Wang †, Wanqing Ge †, Tim Polzehl ‡, Sebastian M¨ oller ∗, Junichi Yamagishi †∗German Research Center for Artificial Intelligence (DFKI) , Berlin, Germany 
+
+> †
+
+National Institute of Informatics , Tokyo, Japan 
+
+> ‡
+
+Technical University of Berlin , Berlin, Germany yael02@dfki.de 
+
+Abstract —Deepfake voice detection suffers from poor generaliza-tion across unseen domains. While Audio Large Language Models (ALLMs) show promise, the modality gap between continuous audio embeddings which capture the subtle acoustic details necessary for deepfake detection and the semantic space of LLMs remains a critical, underexplored bottleneck. We address this by benchmarking diverse audio encoders integrated with Qwen LLMs (0.5B to 7B parameters). First, we demonstrate that fine-tuning the LLM alone risks out-of-domain overfitting, making a frozen LLM a stronger, resource-efficient baseline. Second, to explicitly bridge the modality gap, we introduce a cross-modal prompting strategy that injects linguistic-knowledge-driven acoustic features (via openSMILE) as structured text tokens. This explicit textual grounding not only enhances the frozen baseline but also makes LLM fine-tuning more effective. Ultimately, our approach demonstrates state-of-the-art resilience on the out-of-domain ITW and MLAAD benchmarks, yielding over 16.2% absolute improvement in Macro-F1 over existing ALLM baselines while maintaining competitive in-domain performance. All models reported in this work are publicly available. 
+
+Index Terms —Deepfake voice detection, Large Language Models, cross-modal alignment, audio forensics, openSMILE 
+
+I. I NTRODUCTION 
+
+Cloning a target speaker’s voice has been made easier by recent deep-learning-based speech synthesis technologies [1], [2]. Concurrently, the ease of forging a victim’s voice, resulting in deepfakes, has garnered significant attention from both the research community and society at large [3]. A countermeasure is to use machine learning techniques and build automatic detectors that discriminate deepfake voices from real human voices. This topic has been investigated by the research community for the last decade, resulting in many architectures [4], [5], feature pipelines [6], [7], databases [8], [9], and challenge benchmarks [9]–[11]. Despite the progress, a key issue stands out: it remains challenging to build a robust detector that learns from a fixed set of training data and generalizes to unseen deepfake types [10]–[12]. Large Language Models (LLMs), including multimodal Au-dio LLMs (ALLMs), brings new possibilities to this domain. By leveraging emergent reasoning capabilities, broad knowledge of general audio and world knowledge encoded within massive text-audio pretrained networks, ALLMs hold the potential to evaluate acoustic anomalies more robustly than traditional classifiers [13]–[15]. However, applying LLMs to deepfake forensics introduces a critical cross-modal alignment challenge: how to effectively map audio representations into the semantic space that LLMs understand natively. Existing studies have largely treated this as a brute-force parameter optimization problem, focusing either on zero-shot inference [16] or full parameter fine-tuning [13], [15], leaving the configuration of the audio encoder unexplored. In standalone deepfake detection systems, self-supervised models like Wav2Vec2 are known to be highly effective audio encoders [17]. However, it remains an open question whether they are equally effective in LLM-based architectures. Alternatively, because LLMs operate inherently in a semantic space, an audio encoder like Whisper, which maps acoustic representations to higher-level linguistic knowledge [18], might be more suitable for bridging this modality gap. Furthermore, because LLMs are heavily biased toward semantic understand-ing, they often fail to capture the acoustic cues indicative of deepfakes when relying solely on audio tokens. We hypothesize that explicitly anchoring the audio embed-dings with structured natural language descriptors can bridge this modality gap. By providing the LLM with expert linguistic knowledge via text prompts, we can ground its classification in explicit evidence. We are therefore motivated to address the following research questions: 
+
+RQ1) The Efficiency Baseline: What is the optimal audio encoder integration strategy to maximize out-of-domain robustness, and can we achieve this without the computational burden of fine-tuning the LLM backbone? 
+
+RQ2) The Cross-Modal Bridge: How does prompting using explicit textual description of acoustic cues enhance this baseline, and how does this textual bridge interact with the LLM adaptation strategies explored in RQ1? Together, RQ1 and RQ2 trace a path from an efficient frozen baseline to a fully cross-modal grounded detector. Our contributions to address these questions are:  
+
+> •
+
+We systematically compare audio encoder families; Whis-per [19], Wav2Vec2 [20], EAT [21], and the encoder modules of speech codecs; integrated with Qwen LLMs (0.5B–7B) under varied fine-tuning strategies.  
+
+> •
+
+We introduce features extracted using the knowledge-driven openSMILE framework [22]. These features cover arXiv:2608.30622v1 [cs.SD] 31 Aug 2026 a wide range of acoustic properties of the speech utterance and are fed to the LLM in a structured text format. To the best of the authors’ knowledge, both research questions are not covered by existing literature. A notable finding is that fine-tuning the audio encoder is the dominant factor for improving generalization. In contrast to prevailing assumptions, we find that fine-tuning the LLM alone degrades out-of-domain performance, and a frozen instruct-LLM is a more robust baseline [13]–[16], [23]. However, the degradation is mitigated when the LLM is explicitly prompted with textual descriptions of the acoustic features (extracted via openSMILE); LoRA-based LLM adaptation becomes highly synergistic and yields the best overall performance. In the rest of the paper, related work is presented in §II. The LLM-based framework, audio encoders, openSMILE features, and LLM fine-tuning strategies are described in §III. Experiments on the two research questions are presented in §V and §VI, respectively. Comparison with the state of the art systems are presented in §VII. Conclusion is drawn in §VIII. II. R ELATED WORK 
+
+With model components pre-trained on large-scale data, the ALLM may generalize better to various types of deepfake. ALLM4ADD [13] was the first work to formulate deepfake voice detection as a question answering task and fine-tune ALLMs for the task. However, this study used only pre-trained ALLMs without exploring audio encoders design. DFALLM [14] examined the role of the audio encoder but only compared Whisper with Wav2Vec2-BERT [24], both of which were designed for the automatic speech recognition (ASR). FT-GRPO [15] introduces fine-tuning based on reinforcement learning (RL) and structured frequency-time rationales. SDD-APALLM [23] reformulates the problem through the lens of acoustic evidence accessibility , showing that explicitly providing time-frequency representations guides the LLM toward acoustic cues useful for deepfake detection. This work is related to ours in terms of investigating the impact of handcrafted audio encoder features. Our study addresses research questions not covered by existing work. First, we conduct a systematic comparison of dif-ferent types of audio encoders, including Whisper, Wav2Vec2, EAT, and two types of speech codec encoders. Speech codecs, which compress speech utterances into sequences of discrete tokens, are important components in ALLM-based speech generation [1] but have not been investigated for deepfake voice detection. Furthermore, the synergy between the choice of audio encoders and the training strategy of the LLM backbone remains unexplored. Another novelty is the use of text descriptions of acoustic features extracted using the openSMILE framework. Com-pared with the time-frequency representation used in SDD-APALLM [23], our openSMILE-based features cover acoustic cues beyond time-frequency representations, such as the intonation of the input utterance. While openSMILE features have recently been applied to non-DNN-based detectors [25], Instruct Large Language Model Audio encoder OpenSmile feature extractor   
+
+> Input audio
+> Here are 88 features of the current sentence: Pitch 120 Hz; Spectral flux: 0.42, …
+> Text prompt
+> Listen to this audio clip. Is this audio real or fake?
+> <answer>Fake</answer>
+> /RQ 1 (§ III.B) RQ 2 (§ III.C)
+> Parameter updating LoRA-based updating Parameter Frozen
+> Projector (Linear layer)
+> /
+> <answer>Real</answer>
+> Figure 1. Overall illustration of proposed LLM-based deepfake voice detector.
+
+leveraging these descriptive acoustic prompts to help LLMs detect synthetic speech artifacts represents a novel approach. III. P ROPOSED SYSTEM 
+
+A. Architecture 
+
+Our base framework, illustrated in Fig. 1, follows the standard ALLM structure [13]–[16], [23] and includes an audio encoder Fenc , a lightweight linear projector P, and an LLM backbone F. Given an input utterance x, a sequence of audio embedding vectors is extracted: Taud = P(Fenc (x)) ∈ RT ×D ,where T and D are the number of tokens and the dimension of each vector, respectively. Note that the linear projector P
+
+is always fine-tuned alongside the audio encoder, even when the LLM backbone remains frozen. The audio embeddings are concatenated with the embeddings of the text prompt, and the LLM backbone produces the real/fake output in text format, surrounded by <answer> tags. Based on the framework, we systematically investigate two technical aspects: the choice of audio encoder and its integration with the LLM (§III-B), and whether knowledge-driven acoustic features improve the detection (§III-C). 
+
+B. Audio Encoder and LLM Configuration 1) Choice of Audio Encoder and Fine-Tuning Strategy: 
+
+Existing ALLM-based deepfake voice detection systems pre-dominantly use Whisper [19] to process audio. However, since Whisper was trained for speech recognition and tends to discard non-linguistic acoustic details, features potentially relevant to deepfake voice detection may be neglected [14]. Many audio processing modules have been applied to non-LLM-based deepfake voice detectors, but their integration with LLMs has received limited attention. One family is pre-trained SSL models such as Wav2Vec2 [20]. Hidden representations from intermediate layers of SSL models have been found to be effective for deepfake voice detection [26], [27]. In addition, deep-learning-based neural speech codecs are applicable as audio encoders [28]. They decompose speech utterances into sequences of quantized vectors and reconstruct utterances with high fidelity. Whether these quantized features remain useful for deepfake voice detection is an open question. Hence, we investigate the following audio encoders:  
+
+> •
+
+Whisper encoder: The default audio encoder in many ALLMs, pretrained on large-scale ASR data.  
+
+> •
+
+Wav2Vec2: A pretrained model via contrastive self-supervised learning over raw speech waveforms at 50 Hz. Its training objective encourages preserving acoustic features at different linguistic levels, making it a strong candidate for deepfake voice detection.  
+
+> •
+
+Environmental Audio Transformer (EAT) [21]: ATransformer-like model pretrained on large-scale envi-ronmental sound data. We include it as a representative non-speech SSL model.  
+
+> •
+
+Neural Audio Codecs: Speech codecs, such as Descript Audio Codec (DAC) [28] and SpeechTokenizer [29], which use convolutional layers and vector quantization to encode speech into sequences of discrete vectors. We extract the continuous feature embeddings from the first N
+
+residual vector quantization (RQV) codebooks (denoted as cont:N). Specifically, we set cont:4 for SpeechTokenizer and cont:6 for DAC. For each audio encoder, we consider three integration strate-gies: 1) Freezing (FR): no updating of the pre-trained audio encoder; 2) Fine-tuning (FT): updating all parameters given gradients from the LLM backbone; 3) Weighted aggregation 
+
+(WA): no parameter updates, but trainable weights compute a weighted sum of outputs across all Transformer blocks inside the encoder. The third strategy is widely used for deepfake voice detection [26], [27] but not applicable to the speech codecs that do not use the Transformer architecture. 
+
+2) Choice of LLM Backbone and Fine-Tuning Strategy: 
+
+We use open-source LLM models from the Qwen2.5-Instruct family [30] at three scales: 0.5B, 3B, and 7B. One option is to freeze its pretrained parameters. Because the Qwen2.5-Instruct models have been instruction-tuned, given appropriate prompts, they can generate binary decisions (real/fake) without fine-tuning. Another option is to fine-tune the LLM backbone using LoRA [31], as done in many existing studies. The fine-tuning is accomplished given a ground-truth text target 
+
+<answer>real</answer> (or fake ) alongside the text prompt and audio input. We additionally evaluate Qwen2.5-Omni-3B [32], a native end-to-end multimodal LLM, with full LoRA adaptation following an existing recipe [15]. 
+
+C. openSMILE Text-Token Injection 
+
+LLMs are predominantly trained on text corpora and may not focus on the acoustic details encoded in audio encoder’s outputs. Furthermore, the audio encoder’s outputs consist of hidden representations from DNNs, which lack explicit interpretability. To provide the LLM with explicit acoustic features, we extract a compact, expert-validated set of features using openSMILE eGeMAPSv2 [22]. We select eGeMAPSv2 specifically for its optimal balance between low dimensionality (88 features) and high interpretive relevance to voice physiology. The openSMILE features are originally represented as a continuous numerical vector. To make them compatible with the LLM and maximize interpretability, we serialize them into a descriptive text string. Rather than relying solely on raw acronyms, we explicitly expand the feature names into text description (e.g., “Average Fundamental Frequency” instead of just F0, or “Average First Formant Frequency” for F1). The resulting serialized text block adds only approximately 
+
+1500 tokens to the prompt. An example openSMILE prompt is shown below. It is inserted after the continuous acoustic embeddings extracted by the audio encoder (Figure 1).                           
+
+> openSMILE Prompt Structure
+> Here are 88 speech features of the current speaker’s sentence. The features are: Average Fundamental Frequency in Semitones from 27.5 Hz: 33.758, Standard Deviation of F0 (normalized): 0.101, [...] Equivalent Sound Level (dBp): -13.031.
+
+The text-based openSMILE prompt provides directly accessi-ble evidence that the LLM can compare, contrast, and evaluate using its encoded knowledge (e.g., typical human pitch ranges, natural harmonic-to-noise ratios). This is conceptually aligned with the acoustic-evidence accessibility principle of [23], but operates via text rather than visual tokens. Integrating the text-based features requires no architectural change to the LLM backbone. This token overhead is negligible for modern LLMs with large context windows and adds minimal latency. IV. E XPERIMENT SETUP 
+
+We conduct two experiments to address the two research questions, both using the setup described below. 
+
+Audio Encoders: We implement our pipeline using five encoder families: 300M-parameter Wav2Vec2.0 XLS-R via Fairseq 1,Whisper 2, EAT (EAT) 3, SpeechTokenizer ( hubert_avg con-fig) 4, and DAC(16 kHz) 5. For the neural codecs, continuous feature embeddings from the first 4 and 6 RVQ codebooks are extracted from SpeechTokenizer and DAC, respectively. 
+
+Training Data: We follow the standard protocol and use the training partition of the ASVspoof 2019 (LA) dataset [9]. This partition contains 25 ,380 utterances ( 2,580 bona fide and 
+
+22 ,800 spoofed) from 20 speakers. Spoofed speech is generated using six different text-to-speech (TTS) and voice conversion algorithms. We process the full, uncropped utterances during both training and evaluation. 
+
+Evaluation Benchmarks: To rigorously test generalization, we evaluate on four distinct benchmarks: 1) test set of ASVspoof 2019 LA (LA19) , our in-domain benchmark with 71 ,237 
+
+trials and 11 unseen attacks; 2) test of ASVspoof 2021 LA (LA21) [10], containing 181 ,113 trials with unseen telephony 
+
+> 1https://github.com/facebookresearch/fairseq/blob/main/examples/wav2vec/xlsr
+> 2https://huggingface.co/openai/whisper-large-v3
+> 3https://huggingface.co/worstchan/EAT-base epoch30 pretrain
+> 4https://github.com/zhangxinfd/speechtokenizer
+> 5https://github.com/descriptinc/descript-audio-codec
+
+Table I EVALUATION OF AUDIO ENCODERS ACROSS INTEGRATION REGIMES USING A QWEN -0.5B LLM BACKBONE . I NDIVIDUAL BENCHMARK COLUMNS 
+
+(LA19, ITW, LA21, ML) REPORT F1-SCORES (%), WHILE THE LAST COLUMN REPORTS THE OVERALL AVERAGD ACCURACY / F1-SCORE (%).                                                                                                           
+
+> Audio Encoder LLM LA19 ITW LA21 ML Avg (Acc/F1)
+> Discriminative / Self-Supervised Encoders
+> Whisper FR LoRA-16 97.36 74.18 88.39 88.67 89.91 / 87.15 WA Frozen 98.41 33.52 71.42 55.97 73.61 / 64.83 WA LoRA-16 99.21 28.05 73.61 49.58 72.26 / 62.61 FT Frozen 98.84 77.65 97.39 90.50 91.81 / 91.09
+> FT LoRA-16 99.01 81.49 97.24 68.18 87.77 / 86.48 Wav2Vec2 FR LoRA-16 96.84 33.15 89.85 56.21 74.62 / 69.01 WA Frozen 97.10 66.93 91.26 70.22 83.47 / 81.38 WA LoRA-16 87.58 72.20 87.93 70.73 83.17 / 79.61 FT Frozen 95.99 80.75 95.68 81.31 89.75 / 88.43
+> FT LoRA-16 90.88 76.19 92.71 73.98 85.90 / 83.44 EAT FR LoRA-16 85.05 27.14 65.11 57.62 70.76 / 58.73
+> FT Frozen 81.79 27.12 62.59 57.62 69.95 / 57.28 FT LoRA-16 75.68 27.12 72.01 56.81 67.67 / 57.91
+> Neural Audio Codecs
+> SpeechTok. †FR LoRA-16 71.57 70.22 71.67 33.68 71.61 / 61.78
+> DAC †FR LoRA-16 68.72 52.87 67.92 38.70 65.90 / 57.05
+> FR : Frozen; WA : Weighted Aggregation; FT : Fine-tuned.
+> †Uses continuous embeddings from the first Ncodebooks ( cont:N ). SpeechTokenizer: N= 4 ; DAC: N= 6 .
+
+and codec channel variations; 3) In-the-Wild (ITW) [12], comprising 31 ,779 real-world utterances collected from uncu-rated platforms like YouTube; and 4) MLAAD v9 (ML) [8], a massive multilingual benchmark with approximately 298 ,000 
+
+utterances across 51 languages and 140 TTS models. 
+
+Evaluation Metrics: We report Accuracy and Macro F1-score (hereafter F1) to maintain consistency with the generative classification paradigm of LLMs, where the LLM produces discrete text tokens ( real or fake ). V. E XPERIMENT PART I: A UDIO ENCODER AND LLM CONFIGURATION 
+
+The first experiment addresses RQ1 and aims to find the best choice of audio encoder and its integration with the LLM. We use the LLM for binary detection (real or fake) only; openSMILE features (RQ2) are not investigated in this section. 
+
+A. Model Settings and Training Details 
+
+We employ the Qwen2.5-Instruct LLM family [30] across three scales ( 0.5B, 3B, and 7B) to assess capacity-efficiency trade-offs. Their strong instruction-tuning ensures reliable structured binary outputs. The evaluated audio encoders include Whisper [19], Wav2Vec2 [20], EAT [21], SpeechTokenizer [29], and DAC [28]. The LLM is either kept frozen or adapted via LoRA [31] with a fixed rank of 16 and varying alpha values 
+
+α ∈ { 16 , 64 , 256 }. The default setting of LoRA, denoted as LoRA-16, utilizes rank 16 and α = 64 .For experiments with fine-tuned audio encoders, the encoder learning rate is 1 × 10 −6, while LLM LoRA parameters and the projector are optimized with 1 × 10 −5. All models are trained for 5 epochs with a cumulative batch size of 16 using NVIDIA H100 GPUs. 
+
+B. Results on Audio Encoders 
+
+Table I reports evaluation results for the five audio encoder families, comparing three encoder integration strategies (Frozen: FR, Weighted Average: WA, Finetuning: FT) and two LLM adaptation configurations (Frozen, LoRA-16), using Qwen-0.5B as the backbone. We summarize the observations related to our research question below. 
+
+Audio Encoder fine-tuning is the primary driver of out-of-domain generalization. Comparing the three encoder integration regimes (FR, WA, FT) in Table I, it is evident that relying on frozen (FR) audio encoder representations causes significant degradation on out-of-domain data. For instance, under the LoRA-16 configuration, a frozen Wav2Vec2 encoder achieves near-perfect in-domain performance ( LA19 
+
+F1: 99.44%) but collapses on ITW (54.95%) and drops significantly on ML (69.78%). Applying end-to-end fine-tuning (FT) to Wav2Vec2 while using the same LoRA-16 setting on LLM (Wav2Vec2 FT+LoRA-16 in Table I) improves its ITW 
+
+F1-score to 75.60% and ML F1-score to 74.24% . Whisper follows the same trend, where fine-tuning increases the ITW F1-score from 65.73% to 73.90% under LoRA-16, reaching a peak of 76.46% when paired with a frozen LLM. 
+
+Weighted aggregation is insufficient for LLM-based detectors. When examining the WA rows for Whisper with a frozen LLM backbone, weighted aggregation yields a ITW F1-score of only 55.00%, lagging far behind the fully fine-tuned Whisper (76.46%). Simply re-weighting pre-trained features is not as effective as fine-tuning the audio encoder. 
+
+Other Audio Encoders underperform Whisper and Wav2Vec2. EAT’s pretraining on environmental sounds does not transfer effectively to deepfake voice detection. Its peak out-of-domain F1-scores, achieved under the FT+Frozen regime (ITW : 54.20%; ML : 69.91%), lag far behind Whisper and Wav2Vec2 under the same configuration (Whisper FT+Frozen: 
+
+ITW 76.46%, ML 80.45%; Wav2Vec2 FT+Frozen: ITW 
+
+74.79%, ML 78.98%), highlighting the critical role of domain alignment in pretraining data. Under the frozen-encoder, LoRA-16 regime, the neural codecs (SpeechTokenizer and DAC) exhibit the poorest out-of-domain generalization, with ML F1-scores of 65.83% and 65.59% respectively (Table I), significantly trailing other audio encoders. A pontial reason is that the neural audio codecs are inherently optimized for human perceptual transparency, and their vector quantization may discard inaudible artifacts useful for deepfake voice detection. 
+
+C. Results on LLM Backbone and Fine-Tuning 
+
+Results in Table I suggest that a frozen LLM backbone is highly competitive for binary deepfake voice detection when the audio encoder is fine-tuned. Holding the LLM entirely frozen yields the highest average performance for both Whisper (91.81% Acc / 91.09% F1) and Wav2Vec2 (89.75% Acc / 88.43% F1), provided their respective audio encoders are fine-tuned. 
+
+Interestingly, updating the LLM via LoRA does not consis-tently improve out-of-domain performance. On ML , comparing Table II LLM S CALE AND LORA R ANKS IMPACT ON AVERAGE PERFORMANCE                              
+
+> (A CCURACY / F1 %).
+> Audio Encoder Config 0.5B 3B 7B
+> Wav2Vec2 Frozen 89.75 / 88.43 89.64 / 87.64 89.77 / 88.63
+> LoRA-16 85.90 / 83.44 86.38 / 84.23 86.11 / 84.44 LoRA-64 86.67 / 83.81 88.93 / 87.62 85.33 / 84.52 LoRA-256 83.08 / 81.28 86.59 / 85.25 85.39 / 83.05 Whisper Frozen 91.81 / 91.09 92.47 / 90.94 91.59 / 90.58
+> LoRA-16 87.77 / 86.48 91.48 / 88.75 90.36 / 88.67 LoRA-64 88.36 / 85.85 87.85 / 87.14 90.01 / 88.64 LoRA-256 89.49 / 86.88 88.97 / 87.47 89.82 / 88.42
+
+the Whisper FT+Frozen and Whisper FT+LoRA-16 rows in Table I, LoRA adaptation degrades ML F1 from 90.50% to 
+
+68.18% . This challenges the prevailing assumption in recent ALLM studies that the LLM must be fine-tuned for deepfake detection when the LLM is prompted with the latent features from fine-tuned audio encoders. To verify that this finding is not due to a specific LoRA configuration or LLM size, we systematically varied the LoRA alpha ( α ∈ { 16 , 64 , 256 }) across multiple LLM backbones (0.5B, 3B, 7B). As summarized in Table II, a frozen LLM consistently outperformed its counterparts that are tuned with LoRA across all evaluated configurations. These results also demonstrate that scaling the LLM backbone does not improve detection performance when the LLM remains frozen. While increasing model capacity is typically assumed to be beneficial, scaling the frozen LLM from 0.5B to 3B and 7B yields no consistent improvements. For instance, the Average F1 for the Whisper FT + Frozen configuration slightly degrades from 91.09% at 0.5B to 90.94% at 3B and 90.58% at 7B. A similarly flat or fluctuating trend is observed with Wav2Vec2, confirming that brute-force scaling is not a silver bullet for out-of-domain generalization. In summary for RQ1, Wav2Vec2 and Whisper are better choices than EAT and neural codecs as the audio encoder. Interestingly, contrary to the prevailing consensus in standalone deepfake detection, where Wav2Vec2 is typically the dominant audio encoder, our results show that a fine-tuned Whisper audio encoder is highly effective and often superior in the ALLM context. This suggests that Whisper’s linguistically aligned representations form a stronger synergy with the LLM’s semantic reasoning space. Additionally, fine-tuning the audio encoder improves out-of-domain detection performance while maintaining in-domain performance. In contrast, fine-tuning of the LLM alone is insufficient and risks out-of-domain degradation. A frozen instruct-LLM paired with a fine-tuned SSL encoder offers a strong and resource-efficient alternative. This limitation naturally motivates our next experiment: whether explicitly bridging the modality gap via text-based acoustic features can unlock the potential of LLM adaptation. VI. E XPERIMENT PART II: E FFECTIVENESS OF OPEN SMILE FEATURE INJECTION 
+
+To address RQ2, we investigate whether prompting with textual description of the acoustic features via openSMILE                                                                                                                                                        
+
+> Table III EFFECT OF ADDING OPEN SMILE (OS) FEATURES .
+> Enc. LLM OS LA19 ITW LA21 ML Avg (Acc / F1)
+> Frozen LLM
+> Wav2Vec2
+> (FT)
+> 0.5B ×95.99 80.75 95.68 81.31 89.75 / 88.43
+> ✓99.64 77.27 96.82 91.84 91.98 ( +2.23 ) / 91.39 ( +2.96 )3B ×93.02 84.16 94.37 79.00 89.64 / 87.64
+> ✓97.87 84.36 96.16 83.45 91.46 ( +1.82 ) / 90.46 ( +2.82 )7B ×96.59 84.16 96.77 76.99 89.77 / 88.63
+> ✓99.28 84.36 94.45 70.26 88.42 ( −1.35) / 87.09 ( −1.54) Whisper
+> (FT)
+> 0.5B ×98.84 77.65 97.39 90.50 91.81 / 91.09
+> ✓99.12 83.96 97.67 93.42 94.15 ( +2.34 ) / 93.54 ( +2.45 )3B ×97.67 83.15 96.22 86.71 92.47 / 90.94
+> ✓99.08 81.25 95.34 91.91 93.42 ( +0.95 ) / 91.89 ( +0.95 )7B ×98.40 84.00 96.01 83.91 91.59 / 90.58
+> ✓98.34 81.01 96.36 91.85 92.79 ( +1.20 ) / 91.89 ( +1.31 )
+> LoRA-16
+> Wav2Vec2
+> (FT)
+> 0.5B ×90.88 76.19 92.71 73.98 85.90 / 83.44
+> ✓96.42 74.51 96.42 76.36 87.04 ( +1.14 ) / 85.93 ( +2.49 )3B ×93.35 77.29 92.71 73.58 86.38 / 84.23
+> ✓97.78 70.14 96.83 83.96 88.05 ( +1.67 ) / 87.18 ( +2.95 )7B ×94.33 74.97 94.83 73.62 86.11 / 84.44
+> ✓97.06 82.62 97.34 81.69 90.64 ( +4.53 ) / 89.68 ( +5.24 )Whisper
+> (FT)
+> 0.5B ×99.01 81.49 97.24 68.18 87.77 / 86.48
+> ✓99.47 87.53 96.96 91.17 94.49 ( +6.72 ) / 93.78 ( +7.30 )3B ×89.71 83.96 93.61 87.74 91.48 / 88.75
+> ✓98.53 87.67 96.39 80.19 91.68 ( +0.20 ) / 90.69 ( +1.94 )7B ×95.22 86.53 95.41 77.54 90.36 / 88.67
+> ✓98.80 86.16 93.94 84.55 92.17 ( +1.81 ) / 90.86 ( +2.19 )
+> End-to-End Multimodal
+> Omni
+> (FT)  3B ×91.71 28.54 77.46 48.47 80.50 / 61.54
+> ✓95.90 27.73 78.68 48.97 81.48 ( +0.98 ) / 62.82 ( +1.28 )
+
+bridges the modality gap. 
+
+A. Model Settings and Training Details 
+
+We evaluate four base configurations pairing two audio encoders (fine-tuned Whisper, fine-tuned Wav2Vec2) with the two LLM settings identified as most informative in Experiment I: the frozen LLM and LoRA-16. We test at three LLM scales (0.5B, 3B, and 7B) and include Qwen2.5-Omni-3B [32] as an end-to-end reference. For Qwen2.5-Omni-3B, we implement LoRA adaptation following the protocol in [15] (rank 16 and 
+
+α = 64 ). Each configuration is compared with and without the openSMILE text prompt. 
+
+B. Results 
+
+Table III details the impact of openSMILE-based prompt across encoder families and LLM adaptation strategies. We summarize the observations below. 
+
+Injecting explicit openSMILE features into a frozen LLM yields good out-of-domain robustness with zero LLM-updating costs. For instance, appending openSMILE to the Whisper-backed Qwen-0.5B (Frozen) model improves Average F1 by 2.45% (91.09% → 93.54% ) and boosts performance on the ML benchmark by 2.92% (90.50% → 93.42% ). 
+
+Prompt based on openSMILE acts as a cross-modal alignment bridge. Although LoRA adaptation was found to be ineffective in Experiment I, when explicit openSMILE text descriptors are injected, LoRA adaptation becomes highly synergistic. For instance, using the 0.5B Whisper-backed model under LoRA-16 adaptation, the ML F1 improves by 22.99% 
+
+(68.18% → 91.17% ), fully recovering and surpassing the no-openSMILE frozen baseline. Because the LLM is provided with openSMILE acoustic features in its native textual modality, we assume that the LoRA parameters no longer merely memorize training artifacts, but instead act as a cross-modal alignment bridge. 
+
+Observations on native multimodal integration. For the natively integrated Qwen2.5-Omni-3B model, openSMILE injection yields marginal improvements (e.g., +1.28% in Average F1) ; this might be attributed to the lower temporal resolution of its integrated audio encoder (12.5 Hz) compared to that of the encoders used in our configurations (50 Hz). 
+
+Audio Encoder pretraining dictates the impact of ex-plicit features. The magnitude of performance gains from openSMILE injection is directly tied to the audio encoder’s pretraining objective. Whisper, optimized for ASR, inherently suppresses non-linguistic micro-artifacts. Consequently, explicit openSMILE text tokens provide critical missing forensic evidence, yielding transformative improvements: the 0.5B Whisper-backed model under LoRA-16 achieves an Average F1 of 93.78% (up from 86.48% , a gain of 7.30% ). Conversely, Wav2Vec2’s self-supervised pretraining natively preserves low-level acoustic variation directly from the raw waveform. Therefore, explicit openSMILE prompts yield modest, com-plementary gains (e.g., +2.49% Average F1 for the 0.5B Wav2Vec2 model under LoRA-16 adaptation). In summary for RQ2, openSMILE features improve the generalization performance of the LLM-based detector. They also mitigate the degradation caused by fine-tuning the LLM backbone, when compared with the case of using a frozen LLM. VII. C OMPARISON WITH STATE OF THE ART SYSTEMS 
+
+Table IV compares our approach against several state-of-the-art classical, SSL-based, and ALLM-based systems. We report the results on the unseen out-of-domain data: ITW 
+
+and ML . This is because all evaluated ALLM-based systems achieved F1-scores approaching 100% on the in-domain LA19 
+
+dataset, but their performance varies considerably on these out-of-domain subsets. We report Macro-F1 (%) to maintain consistency with other reported results. Our observations are summarized below. 
+
+Enhancing SSL Encoders with a Frozen LLM. Compari-son between our Wav2Vec2-based configuration and classical SSL-based prior work highlights the direct benefit of integrating an LLM. While popular architectures utilizing similar SSL encoders and traditional classifiers (such as W2V2-AASIST) achieve up to 79.80% F1 on ML , replacing these classifiers with                                      
+
+> Table IV COMPARISON WITH SOTA SYSTEMS ON UNSEEN DOMAINS (F1,%).
+> Method #Params ITW ML
+> Classical & SSL-based Prior Work
+> Whisper FT 0.6B 71.11 67.49 Wav2Vec2-Conformer [33] 0.3B 64.40 71.60 Wav2Vec2-Mamba [34] 0.3B 52.30 55.80 Wav2Vec2-AASIST [6] 0.3B 69.10 79.80
+> ALLM-based and Retrieval Prior Work
+> ALLM4ADD [13] 7B 68.34 77.87 FT-GRPO [15] 3B 28.54 66.14 ICLAD [35] N/A. †77.80 59.30
+> Ours (Explicit Textual Grounding)
+> Wav2Vec2 FT + Qwen-0.5B Frozen + OS 0.9B 77.27 91.84 Whisper FT + Qwen-0.5B Frozen + OS 1.1B 83.96 93.42
+> Whisper FT + Qwen-0.5B LoRA-16 + OS 1.1B 87.53 91.17
+> †Gemini-2.5 Flash is a proprietary model; exact parameters undisclosed.
+
+our textually grounded LLM yields superior generalization. Our 
+
+Wav2Vec2 FT + Qwen-0.5B Frozen + OS configuration pushes performance further, reaching 77.27% on ITW and 91.84% on 
+
+ML . This demonstrates that appending a lightweight frozen LLM backbone to an acoustic encoder is highly beneficial. 
+
+Comparison with Standalone and ALLM Strategies. The benefit of explicit openSMILE-based textual prompt becomes evident when comparing our Whisper-based models against both standalone encoders and recent ALLM baselines. Relying solely on a fine-tuned Whisper encoder ( Whisper FT ) yields limited out-of-domain generalization, achieving only 71.11% on ITW and 67.49% on ML . However, integrating this exact encoder with a lightweight LLM and openSMILE descriptors triggers a massive jump: our frozen configuration achieves 
+
+83.96% on ITW and 93.42% on ML .When comparing our Whisper-based models with recent ALLM baselines, as shown in Table IV, our framework of injecting explicit openSMILE-based acoustic descriptions achieved competitive generalization, reaching an 87.53% F1-score on ITW and 91.17% on ML (when utilizing LoRA-16). Furthermore, our framework remains highly efficient, with lightweight configurations totaling approximately 1.1B parameters, demonstrating that our approach is an effective alternative to larger or more complex ALLM strategies. VIII. C ONCLUSION 
+
+We presented an ALLM framework for deepfake voice detection that bridges the modality gap between acoustic physics and LLM semantics. Our evaluation demonstrates that optimizing the audio encoder allows a frozen LLM to generalize robustly without overfitting. Furthermore, injecting openSMILE acoustic descriptors as structured text tokens provides crucial semantic context. This cross-modal grounding enhances the frozen baseline and synergizes with LoRA adaptation, balancing computational efficiency with peak performance. Ultimately, this framework paves the way for transparent, reasoning-based audio forensics, where interpretable acoustic statistics enable explainable detection. Future work will investigate prompt design and advanced alternatives for cross-modal alignment. REFERENCES [1] S. Chen, C. Wang, Y. Wu, Z. Zhang, L. Zhou, S. Liu, Z. Chen, Y. Liu, H. Wang, J. Li, L. He, S. Zhao, and F. Wei, “Neural Codec Language Models are Zero-Shot Text to Speech Synthesizers,” IEEE Transactions on Audio, Speech and Language Processing , vol. 33, pp. 705–718, 2025. [Online]. Available: https://ieeexplore.ieee.org/document/10842513/ [2] X. Tan, Neural Text-to-Speech Synthesis , ser. Artificial Intelligence: Foundations, Theory, and Algorithms. Singapore: Springer Nature Singapore, 2023. [Online]. Available: https://link.springer.com/10.1007/ 978-981-99-0827-1 [3] M. Li, Y. Ahmadiadli, and X.-P. Zhang, “A Survey on Speech Deepfake Detection,” ACM Computing Surveys , vol. 57, no. 7, pp. 1–38, 2025. [4] J.-w. Jung, H.-S. Heo, H. Tak, H.-j. Shim, J. S. Chung, B.-J. Lee, H.-J. Yu, and N. Evans, “AASIST: Audio anti-spoofing using integrated spectro-temporal graph attention networks,” in Proc. ICASSP 2022 , 2022, pp. 6367–6371. [5] H. Tak, J. Patino, M. Todisco, A. Nautsch, N. Evans, and A. Larcher, “End-to-end anti-spoofing with RawNet2,” in Proc. ICASSP 2021 , 2021, pp. 6369–6373. [6] H. Tak, M. Todisco, X. Wang, J.-w. Jung, J. Yamagishi, and N. Evans, “Automatic speaker verification spoofing and deepfake detection using wav2vec 2.0 and data augmentation,” in Proc. Odyssey 2022 , 2022, pp. 112–119. [7] J. Yang, R. K. Das, and H. Li, “Significance of subband features for synthetic speech detection,” IEEE Transactions on Information Forensics and Security , vol. 15, pp. 2160–2170, 2019. [8] N. M. M¨ uller, P. Kawa, W. H. Choong, E. Casanova, E. Golge, T. M¨ uller, P. Syga, P. Sperl, and K. B¨ ottinger, “MLAAD: The multi-language audio anti-spoofing dataset,” International Joint Conference on Neural Networks , 2024. [9] M. Todisco, X. Wang, V. Vestman, M. Sahidullah, H. Delgado, A. Nautsch, J. Yamagishi, N. Evans, T. H. Kinnunen, and K. A. Lee, “ASVspoof 2019: Future horizons in spoofed and fake audio detection,” in Proc. Interspeech 2019 , 2019, pp. 1008–1012. [10] X. Liu, X. Wang, M. Sahidullah, J. Patino, H. Delgado, T. Kinnunen, M. Todisco, J. Yamagishi, N. Evans, A. Nautsch et al. , “ASVspoof 2021: Towards spoofed and deepfake speech detection in the wild,” IEEE/ACM Transactions on Audio, Speech, and Language Processing , 2023. [11] X. Wang, H. Delgado, H. Tak, J.-w. Jung, H.-j. Shim, M. Todisco, I. Kukanov, X. Liu, M. Sahidullah, T. Kinnunen et al. , “ASVspoof 5: Crowdsourced speech data, deepfakes, and adversarial attacks at scale,” in ASVspoof Workshop 2024 , 2024, pp. 1–8. [12] N. M. M¨ uller, P. Czempin, F. Dieckmann, A. Froghyar, and K. B¨ ottinger, “Does audio deepfake detection generalize?” in Proc. Interspeech 2022 ,2022, pp. 2783–2787. [13] H. Gu, J. Yi, C. Wang, J. Tao, Z. Lian, J. He, Y. Ren, Y. Chen, and Z. Wen, “ALLM4ADD: Unlocking the capabilities of audio large language models for audio deepfake detection,” in Proceedings of the 33rd ACM International Conference on Multimedia , 2025, pp. 11 736–11 745. [14] Y. Li, L. Wang, Y. Wang, L. Wang, R. Cai, J. Shi, B. Schuller, and Z. Wu, “DFALLM: Achieving generalizable multitask deepfake detection by optimizing audio LLM components,” arXiv preprint arXiv:2512.08403 ,2025. [15] Y. Xie, X. Guo, J. Zhou, T. Wang, J. Liu, R. Fu, X. Wang, H. Cheng, and L. Ye, “Interpretable all-type audio deepfake detection with audio LLMs via frequency–time reinforcement learning,” arXiv preprint arXiv:2601.02983 , 2026. [16] X. Xu, Y. Ren, L. Liu, W. Wu, B. Li, C. Lu, S. Wang, and C. Zhang, “HoliAntiSpoof: Audio LLM for Holistic Speech Anti-Spoofing,” 2026. [17] Y. E. Kheir, A. Das, Y. Xiao, X. Wang, F. Kallel, E. E. Erdogan, N. T. Vu, T. Polzehl, and S. Moeller, “DeepFense: A Unified, Modular, and Extensible Framework for Robust Deepfake Audio Detection,” in Proc. Interspeech , 2026, p. (accepted). [Online]. Available: https://arxiv.org/abs/2604.08450 [18] T. `Og´ unrem´ ı, C. D. Manning, D. Jurafsky, and K. Livescu, “Transcribe, Translate, or Transliterate: An Investigation of Intermediate Representations in Spoken Language Models,” in Proc. ASRU ,Honolulu, HI, USA, Dec. 2025, pp. 1–7. [Online]. Available: https://ieeexplore.ieee.org/document/11434765/ [19] A. Radford, J. W. Kim, T. Xu, G. Brockman, C. McLeavey, and I. Sutskever, “Robust speech recognition via large-scale weak supervision,” in Proceedings of the 40th International Conference on Machine Learning ,2023. [20] A. Baevski, Y. Zhou, A. Mohamed, and M. Auli, “wav2vec 2.0: A framework for self-supervised learning of speech representations,” in 
+
+Advances in Neural Information Processing Systems , vol. 33, 2020, pp. 12 449–12 460. [21] B. Chen, Z.-A. Luo, C. Wang, Z. Pan, and W. Tian, “Self-supervised audio teacher-student transformer for both clip-level and frame-level tasks,” in Proceedings of the 32nd ACM International Conference on Multimedia , 2024. [22] F. Eyben, M. W¨ ollmer, and B. Schuller, “openSMILE – the Munich versatile and fast open-source audio feature extractor,” in Proceedings of the 18th ACM International Conference on Multimedia , 2010, pp. 1459–1462. [23] X. Guo, Y. Xie, H. Cheng, J. Zhou, J. Liu, H. Huang, L. Ye, and Q. Zhang, “Towards explicit acoustic evidence perception in audio LLMs for speech deepfake detection,” arXiv preprint arXiv:2601.23066 , 2026. [24] Y.-A. Chung, Y. Zhang, W. Han, C.-C. Chiu, J. Qin, R. Pang, and Y. Wu, “w2v-BERT: Combining Contrastive Learning and Masked Language Modeling for Self-Supervised Speech Pre-Training,” in Proc. ASRU . Cartagena, Colombia: IEEE, Dec. 2021, pp. 244–250. [Online]. Available: https://ieeexplore.ieee.org/document/9688253/ [25] O. Pascu, D. Oneat ¸˘ a, H. Cucu, and N. M. M¨ uller, “Easy, Interpretable, Effective: openSMILE for voice deepfake detection,” in Proc. ICASSP 2025 , 2025, pp. 1–5. [26] Y. El Kheir, Y. Samih, S. Maharjan, T. Polzehl, and S. M¨ oller, “Comprehensive Layer-wise Analysis of SSL Models for Audio Deepfake Detection,” in Findings of the Association for Computational Linguistics: NAACL 2025 , L. Chiruzzo, A. Ritter, and L. Wang, Eds., 2025, pp. 4070–4082. [27] Y. Xiao and N. T. Vu, “Layer-Wise Decision Fusion for Fake Audio Detection Using XLS-R,” in Proc. Interspeech 2025 , 2025, pp. 5618– 5622. [28] R. Kumar, P. Seetharaman, A. Luebs, I. Kumar, and K. Kumar, “High-fidelity audio compression with improved RVQGAN,” in Advances in Neural Information Processing Systems , 2023. [29] X. Zhang, D. Zhang, S. Li, Y. Zhou, and X. Qiu, “SpeechTokenizer: Unified speech tokenizer for speech language models,” in The Twelfth International Conference on Learning Representations , 2024. [30] A. Yang, B. Yang, B. Hui, B. Zheng, B. Yu, C. Zhou, C. Li et al. ,“Qwen2 technical report,” arXiv preprint arXiv:2407.10671 , 2024. [31] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, “LoRA: Low-rank adaptation of large language models,” in International Conference on Learning Representations , 2022. [32] QwenTeam, “Qwen2.5-omni technical report,” arXiv preprint , 2025. [33] D.-T. Truong, R. Tao, T. Nguyen, H.-T. Luong, K. A. Lee, and E. S. Chng, “Temporal-channel modeling in multi-head self-attention for synthetic speech detection,” arXiv preprint arXiv:2406.17376 , 2024. [34] Y. Xiao and R. K. Das, “Xlsr-mamba: A dual-column bidirectional state space model for spoofing attack detection,” IEEE Signal Processing Letters , 2025. [35] B. Chou, Y. Zhu, and S. Koppisetti, “Iclad: In-context learning with comparison-guidance for audio deepfake detection,” arXiv preprint arXiv:2604.16749 , 2026.
