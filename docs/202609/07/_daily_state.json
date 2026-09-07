@@ -1,0 +1,73 @@
+{
+  "date": "20260907",
+  "date_label": "",
+  "generated_at": "2026-09-07 22:42:26 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.04637v1",
+      "route": "202609/07/2609.04637v1-tracing-audio-grounding-and-answer-selection-in-audio-llms",
+      "title": "Tracing Audio Grounding and Answer Selection in Audio LLMs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "剖析音频大语言模型是否真正依据音频作答，属于语音大模型可解释性与可靠性的核心工作。",
+      "first_seen_at": "2026-09-07 22:42:26 UTC",
+      "updated_at": "2026-09-07 22:42:26 UTC"
+    },
+    {
+      "paper_id": "2609.00570v1",
+      "route": "202609/07/2609.00570v1-voicelongmemeval-do-assistants-remember-how-you-sounded",
+      "title": "VoiceLongMemEval: Do Assistants Remember How You Sounded?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "直接针对语音助手对情感标签、韵律描述等副语言信息的记忆与理解，与基于副语言的韵律情感理解需求吻合",
+      "first_seen_at": "2026-09-07 22:42:26 UTC",
+      "updated_at": "2026-09-07 22:42:26 UTC"
+    },
+    {
+      "paper_id": "2609.04690v1",
+      "route": "202609/07/2609.04690v1-enhancing-multimodal-emotion-recognition-via-multi-feature-encoding-and-attention-based-fusion",
+      "title": "Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过语义语音嵌入、MFCC与音高能量节奏等韵律特征融合进行情感识别，但未处理跨域或跨语料泛化问题",
+      "first_seen_at": "2026-09-07 22:42:26 UTC",
+      "updated_at": "2026-09-07 22:42:26 UTC"
+    },
+    {
+      "paper_id": "2608.30348v1",
+      "route": "202609/07/2608.30348v1-perceptually-better-semantically-worse-measuring-speech-enhancement-impact-on-llm-based-voice-systems",
+      "title": "Perceptually Better, Semantically Worse: Measuring Speech Enhancement Impact on LLM-Based Voice Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "评测语音增强造成的输入分布偏移如何影响下游LLM语音系统，关联语音大模型鲁棒性",
+      "first_seen_at": "2026-09-07 22:42:26 UTC",
+      "updated_at": "2026-09-07 22:42:26 UTC"
+    }
+  ]
+}

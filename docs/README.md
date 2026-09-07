@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-29 ~ 2026-09-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-07</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-07 04:36:19 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-07 22:42:26 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日聚焦音频语言模型的声学与语义错位问题，并速览讽刺检测、深度伪造语音与低码率语音分词相关研究。</p>
-<p>最值得精读的两篇8分工作分别揭示“副语言信息在语音模型中易被忽视/丢失”及“声学-语义不一致处理短板”，是改进多模态语音理解的关键线索。</p>
-<p>建议后续可关注韵律特征显式建模与跨模态对齐方法，以增强模型对语气、讽刺等副语言信息的鲁棒性。</p>
+<p>今日聚焦音频大模型，精读其语音定位与答案选择机制，并速读记忆评测、情感识别与语音增强三篇关联研究。最值得关注的是音频LLM内部如何追踪声音来源并作答，以及长期语音记忆评估暴露的助手“音色遗忘”短板。建议普通读者留意语音交互中“听清”与“听懂”的差距，后续可关注多模态融合与记忆增强方向的进展。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -80,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="When Vocal Tone and Literal Meaning Diverge: An Acoustic-Semantic Incongruity Study for Large Audio-Language Models">When Vocal Tone and Literal Meaning Diverge: An Acoustic-Semantic Incongruity Study for Large Audio-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Heard but Not Heeded: Paralinguistic Information Encoding and Loss in Audio-Language Models">Heard but Not Heeded: Paralinguistic Information Encoding and Loss in Audio-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="SISER: Speaker-Invariant Speech Emotion Recognition with Entropy-Based Adversarial Training">SISER: Speaker-Invariant Speech Emotion Recognition with Entropy-Based Adversarial Training</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Tracing Audio Grounding and Answer Selection in Audio LLMs">Tracing Audio Grounding and Answer Selection in Audio LLMs</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -96,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="When Models Hear What They Expect: Diagnosing Prosodic Heuristics in Multimodal Sarcasm Detection">When Models Hear What They Expect: Diagnosing Prosodic Heuristics in Multimodal Sarcasm Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Textual Acoustic Grounding for Generalizable LLM-Based Deepfake Voice Detection">Textual Acoustic Grounding for Generalizable LLM-Based Deepfake Voice Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="BiMTokenizer: Preserving Semantic-Acoustic Balance in Low-Bitrate Speech Tokenization via Bidirectional State-Space Modeling">BiMTokenizer: Preserving Semantic-Acoustic Balance in Low-Bitrate Speech Tokenization via Bidirectional State-Space Modeling</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VoiceLongMemEval: Do Assistants Remember How You Sounded?">VoiceLongMemEval: Do Assistants Remember How You Sounded?</span></li><li><span class="dpr-home-dashboard-paper-title" title="Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion">Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion</span></li><li><span class="dpr-home-dashboard-paper-title" title="Perceptually Better, Semantically Worse: Measuring Speech Enhancement Impact on LLM-Based Voice Systems">Perceptually Better, Semantically Worse: Measuring Speech Enhancement Impact on LLM-Based Voice Systems</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
 </section>

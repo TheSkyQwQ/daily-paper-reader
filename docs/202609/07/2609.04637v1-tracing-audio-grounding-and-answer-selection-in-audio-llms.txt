@@ -1,0 +1,195 @@
+Title: Tracing Audio Grounding and Answer Selection in Audio LLMs
+
+URL Source: https://arxiv.org/pdf/2609.04637v1
+
+Published Time: Mon, 07 Sep 2026 00:23:49 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+## TRACING AUDIO GROUNDING AND ANSWER SELECTION IN AUDIO LLMS 
+
+## Hyebin Cho Suho Yoo Jihoo Jung Joon Son Chung 
+
+## Korea Advanced Institute of Science and Technology, South Korea 
+
+ABSTRACT 
+
+Audio Large Language Models (Audio LLMs) have advanced in audio understanding, yet they can still predict the answer by reasoning from textual cues or linguistic priors rather than the provided audio. A common remedy is to train models on data whose answers cannot be inferred from text alone. This approach can improve performance, but what changes within the model remains unclear. In this paper, we ask what must happen inside the model for the audio to actually determine the answer. Our findings are threefold. (1) Replacing the audio with silence or unrelated audio causes substantially larger performance degradation in the trained model than in the pretrained model. (2) Acoustic information most strongly shapes the model’s representations of the answer choices in early-to-middle layers, while training mainly increases the influence of audio information on the final prediction in middle-to-late layers. (3) The weights learned during training have their largest impact in specific layer bands. Together, these results provide a mechanistic account of how training strengthens the use of acoustic evidence in Audio LLMs. 
+
+Index Terms — Audio large language models, Mechanistic interpretability 
+
+1. INTRODUCTION 
+
+Recent Audio Large Language Models (Audio LLMs) have substantially advanced audio understanding and reasoning. However, beyond task accuracy, recent evaluation increasingly asks whether model predictions are actually supported by the acoustic evidence in the input, particularly under hallucination, modality conflict, missing evidence, and other challenging con-ditions [1–7]. Furthermore, recent work shows that high Au-dioQA performance can persist even when little or no acoustic evidence is available, highlighting a gap between benchmark accuracy and the actual use of acoustic evidence [8]. In response to this limitation, one line of work has devel-oped training data and evaluation benchmarks in which correct answers require information from the audio [9, 10]. In parallel, mechanistic studies have begun to examine how acoustic in-formation is represented and propagated within Audio LLMs, including where audio-related information is represented and how audio and text interact [11–16]. However, it remains unclear how training changes the way audio information is used inside an Audio LLM to produce the final answer. AudioLLM      
+
+> ⋮⋮⋮⋮Attn
+> Attn
+> Answer
+> ATime
+> Audio
+> Audio Tokens
+> How does the speaker feel?
+> Question  Text Tokens
+> A. happy D. fear
+> Options
+> Answer:
+> Last
+> Early Middle Late
+> ⋮
+> Training strengthens final prediction paths Interactions between Audio and answer choices tokens
+
+Fig. 1 : How audio information is used across layers in Audio LLMs. Connections from audio to the answer choices are most important in early-to-middle layers both before and after training, while training increases the contribution of the answer choices to the final prediction in middle-to-late layers. We therefore ask three questions. First, does training on questions that require acoustic evidence increase the model’s use of the provided audio? Second, at which layers does acous-tic information shape the model’s representations of the answer choices, and at which layers do these representations begin to influence the final prediction? Third, where are the learned changes that support these improvements concentrated? We study these questions across multiple-choice AudioQA benchmarks, analyzing both changes in model behavior and where those changes arise within the model. Fig. 1 summarizes the resulting picture. Our main findings are: • Training increases the use of acoustic evidence: on benchmarks where training improves performance, re-placing the audio with silence or unrelated audio causes larger accuracy drops after training than before training. • Acoustic information shapes the answer choices be-fore influencing the prediction: it most strongly shapes answer-choice representations in early-to-middle layers, whereas training strengthens their influence on the final prediction in middle-to-late layers. • The effects of learned parameter updates are layer-specific: disabling these updates causes the largest performance drops in model-specific middle-to-late or late layer ranges. Overall, our results provide a mechanistic view of where and how training strengthens the use of acoustic evidence in Audio LLMs, distinguishing acoustic information integration from its contribution to final answer selection. arXiv:2609.04637v1 [cs.CL] 4 Sep 2026 2. METHOD 2.1. Analysis Setup Task and data. We study multiple-choice AudioQA, where each example consists of an audio input, a question, a set of candidate answers, and a correct option label. Given the audio, question, and answer choices, the model is instructed to generate only the corresponding option letter. For training, we use the AudioMCQ-StrongAC-GeminiCoT dataset ( 19 ,480 samples) [9], the DCASE 2026 training set curated to favor questions that require acoustic evidence for correct answering. We discard the chain-of-thought annota-tions and use only the option letter for supervision. We evaluate cross-benchmark generalization on ADQA-Bench ( 2,998 samples) [17], MMAU-test-mini ( 1,000 sam-ples) [18], MMAR ( 1,000 samples) [19], and MMSU ( 5,000 
+
+samples) [20], none of which is used during training. ADQA-Bench is the official DCASE 2026 evaluation set and is specifically constructed to reduce questions that can be an-swered from textual cues alone, providing a targeted evaluation of acoustic-evidence use. 
+
+Models and fine-tuning. We analyze Qwen2-Audio [21] and Qwen2.5-Omni [22], comparing their original instruction-tuned checkpoints, denoted as zero-shot (ZS), with their LoRA-adapted counterparts, denoted as FT. Training uses four answer choices per question, whereas evaluation retains the original number of choices for each sample and restricts generation to the corresponding valid option labels. We apply LoRA with rank r = 16 , scaling factor α = 32 , and dropout 
+
+0.05 to the audio encoder and language-model target modules, with input audio truncated to at most 30 seconds. 
+
+2.2. Behavioral Sensitivity to Acoustic Evidence 
+
+To assess how training changes the model’s sensitivity to rel-evant acoustic evidence, we evaluate each model under three audio conditions. In the original condition, the paired audio is provided without modification. In the silent condition, the waveform is replaced with an all-zero signal of the same dura-tion, removing informative acoustic content while preserving the audio input. In the mismatch condition, the question and an-swer choices are retained, while the audio is replaced with au-dio from another randomly selected sample in the same bench-mark. This preserves a natural waveform while breaking its correspondence with the question. We construct mismatched pairs using a fixed random seed and exclude identity matches. Let Aorig , Asil , and Amis denote the accuracies under the original, silent, and mismatched conditions, respectively. We average the silent and mismatched conditions to reduce depen-dence on either perturbation alone. We define the behavioral acoustic-evidence sensitivity as 
+
+Saudio = Aorig − Asil +Amis 
+
+2 . (1) A larger Saudio indicates greater performance degradation when valid acoustic evidence is unavailable. We measure the change after training as 
+
+∆Saudio = SFT audio −SZS audio , (2) where a positive value indicates increased behavioral sensitiv-ity to valid acoustic evidence. This score measures behavioral sensitivity rather than directly identifying the internal mech-anism by which audio influences the prediction. 
+
+2.3. Layer-Wise Attention Interventions 
+
+We use attention knockout [23, 24] to identify attention con-nections that are functionally important for prediction. During inference, we prevent a predefined target token group from attending to a source token group within selected layers, while keeping all model parameters unchanged. We partition the input into audio tokens Ta, question tokens Tq , candidate-answer tokens To, and the first generated answer position Ty . For source tokens S and target tokens T ,we modify the pre-softmax attention score as 
+
+ezℓ,h t,s =
+
+(
+
+−∞ , t ∈ T, s ∈ S, ℓ ∈ W ,zℓ,h t,s , otherwise , (3) where W denotes the intervened layer window. This sets the corresponding attention weights to zero after softmax, preventing tokens in T from attending to tokens in S across all attention heads. We denote this intervention as S ↛ T .We focus on two connections representing different stages of multiple-choice prediction. Audio ↛Options prevents candidate-answer tokens from attending to the audio and tests the functional importance of audio-to-option interactions. 
+
+Options ↛Answer prevents the generated answer position from attending to the candidate answers and tests their direct contribution to the final prediction. For each intervention, we measure the mean change in the probability assigned to the correct option after renormalizing the next-token probabilities over the valid answer labels for each sample: 
+
+∆pS↛Tℓ = 100 
+
+N
+
+> N
+
+X
+
+> i=1
+
+pKO  
+
+> i,ℓ
+
+(yi)−pfull  
+
+> i
+
+(yi). (4) A negative ∆p indicates that removing the connection reduces support for the correct answer, with larger negative values in-dicating a stronger functional contribution. We use probability rather than argmax accuracy to capture intervention effects that may change model confidence without changing the predicted option. For the layer-wise analyses, we pool all examples from the benchmarks and compute ∆p over the pooled examples. We center each k-layer intervention window at layer ℓ,spanning ℓ − (k − 1) /2 through ℓ + ( k − 1) /2 and clipping the window at model boundaries. We use k = 9 for the main analysis and additionally evaluate k ∈ { 1,3,5,9,13 }, observing qualitatively consistent layer-wise trends. Table 1 : Accuracy and acoustic sensitivity. Accuracies are in percentages. ∆A and ∆Saudio denote changes in accuracy and behavioral sensitivity to valid acoustic evidence, respectively, in percentage points. ± values indicate 95% paired-bootstrap CI half-widths from 10,000 resamples. 
+
+Dataset ZS FT  ∆A ∆Saudio 
+
+Qwen2-Audio 
+
+ADQA 36.9 51.1 +14 .3±2.0 +9 .3±2.0
+
+MMAR 41.2 52.5 +11 .3±3.9 +6 .9±3.6
+
+MMAU 59.7 58.6 −1.1±3.6 −9.1±3.5
+
+MMSU 47.3 58.8 +11 .5±1.6 +6 .8±1.5
+
+Qwen2.5-Omni 
+
+ADQA 41.9 54.4 +12 .5±1.9 +4 .5±2.0
+
+MMAR 53.7 65.7 +11 .9±3.4 +6 .7±3.5
+
+MMAU 77.0 63.5 −13 .5±3.2 −7.1±3.1
+
+MMSU 54.1 64.9 +10 .9±1.4 +6 .0±1.5
+
+2.4. Layer-wise Analysis of Learned Updates 
+
+To identify where training-induced changes have the largest functional effect, we group the learned LoRA updates into contiguous layer bands across the jointly adapted audio and language modules. We first disable one trained band at a time while keeping the remaining adapter unchanged. We then train separate adapters restricted to a single band and compare them with full-depth LoRA. We additionally include full-depth LoRA with r = 4 , which approximately matches the trainable-parameter budget of single-band r = 16 training. 
+
+3. EXPERIMENTS 3.1. Behavioral Use of Acoustic Evidence 
+
+Training improves accuracy on ADQA-Bench, MMAR, and MMSU for both models, while MMAU shows little improvement for Qwen2-Audio and a clear decrease for Qwen2.5-Omni (Tab. 1). We next ask whether these performance gains are accom-panied by greater use of the provided audio. We operationalize behavioral audio use as sensitivity to removing or replacing the paired audio. On all six model–dataset pairs where accuracy improves, ∆Saudio is also positive, showing that the trained models become more sensitive to removing or replacing the corresponding audio. In contrast, both models show negative 
+
+∆Saudio on MMAU, together with weak or negative accuracy changes. These results suggest that successful performance transfer is generally accompanied by a greater contribution from relevant acoustic evidence, whereas the learned changes do not generalize in the same way to MMAU. Because the pathway analysis targets settings where train-ing improves both performance and audio sensitivity, we focus on ADQA-Bench, MMAR, and MMSU; MMAU is retained as a negative-transfer comparison in the learned-update analysis. 0 4 8 12 16 20 24 28       
+
+> Layer
+> −10 −5 0
+> Probability change (pp)
+> Qwen2-Audio
+> 04812 16 20 24
+> Layer
+> Qwen2.5-Omni
+> ZS: Audio ↛ All options ZS: All options ↛ Answer FT: Audio ↛ All options FT: All options ↛ Answer
+
+Fig. 2 : Layer-wise attention knockout. Audio ↛All Options is most influential in early-to-middle layers for both ZS and FT, whereas All Options ↛Answer becomes prominent in middle-to-late layers after training. 0 4 8 12 16 20 24 28       
+
+> Layer
+> −10 −5 05
+> Probability change (pp)
+> Qwen2-Audio
+> 04812 16 20 24
+> Layer
+> Qwen2.5-Omni
+> ZS: Correct option ↛ Answer ZS: Wrong options ↛ Answer FT: Correct option ↛ Answer FT: Wrong options ↛ Answer
+
+Fig. 3 : Correct- and wrong-option contributions. Qwen2-Audio shows opposite effects for correct and wrong options in both ZS and FT. Blocking the correct option lowers the correct-answer probability, while blocking wrong options raises it. Qwen2.5-Omni shows a strong increase in correct-option con-tribution after training, with little change from wrong options. 
+
+3.2. From Acoustic Evidence to Answer Prediction 
+
+Fig. 2 shows a similar layer-wise pattern in both Qwen2-Audio and Qwen2.5-Omni. Blocking Audio ↛All Options reduces the probability of the correct answer in early-to-middle layers for both ZS and FT. The strongest effects appear around layers 8–12 in Qwen2-Audio and 10–16 in Qwen2.5-Omni. This indicates that acoustic information influences the representa-tions of the candidate answers primarily in early-to-middle layers, and that this effect is already present before training. A different pattern appears for All Options ↛Answer. In the zero-shot models, blocking this connection produces little change across layers. After training, however, the same intervention causes a clear reduction in the correct-answer probability at later layers, around 18–22 in Qwen2-Audio and 20–27 in Qwen2.5-Omni. Thus, the largest change after training is not in the earlier interaction between audio and candidate answers, but in how those representations contribute to the final prediction. Overall, acoustic evidence affects candidate-answer rep-resentations earlier, whereas their contribution to the final prediction becomes prominent later. Training mainly strength-ens this later use of audio-informed representations. As a result, removing or replacing the audio has a larger effect on the final prediction, even though the earlier acoustic-grounding stage itself changes less. 0-7 8-15 16-23 24-31 −20 −10 010    
+
+> Acc. change (pp)  Qwen2-Audio
+> 0-6 7-13 14-20 21-27
+> Qwen2.5-Omni
+> Adapter band (layers)
+> ADQA MMAR MMAU MMSU
+
+Fig. 4 : Functional effect of LoRA layer bands. Accuracy change after disabling the learned LoRA updates in each layer band, relative to the full trained model. Negative values indi-cate performance degradation after removal, whereas positive values indicate improved accuracy. To determine whether the strengthened option-to-answer connection reflects general dependence on the answer choices or more selective use of the correct option, we further sepa-rate the contributions of the correct and incorrect options in Fig. 3. In Qwen2-Audio, blocking Correct Option ↛Answer decreases the correct-answer probability over approximately layers 16–28, whereas blocking Wrong Options ↛Answer in-creases it. This pattern appears in both ZS and FT, indicating that the model already distinguishes between supportive in-formation from the correct option and competing information from the incorrect options before training. Qwen2.5-Omni shows a different training-induced change. Blocking the wrong options has little effect in either set-ting, whereas blocking Correct Option ↛Answer produces a pronounced decrease in the correct-answer probability after training, particularly around layers 18–25. This suggests that training primarily strengthens the contribution of the correct-option representation to the final answer in Qwen2.5-Omni. 
+
+3.3. Where Learned LoRA Updates Matter 
+
+We next ask where the learned LoRA updates have the largest functional effect, and whether the same layer ranges are sufficient when used alone. 
+
+Functional necessity. We first disable the learned LoRA updates in one layer band at a time while keeping the rest of the trained model unchanged. As shown in Fig. 4, re-moving layers 16–23 causes the largest performance drop in Qwen2-Audio, while Qwen2.5-Omni is most affected by removing layers 21–27. These ranges overlap with the lay-ers where Options ↛Answer becomes more important after training in Fig. 2. This suggests that the learned changes are concentrated in particular layer ranges rather than being equally important across all layers. MMAU provides a com-plementary negative-transfer case: disabling some learned bands improves accuracy, consistent with the weak or negative transfer observed in Tab. 1. 
+
+Table 2 : Layer-restricted LoRA training. Accuracy (%) when LoRA updates are applied to all layers or restricted to a single layer band during training. Unless otherwise specified, LoRA rank is r = 16 . Bold and underline indicate the best and second-best results in each row, respectively.                                                                             
+
+> Qwen2-Audio
+> Data All 0–7 8–15 16–23 24–31 All r= 4
+> ADQA 51 .13 49 .73 51 .13 38 .80 41 .60 39 .70
+> MMAR 52 .51 49 .50 52 .81 42 .11 44 .92 43 .82
+> MMAU 58 .60 56 .60 55 .60 55 .90 57 .50 57 .90
+> MMSU 58 .78 56 .68 59 .72 51 .34 52 .56 51 .58
+> Mean 55 .26 53 .13 54 .82 47 .04 49 .15 48 .25
+> Qwen2.5-Omni
+> Data All 0–6 7–13 14–20 21–27 All r= 4
+> ADQA 54 .37 41 .10 41 .17 39 .97 40 .47 42 .00
+> MMAR 65 .66 53 .27 56 .38 54 .87 51 .36 56 .88
+> MMAU 63 .50 63 .00 64 .60 61 .90 62 .50 64 .40
+> MMSU 64 .94 54 .30 55 .98 53 .44 53 .34 55 .38
+> Mean 62 .12 52 .92 54 .53 52 .55 51 .92 54 .67
+
+Adaptation sufficiency. We next train LoRA while allowing updates in only one layer band at a time. In Tab. 2, these single-band models use rank r = 16 and are compared with all-layer LoRA using r = 16 and r = 4 . For Qwen2-Audio, training only layers 8–15 nearly matches or exceeds the all-layer r = 16 
+
+model on ADQA-Bench, MMAR, and MMSU, despite updat-ing only one quarter of the layer locations. Qwen2.5-Omni behaves differently: no single band recovers the performance of all-layer training, and even the all-layer r = 4 model per-forms better on average than any single-band model. This suggests that Qwen2-Audio can acquire much of the improve-ment from a restricted layer range, whereas Qwen2.5-Omni benefits from learned updates across multiple layer ranges. The band that matters most to the fully trained model is not necessarily the band that performs best when trained in isolation. Band ablation asks which learned updates the full model relies on after training, whereas single-band training asks what can be learned when updates are restricted from the beginning. This difference suggests that learned updates across layer bands can work together during training and inference. 
+
+4. CONCLUSION 
+
+We studied how training changes the use of acoustic evidence in Audio LLMs. Acoustic evidence affects candidate-answer representations in early-to-middle layers, while training mainly strengthens their contribution to the final answer in middle-to-late layers, with learned effects concentrated in model-specific LoRA bands. Our results highlight an important distinction in Audio LLMs: making acoustic evidence available to answer representations and using those representations for the final decision are distinct stages. 5. REFERENCES 
+
+[1] Chun-Yi Kuan and Hung-yi Lee, “Can large audio-language models truly hear? tackling hallucinations with multi-task assessment and stepwise audio reasoning,” in 
+
+Proc. ICASSP , 2025. [2] Chun-Yi Kuan, Wei-Ping Huang, and Hung-yi Lee, “Understanding sounds, missing the questions: The challenge of object hallucination in large audio-language models,” 2024. [3] Chao-Han Huck Yang, Sreyan Ghosh, Qing Wang, Jaeyeon Kim, Hengyi Hong, Sonal Kumar, Guirui Zhong, Zhifeng Kong, S Sakshi, Vaibhavi Lokegaonkar, et al., “Multi-domain audio question answering benchmark to-ward acoustic content reasoning,” in Proc. ICASSP , 2026. [4] Chun-Yi Kuan and Hung-yi Lee, “Aqua-bench: Beyond finding answers to knowing when there are none in audio question answering,” in Proc. ICASSP , 2026. [5] Chen-An Li, Tzu-Han Lin, and Hung-yi Lee, “When silence matters: The impact of irrelevant audio on text reasoning in large audio-language models,” in Proc. ICASSP , 2026. [6] Han Yin and Jung-Woo Choi, “Can large audio language models understand audio well? speech, scene and events understanding benchmark for lalms,” in Proc. ICASSP ,2026. [7] Ashish Seth, Xinhao Mei, Changsheng Zhao, Varun Nagaraja, Ernie Chang, Gregory P Meyer, Gael Le Lan, Yunyang Xiong, Vikas Chandra, Yangyang Shi, et al., “Exploring audio hallucination in egocentric video understanding,” in Proc. ICASSP , 2026. [8] Leonardo Haw-Yang Foo, Chih-Kai Yang, Chen-An Li, Ke-Han Lu, and Hung-yi Lee, “All That Glitters Is Not Audio: Rethinking text priors and audio re-liance in audio-language evaluation,” arXiv preprint arXiv:2604.24401 , 2026. [9] Haolin He, Xingjian Du, Renhe Sun, Zheqi Dai, Yujia Xiao, Mingru Yang, Jiayi Zhou, Xiquan Li, Zhengxi Liu, Zining Liang, et al., “Measuring audio’s impact on correctness: Audio-contribution-aware post-training of large audio language models,” arXiv preprint arXiv:2509.21060 , 2025. [10] Haolin He, Renhe Sun, Zheqi Dai, Xingjian Du, Chunyat Wu, Zining Liang, Zhengxi Liu, Jiahe Lei, Runbang Wang, Jiayi Zhou, et al., “Summary of dcase 2026 task 5: Audio-dependent question answering,” arXiv preprint arXiv:2607.18718 , 2026. [11] Chih-Kai Yang, Neo Ho, Yi-Jyun Lee, and Hung-yi Lee, “Audiolens: A closer look at auditory attribute perception of large audio-language models,” in IEEE Automatic Speech Recognition and Understanding workshop , 2025. [12] Xiutian Zhao, Björn Schuller, and Berrak Sisman, “Discovering and causally validating emotion-sensitive neurons in large audio-language models,” in Proc. ACL ,2026. [13] Neta Glazer, Lenny Aharon, and Ethan Fetaya, “Are audio-language models listening? audio-specialist heads for adaptive audio steering,” arXiv preprint arXiv:2603.06854 , 2026. [14] Hyebin Cho, Suho Yoo, Jaehyuk Jang, Changick Kim, and Joon Son Chung, “Who wins the conflict? mechanistic interpretability of text bias in audio llms,” 
+
+arXiv preprint arXiv:2606.18924 , 2026. [15] Yujian Ma, Jinqiu Sang, Ruizhe Li, Jiaao Yu, and Ang Li, “From semantics to readout: Mechanistic understanding of audio tokens after fine-tuning for temporal audio grounding,” arXiv preprint arXiv:2607.25355 , 2026. [16] Wei-Chih Chen, Chien-yu Huang, and Hung-yi Lee, “Causal tracing of audio-text fusion in large audio language models,” 2026. [17] Divy Kala, Eshika Khandelwal, and Makarand Tapaswi, “What you see is what you ask: Evaluating audio descriptions,” in Proc. EMNLP , 2025, pp. 23507–23529. [18] S Sakshi, Utkarsh Tyagi, Sonal Kumar, Ashish Seth, Ramaneswaran Selvakumar, Oriol Nieto, Ramani Duraiswami, Sreyan Ghosh, and Dinesh Manocha, “MMAU: A massive multi-task audio understanding and reasoning benchmark,” in Proc. ICLR , 2025. [19] Ziyang Ma, Yinghao Ma, Yanqiao Zhu, Chen Yang, Yi-Wen Chao, Ruiyang Xu, Wenxi Chen, Yuanzhe Chen, Zhuo Chen, Jian Cong, et al., “Mmar: A challenging benchmark for deep reasoning in speech, audio, music, and their mix,” in Proc. NeurIPS , 2025, vol. 38. [20] Dingdong Wang, Junan Li, Jincenzi Wu, Dongchao Yang, Xueyuan Chen, Tianhua Zhang, and Helen Meng, “Mmsu: A massive multi-task spoken language under-standing and reasoning benchmark,” in Proc. ICLR , 2026. [21] Yunfei Chu, Jin Xu, Qian Yang, Haojie Wei, Xipin Wei, Zhifang Guo, Yichong Leng, Yuanjun Lv, Jinzheng He, Junyang Lin, et al., “Qwen2-audio technical report,” 
+
+arXiv preprint arXiv:2407.10759 , 2024. [22] Jin Xu, Zhifang Guo, Jinzheng He, Hangrui Hu, Ting He, Shuai Bai, Keqin Chen, Jialin Wang, Yang Fan, Kai Dang, Bin Zhang, Xiong Wang, Yunfei Chu, and Junyang Lin, “Qwen2.5-omni technical report,” arXiv preprint arXiv:2503.20215 , 2025. [23] Mor Geva, Jasmijn Bastings, Katja Filippova, and Amir Globerson, “Dissecting recall of factual associations in auto-regressive language models,” in Proc. EMNLP ,2023. [24] Minji Kim, Taekyung Kim, and Bohyung Han, “Map the flow: Revealing hidden pathways of information in videollms,” in Proc. ICLR , 2026.

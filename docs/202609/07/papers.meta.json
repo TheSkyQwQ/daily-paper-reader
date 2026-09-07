@@ -1,0 +1,69 @@
+{
+  "label": "2026-09-07",
+  "date": "2026-09-07",
+  "generated_at": "2026-09-07T22:42:28",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/07/2609.04637v1-tracing-audio-grounding-and-answer-selection-in-audio-llms",
+      "section": "deep",
+      "title_en": "Tracing Audio Grounding and Answer Selection in Audio LLMs",
+      "authors": "Hyebin Cho, Suho Yoo, Jihoo Jung, Joon Son Chung",
+      "date": "2026-09-04",
+      "pdf": "https://arxiv.org/pdf/2609.04637v1",
+      "score": "8.0",
+      "evidence": "剖析音频大语言模型是否真正依据音频作答，属于语音大模型可解释性与可靠性的核心工作。",
+      "tldr": "音频大语言模型常依赖文本线索或语言先验而非真实音频来作答。常见补救措施是用无法从文本推断答案的数据训练，虽提升表现但内部变化不明。本文通过将音频替换为静音或无关音频等干预实验，发现训练后模型对音频替换的敏感度大幅提升；声学信息主要在早至中层塑造答案选择表征，而训练则增强了中后层音频信息对最终预测的影响，且新增权重集中于特定层带。该研究为训练如何促使Audio LLM真正依赖声学证据提供了机制性解释。",
+      "tags": "query:ser-da",
+      "abstract_en": "Audio Large Language Models (Audio LLMs) have advanced in audio understanding, yet they can still predict the answer by reasoning from textual cues or linguistic priors rather than the provided audio. A common remedy is to train models on data whose answers cannot be inferred from text alone. This approach can improve performance, but what changes within the model remains unclear. In this paper, we ask what must happen inside the model for the audio to actually determine the answer. Our findings are threefold. (1) Replacing the audio with silence or unrelated audio causes substantially larger performance degradation in the trained model than in the pretrained model. (2) Acoustic information most strongly shapes the model's representations of the answer choices in early-to-middle layers, while training mainly increases the influence of audio information on the final prediction in middle-to-late layers. (3) The weights learned during training have their largest impact in specific layer bands. Together, these results provide a mechanistic account of how training strengthens the use of acoustic evidence in Audio LLMs.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/07/2609.00570v1-voicelongmemeval-do-assistants-remember-how-you-sounded",
+      "section": "quick",
+      "title_en": "VoiceLongMemEval: Do Assistants Remember How You Sounded?",
+      "authors": "Ramit Pahwa, Parivesh Priye, Apoorva Beedu",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.00570v1",
+      "score": "7.0",
+      "evidence": "直接针对语音助手对情感标签、韵律描述等副语言信息的记忆与理解，与基于副语言的韵律情感理解需求吻合",
+      "tldr": "现有长对话记忆基准忽略副语言信息，只把历史当文本检索，没有考虑“怎么说”。我们提出VLME基准，在对话轮次上标注情感、韵律和语音事件，并经过三阶段对抗门，使仅凭转录无法答出。实验显示，加入这类副语言元数据会带来0.09-0.38准确率提升（带证据提示为0.61-0.69），而标准ASR流程会丢弃；音频原生模型可直接从语音提取线索（0.354-0.412 vs 盲听0.325）。该工作为语音助手长期记忆评测补上了副语言维度。",
+      "tags": "query:ser-da",
+      "abstract_en": "With the growing scale of multi-agent architectures and large language models, deployed AI assistants are increasingly tasked with reasoning over long, continuous, multi-session conversation histories. Current benchmarks evaluate this dialogue history as information retrieval over long horizon, temporal reasoning, or knowledge updates, while crucially ignoring the fundamental dynamics of human-agent interaction, i.e. how they said it. To address this gap, we present VoiceLongMemEval (VLME) benchmark, where every answer depends on paralinguistic metadata (emotion labels, prosody descriptors, and voice events) attached to conversational turns, which is otherwise unrecoverable from the words alone. Every item passes a three-stage adversarial gate, ensuring that a strong language model fails when given only the transcript. Evaluating leading frontier and open-weight models reveals a pervasive affect gap; providing text-track paralinguistic metadata yields a 0.09 to 0.38 accuracy boost (0.61 to 0.69 when prompted with evidence hints), while standard ASR pipelines systematically discard this signal. Additionally, audio-native models successfully extract these cues directly from speech (0.354 to 0.412 vs. 0.325 blind). Code and dataset will be made available upon acceptance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/07/2609.04690v1-enhancing-multimodal-emotion-recognition-via-multi-feature-encoding-and-attention-based-fusion",
+      "section": "quick",
+      "title_en": "Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion",
+      "authors": "Xu Lin, Ke Wang, Hui Kang, Xinying Wang",
+      "date": "2026-09-04",
+      "pdf": "https://arxiv.org/pdf/2609.04690v1",
+      "score": "7.0",
+      "evidence": "通过语义语音嵌入、MFCC与音高能量节奏等韵律特征融合进行情感识别，但未处理跨域或跨语料泛化问题",
+      "tldr": "多模态情感识别在交互、教育、医疗等领域日益重要。本文提出一种新框架，音频侧融合Wav2Vec2语义嵌入、MFCC与声学统计特征，经BiLSTM建模时序；视频侧采用ResNet50-BiLSTM提取时空特征；基于多头注意力的特征级融合可自适应加权跨模态信息。在MELD和IEMOCAP上显著超越基线，消融验证了不平衡数据下融合策略的有效性，方法实用且泛化良好。",
+      "tags": "query:ser-da",
+      "abstract_en": "Multimodal emotion recognition has attracted growing interest due to its importance in human-computer interaction, remote education, and healthcare. This paper proposes a novel multimodal emotion recognition framework that integrates rich audio and visual feature extraction with an attention-based fusion strategy. For audio, we extract three complementary feature types: semantic embeddings from Wav2Vec2, MFCC features, and statistical acoustic descriptors such as pitch, energy, and rhythm. These are aligned and fused via a BiLSTM to capture temporal dependencies. For video, we propose a ResNet50-BiLSTM architecture that combines deep residual learning and sequential modeling to extract expressive spatiotemporal features from facial sequences. To enhance multimodal synergy, we introduce a feature-level fusion mechanism based on multi-head attention, allowing the model to adaptively weigh contributions across modalities. Experiments conducted on the MELD and IEMOCAP datasets demonstrate that our model significantly outperforms baselines in both accuracy and robustness. Furthermore, ablation studies show that the attention-based fusion strategy significantly improves performance in unbalanced data settings. Our findings suggest that the proposed framework effectively captures diverse emotional cues from speech and visual expressions, and offers a practical and generalizable approach for real-world multimodal emotion recognition tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/07/2608.30348v1-perceptually-better-semantically-worse-measuring-speech-enhancement-impact-on-llm-based-voice-systems",
+      "section": "quick",
+      "title_en": "Perceptually Better, Semantically Worse: Measuring Speech Enhancement Impact on LLM-Based Voice Systems",
+      "authors": "Randy Frans Fela, Pejman Mowlaee",
+      "date": "2026-08-31",
+      "pdf": "https://arxiv.org/pdf/2608.30348v1",
+      "score": "6.0",
+      "evidence": "评测语音增强造成的输入分布偏移如何影响下游LLM语音系统，关联语音大模型鲁棒性",
+      "tldr": "语音增强常作为语音AI系统的预处理，但其失真对LLM下游任务的影响未被充分认识。我们提出输出发散率(ODR)度量增强前后LLM意图分类改变的比例，在SLURP上评估五种条件。结果显示，MetricGAN+虽提高PESQ却使ODR从0.135升至0.318，回声场景ODR达0.836且通过说话人替换造成失败。音频指标与ODR相关性弱，提示LLM语音管线需要独立的语义质量评估。",
+      "tags": "query:ser-da",
+      "abstract_en": "Speech enhancement (SE) is commonly applied as a preprocessing step in spoken AI pipelines under the assumption that better audio quality improves downstream task performance. Whether SE-induced distortions propagate to downstream LLM task performance remains an open question. We introduce Output Divergence Rate (ODR), which measures how often SE changes an LLM's intent classification relative to clean speech, and benchmark five conditions on 2,974 SLURP clips using Whisper large-v3 and wav2vec2-large cascades. Every condition produces ODR significantly above zero ($p < 0.001$, binomial test). MetricGAN{+} more than doubles ODR versus unenhanced noisy speech (0.318 vs. 0.135) despite improving PESQ, and unmitigated echo reaches an ODR of 0.836 through speaker substitution, a failure WER cannot capture. Audio quality metrics range from near-zero to moderate correlation with ODR (SQUIM-MOS $ρ=-0.068$, PESQ $ρ=-0.467$). The MetricGAN{+} and echo results replicate across ASR architectures, indicating that standard audio quality metrics are insufficient for LLM pipeline quality.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
