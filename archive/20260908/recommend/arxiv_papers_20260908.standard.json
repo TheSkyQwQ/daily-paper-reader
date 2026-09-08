@@ -1,0 +1,222 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-08T21:40:56.300198+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2609.02812v1",
+      "source": "arxiv",
+      "title": "VibeVoice-ASR-Streaming Technical Report",
+      "abstract": "Traditional speaker-attributed ASR systems treated ASR and speaker diarization as two separate tasks. Recently, end-to-end models such as VibeVoice-ASR have unified the two tasks within a single model. However, existing unified models still mainly support offline recognition, making it difficult to meet the low-latency requirements of real-time voice assistants and agents. To tackle this issue, we present VibeVoice-ASR-Streaming, one of the first LLM-based end-to-end approaches to streaming speaker-attributed ASR. It interleaves fixed-size audio chunks, a small amount of lookahead audio and previous text. This allows the model to produce ''who said what'' as speech arrives, without a separate diarization stage. For transcription accuracy, our 7B model achieves the lowest average WER/CER across five evaluation sets. For speaker attribution, it achieves the best or tied-best on 12 of 13 evaluation settings. We release the 1.5B and 7B model weights together with inference code.",
+      "authors": [
+        "Yujie Tu",
+        "Zhiliang Peng",
+        "Jianwei Yu",
+        "Li Dong",
+        "Songchen Xu",
+        "Yaoyao Chang",
+        "Wenhui Wang",
+        "Zilong Wang",
+        "Zehua Wang",
+        "Yan Xia",
+        "Jiajun Zhang",
+        "Xie Chen",
+        "Furu Wei"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-09-02T16:52:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.02812v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LLM-based end-to-end streaming speaker-attributed ASR, a representative Speech Large Language Model application",
+      "llm_evidence_cn": "基于LLM的端到端流式说话人属性语音识别，是语音大语言模型的代表性应用",
+      "llm_evidence": "基于LLM的端到端流式说话人属性语音识别，是语音大语言模型的代表性应用",
+      "canonical_evidence": "基于LLM的端到端流式说话人属性语音识别，是语音大语言模型的代表性应用",
+      "llm_tldr_en": "Presents VibeVoice-ASR-Streaming, one of the first LLM-based end-to-end streaming speaker-attributed ASR models, interleaving fixed-size audio chunks with lookahead audio and text to output who-said-what with low latency.",
+      "llm_tldr_cn": "实时语音助手和智能体需要低时延的说话人属性语音识别，而既有端到端统一模型主要面向离线识别。论文提出VibeVoice-ASR-Streaming，一个基于LLM的端到端流式说话人属性ASR模型，将固定音频块、少量前瞻音频与已有文本交替作为输入，在无需独立说话人日志的情况下逐块输出谁说了什么。实验表明7B模型在转写准确率上取得最低平均词错误率，证明该架构可满足流式交互需求。",
+      "llm_tldr": "实时语音助手和智能体需要低时延的说话人属性语音识别，而既有端到端统一模型主要面向离线识别。论文提出VibeVoice-ASR-Streaming，一个基于LLM的端到端流式说话人属性ASR模型，将固定音频块、少量前瞻音频与已有文本交替作为输入，在无需独立说话人日志的情况下逐块输出谁说了什么。实验表明7B模型在转写准确率上取得最低平均词错误率，证明该架构可满足流式交互需求。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.02940v1",
+      "source": "arxiv",
+      "title": "Listen to the Latents: Self-Correcting Speech Recognition in Large Audio Language Models Through Hidden-State Interactions",
+      "abstract": "Recent automatic speech recognition (ASR) systems increasingly integrate large language models (LLMs) to leverage their semantic knowledge, either externally through logit fusion or internally through warm initialization. However, how to effectively combine these two strategies remains underexplored. In this work, we refine warm-initialized LLM-based ASR models by leveraging their own pre-adaptation base LLMs, focusing on LoRA-adapted settings where the base LLM is preserved. To achieve this, we propose Hybrid Search, a targeted correction strategy motivated by two observations. First, interaction features that characterize the relationship between LLM-based ASR hidden states and base-LLM hidden states provide informative signals about a token's degree of semantic dependence. Second, selectively refining targeted tokens with high semantic dependence improves ASR performance far beyond naive global LLM-correction methods including rescoring and late fusion. Our analysis suggests that, even after semantic knowledge transfer through warm initialization, LLM-based ASR models can still leverage their base LLM to further improve inference-time performance.",
+      "authors": [
+        "Chan-Jan Hsu",
+        "Jaeyeon Kim",
+        "Chao-Han Huck Yang",
+        "Shinji Watanabe",
+        "Hung-yi Lee",
+        "Carlos Busso"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-08-31T15:46:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.02940v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Directly improves speech recognition in Large Audio Language Models through hidden-state interaction, fitting the Speech LLM topic",
+      "llm_evidence_cn": "针对大音频语言模型的自修正语音识别，契合语音大语言模型主题",
+      "llm_evidence": "针对大音频语言模型的自修正语音识别，契合语音大语言模型主题",
+      "canonical_evidence": "针对大音频语言模型的自修正语音识别，契合语音大语言模型主题",
+      "llm_tldr_en": "Proposes Hybrid Search that exploits hidden-state interactions between LLM-based ASR and its base LLM to self-correct errors in LoRA-adapted speech recognition, improving Large Audio Language Model ASR.",
+      "llm_tldr_cn": "大语言模型被越来越多地用于ASR，外部logit融合与内部热启动两种方式的结合仍未被充分探索。本文在LoRA适配的基于LLM的ASR设置中提出Hybrid Search，利用ASR隐状态与基础LLM隐状态的交互特征进行定向识别纠错。实验结果表明，该方法能够利用模型自身语义知识改善识别质量，为语音大语言模型的自我纠错提供了一条轻量有效的技术路径。",
+      "llm_tldr": "大语言模型被越来越多地用于ASR，外部logit融合与内部热启动两种方式的结合仍未被充分探索。本文在LoRA适配的基于LLM的ASR设置中提出Hybrid Search，利用ASR隐状态与基础LLM隐状态的交互特征进行定向识别纠错。实验结果表明，该方法能够利用模型自身语义知识改善识别质量，为语音大语言模型的自我纠错提供了一条轻量有效的技术路径。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.30927v1",
+      "source": "arxiv",
+      "title": "Stride-k Subsampling: Train-Free Audio Token Reduction for Whisper",
+      "abstract": "Whisper exposes speech through a fixed 1500-token encoder interface, now a default representation for ASR decoders and Whisper-based speech language models (SpeechLMs), yet its redundancy remains largely unexamined. We propose stride-k subsampling, a deterministic indexing operation that retains every k-th token after the convolutional stem or encoder transformer. Across five Whisper scales, k=2 preserves baseline WER at both positions, with CKA attributing this stability to acoustic overlap at the stem and attention-induced redistribution at the encoder output. Applying stride-2 at both positions cuts audio tokens by 75% and total GFLOPs by 52-58%, with small WER costs on most ASR benchmarks and larger costs on harder ones. The same configuration extends to three Whisper-based SpeechLMs, yielding modest accuracy drops on stronger baselines and larger drops on weaker ones, while reducing end-to-end latency by 19.6-27.4%. Requiring no training or auxiliary computation, stride-k subsampling exploits Whisper's preprocessing redundancy, indicating that its audio-token interface carries more capacity than downstream tasks require.",
+      "authors": [
+        "Chanhee Cho",
+        "Junhyuk Choi",
+        "Bugeun Kim"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-08-31T15:04:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.30927v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes train-free stride-k audio token reduction for Whisper-based SpeechLMs; supports Speech Large Language Model infrastructure.",
+      "llm_evidence_cn": "提出面向Whisper语音大模型的免训练stride-k音频token缩减，支撑语音大模型基础设施。",
+      "llm_evidence": "提出面向Whisper语音大模型的免训练stride-k音频token缩减，支撑语音大模型基础设施。",
+      "canonical_evidence": "提出面向Whisper语音大模型的免训练stride-k音频token缩减，支撑语音大模型基础设施。",
+      "llm_tldr_en": "Whisper's 1500-token encoder output is redundant; stride-k subsampling keeps every kth token at stem or encoder output, largely preserving WER at k=2 while cutting audio tokens by 75% and GFLOPs by 52-58% for Whisper-based SpeechLMs.",
+      "llm_tldr_cn": "Whisper以固定数量的音频token表示语音，作为语音大模型默认输入存在大量冗余。作者提出Stride-k子采样，在卷积主干或编码器Transformer之后按k保留token，无需训练即可减少音频表示。实验表明k=2时各规模Whisper基线词错误率基本保持，同时可减少75%的音频token和52-58%的计算量。该方法为基于Whisper的语音语言模型提供高效预处理方案。",
+      "llm_tldr": "Whisper以固定数量的音频token表示语音，作为语音大模型默认输入存在大量冗余。作者提出Stride-k子采样，在卷积主干或编码器Transformer之后按k保留token，无需训练即可减少音频表示。实验表明k=2时各规模Whisper基线词错误率基本保持，同时可减少75%的音频token和52-58%的计算量。该方法为基于Whisper的语音语言模型提供高效预处理方案。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.00276v1",
+      "source": "arxiv",
+      "title": "Cleaner Speech, Weaker Generalization: Revisiting Pitt-Derived Benchmarks for Alzheimer's Disease Detection",
+      "abstract": "Speech-based Alzheimer's disease (AD) detection increasingly relies on speech-enhanced and curated versions of the Pitt Corpus, where speech enhancement, sample selection, and demographic balancing are often treated as beneficial preprocessing steps. However, whether these transformations improve real-world AD detection or instead affect model generalization and prediction behavior remains unclear. In this work, we revisit the role of speech preprocessing and dataset curation across widely used benchmarks for speech-based AD detection. We evaluate the speech quality of different datasets, the cross-dataset generalization of multiple deep learning models under matched and mismatched enhancement settings, and the behavior of several recent large audio-language models (LALMs). Experimental results show that across multiple supervised speech models, speech-enhanced datasets often improve in-domain performance while reducing robustness in cross-domain evaluation. Matched enhancement between training and test data alleviates, but does not eliminate, this degradation. LALMs show a similar sensitivity: enhanced datasets induce stronger class imbalance and prediction shifts than unprocessed data. These results suggest that speech preprocessing and dataset curation can substantially influence downstream AD detection behavior, indicating that ``cleaner'' speech datasets are not necessarily more reliable for real-world AD detection.",
+      "authors": [
+        "Luqi Sun",
+        "Shreeram Suresh Chandra",
+        "Lin Zhang",
+        "You-Jin Li",
+        "Brian MacWhinney",
+        "Yu Tsao",
+        "Emily Mower Provost",
+        "Berrak Sisman"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-08-31T19:19:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.00276v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Cross-dataset generalization analysis under matched and mismatched enhancement for speech AD detection; transferable to cross-corpus speech emotion evaluation",
+      "llm_evidence_cn": "面向语音AD检测的跨数据集泛化及匹配/失配增强分析，可迁移至跨语料语音情感评测",
+      "llm_evidence": "面向语音AD检测的跨数据集泛化及匹配/失配增强分析，可迁移至跨语料语音情感评测",
+      "canonical_evidence": "面向语音AD检测的跨数据集泛化及匹配/失配增强分析，可迁移至跨语料语音情感评测",
+      "llm_tldr_en": "Shows that speech enhancement and dataset curation can weaken cross-dataset generalization in AD detection; compares models under matched and mismatched enhancement, yielding evaluation lessons useful for cross-corpus speech emotion recognition.",
+      "llm_tldr_cn": "论文指出，在阿尔茨海默病语音检测基准中，语音增强与样本筛选等预处理看似提升单数据集表现，却可能损害跨数据集泛化。作者系统比较多个深度学习模型在匹配与非匹配增强条件下的跨语料表现，分析数据集质量与预测行为变化。实验结果显示更干净的训练数据并不总是带来更强泛化。该研究对跨域语音情感识别中数据集预处理与评测协议设计具有重要借鉴意义。",
+      "llm_tldr": "论文指出，在阿尔茨海默病语音检测基准中，语音增强与样本筛选等预处理看似提升单数据集表现，却可能损害跨数据集泛化。作者系统比较多个深度学习模型在匹配与非匹配增强条件下的跨语料表现，分析数据集质量与预测行为变化。实验结果显示更干净的训练数据并不总是带来更强泛化。该研究对跨域语音情感识别中数据集预处理与评测协议设计具有重要借鉴意义。",
+      "llm_tags": [
+        "query:ser-da:composite"
+      ],
+      "matched_query_tag": "query:ser-da:composite",
+      "matched_query_text": "Papers central to 检索跨语料/跨域语音情感识别研究，关注域适应、交叉语料泛化、情感表征学习、原型对齐、超球面表征、声学线索与音频语言模型，并比较不同研究的数据集、域偏移、方法设计、评测协议、结果与局限。, especially work that connects or combines: speech emotion recognition under domain shift across different speech datasets and recording conditions; speech emotion recognition from paralinguistic speech and prosody; emotion recognition trained and evaluated on different independent speech emotion corpora; Speech Large Language Model; domain adaptation techniques to reduce distribution mismatch in speech emotion classification; audio language model features applied to emotional speech understanding and cross-domain inference; What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?; How are audio language models and acoustic cues used for transferable speech emotion representation learning?.",
+      "matched_requirement_id": "req-composite-ser-da",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.05281v1",
+      "source": "arxiv",
+      "title": "KanAdapter: A Kolmogorov-Arnold Network-based Plug-and-Play Module for Efficient Fine-tuning of Foundation Speech Models",
+      "abstract": "Fully fine-tuning self-supervised learning (SSL) speech models for downstream tasks is computationally prohibitive, and existing parameter-efficient fine-tuning approaches predominantly rely on MLP-based adapters whose fixed activation functions limit their representational expressiveness under tight parameter budgets. We propose \\textbf{KanAdapter}, a lightweight adapter framework that replaces conventional MLP bottlenecks with Group-Rational Kolmogorov-Arnold Network (GR-KAN) modules for more expressive and parameter-efficient adaptation. Following a parallel bottleneck design, KanAdapter inserts trainable GR-KAN branches alongside frozen Transformer encoder blocks and leverages weight transfer from pre-trained MLP layers for stable initialization. Across speaker verification, speech emotion recognition, and deepfake detection, KanAdapter achieves up to 97.5\\% reduction in trainable parameters relative to full fine-tuning while remaining highly competitive, and consistently outperforms AdaptFormer under comparable parameter budgets. In continual learning, it yields up to 83.6\\% error reduction over full fine-tuning and MLP-based adapters, which we attribute to the localized nature of GR-KAN's rational activations that mitigates catastrophic forgetting. To our knowledge, this is the first work to explore KAN-based modules for parameter-efficient fine-tuning of speech foundation models.",
+      "authors": [
+        "Phuong Tuan Dat",
+        "Phuong Khai Minh",
+        "Tran Huy Dat"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-09-04T15:33:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.05281v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "efficient adapter tuning of frozen SSL speech models; transferable building block for domain-adaptive speech emotion recognition",
+      "llm_evidence_cn": "通过适配器高效微调冻结自监督语音模型，是可支撑域适应情感语音表征的迁移组件",
+      "llm_evidence": "通过适配器高效微调冻结自监督语音模型，是可支撑域适应情感语音表征的迁移组件",
+      "canonical_evidence": "通过适配器高效微调冻结自监督语音模型，是可支撑域适应情感语音表征的迁移组件",
+      "llm_tldr_en": "KanAdapter inserts group-rational KAN branches beside frozen SSL speech transformers, improving adapter expressiveness under low parameter budgets. The plug-and-play design enables efficient downstream speech adaptation and offers a practical tool for adapting speech representations in cross-domain emotion recognition.",
+      "llm_tldr_cn": "端到端微调自监督语音模型在大型Transformer上计算昂贵，现有MLP适配器在紧参数预算下表达能力受限。作者提出KanAdapter，以分组有理KAN模块替代MLP瓶颈，并通过并行分支和权重迁移在冻结骨干旁高效插入可训练模块。它能在只增加少量参数的情况下提供更强表达力。该即插即用适配器可降低基础语音模型在语音情感识别及跨语料域适应中的迁移成本。",
+      "llm_tldr": "端到端微调自监督语音模型在大型Transformer上计算昂贵，现有MLP适配器在紧参数预算下表达能力受限。作者提出KanAdapter，以分组有理KAN模块替代MLP瓶颈，并通过并行分支和权重迁移在冻结骨干旁高效插入可训练模块。它能在只增加少量参数的情况下提供更强表达力。该即插即用适配器可降低基础语音模型在语音情感识别及跨语料域适应中的迁移成本。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

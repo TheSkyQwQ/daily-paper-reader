@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-08</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-07 22:42:26 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-08 21:45:07 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日聚焦音频大模型，精读其语音定位与答案选择机制，并速读记忆评测、情感识别与语音增强三篇关联研究。最值得关注的是音频LLM内部如何追踪声音来源并作答，以及长期语音记忆评估暴露的助手“音色遗忘”短板。建议普通读者留意语音交互中“听清”与“听懂”的差距，后续可关注多模态融合与记忆增强方向的进展。</p>
+<p>今日5篇语音AI研究，聚焦流式ASR与大型音频语言模型的自我纠错机制。</p>
+<p>最值得关注两篇9分精读：VibeVoice流式识别技术报告，以及通过隐藏状态交互实现语音识别自纠错的“Listen to the Latents”。</p>
+<p>普通读者可优先了解自纠错方向如何提升语音识别鲁棒性，速读内容则偏向token压缩与医学语音应用。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Tracing Audio Grounding and Answer Selection in Audio LLMs">Tracing Audio Grounding and Answer Selection in Audio LLMs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VibeVoice-ASR-Streaming Technical Report">VibeVoice-ASR-Streaming Technical Report</span></li><li><span class="dpr-home-dashboard-paper-title" title="Listen to the Latents: Self-Correcting Speech Recognition in Large Audio Language Models Through Hidden-State Interactions">Listen to the Latents: Self-Correcting Speech Recognition in Large Audio Language Models Through Hidden-State Interactions</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -94,7 +96,7 @@
     <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VoiceLongMemEval: Do Assistants Remember How You Sounded?">VoiceLongMemEval: Do Assistants Remember How You Sounded?</span></li><li><span class="dpr-home-dashboard-paper-title" title="Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion">Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion</span></li><li><span class="dpr-home-dashboard-paper-title" title="Perceptually Better, Semantically Worse: Measuring Speech Enhancement Impact on LLM-Based Voice Systems">Perceptually Better, Semantically Worse: Measuring Speech Enhancement Impact on LLM-Based Voice Systems</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Stride-k Subsampling: Train-Free Audio Token Reduction for Whisper">Stride-k Subsampling: Train-Free Audio Token Reduction for Whisper</span></li><li><span class="dpr-home-dashboard-paper-title" title="Cleaner Speech, Weaker Generalization: Revisiting Pitt-Derived Benchmarks for Alzheimer&#x27;s Disease Detection">Cleaner Speech, Weaker Generalization: Revisiting Pitt-Derived Benchmarks for Alzheimer&#x27;s Disease Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="KanAdapter: A Kolmogorov-Arnold Network-based Plug-and-Play Module for Efficient Fine-tuning of Foundation Speech Models">KanAdapter: A Kolmogorov-Arnold Network-based Plug-and-Play Module for Efficient Fine-tuning of Foundation Speech Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
 </section>
