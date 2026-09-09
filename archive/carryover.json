@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-08T21:40:56.301413+00:00",
-  "updated_date": "20260908",
+  "generated_at": "2026-09-09T21:58:16.632018+00:00",
+  "updated_date": "20260909",
   "carryover_days": 9,
   "tag_states": {
     "SER-DA": {
-      "updated_date": "20260908",
+      "updated_date": "20260909",
       "carryover_days": 9,
       "items": []
     }

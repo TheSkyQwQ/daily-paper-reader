@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-08</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-09</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 9 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>7</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-08 21:45:07 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-09 22:04:45 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日5篇语音AI研究，聚焦流式ASR与大型音频语言模型的自我纠错机制。</p>
-<p>最值得关注两篇9分精读：VibeVoice流式识别技术报告，以及通过隐藏状态交互实现语音识别自纠错的“Listen to the Latents”。</p>
-<p>普通读者可优先了解自纠错方向如何提升语音识别鲁棒性，速读内容则偏向token压缩与医学语音应用。</p>
+<p>今日精读2篇、速读7篇，聚焦音频条件大模型与语音情感识别两大方向。</p>
+<p>最值得关注的是音频LLM中声学信息损失追踪（8.0分）及多尺度时序增强的语音情感识别模型（8.0分）。</p>
+<p>可顺着这两篇延伸了解音频大模型的可解释性与结构设计，再结合多任务合并技术提升泛化。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -83,7 +83,7 @@
     <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VibeVoice-ASR-Streaming Technical Report">VibeVoice-ASR-Streaming Technical Report</span></li><li><span class="dpr-home-dashboard-paper-title" title="Listen to the Latents: Self-Correcting Speech Recognition in Large Audio Language Models Through Hidden-State Interactions">Listen to the Latents: Self-Correcting Speech Recognition in Large Audio Language Models Through Hidden-State Interactions</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Where Does the Sound Go? Tracing Acoustic Information Loss in Audio-Conditioned LLMs">Where Does the Sound Go? Tracing Acoustic Information Loss in Audio-Conditioned LLMs</span></li><li><span class="dpr-home-dashboard-paper-title" title="SETEAB: Multiscale approach with Squeeze-and-Excitation Temporal Enhanced Aware Block for Speech Emotion Recognition">SETEAB: Multiscale approach with Squeeze-and-Excitation Temporal Enhanced Aware Block for Speech Emotion Recognition</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
 </section>
@@ -93,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Stride-k Subsampling: Train-Free Audio Token Reduction for Whisper">Stride-k Subsampling: Train-Free Audio Token Reduction for Whisper</span></li><li><span class="dpr-home-dashboard-paper-title" title="Cleaner Speech, Weaker Generalization: Revisiting Pitt-Derived Benchmarks for Alzheimer&#x27;s Disease Detection">Cleaner Speech, Weaker Generalization: Revisiting Pitt-Derived Benchmarks for Alzheimer&#x27;s Disease Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="KanAdapter: A Kolmogorov-Arnold Network-based Plug-and-Play Module for Efficient Fine-tuning of Foundation Speech Models">KanAdapter: A Kolmogorov-Arnold Network-based Plug-and-Play Module for Efficient Fine-tuning of Foundation Speech Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Hierarchical Wasserstein Merging for Multi-Domain Multi-Task Learning: From Specialists to a Generalist">Hierarchical Wasserstein Merging for Multi-Domain Multi-Task Learning: From Specialists to a Generalist</span></li><li><span class="dpr-home-dashboard-paper-title" title="Probing Warmth-Mediated Harm in Speech-Enabled LLMs for Mental-Health Conversations">Probing Warmth-Mediated Harm in Speech-Enabled LLMs for Mental-Health Conversations</span></li><li><span class="dpr-home-dashboard-paper-title" title="Emotion as a Distribution: Joint Valence-Arousal Probability Learning for Speaker-Independent Multimodal Emotion Recognition">Emotion as a Distribution: Joint Valence-Arousal Probability Learning for Speaker-Independent Multimodal Emotion Recognition</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>7</strong></span></div>
 </section>
 </div>
 

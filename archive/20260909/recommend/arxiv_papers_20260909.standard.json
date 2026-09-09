@@ -1,0 +1,376 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-09T21:58:16.630875+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2609.05871v1",
+      "source": "arxiv",
+      "title": "Where Does the Sound Go? Tracing Acoustic Information Loss in Audio-Conditioned LLMs",
+      "abstract": "Audio-conditioned language models often underuse acoustic cues such as prosody, emotion, and non-speech sounds, raising the question of whether ASR-supervised frontends discard this information before it reaches the LM. We test whether the frontend is responsible by comparing Whisper-Tiny and Whisper-Small with EnCodec, DAC-VAE, and WavTokenizer in a shared Qwen3.5-4B audio-LM pipeline on ASR, emotion recognition, and sound captioning. Encoder replacement alone does not resolve this underuse: Whisper variants remain strongest overall, including on emotion and environmental sound captioning. To localize the failure, we trace task-relevant information through the encoder, projector, LM layers, and LM head. Linear probes and geometric analyses show that discriminative acoustic structure remains recoverable at the final LM layer, even when MCQA accuracy trails probe accuracy by up to 83 points. Because the answer format and decoding procedure are controlled, this task-dependent gap points to content-specific readout failure rather than generic format bias. LogitLens analyses and a targeted LM head intervention support the conclusion that acoustic underuse is not explained solely by encoder-side information loss and that readout alignment can be a dominant bottleneck.",
+      "authors": [
+        "Song-ha Jo",
+        "Sehyun Lee",
+        "Soyoon Kim",
+        "Jaesik Choi",
+        "Sanghyuk Choi"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-09-05T04:24:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.05871v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "emotion recognition task in audio-conditioned LLM; examines acoustic cues such as prosody and emotion",
+      "llm_evidence_cn": "在音频条件大语言模型上考察情绪识别，并分析韵律与情绪等声学线索的信息保留",
+      "llm_evidence": "在音频条件大语言模型上考察情绪识别，并分析韵律与情绪等声学线索的信息保留",
+      "canonical_evidence": "在音频条件大语言模型上考察情绪识别，并分析韵律与情绪等声学线索的信息保留",
+      "llm_tldr_en": "Tests if ASR frontends discard prosody/emotion before reaching audio LLMs; in Qwen3.5 audio-LM pipeline on ASR, emotion, and sound captioning, Whisper stays strongest and probes show emotion information persists mostly in the LM.",
+      "llm_tldr_cn": "音频条件大语言模型常低估韵律、情绪等声学线索，本文通过对比Whisper、EnCodec、DAC-VAE与WavTokenizer等前端编码器，在统一的Qwen3.5音频-语言模型流水线上评测ASR、情绪识别与声音描述任务，以检验前端是否为信息丢失主因。结果显示仅替换编码器无法解决该问题，Whisper系列在情绪识别与声音描述上仍表现最佳。结合线性探针与几何分析，作者定位任务相关信息在各层中的保留情况。该工作为在语音大模型中更好地利用情绪与韵律线索提供了诊断性证据。",
+      "llm_tldr": "音频条件大语言模型常低估韵律、情绪等声学线索，本文通过对比Whisper、EnCodec、DAC-VAE与WavTokenizer等前端编码器，在统一的Qwen3.5音频-语言模型流水线上评测ASR、情绪识别与声音描述任务，以检验前端是否为信息丢失主因。结果显示仅替换编码器无法解决该问题，Whisper系列在情绪识别与声音描述上仍表现最佳。结合线性探针与几何分析，作者定位任务相关信息在各层中的保留情况。该工作为在语音大模型中更好地利用情绪与韵律线索提供了诊断性证据。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.06101v1",
+      "source": "arxiv",
+      "title": "SETEAB: Multiscale approach with Squeeze-and-Excitation Temporal Enhanced Aware Block for Speech Emotion Recognition",
+      "abstract": "This paper proposes a novel lightweight multiscale architecture for speech emotion recognition (SER) with three key innovations. First, a depthwise convolution-based subsampling module is introduced to reduce model size and computation while preserving salient emotional cues. Second, a Squeeze-and-Excitation block is integrated to enhance channel-wise recalibration and improve representation robustness. Third, a new Temporal Enhanced Aware Block is designed to strengthen temporal dependency modeling and produce more discriminative emotion-aware features. The proposed model is explicitly designed to jointly improve compactness, recognition performance, and generalizability. Experiments on benchmark SER datasets show that our method achieves higher accuracy with reduced computational complexity, while also delivering stronger cross-corpus performance than most recent advanced networks for SER.",
+      "authors": [
+        "Duy Vo",
+        "Kiet Anh Hoang",
+        "Hao Do"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-05T13:53:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.06101v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "speech emotion recognition with acoustic temporal and channel attention cues, directly targeting paralinguistic emotion classification",
+      "llm_evidence_cn": "面向语音情感识别的多尺度声学表征模型，直接契合副语言与韵律情感识别",
+      "llm_evidence": "面向语音情感识别的多尺度声学表征模型，直接契合副语言与韵律情感识别",
+      "canonical_evidence": "面向语音情感识别的多尺度声学表征模型，直接契合副语言与韵律情感识别",
+      "llm_tldr_en": "Proposes a lightweight multiscale SER architecture combining depthwise subsampling, squeeze-and-excitation recalibration and temporal-enhancement blocks to improve compactness, performance and generalizability; directly relevant to speech emotion recognition.",
+      "llm_tldr_cn": "语音情感识别模型往往体积偏大、难以充分捕捉语音中细粒度的情感线索，需要轻量且可泛化的声学表征方法。论文提出一种新的轻量级多尺度语音情感识别架构SETEAB：首先用深度卷积子采样模块压缩模型规模并保留关键情感线索，其次集成挤压激励模块以改善通道级重标定与鲁棒性，最后设计时间增强感知块来强化时序依赖并生成更具判别力的情感特征。实验在基准语音情感数据集上进行，验证了该架构在紧凑性、识别性能和泛化能力上的整体改进。由于它直接建模语音情感表征，可作为跨语料语音情感识别骨干或对比方法。",
+      "llm_tldr": "语音情感识别模型往往体积偏大、难以充分捕捉语音中细粒度的情感线索，需要轻量且可泛化的声学表征方法。论文提出一种新的轻量级多尺度语音情感识别架构SETEAB：首先用深度卷积子采样模块压缩模型规模并保留关键情感线索，其次集成挤压激励模块以改善通道级重标定与鲁棒性，最后设计时间增强感知块来强化时序依赖并生成更具判别力的情感特征。实验在基准语音情感数据集上进行，验证了该架构在紧凑性、识别性能和泛化能力上的整体改进。由于它直接建模语音情感表征，可作为跨语料语音情感识别骨干或对比方法。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.06406v1",
+      "source": "arxiv",
+      "title": "Hierarchical Wasserstein Merging for Multi-Domain Multi-Task Learning: From Specialists to a Generalist",
+      "abstract": "Multi-domain multi-task learning (MD-MTL) aims to build a single generalist model that performs well across heterogeneous domains and tasks. However, joint training often suffers from interference under distribution shifts. Existing model merging methods mostly operate on model parameters while overlooking the geometric structure of latent representation distributions across domains and tasks. To address these limitations, we propose Hierarchical Wasserstein Merging (HWM), a representation-level framework that models each domain-task specialist as a distribution of hidden representations on a shared support. HWM constructs task-level and global Wasserstein barycenters to capture within-task domain variation and cross-task structure, enabling either training-free specialist aggregation by Wasserstein-derived weights or training-based generalist learning through a hybrid Wasserstein alignment loss. Experiments on four NLP tasks across four domains per task show that HWM achieves superior effectiveness and generalization capability in MD-MTL settings.",
+      "authors": [
+        "Ming Cheng",
+        "Jiaying Gong",
+        "Hoda Eldardiry"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-06T05:50:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.06406v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Representation-level Wasserstein merging for multi-domain distribution shifts, transferable to cross-domain speech emotion classification.",
+      "llm_evidence_cn": "用Wasserstein重心合并多域专家表示以缓解分布偏移，可迁移至语音情感跨域/跨语料适应。",
+      "llm_evidence": "用Wasserstein重心合并多域专家表示以缓解分布偏移，可迁移至语音情感跨域/跨语料适应。",
+      "canonical_evidence": "用Wasserstein重心合并多域专家表示以缓解分布偏移，可迁移至语音情感跨域/跨语料适应。",
+      "llm_tldr_en": "Hierarchical Wasserstein Merging represents domain-task specialists as latent distributions and merges them via task-level and global Wasserstein barycenters, reducing interference under distribution shifts and supporting generalist model construction across domains.",
+      "llm_tldr_cn": "多域多任务学习旨在用单一通用模型应对异构域和异构任务，但联合训练易在分布偏移下互相干扰。现有模型合并多在参数层面操作，忽略了表示分布几何结构。文章提出分层Wasserstein合并(HWM)，将各域任务专家看作共享支撑上的隐表示分布，并通过任务级与全局Wasserstein重心捕捉域间差异，与多任务表示级合并相结合。该方法为情感识别等多域任务中的跨语料泛化提供了可借鉴的合并与域适应思路，但本身不包含语音情感实验。",
+      "llm_tldr": "多域多任务学习旨在用单一通用模型应对异构域和异构任务，但联合训练易在分布偏移下互相干扰。现有模型合并多在参数层面操作，忽略了表示分布几何结构。文章提出分层Wasserstein合并(HWM)，将各域任务专家看作共享支撑上的隐表示分布，并通过任务级与全局Wasserstein重心捕捉域间差异，与多任务表示级合并相结合。该方法为情感识别等多域任务中的跨语料泛化提供了可借鉴的合并与域适应思路，但本身不包含语音情感实验。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.04256v1",
+      "source": "arxiv",
+      "title": "Probing Warmth-Mediated Harm in Speech-Enabled LLMs for Mental-Health Conversations",
+      "abstract": "Audio LLM benchmarks measure understanding and dialogue quality, not whether speech-enabled models respond with relational warmth when a vulnerable user discloses a mental-health concern. We introduce a 7-turn scripted-disclosure probe grounded in WHO mental-health clinical guidelines, with each script run on the same model (Azure OpenAI gpt-realtime) in both audio and text-only conditions, and acoustic-prosody analysis of the generated speech. Across 532 responses we identify two audio-specific patterns transcript-only evaluation would miss: at the elicitation turn the model's voice gets shorter, faster, lower-pitched, and quieter rather than warmer (p < .001 for five of seven acoustic features), and the modality gap on relational acceptance, small in aggregate, concentrates in the highest-stakes self-harm/suicide scripts. A two-rater listener study corroborates that perceived warmth is concentrated at specific turns and on bereavement disclosures. Together these patterns indicate that auditing speech-enabled models in mental-health contexts requires evaluating the combined audio-and-text experience the user encounters, not the transcript in isolation. We release the protocol, scoring pipeline, and scripts as a starting point for evaluating speech-enabled models in mental-health contexts.",
+      "authors": [
+        "Eugenia Kim",
+        "Bolor-Erdene Jagdagdorj",
+        "Dina Pekelis",
+        "Leah Zulas",
+        "Amanda Minnich"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-01T19:39:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.04256v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "acoustic-prosody analysis of AI voice with warmth-related relational constructs in mental-health disclosures",
+      "llm_evidence_cn": "对语音大模型生成的语音做声学韵律分析以探测关系温暖，关联副语言/韵律情感理解",
+      "llm_evidence": "对语音大模型生成的语音做声学韵律分析以探测关系温暖，关联副语言/韵律情感理解",
+      "canonical_evidence": "对语音大模型生成的语音做声学韵律分析以探测关系温暖，关联副语言/韵律情感理解",
+      "llm_tldr_en": "Introduces a 7-turn disclosure probe that tests relational warmth in speech-enabled LLMs, revealing audio-specific prosodic degradations (shorter, faster, lower-pitched, quieter) which transcript-only evaluation would miss, highlighting the need for prosody-aware speech emotion assessment.",
+      "llm_tldr_cn": "语音LLM评测通常只关注理解和对话质量，不检查用户在心理健康倾诉时模型是否带有关系温暖。作者基于WHO心理健康临床指南设计7轮脚本化披露探针，在同一模型上对比音频与纯文本条件下的回答，并对生成语音做声学韵律分析。结果显示在关键倾诉轮，语音条件下的模型声音变得更短、更快、音调更低、更安静，呈现与温暖相反的变化，证明只看转写会遗漏这类伤害性语音模式。",
+      "llm_tldr": "语音LLM评测通常只关注理解和对话质量，不检查用户在心理健康倾诉时模型是否带有关系温暖。作者基于WHO心理健康临床指南设计7轮脚本化披露探针，在同一模型上对比音频与纯文本条件下的回答，并对生成语音做声学韵律分析。结果显示在关键倾诉轮，语音条件下的模型声音变得更短、更快、音调更低、更安静，呈现与温暖相反的变化，证明只看转写会遗漏这类伤害性语音模式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.05755v1",
+      "source": "arxiv",
+      "title": "Emotion as a Distribution: Joint Valence-Arousal Probability Learning for Speaker-Independent Multimodal Emotion Recognition",
+      "abstract": "Human emotion is graded and frequently mixed, yet most multimodal recognizers collapse it onto a single hard label. We argue the recognizer should instead expose a distribution over affective space. Our text+speech system, alongside its categorical decision, emits a $9\\times9$ probability matrix over the Valence-Arousal plane, trained with a two-dimensional Gaussian soft target under a Kullback-Leibler/cross-entropy objective, aimed at counseling support. Evaluation is strict: speaker-independent 5-fold leave-one-session-out IEMOCAP with rotating-session inner validation, headline metrics only on the held-out session. Within one fixed encoder-fusion-head pipeline we compare Transformer and state-space (Mamba-1/2/3) backbones at matched depth and width, at two operating points ($T\\approx550$, $T\\approx2750$). The featured dual-head system reaches 73.0% $\\pm$ 0.3 unweighted accuracy over three seeds (separate rerun: 72.1%), exceeding the Transformer fusion baseline by 3.0 UA points (95% session-bootstrap CI [1.0,4.7]; significant under paired t-test and session-level bootstrap), with no latency or memory advantage at these lengths; swapping the ~1M trainable front-end for frozen WavLM-Large features (learnable layer weights) lifts the same architecture to 76.6% $\\pm$ 1.3. Pre-specified controls scope the claims honestly: simpler valence-arousal auxiliaries reproduce the classification lift within noise, and a dedicated regression head tracks the continuous ratings slightly better, so the head's specific value is the normalized affect distribution itself. That distribution recovers the circumplex: its center of mass tracks valence and arousal (CCC 0.66/0.66; predominantly between-class structure, weaker within-class tracking), and its entropy is weakly but consistently linked to categorical rater ambiguity, not dimensional spread.",
+      "authors": [
+        "Tingyi Lin",
+        "Wen-Ren Yang",
+        "Kuanwei Chen"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CL"
+      ],
+      "published": "2026-09-04T22:34:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.05755v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uses speech and text for multimodal emotion recognition with speaker-independent evaluation, but no cross-domain adaptation",
+      "llm_evidence_cn": "利用语音与文本进行多模态情感识别，并采用说话者无关评测，但缺少跨域/跨语料域适应",
+      "llm_evidence": "利用语音与文本进行多模态情感识别，并采用说话者无关评测，但缺少跨域/跨语料域适应",
+      "canonical_evidence": "利用语音与文本进行多模态情感识别，并采用说话者无关评测，但缺少跨域/跨语料域适应",
+      "llm_tldr_en": "Proposes a text+speech multimodal recognizer that outputs a 9x9 valence-arousal probability matrix and uses Gaussian soft targets for speaker-independent IEMOCAP evaluation; no cross-domain adaptation.",
+      "llm_tldr_cn": "该文指出多数多模态情感识别器将情感压缩为单一硬标签，因此提出把情感建模为9×9效价-唤醒平面上的概率分布，使用二维高斯软目标和KL/交叉熵目标训练文本与语音融合模型。在IEMOCAP上采用说话者无关的leave-one-session-out协议评估，并固定编码器-融合-分类头比较Transformer与状态空间结构，结果显示分布式预测能更好刻画混合与渐变情感。该工作为语音情感识别提供了新的概率建模思路，但未研究跨不同情感语料/记录条件下的域适应问题，只能作为域适应研究的基线和潜在组件。",
+      "llm_tldr": "该文指出多数多模态情感识别器将情感压缩为单一硬标签，因此提出把情感建模为9×9效价-唤醒平面上的概率分布，使用二维高斯软目标和KL/交叉熵目标训练文本与语音融合模型。在IEMOCAP上采用说话者无关的leave-one-session-out协议评估，并固定编码器-融合-分类头比较Transformer与状态空间结构，结果显示分布式预测能更好刻画混合与渐变情感。该工作为语音情感识别提供了新的概率建模思路，但未研究跨不同情感语料/记录条件下的域适应问题，只能作为域适应研究的基线和潜在组件。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.06188v1",
+      "source": "arxiv",
+      "title": "MVFA: A Multi-View Text-Guided Multimodal Fusion LLM Adapter for Sentiment Analysis and Emotion Recognition",
+      "abstract": "Multimodal sentiment analysis and emotion recognition in conversations demand effective modeling of heterogeneous interactions across textual, acoustic, and visual modalities. Although large language models (LLMs) offer powerful language understanding, adapting them to multimodal affective computing remains challenging: full-model fine-tuning is computationally prohibitive, while many existing lightweight adapters fail to preserve rich textual cues during cross-modal fusion. To address these limitations, we propose the multi-view text-guided multimodal fusion adapter (MVFA), a parameter-efficient framework that augments frozen LLMs with strong multimodal reasoning capability. MVFA first constructs complementary text views via max pooling, mean pooling, and attention pooling; these views then guide cross-modal interactions with audio and visual features. The fused multimodal representations are subsequently compressed into a compact set of learnable pseudo-tokens through an Enhanced Q-Former Fusion Module. Using ChatGLM3-6B-base as the primary backbone, we further validate MVFA on LLaMA2-7B and Qwen3-8B to examine its portability across multiple frozen LLM backbones. MVFA is evaluated on three challenging datasets: CH-SIMS V2.0, MELD, and CHERMA. Experimental results demonstrate that MVFA achieves state-of-the-art performance on key metrics while updating only a small fraction of parameters. Specifically, it attains 84.62\\% Acc2 and 84.59\\% F1 on CH-SIMS V2.0, 67.36\\% Acc and 66.03\\% WF1 on MELD, and 74.66\\% Acc on CHERMA. These findings establish multi-view text-guided fusion as an effective and scalable paradigm for parameter-efficient multimodal LLM adaptation in affective computing. The code is publicly available at https://github.com/Overwhelm1208/MVFA.",
+      "authors": [
+        "Pengfei Shao",
+        "Jisheng Dang",
+        "Jiawen Fang",
+        "Ning Liu",
+        "Wencan Zhang",
+        "Bimei Wang",
+        "Jingwen Zhao",
+        "Jianhuang Lai",
+        "Qi Tian",
+        "Tat-Seng Chua"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-05T17:12:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.06188v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "LLM adapter for multimodal emotion recognition with acoustic modality, relevant to audio language model features for affective understanding though no cross-domain evaluation.",
+      "llm_evidence_cn": "面向多模态情感/情绪识别的大模型轻量适配，融合声学信息，用于情感理解但未做跨域推理。",
+      "llm_evidence": "面向多模态情感/情绪识别的大模型轻量适配，融合声学信息，用于情感理解但未做跨域推理。",
+      "canonical_evidence": "面向多模态情感/情绪识别的大模型轻量适配，融合声学信息，用于情感理解但未做跨域推理。",
+      "llm_tldr_en": "MVFA is a parameter-efficient adapter that augments frozen LLMs with multimodal reasoning for sentiment and emotion recognition using text-guided multi-view fusion of acoustic and visual cues, enabling emotional understanding with limited fine-tuning cost.",
+      "llm_tldr_cn": "多模态情感分析通常需要同时建模文本、声学与视觉信息。MVFA提出一种参数高效的多视图文本引导融合适配器，在不整体微调大语言模型的前提下为其注入跨模态情感推理能力。相关工作面临计算开销大与文本线索丢失的问题。通过文本引导的多视图融合，MVFA有望在情感识别任务中利用冻结LLM获得更强的多模态表示，但对跨语料语音域适应与音频大模型特征未见验证。",
+      "llm_tldr": "多模态情感分析通常需要同时建模文本、声学与视觉信息。MVFA提出一种参数高效的多视图文本引导融合适配器，在不整体微调大语言模型的前提下为其注入跨模态情感推理能力。相关工作面临计算开销大与文本线索丢失的问题。通过文本引导的多视图融合，MVFA有望在情感识别任务中利用冻结LLM获得更强的多模态表示，但对跨语料语音域适应与音频大模型特征未见验证。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.07079v1",
+      "source": "arxiv",
+      "title": "Comparing Self-Supervised and Domain-Invariant Features for Cross-Domain Voice Phishing Detection",
+      "abstract": "Voice phishing detection faces three critical challenges: real criminal recordings are unavailable due to privacy constraints; when available, only a handful of samples exist, insufficient for fine-tuning; and lightweight acoustic-only detection is needed as an alternative to large self-supervised models. We compare domain-invariant prosodic features and self-supervised representations (HuBERT, wav2vec2.0) through cross-domain evaluation-training on scenario-based actor recordings and testing on authentic criminal calls. Domain-invariant prosodic features achieve 69.5% F1 zero-shot and 71.0% with 5-shot learning. HuBERT achieves highest performance (94.2% F1, 5-shot), while wav2vec2.0 exhibits a precision-oriented detection profile (90.2% F1 with 99.4% precision, 5-shot). These findings reveal fundamental trade-offs: domain-invariant features enable zero-shot deployment when no real data exists, while SSL methods achieve higher performance but require real samples and compute.",
+      "authors": [
+        "Jeongmin Lee",
+        "Seung Yun",
+        "Minkyu Lee",
+        "Ran Han",
+        "Yoonkyu Woo",
+        "Jinxia Huang"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CL"
+      ],
+      "published": "2026-09-07T06:06:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.07079v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "cross-domain evaluation with domain-invariant prosodic features and self-supervised representations for speech classification under distribution shift",
+      "llm_evidence_cn": "在跨域语音分类协议下对比域不变韵律特征与自监督特征，方法与域适应/分布失配问题相关",
+      "llm_evidence": "在跨域语音分类协议下对比域不变韵律特征与自监督特征，方法与域适应/分布失配问题相关",
+      "canonical_evidence": "在跨域语音分类协议下对比域不变韵律特征与自监督特征，方法与域适应/分布失配问题相关",
+      "llm_tldr_en": "Compares domain-invariant prosodic features with HuBERT and wav2vec2.0 self-supervised representations under a train-on-actor/test-on-authentic cross-domain protocol, showing lightweight prosodic features are viable zero-shot baselines and HuBERT is strongest with few shots.",
+      "llm_tldr_cn": "语音钓鱼检测缺乏真实犯罪录音，且样本稀少，难以微调大模型。论文比较域不变韵律特征与HuBERT、wav2vec2.0等自监督表示，采用场景演员数据训练、真实诈骗电话测试的跨域设置。域不变韵律特征在零样本达到69.5% F1、5-shot达到71.0%，HuBERT在5-shot时最高（94.2% F1），wav2vec2.0则偏精确率。该工作为跨域语音分类中的特征选择与轻量检测提供借鉴。",
+      "llm_tldr": "语音钓鱼检测缺乏真实犯罪录音，且样本稀少，难以微调大模型。论文比较域不变韵律特征与HuBERT、wav2vec2.0等自监督表示，采用场景演员数据训练、真实诈骗电话测试的跨域设置。域不变韵律特征在零样本达到69.5% F1、5-shot达到71.0%，HuBERT在5-shot时最高（94.2% F1），wav2vec2.0则偏精确率。该工作为跨域语音分类中的特征选择与轻量检测提供借鉴。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.07409v1",
+      "source": "arxiv",
+      "title": "RAFM-SER++: A Lightweight Multimodal Emotion Recognition Framework for Real-Time Behavioral Monitoring in Surveillance Systems",
+      "abstract": "Recent multimodal Speech Emotion Recognition (SER) systems achieve high accuracy through interaction-heavy cross-modal transformers, but their computational cost limits deployment in latency-sensitive and resource-constrained surveillance systems. To address this challenge, we propose RAFM_SER++, a lightweight multimodal SER framework featuring an asymmetric Residual Attention Fusion Mechanism (RAFM). Rather than relying on computationally expensive bidirectional interactions, RAFM injects affective speech cues into semantic text representations through a one-directional residual attention pathway. Combined with a BYOL-inspired cross-modal alignment objective and attention-guided pooling, the proposed framework improves multimodal representation learning while maintaining low computational overhead.   Experiments on the IEMOCAP and ESD benchmarks demonstrate that RAFM_SER++ consistently outperforms the HuBERT-Base baseline and achieves a superior accuracy-efficiency trade-off compared with the state-of-the-art MemoCMT. Specifically, RAFM_SER++ reduces trainable parameters by more than 60%, achieves faster inference (79.60 it/s), and attains BACC scores of 81.10% on IEMOCAP and 95.39% on ESD. These results indicate that lightweight asymmetric multimodal fusion is an effective alternative to interaction-heavy cross-modal transformers for real-time surveillance applications.",
+      "authors": [
+        "Ngo Truong Dinh",
+        "Tung-Lam Bui",
+        "Chi-Trung Duong",
+        "Vien Nguyen Thi",
+        "Viet-Anh Nguyen",
+        "Phuc-Lu Le"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "cs.MM",
+        "cs.SD"
+      ],
+      "published": "2026-09-07T12:23:42+00:00",
+      "link": "https://arxiv.org/pdf/2609.07409v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal speech emotion recognition that injects affective speech cues into text via residual attention; relevant to SER from paralinguistic and prosodic cues",
+      "llm_evidence_cn": "多模态语音情感识别将情感语音线索注入文本，属于利用副语言/韵律线索进行语音情感识别的研究方向",
+      "llm_evidence": "多模态语音情感识别将情感语音线索注入文本，属于利用副语言/韵律线索进行语音情感识别的研究方向",
+      "canonical_evidence": "多模态语音情感识别将情感语音线索注入文本，属于利用副语言/韵律线索进行语音情感识别的研究方向",
+      "llm_tldr_en": "RAFM-SER++ is a lightweight multimodal SER framework using asymmetric residual attention fusion to inject affective speech cues into text, with BYOL-inspired alignment and attention pooling. It balances high accuracy and low cost for resource-constrained real-time monitoring.",
+      "llm_tldr_cn": "针对多模态语音情感识别中交互式跨模态Transformer计算开销大、难以满足实时监控需要的问题，提出RAFM-SER++轻量级框架。采用非对称残差注意力融合，用单向残差路径将情感语音线索注入文本语义表征，并结合BYOL式跨模态对齐与注意力引导池化。实验表明其在保持较高识别精度的同时显著降低计算量，为资源受限的监控场景提供了可行的实时情感识别方案。",
+      "llm_tldr": "针对多模态语音情感识别中交互式跨模态Transformer计算开销大、难以满足实时监控需要的问题，提出RAFM-SER++轻量级框架。采用非对称残差注意力融合，用单向残差路径将情感语音线索注入文本语义表征，并结合BYOL式跨模态对齐与注意力引导池化。实验表明其在保持较高识别精度的同时显著降低计算量，为资源受限的监控场景提供了可行的实时情感识别方案。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.08390v1",
+      "source": "arxiv",
+      "title": "Noise Adaptive Streaming Audio-Visual Speech Token Enhancement for Robust Full-Duplex Spoken Dialogue Models",
+      "abstract": "Full-duplex spoken dialogue systems enable simultaneous listening and speaking, but their audio-only perception often fails under background noise and overlapping speech, leading to incoherent responses. Recent audio-visual dialogue approaches show that incorporating visual cues such as lip movements improve robustness under audio corruption. However, existing approaches often adapt the large speech dialogue model itself to process visual input, requiring costly multimodal training. We propose AV-STE, a modular streaming audio-visual front-end that restores corrupted semantic speech tokens from noisy audio and lip video before they reach the speech LLM. The downstream dialogue model remains entirely frozen, preserving its pretrained conversational capabilities. When integrated with frozen Moshi, AV-STE improves average GPT-4o-judged response coherence from 1.42 to 1.91 under same-dataset speaker interference while largely preserving turn-taking behavior. Gains also transfer to out-of-domain Seamless Interaction.",
+      "authors": [
+        "Bella Godiva",
+        "Yeonju Kim",
+        "Yong Man Ro"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "cs.HC"
+      ],
+      "published": "2026-09-08T07:59:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.08390v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech LLM full-duplex dialogue with audio-visual token enhancement is directly inside Speech Large Language Model scope",
+      "llm_evidence_cn": "面向全双工语音对话模型中的语音大模型前端增强技术，属于语音大语言模型范畴",
+      "llm_evidence": "面向全双工语音对话模型中的语音大模型前端增强技术，属于语音大语言模型范畴",
+      "canonical_evidence": "面向全双工语音对话模型中的语音大模型前端增强技术，属于语音大语言模型范畴",
+      "llm_tldr_en": "Proposes AV-STE, a streaming audio-visual front-end that restores corrupted semantic speech tokens from noisy audio and lip video before a frozen downstream speech LLM, improving robustness of full-duplex spoken dialogue without multimodal model adaptation.",
+      "llm_tldr_cn": "全双工语音对话系统需要同时听与说，在背景噪声和重叠语音下音频感知易失效，而把视觉输入接入大模型又会导致昂贵的多模态训练。本文提出AV-STE，一种模块化流式音视频前端，在语音大模型之前利用唇部视频从噪声音频中恢复受损的语义语音词元，下游语音大模型完全冻结。该方法在保留预训练对话模型不变的前提下增强全双工语音对话的噪声鲁棒性，属于语音大模型输入前端技术。",
+      "llm_tldr": "全双工语音对话系统需要同时听与说，在背景噪声和重叠语音下音频感知易失效，而把视觉输入接入大模型又会导致昂贵的多模态训练。本文提出AV-STE，一种模块化流式音视频前端，在语音大模型之前利用唇部视频从噪声音频中恢复受损的语义语音词元，下游语音大模型完全冻结。该方法在保留预训练对话模型不变的前提下增强全双工语音对话的噪声鲁棒性，属于语音大模型输入前端技术。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
