@@ -1,0 +1,41 @@
+{
+  "date": "20260910",
+  "date_label": "",
+  "generated_at": "2026-09-10 21:45:48 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.09499v1",
+      "route": "202609/10/2609.09499v1-language-orthogonalization-of-self-supervised-speech-representations-for-cross-lingual-parkinsons-detection",
+      "title": "Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson's Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "去除语言可预测成分以实现跨语言语音表征迁移",
+      "first_seen_at": "2026-09-10 21:45:48 UTC",
+      "updated_at": "2026-09-10 21:45:48 UTC"
+    },
+    {
+      "paper_id": "2609.09672v1",
+      "route": "202609/10/2609.09672v1-sea-speechbench-a-large-scale-multitask-benchmark-for-speech-understanding-across-southeast-asia",
+      "title": "SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "含副语言情感识别任务的多语言基准",
+      "first_seen_at": "2026-09-10 21:45:48 UTC",
+      "updated_at": "2026-09-10 21:45:48 UTC"
+    }
+  ]
+}

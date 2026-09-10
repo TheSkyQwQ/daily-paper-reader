@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-10",
+  "date": "2026-09-10",
+  "generated_at": "2026-09-10T21:45:51",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/10/2609.09499v1-language-orthogonalization-of-self-supervised-speech-representations-for-cross-lingual-parkinsons-detection",
+      "section": "quick",
+      "title_en": "Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson's Detection",
+      "authors": "Minu Kim, Eunjung Yeo, Kwanghee Choi, June-Woo Kim",
+      "date": "2026-09-08",
+      "pdf": "https://arxiv.org/pdf/2609.09499v1",
+      "score": "6.0",
+      "evidence": "去除语言可预测成分以实现跨语言语音表征迁移",
+      "tldr": "自监督语音模型为帕金森病检测提供强表征，但跨语言迁移时其表征也编码语言身份，导致分类器可能区分语言而非病理，在目标语患者上呈现高特异度、低灵敏度。本文提出语言正交化：仅用健康对照语音，对S3M特征相对VoxLingua107语言嵌入做闭式岭回归残差化，剔除可预测语言成分并保留病理相关变异。该方法使健康表征聚集、帕金森表征分散，在五种S3M、三类任务和三种目标语言上均提升跨语言检测性能，并纠正高特异低灵敏失效。",
+      "tags": "query:ser-da",
+      "abstract_en": "Self-supervised speech models (S3Ms) provide powerful representations for Parkinson's disease (PD) detection, making cross-lingual transfer attractive for languages lacking labeled patient speech. However, these representations also encode language identity, which can confound this transfer: without target-language PD speech, classifiers may separate languages rather than pathology, yielding high specificity but low sensitivity on target patients. We propose \\emph{language orthogonalization}, a closed-form ridge residualization of S3M features against external VoxLingua107 language embeddings, fitted using only healthy-control (HC) speech. By removing language-predictable components while retaining pathology-related variation, it produces a less language-dependent geometry in which HC representations concentrate while PD representations disperse. Across five S3M backbones, three speech tasks, and three target languages, our method consistently improves cross-lingual PD-detection performance while correcting the high-specificity/low-sensitivity failure.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/10/2609.09672v1-sea-speechbench-a-large-scale-multitask-benchmark-for-speech-understanding-across-southeast-asia",
+      "section": "quick",
+      "title_en": "SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia",
+      "authors": "Jingyi Liao, Wenyu Zhang, Zhuohan Liu, Yingxu He, Geyu Lin, Xunlong Zou, Shuo Sun, Syed Ali Redha Alsagoff, Ai Ti Aw",
+      "date": "2026-09-09",
+      "pdf": "https://arxiv.org/pdf/2609.09672v1",
+      "score": "6.0",
+      "evidence": "含副语言情感识别任务的多语言基准",
+      "tldr": "现有语音理解评测以英语为中心，东南亚语言严重不足。本文提出 SEA-SpeechBench，首个覆盖 11 种东南亚语言的大规模多任务基准，含 97,194 样本、99 个评测集、597 小时音频，涵盖语音处理、副语言分析和时间理解等 9 项任务，并支持母语与英语提示。评测显示主流开源与专有模型在时间理解、情绪识别和语音翻译上表现欠佳，低资源语言提示较英语最多落后 41 个百分点。该工作揭示模型局限，推动包容性语音模型发展。",
+      "tags": "query:ser-da",
+      "abstract_en": "The rapid advancement of audio and multimodal large language models has unlocked transformative speech understanding capabilities, yet evaluation frameworks remain predominantly English-centric, leaving Southeast Asian (SEA) languages critically underrepresented. We introduce SEA-SpeechBench, to the best of our knowledge, the first large-scale multitask benchmark that evaluates speech understanding in 11 SEA languages through 97,194 samples across 99 evaluation sets and 597 hours of curated audio data. Our benchmark comprises 9 diverse tasks across 3 categories: speech processing (automatic speech recognition, speech translation, spoken question answering), paralinguistic analysis (emotion, gender, age, speaker recognition), and temporal understanding, a novel dimension featuring timestamped content queries and temporal localization within extended audio sequences up to 3 minutes. We implement multilingual prompting in both native SEA languages and English to reflect user interactions with audio-language models. Evaluation of leading open-source and proprietary systems reveals marked performance gaps. Across all models, performance remains underwhelming on temporal understanding, emotion recognition, and speech translation. Prompting in low-resource languages such as Burmese and Tamil lags behind English by up to 41 percentage points. Our findings expose critical model limitations and underscore the need for inclusive model development. The SEA-SpeechBench benchmark is available at https://zwenyu.github.io/SEA-SpeechBench/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

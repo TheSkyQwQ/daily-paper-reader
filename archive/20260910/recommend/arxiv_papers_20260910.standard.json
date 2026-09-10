@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-10T21:44:07.356362+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.09499v1",
+      "source": "arxiv",
+      "title": "Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson's Detection",
+      "abstract": "Self-supervised speech models (S3Ms) provide powerful representations for Parkinson's disease (PD) detection, making cross-lingual transfer attractive for languages lacking labeled patient speech. However, these representations also encode language identity, which can confound this transfer: without target-language PD speech, classifiers may separate languages rather than pathology, yielding high specificity but low sensitivity on target patients. We propose \\emph{language orthogonalization}, a closed-form ridge residualization of S3M features against external VoxLingua107 language embeddings, fitted using only healthy-control (HC) speech. By removing language-predictable components while retaining pathology-related variation, it produces a less language-dependent geometry in which HC representations concentrate while PD representations disperse. Across five S3M backbones, three speech tasks, and three target languages, our method consistently improves cross-lingual PD-detection performance while correcting the high-specificity/low-sensitivity failure.",
+      "authors": [
+        "Minu Kim",
+        "Eunjung Yeo",
+        "Kwanghee Choi",
+        "June-Woo Kim"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-09-08T22:25:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.09499v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "removes language-predictable components to enable cross-lingual speech representation transfer",
+      "llm_evidence_cn": "去除语言可预测成分以实现跨语言语音表征迁移",
+      "llm_evidence": "去除语言可预测成分以实现跨语言语音表征迁移",
+      "canonical_evidence": "去除语言可预测成分以实现跨语言语音表征迁移",
+      "llm_tldr_en": "Self-supervised speech features encode language identity that confounds cross-lingual transfer; the authors propose closed-form ridge residualization against language embeddings, improving target-language patient detection.",
+      "llm_tldr_cn": "自监督语音模型表征在跨语言迁移中会编码语言身份，导致分类器区分语言而非病理，目标语言患者敏感度低。作者提出语言正交化，仅用健康对照语音对S3M特征相对VoxLingua107语言嵌入做闭式岭回归残差化，去除语言可预测成分。跨语言帕金森检测实验表明，去混淆后仍保留病理相关表征并改善目标患者检测。该思路为跨域语音任务去除混淆因素提供了可复用方法。",
+      "llm_tldr": "自监督语音模型表征在跨语言迁移中会编码语言身份，导致分类器区分语言而非病理，目标语言患者敏感度低。作者提出语言正交化，仅用健康对照语音对S3M特征相对VoxLingua107语言嵌入做闭式岭回归残差化，去除语言可预测成分。跨语言帕金森检测实验表明，去混淆后仍保留病理相关表征并改善目标患者检测。该思路为跨域语音任务去除混淆因素提供了可复用方法。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.09672v1",
+      "source": "arxiv",
+      "title": "SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia",
+      "abstract": "The rapid advancement of audio and multimodal large language models has unlocked transformative speech understanding capabilities, yet evaluation frameworks remain predominantly English-centric, leaving Southeast Asian (SEA) languages critically underrepresented. We introduce SEA-SpeechBench, to the best of our knowledge, the first large-scale multitask benchmark that evaluates speech understanding in 11 SEA languages through 97,194 samples across 99 evaluation sets and 597 hours of curated audio data. Our benchmark comprises 9 diverse tasks across 3 categories: speech processing (automatic speech recognition, speech translation, spoken question answering), paralinguistic analysis (emotion, gender, age, speaker recognition), and temporal understanding, a novel dimension featuring timestamped content queries and temporal localization within extended audio sequences up to 3 minutes. We implement multilingual prompting in both native SEA languages and English to reflect user interactions with audio-language models. Evaluation of leading open-source and proprietary systems reveals marked performance gaps. Across all models, performance remains underwhelming on temporal understanding, emotion recognition, and speech translation. Prompting in low-resource languages such as Burmese and Tamil lags behind English by up to 41 percentage points. Our findings expose critical model limitations and underscore the need for inclusive model development. The SEA-SpeechBench benchmark is available at https://zwenyu.github.io/SEA-SpeechBench/.",
+      "authors": [
+        "Jingyi Liao",
+        "Wenyu Zhang",
+        "Zhuohan Liu",
+        "Yingxu He",
+        "Geyu Lin",
+        "Xunlong Zou",
+        "Shuo Sun",
+        "Syed Ali Redha Alsagoff",
+        "Ai Ti Aw"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-09T03:39:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.09672v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multitask benchmark with paralinguistic emotion recognition across languages",
+      "llm_evidence_cn": "含副语言情感识别任务的多语言基准",
+      "llm_evidence": "含副语言情感识别任务的多语言基准",
+      "canonical_evidence": "含副语言情感识别任务的多语言基准",
+      "llm_tldr_en": "SEA-SpeechBench is a large-scale multitask benchmark for speech understanding in 11 Southeast Asian languages, covering ASR, translation, QA and paralinguistic tasks like emotion, revealing gaps of current audio LLMs.",
+      "llm_tldr_cn": "语音理解评测框架长期以英语为中心，东南亚语言严重缺乏覆盖，情感等副语言任务也缺少跨语言验证。本文构建 SEA-SpeechBench，覆盖11种东南亚语言、97,194个样本、9类任务，包含语音识别、翻译、问答以及情感、性别、年龄、说话人识别等副语言分析，合计597小时音频。评测显示该基准能揭示现有音频大模型在低资源语言与副语言任务上的不足，为跨语言、跨条件的语音情感理解研究提供统一评测平台。",
+      "llm_tldr": "语音理解评测框架长期以英语为中心，东南亚语言严重缺乏覆盖，情感等副语言任务也缺少跨语言验证。本文构建 SEA-SpeechBench，覆盖11种东南亚语言、97,194个样本、9类任务，包含语音识别、翻译、问答以及情感、性别、年龄、说话人识别等副语言分析，合计597小时音频。评测显示该基准能揭示现有音频大模型在低资源语言与副语言任务上的不足，为跨语言、跨条件的语音情感理解研究提供统一评测平台。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-09</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-10</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 9 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>7</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-09 22:04:45 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-10 21:45:48 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读2篇、速读7篇，聚焦音频条件大模型与语音情感识别两大方向。</p>
-<p>最值得关注的是音频LLM中声学信息损失追踪（8.0分）及多尺度时序增强的语音情感识别模型（8.0分）。</p>
-<p>可顺着这两篇延伸了解音频大模型的可解释性与结构设计，再结合多任务合并技术提升泛化。</p>
+<p>今日速读2篇语音AI论文：跨语言帕金森检测与东南亚语音理解基准，均获6.0分。</p>
+<p>最值得看的是“跨语言自监督语音表征正交化用于帕金森检测”和“覆盖东南亚的多任务语音理解基准SEA-SpeechBench”这两个方向。</p>
+<p>普通读者可先读两篇摘要与实验设置，关注语音AI在医疗早筛和区域语言评测中的实际可用性，再决定是否深入。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -80,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Where Does the Sound Go? Tracing Acoustic Information Loss in Audio-Conditioned LLMs">Where Does the Sound Go? Tracing Acoustic Information Loss in Audio-Conditioned LLMs</span></li><li><span class="dpr-home-dashboard-paper-title" title="SETEAB: Multiscale approach with Squeeze-and-Excitation Temporal Enhanced Aware Block for Speech Emotion Recognition">SETEAB: Multiscale approach with Squeeze-and-Excitation Temporal Enhanced Aware Block for Speech Emotion Recognition</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -93,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">7 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Hierarchical Wasserstein Merging for Multi-Domain Multi-Task Learning: From Specialists to a Generalist">Hierarchical Wasserstein Merging for Multi-Domain Multi-Task Learning: From Specialists to a Generalist</span></li><li><span class="dpr-home-dashboard-paper-title" title="Probing Warmth-Mediated Harm in Speech-Enabled LLMs for Mental-Health Conversations">Probing Warmth-Mediated Harm in Speech-Enabled LLMs for Mental-Health Conversations</span></li><li><span class="dpr-home-dashboard-paper-title" title="Emotion as a Distribution: Joint Valence-Arousal Probability Learning for Speaker-Independent Multimodal Emotion Recognition">Emotion as a Distribution: Joint Valence-Arousal Probability Learning for Speaker-Independent Multimodal Emotion Recognition</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson&#x27;s Detection">Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson&#x27;s Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia">SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>7</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
 </section>
 </div>
 

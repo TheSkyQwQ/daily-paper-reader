@@ -1,0 +1,284 @@
+Title: Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson's Detection
+
+URL Source: https://arxiv.org/pdf/2609.09499v1
+
+Published Time: Thu, 10 Sep 2026 00:29:23 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson’s Detection 
+
+Minu Kim 1, Eunjung Yeo 2, Kwanghee Choi 2, June-Woo Kim 3
+
+> 1
+
+University of Southern California, USA 2The University of Texas at Austin, USA 3Wonkwang University, South Korea minukim@usc.edu {eunjung.yeo,kwanghee }@utexas.edu kaen2891@wku.ac.kr 
+
+Abstract —Self-supervised speech models (S3Ms) provide pow-erful representations for Parkinson’s disease (PD) detection, making cross-lingual transfer attractive for languages lacking labeled patient speech. However, these representations also en-code language identity, which can confound this transfer: without target-language PD speech, classifiers may separate languages rather than pathology, yielding high specificity but low sensitivity on target patients. We propose language orthogonalization , a closed-form ridge residualization of S3M features against external VoxLingua107 language embeddings, fitted using only healthy-control (HC) speech. By removing language-predictable compo-nents while retaining pathology-related variation, it produces a less language-dependent geometry in which HC representations concentrate while PD representations disperse. Across five S3M backbones, three speech tasks, and three target languages, our method consistently improves cross-lingual PD-detection performance while correcting the high-specificity/low-sensitivity failure. 1
+
+Index Terms —self-supervised speech representation, dysarthric speech, parkinson’s disease, cross-lingual processing. 
+
+I. I NTRODUCTION 
+
+Parkinson’s disease (PD) is a progressive neurodegener-ative disorder that commonly impairs motor speech, most characteristically through hypokinetic dysarthria [1], [2]. Its effects span phonation, articulation, and prosody, manifesting as reduced loudness, monotonic pitch, imprecise articulation, altered timing, and diminished intelligibility [3]–[6]. Because these impairments can be captured non-invasively, repeatedly, and at low cost, speech-based digital biomarkers are increas-ingly being investigated as scalable indicators of motor-speech dysfunction [7]–[10]. Despite this promise, most speech-based PD detection sys-tems have been developed and evaluated within a single language or corpus [11]–[14]. This limitation is particu-larly important for speech-based assessment because observed speech patterns reflect not only PD-related impairment but also language-specific phonology, syllable structure, rhythm, and recording conditions [15]–[20]. Cross-lingual PD detection must therefore distinguish pathology-related characteristics that transfer across languages from linguistic and corpus-specific variation that does not. Self-supervised speech models (S3Ms) offer a promising foundation for this problem: pre-trained on large-scale speech data, they encode rich acoustic 
+
+> 1
+
+Source code: https://github.com/MINUKIMS/language-orthogonalization. 
+
+and phonetic information [21]–[23] and have outperformed conventional handcrafted features in dysarthria and PD de-tection [24]–[26]. The linguistic richness of S3Ms, however, poses a crit-ical challenge for cross-lingual PD detection: these mod-els encode strong language-dependent structure alongside pathology-relevant cues [27]. Consider training with healthy control (HC) and PD speech from resource-rich source lan-guages but only HC speech from the target language—a realis-tic setting when target-language patients are unavailable [20], [27], [28]. Because all target-language training speakers are HC, the classifier may associate the target language with HC rather than learn transferable pathology cues. As a result, unseen target-language patients tend to be misclassified as HC. On the OneVoice-MSD-2026 benchmark, this bias produces high specificity but low sensitivity: healthy speakers are rarely misclassified, whereas many patients are missed [27]. This failure is particularly problematic for screening, where high sensitivity is needed to minimize false negatives [29], [30]. 2
+
+Prior work has shown that S3Ms encode phonetic con-text in an approximately linear structure across diverse lan-guages [31], [32]. In cross-lingual PD detection, language shift (LS) [27] adopts a related geometric view, representing language differences as linear vectors that align the HC centroids of the source and target languages. Because LS translates every speaker within a language by the same vector, it changes the distribution mean but not its within-language covariance, allowing language-dependent structure beyond the centroid to persist. We extend this view by estimating language-dependent variation for each speaker. Specifically, we propose lan-guage orthogonalization (Figure 1), which fits an HC-only ridge regression from external language-identification (LID) embeddings [33] to S3M representations and subtracts the predicted component. Because this component varies across speakers rather than being fixed for each language, it can reduce language-dependent structure beyond the distribution mean. Fitting only on HC speech prevents the regression from directly modeling PD-associated variation, thereby reducing the risk of suppressing pathology-related deviations. 
+
+> 2
+
+Sensitivity, or the true-positive rate, is the proportion of patients correctly identified; specificity, or the true-negative rate, is the proportion of healthy controls correctly identified. arXiv:2609.09499v1 [eess.AS] 8 Sep 2026 Lang  1
+
+Lang  2
+
+Lang  3
+
+HC  PD  Language 
+
+Subspace 
+
+Residual 
+
+Vector 
+
+1. Raw Distribution  2. Residuals  3. Residual  Subspace 
+
+Residual 
+
+Subspace Fig. 1. Schematic of language orthogonalization. Raw representations are orthogonally projected onto a language subspace. Extracting the residual vectors yields a language-orthogonal subspace that effectively isolates the underlying pathology signal. Ideally, Healthy Controls (HC) stably cluster together in this space, while Parkinson’s Disease (PD) representations scatter outward, reflecting the sporadic and heterogeneous nature of the disease. 
+
+Our contributions are threefold. (i) We introduce language orthogonalization , an HC-only closed-form transform that reduces language-predictable variation without target-language PD speech. (ii ) We demonstrate consistent improvements across five S3M backbones, three speech tasks, and three target languages, including the transfer of sensitivity-selected thresholds to unseen target-language patients. (iii ) Through language probing, we show that the resulting residuals sub-stantially suppress language decodability. II. M ETHOD 
+
+Our pipeline has three stages before downstream classifica-tion (Figure 1). First, a frozen self-supervised speech model (S3M) extracts a layer-wise pooled utterance embedding (Section II-A). Second, an external language-identification (LID) model provides a language reference embedding (Sec-tion II-B). Third, an alignment step subtracts the S3M com-ponent predictable from the LID embedding and retains the residual (Section II-C). This residual is expected to reduce language separation while retaining pathology-related varia-tion. 
+
+A. S3M backbones and pooling 
+
+We use frozen S3Ms as utterance-level feature extractors. To probe whether the alignment step is robust to the choice of rep-resentation, we span five 24-layer Transformer-Large encoders (1024-d hidden states): wav2vec2-Large-LV60 [34] (English, 60k h), XLS-R-300M [23] (128 languages, 436k h), MMS-300M [35] (1162 languages, 491k h), WavLM-Large [22] (English, 94k h), and HuBERT-Large [21] (English, 60k h). From each frozen encoder we compute mean+std pooling [36] over each of the 25 representations (convolutional output plus 24 transformer layers), ℓ2-normalize per layer, and average across layers into a 2048-d utterance embedding. Per-speaker representations are obtained by averaging the utterance em-beddings within each task. Because information in S3Ms is distributed across layers and varies by backbone [37], [38], and for PD detection the most informative depth is not settled [36], [39], we average across all depths rather than tune a layer choice. This pipeline is fixed across all backbones, so any downstream difference isolates the alignment step. 
+
+B. External LID embeddings 
+
+To provide an external reference for language-dependent variation, we use the VoxLingua107 ECAPA-TDNN [33], a 14M-parameter encoder pre-trained to identify 107 languages. Its embeddings emphasize language-discriminative informa-tion without relying on PD labels. We extract a 256-d embed-ding for each utterance and average the embeddings within each speaker × task to obtain a speaker-level LID vector 
+
+gi ∈ R256 , where the tasks are defined in Section III-A. 
+
+C. Alignment methods 
+
+Let xi ∈ RD denote the speaker-level S3M representation of speaker i, and let X = [ x⊤ 
+
+> 1
+
+, . . . , x ⊤ 
+
+> N
+
+]⊤ ∈ RN ×D stack all 
+
+N representations, with D = 2048 . Let ℓi denote speaker 
+
+i’s language, T the target language, and HL the training-fold HC indices for language L, with H = S 
+
+> L
+
+HL. Both alignment methods are fitted on H and applied to all training and evaluation speakers. 
+
+Language shift (LS) [27] applies a constant offset to each language, aligning its training-fold HC centroid μℓi with the target-language HC centroid μT :
+
+x′ 
+
+> i
+
+= xi − μℓi + μT , μL = 1
+
+|H L|
+
+X
+
+> j∈H L
+
+xj . (1) 
+
+Language orthogonalization (LO; proposed) estimates the S3M component linearly predictable from an LID embedding. Let gi ∈ R256 denote speaker i’s LID vector, and let XH and 
+
+GH stack the corresponding S3M and LID representations for 
+
+H. We fit a ridge map W ∗ ∈ RD×256 on this subset: 
+
+W ∗ = argmin 
+
+> W
+
+X
+
+> i∈H
+
+∥xi − W g i∥22 + α∥W ∥2 
+
+> F
+
+(2) 
+
+= argmin 
+
+> W
+
+∥XH − GHW ⊤∥2 
+
+> F
+
++ α∥W ∥2 
+
+> F
+
+, (3) where ∥·∥ F is the Frobenius norm and α is the ridge co-efficient, with smaller values removing more LID-predictable variation. We report results as a function of α (Section IV). The objective in Equation (3) has the following closed-form ridge solution. For each speaker, W ∗gi denotes the S3M component predicted from the LID embedding, and x′ 
+
+> i
+
+is the residual used for downstream classification: 
+
+W ∗ = X⊤HGH
+
+ G⊤HGH + αI −1 ,x′ 
+
+> i
+
+= xi − W ∗gi. (4) Here, α > 0 is the ridge regularization coefficient, which en-sures that the regularized Gram matrix is invertible. Unlike LS, which subtracts one fixed vector per language, LO subtracts a language-predictable component that varies across speakers. It can therefore reduce language-dependent variation beyond the distribution mean rather than merely translate the centroid. III. E XPERIMENTAL SETUPS 
+
+A. Dataset 
+
+We use the OneVoice-MSD-2026 corpus [27], a collabo-rative benchmark that harmonizes three PD-speech databases under a common protocol: GermanPD ( n=176 ) [13], CzechPD (n=100 ) [40], and the Spanish e-PC-GITA ( n=140 ) [41], with 
+
+n speakers. Each speaker performs three speech tasks [4]: sustained vowel phonation (a prolonged vowel), oral diado-chokinesis (DDK, rapid /pa-ta-ka/ repetition), and read speech (reading full sentences aloud), all labeled binary HC versus PD. We split each language into five speaker-disjoint folds, stratified jointly by group (HC/PD) and language so that HC/PD balance is preserved within every language. 
+
+B. Cross-lingual protocol 
+
+We follow the same cross-lingual protocol as in [27]: target pathology is never seen in training, so a classifier cannot rely on memorizing target-language acoustics and must transfer pathology cues from the source languages. For each target language T and outer fold k, training uses all source-language speakers together with the target-language HC folds other than 
+
+k; evaluation uses the held-out target HC fold and all target-language PD speakers: 
+
+Dtrain = {s : lang( s)̸ = T }∪ { s : lang( s)= T, HC , fold( s)̸ = k},
+
+Deval = {s : lang( s)= T, HC , fold( s)= k}∪ { s : lang( s)= T, PD }.
+
+On each fold, we fit a PD detection model through class-balanced logistic regression on the pooled representations, where features are standardized on training statistics only, using the same settings of [27]. 
+
+C. Metrics 
+
+The primary metric for the PD detection model is F1 at the sensitivity-0.90 operating point of [27], reported as the mean over 5 backbones × 3 tasks × 3 target languages × 5 folds (Section IV. Further, to test whether the threshold from the          
+
+> TABLE I
+> CROSS -LINGUAL F1 AT THE 0.90-SENSITIVITY OPERATING POINT .
+> RESULTS ARE AVERAGED OVER FIVE S3M BACKBONES AND THREE TARGET LANGUAGES . LO RESULTS ARE REPORTED AT α= 0 FOR ALL TASKS AND BACKBONES .
+
+Task Baselines LO Raw LS F1 (α = 0 )Gain over Raw Vowel 0.53 0.65 0.89 +0.36 
+
+DDK 0.59 0.68 0.90 +0.31 
+
+Read 0.43 0.69 0.81 +0.38 
+
+Avg. 0.52 0.67 0.87 +0.35       
+
+> Fig. 2. Cross-lingual PD-detection F1 versus orthogonalization strength
+> α.Results are shown for five S3M backbones (rows) and three speech tasks (columns), averaged over three target languages. The shaded region on the left shows the raw and +LS baselines, and stars mark the maximum F1 along each curve. LO outperforms both baselines over a broad range of α, with F1 generally increasing as αdecreases.
+
+training data still works on the test data, we additionally report the cross-lingual sensitivity achieved on the target language against the sensitivity requested at training (Section IV). IV. R ESULTS 
+
+We now test whether our method improves cross-lingual PD detection over the baselines in Section IV-A. We additionally Fig. 3. Cross-lingual threshold transfer. Each threshold is selected on the training set for a target sensitivity and then applied unchanged to the held-out target language. The diagonal indicates perfect agreement between the target and achieved sensitivities. Raw and LS fall well below the diagonal, whereas LO closely follows it across the 0.70 –0.90 range. 
+
+focus on the high-specificity, low-sensitivity problem [27]. We examine whether the detection thresholds are transferable from the train to test settings in Section IV-B, and explore the application to PD screening in Section IV-C. 
+
+A. Cross-lingual PD detection 
+
+Table I reports cross-lingual F1 at the 0.90 -sensitivity op-erating point, averaged over five S3M backbones and three target languages. With α = 0 used across all tasks and backbones, LO outperforms both baselines on every task, increasing average F1 from 0.52 for raw features and 0.67 
+
+for LS to 0.87 , a gain of +0 .35 over raw features. Figure 2 presents results across the full α sweep for all backbones and tasks. LO outperforms both baselines over a broad range of 
+
+α, with F1 generally increasing as α decreases, suggesting that removing more of the language-predictable component improves cross-lingual PD detection. 
+
+B. Threshold transferability 
+
+We use five-fold out-of-fold predictions on the training set to select a threshold for a requested sensitivity, then apply this threshold to the held-out target language. Figure 3 compares the requested sensitivity with the sensitivity achieved on target-language PD speakers. For raw and LS features, achieved sensitivity is consistently lower than requested, indicating that thresholds estimated from the training distribution do not transfer reliably. With LO, achieved sensitivity closely follows the requested sensitivity across the 0.70 –0.90 range. Thus, LO            
+
+> Fig. 4. Screening performance across target languages. Screen denotes sensitivity of at least 0.75 , whereas Confirm denotes high specificity but sensitivity below 0.75 . Raw and LS remain in the Confirm regime across target languages, while LO reaches the Screen regime without target-language PD data during training.
+
+enables threshold selection without target-language PD data for calibration. 
+
+C. Application to PD screening 
+
+We next evaluate threshold transfer in a PD-screening setting. A screening (rule-out) test prioritizes sensitivity to minimize missed patients, whereas a confirmatory (rule-in) test prioritizes specificity [42]. These objectives trade off through the decision threshold: lowering the threshold increases sensi-tivity at the cost of specificity, while raising it has the opposite effect. Using the training-set thresholds selected in Section IV-B, we measure both sensitivity and specificity on each target language. As shown in Figure 4, raw and LS remain in the high-specificity, low-sensitivity region despite thresholds se-Fig. 5. t-SNE visualization before and after alignment. An example from the read-speech task with German as the target language and α = 0 .01 .Raw representations separate strongly by language. LS brings the language clusters closer but leaves visible language-dependent structure, whereas LO produces greater overlap among the three languages. In the LO projection, HC representations are concentrated near the center and PD representations are more dispersed. 
+
+lected for screening. LO yields substantially higher sensitivity and places the operating points in the screening region across all target languages. These results show that LO supports sensitivity-targeted screening without target-language PD data during training or threshold selection. V. A NALYSIS 
+
+A. Representation geometry 
+
+Figure 5 illustrates how each transformation reorganizes the representation space, while Figure 6 quantifies the resulting geometry using each speaker’s distance from the residual centroid.                        
+
+> Fig. 6. Per-speaker residual norms after orthogonalization. Norm
+> ∥x′
+> i−¯x′∥of each speaker’s orthogonalized representation x′
+> iabout the mean residual ¯x′(HuBERT-Large, α= 0 .01 ). HC form a tight, low-norm baseline; PD spread to larger norms, with median PD norm 7.5–10 .8×the HC median across tasks, consistent with the heterogeneous nature of dysarthric deviation (Section V). TABLE II
+> LANGUAGE DECODABILITY AFTER TRANSFORMATION .MACRO -F1 FOR THREE -WAY LANGUAGE CLASSIFICATION ,AVERAGED OVER FIVE S3M
+> BACKBONES AND THREE SPEECH TASKS . C HANCE PERFORMANCE IS 0.33 .
+
+Representation HC PD Raw 0.99 0.98 LS 0.76 0.94 LO 0.47 0.62 
+
+Language shift: mean alignment. LS (Equation (1)) translates all representations from a language by the same vector. It therefore preserves the within-language covariance: 
+
+Σ′ 
+
+> L
+
+= Cov( {x′ 
+
+> i
+
+: ℓi=L}) = Cov( {xi : ℓi=L}) = Σ L, (5) since Cov( x+c) = Cov( x) for any constant c. Thus, LS aligns language centroids but does not remove language-dependent variation around them. The t-SNE projections in Figure 5 illustrate this distinction: LS brings the language clusters closer, while HC and PD remain largely intermixed. 
+
+Language orthogonalization: residualization. LO subtracts the speaker-specific prediction W ∗ ˜gi, rather than a single vector shared within each language. It can therefore remove variation associated with the LID embedding beyond differ-ences in language means. In the t-SNE projections of Figure 5, LO yields greater overlap among the three languages than LS. This qualitative pattern appears across the five backbones and three tasks. 
+
+Residual geometry. We quantify the resulting geometry using the Euclidean distance of each residual representation from the overall residual centroid, ∥x′ 
+
+> i
+
+− x′∥2. HC speakers are concentrated near the centroid, whereas PD speakers are dis-tributed farther from it. Across tasks, the median distance for PD speakers is 7.5–10 .8 times that for HC speakers (Figure 6). This pattern is consistent with the heterogeneous nature of dysarthric deviations in PD speech [4]. 
+
+B. Residual language information 
+
+To quantify the language information retained after each transformation, we train a linear classifier to predict the three languages from the resulting representations. We report speaker-disjoint five-fold macro-F1, averaged over five S3M backbones and three speech tasks, separately for HC and PD speakers. Chance performance is 0.33 .As shown in Table II, language is almost perfectly decod-able from the raw representations, with macro-F1 scores of 
+
+0.99 for HC and 0.98 for PD. LS reduces language decodabil-ity for HC speakers to 0.76 , but little for PD speakers ( 0.94 ). LO yields the lowest language decodability for both groups, reducing macro-F1 to 0.47 for HC and 0.62 for PD. Thus, LO removes substantially more language information than LS, although some remains, particularly among PD speakers. 
+
+C. Applicability beyond S3Ms 
+
+To explore the potential of LO beyond S3Ms, we apply it to three representations with different training objectives: a speaker embedding (ECAPA-TDNN [43]), a supervised speech encoder (Whisper [44]), and an audio transformer (AST [45]). The t-SNE projections in Figure 7 show a pattern similar to that observed for S3Ms: LO increases the overlap among languages while HC and PD speakers remain differ-ently distributed. These exploratory findings motivate a more comprehensive evaluation of LO across other representation spaces. VI. D ISCUSSION 
+
+Controlling language information. Language information can support cross-lingual transfer when used as an auxiliary sig-nal [46], [47]. LO also leverages this information, but uses an external LID representation to identify and remove language-predictable variation rather than as an additional input to the downstream classifier. This distinction is important when target-language training data contain only HC speech, as the classifier may otherwise associate the target language with HC. The lower language decodability after LO supports this interpretation (Section V-B). 
+
+Generalization and interpretation. Our evaluation covers Ger-manic, Slavic, and Romance languages, all within the Indo-European family. Extending it to more typologically diverse languages would provide a broader test of LO. S3M represen-tation spaces tend to place similar languages closer together and dissimilar languages farther apart [48], so LO may behave differently as the representational distance between source and target languages increases. Evaluating such language pairs is particularly important as S3Ms are increasingly applied cross-lingually [49], [50]. LO also yields larger gains for sustained vowels than for read speech, indicating possible task dependence. Explainability analyses could clarify how language, task, and pathology cues interact in the removed and residual components [51], [52]. Similar analyses across other speech disorders would help establish the broader scope of LO. 
+
+Methodological extensions. LO is related to domain-adversarial learning with a gradient reversal layer (GRL) [53]. A future GRL baseline could treat language as the domain and reduce its predictability through adversarial fine-tuning, whereas LO operates on fixed representations through a single closed-form step. Recent non-linear modeling of pathological     
+
+> Fig. 7. Exploratory results on non-S3M representations. t-SNE projections for the read-speech task with German as the target language and α= 0 .01 .Results are shown for a speaker embedding (ECAPA-TDNN), a supervised speech encoder (Whisper), and an audio transformer (AST) under raw, LS, and LO. Across these representations, LO produces greater overlap among languages while retaining variation between HC and PD speakers.
+
+speech representations [54] also motivates extending LO be-yond its current linear formulation. Building on our threshold-transfer analysis, future work could examine score calibration across languages to further support clinical deployment [55]. Other directions include selecting α without target-language labels and improving specificity while maintaining screening sensitivity. VII. C ONCLUSION 
+
+We presented language orthogonalization (LO) for cross-lingual Parkinson’s disease detection, a closed-form, HC-only ridge residualization that uses external language em-beddings to reduce language-predictable variation in S3M representations. Across five backbones, three speech tasks, and three target languages, LO consistently improved F1 over raw features and LS and mitigated the high-specificity, low-sensitivity failure on target-language PD speakers. It also improved the transfer of sensitivity-targeted thresholds without requiring target-language PD data, supporting cross-lingual screening. Language-decoding and representation analyses fur-ther showed that LO substantially reduces, although does not eliminate, language information. Exploratory results on non-S3M representations suggest that the approach may also extend to other speech representation spaces. DISCLOSURE OF AI U SAGE 
+
+Generative AI tools were used for minor language edit-ing and coding support. All research design, analysis, and conclusions are the authors’ own, and the authors take full responsibility for the content. REFERENCES [1] E. Critchley, “Speech disorders of parkinsonism: a review.” Journal of Neurology, Neurosurgery & Psychiatry , vol. 44, no. 9, pp. 751–758, 1981. [2] M. S. Atalar, O. Oguz, and G. Genc, “Hypokinetic dysarthria in parkinson’s disease: A narrative review.” Medical Bulletin of Sisli Etfal Hospital , vol. 57, no. 2, 2023. [3] F. L. Darley, A. E. Aronson, and J. R. Brown, “Differential diagnostic patterns of dysarthria,” Journal of speech and hearing research , vol. 12, no. 2, pp. 246–269, 1969. [4] J. R. Duffy et al. , Motor speech disorders: Substrates, differential diagnosis, and management . Elsevier Health Sciences, 2012. [5] D. Kovac, L. Novakova, J. Mekyska, K. Novotny, L. Brabenec, P. Klobu-siakova, and I. Rektorova, “Digital speech biomarkers for assessing cognitive decline across neurodegenerative conditions,” Computers in Biology and Medicine , vol. 198, p. 111251, 2025. [6] F. Cao, A. P. Vogel, P. Gharahkhani, and M. E. Renteria, “Speech and language biomarkers for parkinson’s disease prediction, early diagnosis and progression,” npj Parkinson’s Disease , vol. 11, no. 1, p. 57, 2025. [7] A. A. Dibazar, S. Narayanan, and T. W. Berger, “Feature analysis for automatic detection of pathological speech,” in Proceedings of the second joint 24th annual conference and the annual fall meeting of the biomedical engineering society][engineering in medicine and biology ,vol. 1. IEEE, 2002, pp. 182–183. [8] A. A. Dibazar, T. W. Berger, and S. S. Narayanan, “Pathological voice assessment,” in 2006 international conference of the IEEE engineering in medicine and biology society . IEEE, 2006, pp. 1669–1673. [9] R. Gupta, T. Chaspari, J. Kim, N. Kumar, D. Bone, and S. Narayanan, “Pathological speech processing: State-of-the-art, current challenges, and future directions,” in 2016 IEEE international conference on acoustics, speech and signal processing (ICASSP) . IEEE, 2016, pp. 6470–6474. [10] J. Rusz, P. Krack, and E. Tripoliti, “From prodromal stages to clinical trials: The promise of digital speech biomarkers in parkinson’s disease,” 
+
+Neuroscience & Biobehavioral Reviews , vol. 167, p. 105922, 2024. [11] A. Tsanas, M. A. Little, P. E. McSharry, J. Spielman, and L. O. Ramig, “Novel speech signal processing algorithms for high-accuracy classification of parkinson’s disease,” IEEE transactions on biomedical engineering , vol. 59, no. 5, pp. 1264–1271, 2012. [12] J. Kim, N. Kumar, A. Tsiartas, M. Li, and S. S. Narayanan, “Auto-matic intelligibility classification of sentence-level pathological speech,” 
+
+Computer speech & language , vol. 29, no. 1, pp. 132–144, 2015. [13] T. Bocklet, E. N¨ oth, G. Stemmer, H. Ruzickova, and J. Rusz, “Detection of persons with parkinson’s disease by acoustic, vocal, and prosodic analysis,” in 2011 IEEE workshop on automatic speech recognition & understanding . IEEE, 2011, pp. 478–483. [14] T. Thies, E. Mallick, J. Tr¨ oger, E. Baykara, D. M¨ ucke, and M. T. Barbe, “Automatic speech analysis combined with machine learning reliably predicts the motor state in people with parkinson’s disease,” 
+
+npj Parkinson’s Disease , vol. 11, no. 1, p. 105, 2025. [15] J. R. Orozco-Arroyave, F. H¨ onig, J. Arias-Londo˜ no, J. Vargas-Bonilla, K. Daqrouq, S. Skodda, J. Rusz, and E. N¨ oth, “Automatic detection of parkinson’s disease in running speech spoken in three different languages,” The Journal of the Acoustical Society of America , vol. 139, no. 1, pp. 481–500, 2016. [16] Y. Kim and Y. Choi, “A cross-language study of acoustic predictors of speech intelligibility in individuals with parkinson’s disease,” Journal of Speech, Language, and Hearing Research , vol. 60, no. 9, pp. 2506–2518, 2017. [17] W. S. Lim, S.-I. Chiu, P.-L. Peng, J.-S. R. Jang, S.-H. Lee, C.-H. Lin, and H.-J. Kim, “A cross-language speech model for detection of parkinson’s disease: Ws lim et al.” Journal of Neural Transmission , vol. 132, no. 4, pp. 579–590, 2025. [18] Y. Kim, J. Berry, S. J. Lee, and L. Lin, “A cross-language study of oral diadochokinesis: Rates and rhythm,” Folia Phoniatrica et Logopaedica ,2025. [19] E. J. Yeo, S. Kim, and M. Chung, “Multilingual analysis of in-telligibility classification using english, korean, and tamil dysarthric speech datasets,” in 2022 25th Conference of the Oriental COCOSDA International Committee for the Co-ordination and Standardisation of Speech Databases and Assessment Techniques (O-COCOSDA) . IEEE, 2022, pp. 1–6. [20] E. Yeo, J. M. Liss, V. Berisha, and D. R. Mortensen, “Applications of artificial intelligence for cross-language intelligibility assessment of dysarthric speech,” Perspectives of the ASHA Special Interest Groups ,vol. 10, no. 6, pp. 2298–2308, 2025. [21] W.-N. Hsu, B. Bolte, Y.-H. H. Tsai, K. Lakhotia, R. Salakhutdinov, and A. Mohamed, “Hubert: Self-supervised speech representation learning by masked prediction of hidden units,” IEEE/ACM transactions on audio, speech, and language processing , vol. 29, pp. 3451–3460, 2021. [22] S. Chen, C. Wang, Z. Chen, Y. Wu, S. Liu, Z. Chen, J. Li, N. Kanda, T. Yoshioka, X. Xiao et al. , “Wavlm: Large-scale self-supervised pre-training for full stack speech processing,” IEEE Journal of Selected Topics in Signal Processing , vol. 16, no. 6, pp. 1505–1518, 2022. [23] A. Babu, C. Wang, A. Tjandra, K. Lakhotia, Q. Xu, N. Goyal, K. Singh, P. von Platen, Y. Saraf, J. Pino et al. , “Xls-r: Self-supervised cross-lingual speech representation learning at scale,” in Proc. Interspeech 2022 , 2022, pp. 2278–2282. [24] E. J. Yeo, K. Choi, S. Kim, and M. Chung, “Automatic severity classi-fication of dysarthric speech by using self-supervised model with multi-task learning,” in ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2023, pp. 1–5. [25] F. Javanmardi, S. R. Kadiri, and P. Alku, “Pre-trained models for detection and severity level classification of dysarthria from speech,” 
+
+Speech Communication , vol. 158, p. 103047, 2024. [26] P. Sapkota, H. Srivastava, H. K. Kathania, S. Narayanan, and S. R. Kadiri, “Do all features matter? layer-wise feature probing of self-supervised speech models for dysarthria severity classification,” Speech Communication , p. 103326, 2025. [27] A. Hernandez, E. Yeo, K. Choi, C.-J. Li, Z. Yue, R. K. Das, J. Rusz, M. M. Doss, J. R. Orozco-Arroyave, T. Arias-Vergara et al. , “Adapting self-supervised speech representations for cross-lingual dysarthria detec-tion in parkinson’s disease,” arXiv preprint arXiv:2603.22225 , 2026. [28] C.-J. Li, E. Yeo, K. Choi, P. A. P´ erez-Toro, M. Someki, R. K. Das, Z. Yue, J. R. Orozco-Arroyave, E. N¨ oth, and D. R. Mortensen, “Towards inclusive asr: Investigating voice conversion for dysarthric speech recog-nition in low-resource languages,” in Proc. Interspeech 2025 , 2025, pp. 2128–2132. [29] L. D. Maxim, R. Niebo, and M. J. Utell, “Screening tests: a review with examples,” Inhalation toxicology , vol. 26, no. 13, pp. 811–828, 2014. [30] D. Bone, S. L. Bishop, M. P. Black, M. S. Goodwin, C. Lord, and S. S. Narayanan, “Use of machine learning to improve autism screening and diagnostic instruments: Effectiveness, efficiency, and multi-instrument fusion,” Journal of Child Psychology and Psychiatry , vol. 57, no. 8, pp. 927–937, 2016. [31] K. Choi, E. Yeo, C. J. Cho, D. R. Mortensen, and D. Harwath, “Self-supervised speech models encode phonetic context via position-dependent orthogonal subspaces,” arXiv preprint arXiv:2603.12642 ,2026. [32] K. Choi, E. Yeo, C. J. Cho, D. Harwath, and D. R. Mortensen, “[b]=[d]-[t]+[p]: Self-supervised speech models discover phonological vector arithmetic,” arXiv preprint arXiv:2602.18899 , 2026. [33] J. Valk and T. Alum¨ ae, “Voxlingua107: a dataset for spoken language recognition,” in 2021 IEEE Spoken Language Technology Workshop (SLT) . IEEE, 2021, pp. 652–658. [34] A. Baevski, Y. Zhou, A. Mohamed, and M. Auli, “wav2vec 2.0: A framework for self-supervised learning of speech representations,” 
+
+Advances in neural information processing systems , vol. 33, pp. 12 449– 12 460, 2020. [35] V. Pratap, A. Tjandra, B. Shi, P. Tomasello, A. Babu, S. Kundu, A. Elkahky, Z. Ni, A. Vyas, M. Fazel-Zarandi et al. , “Scaling speech technology to 1,000+ languages,” Journal of Machine Learning Re-search , vol. 25, no. 97, pp. 1–52, 2024. [36] O. Klempir, J. G. Mullerova, and R. Krupicka, “Statistical, multi-scale and attention-based layer pooling of wav2vec-2 speech embeddings for parkinson’s disease detection,” Computers in Biology and Medicine , vol. 200, p. 111368, 2026. [37] A. Pasad, J.-C. Chou, and K. Livescu, “Layer-wise analysis of aself-supervised speech representation model,” in 2021 IEEE Automatic Speech Recognition and Understanding Workshop (ASRU) . IEEE, 2021, pp. 914–921. [38] A. Pasad, B. Shi, and K. Livescu, “Comparative layer-wise analysis of self-supervised speech models,” in ICASSP 2023-2023 IEEE In-ternational Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2023, pp. 1–5. [39] M. La Quatra, M. F. Turco, T. Svendsen, G. Salvi, J. R. Orozco-Arroyave, and S. M. Siniscalchi, “Exploiting foundation models and speech enhancement for parkinson’s disease detection from speech in real-world operative conditions,” arXiv preprint arXiv:2406.16128 ,2024. [40] C. D. Rios-Urrego, J. Rusz, and J. R. Orozco-Arroyave, “Automatic speech-based assessment to discriminate parkinson’s disease from es-sential tremor with a cross-language approach,” npj Digital Medicine ,vol. 7, no. 1, p. 37, 2024. [41] P. A. P´ erez-Toro, J. C. Vasquez-Correa, T. Arias-Vergara, P. Klumpp, M. Schuster, E. N¨ oth, and J. R. Orozco-Arroyave, “Emotional state modeling for the assessment of depression in parkinson’s disease,” in 
+
+International Conference on Text, Speech, and Dialogue . Springer, 2021, pp. 457–468. [42] R. B. Haynes, D. L. Sackett, W. S. Richardson, W. Rosenberg, and G. R. Langley, “Evidence-based medicine: How to practice & teach ebm,” Canadian Medical Association. Journal , vol. 157, no. 6, p. 788, 1997. [43] B. Desplanques, J. Thienpondt, and K. Demuynck, “Ecapa-tdnn: Em-phasized channel attention, propagation and aggregation in tdnn based speaker verification,” in Proc. Interspeech 2020 , 2020, pp. 3830–3834. [44] A. Radford, J. W. Kim, T. Xu, G. Brockman, C. McLeavey, and I. Sutskever, “Robust speech recognition via large-scale weak supervi-sion,” in International conference on machine learning . PMLR, 2023, pp. 28 492–28 518. [45] Y. Gong, Y.-A. Chung, and J. Glass, “Ast: Audio spectrogram trans-former,” Interspeech 2021 , 2021. [46] M. Kim, K. Jang, and H. Kim, “Improving cross-lingual phonetic representation of low-resource languages through language similarity analysis,” in ICASSP 2025-2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2025, pp. 1–5. [47] S. Khurana, N. Dawalatabad, A. Laurent, L. Vicente, P. Gimeno, V. Mingote, and J. Glass, “Cross-lingual transfer learning for low-resource speech translation,” in 2024 IEEE International Conference on Acoustics, Speech, and Signal Processing Workshops (ICASSPW) .IEEE, 2024, pp. 670–674. [48] M. Kim, H. Kim, and D. R. Mortensen, “Scaling self-supervised speech models uncovers deep linguistic relationships: Evidence from the pacific cluster,” arXiv preprint arXiv:2603.07238 , 2026. [49] M. Kim, J. S. Um, and H. Kim, “How far do ssl speech models listen for tone? temporal focus of tone representation under low-resource transfer,” in ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2026, pp. 18 297– 18 301. [50] A. de la Fuente and D. Jurafsky, “A layer-wise analysis of mandarin and english suprasegmentals in ssl speech models,” in Proc. Interspeech 2024 , 2024, pp. 1290–1294. [51] K. Choi, E. Yeo, K. Chang, S. Watanabe, and D. R. Mortensen, “Leveraging allophony in self-supervised speech models for atypical pronunciation assessment,” in Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers) ,2025, pp. 2613–2628. [52] E. J. Yeo, K. Choi, S. Kim, and M. Chung, “Speech intelligibility assessment of dysarthric speech by using goodness of pronunciation with uncertainty quantification,” in Proc. Interspeech 2023 , 2023, pp. 166–170. [53] Y. Ganin, E. Ustinova, H. Ajakan, P. Germain, H. Larochelle, F. Lavi-olette, M. March, and V. Lempitsky, “Domain-adversarial training of neural networks,” Journal of machine learning research , vol. 17, no. 59, pp. 1–35, 2016. [54] J.-W. Kim, K. Jang, M. Kim, and H. Lee, “A hierarchical fea-ture engineering framework for automated classification of phonotrau-matic and non-phonotraumatic vocal hyperfunction,” arXiv preprint arXiv:2606.07673 , 2026. [55] N. Brummer and D. A. Van Leeuwen, “On calibration of language recognition scores,” in 2006 IEEE Odyssey-The Speaker and Language Recognition Workshop . IEEE, 2006, pp. 1–8.
