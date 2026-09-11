@@ -1,0 +1,59 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-11T21:25:06.190203+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.11154v1",
+      "source": "arxiv",
+      "title": "Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs",
+      "abstract": "Multimodal large language models (MLLMs) have shown strong potential in open-ended emotion understanding, yet they often generate emotion hallucinations. Evaluating such hallucinations is particularly challenging for two reasons. First, emotion understanding spans multiple cognitive facets, from multimodal perception to psychological reasoning. Second, emotional interpretations are expressed in free-form language, making existing closed-ended protocols insufficient for evaluation. To address these challenges, we introduce EHR (Emotion Hallucination Rate), an evaluator that quantifies emotion hallucinations across six facets: expression, action, audio, instinct, logic, and conclusion. Using EHR, we reveal that existing mitigation methods often reduce hallucinations in some facets while aggravating them in others, exposing the limitation of coarse-grained correction and the need for facet-aware localization and mitigation. Motivated by this finding, we propose HMER (Hallucination-aware Memory-guided Emotion Reasoning), a training-free framework for emotion hallucination mitigation. HMER maintains a Hallucination Memory that records localized hallucinated claims and enables targeted logit rectification, together with an Anchor Memory that preserves reliable intermediate reasoning states to stabilize subsequent generation. By selectively suppressing unreliable cues while preserving trustworthy reasoning context, HMER enables fine-grained mitigation across diverse hallucination facets. Extensive experiments on 19 MLLMs demonstrate the prevalence of emotion hallucinations and the effectiveness of our framework across diverse model architectures.",
+      "authors": [
+        "Bowen Zeng",
+        "Peipei Song",
+        "Weidong Chen",
+        "Shengeng Tang",
+        "Song Ye",
+        "Yuanhong Zhong",
+        "Beier Zhu",
+        "Xun Yang"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM"
+      ],
+      "published": "2026-09-10T07:01:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.11154v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Emotion understanding with multimodal LLMs and audio emotion hallucination evaluation",
+      "llm_evidence_cn": "多模态大模型的情感理解与音频情感幻觉评估",
+      "llm_evidence": "多模态大模型的情感理解与音频情感幻觉评估",
+      "canonical_evidence": "多模态大模型的情感理解与音频情感幻觉评估",
+      "llm_tldr_en": "Multimodal large language models show promise in open-ended emotion understanding but often hallucinate emotions, which is hard to evaluate. This paper introduces EHR, an evaluator quantifying emotion hallucinations across six facets including audio, and shows existing mitigation methods are inadequate.",
+      "llm_tldr_cn": "多模态大模型在开放式情感理解上表现突出，却常产生情感幻觉，而现有封闭式评测协议难以衡量此类问题。本文提出EHR评估器，从表达、动作、音频、直觉、逻辑与结论六个维度量化情感幻觉。基于EHR的分析显示现有缓解方法往往效果有限。该工作为多模态情感理解提供了细粒度的幻觉评测框架，并提示音频线索在情感推断中的重要性。",
+      "llm_tldr": "多模态大模型在开放式情感理解上表现突出，却常产生情感幻觉，而现有封闭式评测协议难以衡量此类问题。本文提出EHR评估器，从表达、动作、音频、直觉、逻辑与结论六个维度量化情感幻觉。基于EHR的分析显示现有缓解方法往往效果有限。该工作为多模态情感理解提供了细粒度的幻觉评测框架，并提示音频线索在情感推断中的重要性。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

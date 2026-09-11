@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-11",
+  "date": "2026-09-11",
+  "generated_at": "2026-09-11T21:25:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/11/2609.11154v1-multi-faceted-evaluation-and-mitigation-of-emotion-hallucinations-in-mllms",
+      "section": "quick",
+      "title_en": "Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs",
+      "authors": "Bowen Zeng, Peipei Song, Weidong Chen, Shengeng Tang, Song Ye, Yuanhong Zhong, Beier Zhu, Xun Yang",
+      "date": "2026-09-10",
+      "pdf": "https://arxiv.org/pdf/2609.11154v1",
+      "score": "6.0",
+      "evidence": "多模态大模型的情感理解与音频情感幻觉评估",
+      "tldr": "多模态大模型在开放式情绪理解中常产生情绪幻觉，但现有评估受限于情绪的多认知层面与自由文本表达。为此，本文提出EHR，从表达、动作、音频、本能、逻辑和结论六个层面量化情绪幻觉。基于EHR发现，粗粒度缓解方法会顾此失彼，甚至在不同层面加重幻觉。作者进一步提出免训练框架HMER，通过幻觉记忆与锚点记忆进行细粒度定位和logit校正。在19个MLLM上的实验验证了情绪幻觉的普遍性及该方法的有效性。",
+      "tags": "query:ser-da",
+      "abstract_en": "Multimodal large language models (MLLMs) have shown strong potential in open-ended emotion understanding, yet they often generate emotion hallucinations. Evaluating such hallucinations is particularly challenging for two reasons. First, emotion understanding spans multiple cognitive facets, from multimodal perception to psychological reasoning. Second, emotional interpretations are expressed in free-form language, making existing closed-ended protocols insufficient for evaluation. To address these challenges, we introduce EHR (Emotion Hallucination Rate), an evaluator that quantifies emotion hallucinations across six facets: expression, action, audio, instinct, logic, and conclusion. Using EHR, we reveal that existing mitigation methods often reduce hallucinations in some facets while aggravating them in others, exposing the limitation of coarse-grained correction and the need for facet-aware localization and mitigation. Motivated by this finding, we propose HMER (Hallucination-aware Memory-guided Emotion Reasoning), a training-free framework for emotion hallucination mitigation. HMER maintains a Hallucination Memory that records localized hallucinated claims and enables targeted logit rectification, together with an Anchor Memory that preserves reliable intermediate reasoning states to stabilize subsequent generation. By selectively suppressing unreliable cues while preserving trustworthy reasoning context, HMER enables fine-grained mitigation across diverse hallucination facets. Extensive experiments on 19 MLLMs demonstrate the prevalence of emotion hallucinations and the effectiveness of our framework across diverse model architectures.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

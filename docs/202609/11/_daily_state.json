@@ -1,0 +1,25 @@
+{
+  "date": "20260911",
+  "date_label": "",
+  "generated_at": "2026-09-11 21:25:56 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.11154v1",
+      "route": "202609/11/2609.11154v1-multi-faceted-evaluation-and-mitigation-of-emotion-hallucinations-in-mllms",
+      "title": "Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "多模态大模型的情感理解与音频情感幻觉评估",
+      "first_seen_at": "2026-09-11 21:25:56 UTC",
+      "updated_at": "2026-09-11 21:25:56 UTC"
+    }
+  ]
+}

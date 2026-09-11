@@ -1,0 +1,627 @@
+Title: Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs
+
+URL Source: https://arxiv.org/pdf/2609.11154v1
+
+Published Time: Fri, 11 Sep 2026 00:38:57 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+> 1
+
+# Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs 
+
+Bowen Zeng, Peipei Song, Weidong Chen, Shengeng Tang, Song Ye, Yuanhong Zhong, Beier Zhu, Xun Yang 
+
+Abstract —Multimodal large language models (MLLMs) have shown strong potential in open-ended emotion understanding, yet they often generate emotion hallucinations. Evaluating such hallucinations is particularly challenging for two reasons. First, emotion understanding spans multiple cognitive facets, from mul-timodal perception to psychological reasoning. Second, emotional interpretations are expressed in free-form language, making exist-ing closed-ended protocols insufficient for evaluation. To address these challenges, we introduce the EHR (Emotion Hallucination 
+
+Rate) evaluator, which quantifies emotion hallucinations across six facets: expression , action , audio , instinct , logic , and conclusion .Using EHR , we reveal that existing mitigation methods often reduce hallucinations in some facets while aggravating them in others, exposing the limitation of coarse-grained correction and the need for facet-aware localization and mitigation. Motivated by this finding, we propose HMER (Hallucination-aware Memory-guided Emotion Reasoning), a training-free framework for emo-tion hallucination mitigation. HMER maintains a Hallucination Memory that records localized hallucinated claims and enables targeted logit rectification, together with an Anchor Memory 
+
+that preserves reliable intermediate reasoning states to stabilize subsequent generation. By selectively suppressing unreliable cues while preserving trustworthy reasoning context, HMER enables fine-grained mitigation across diverse hallucination facets. Ex-tensive experiments on 19 MLLMs demonstrate the prevalence of emotion hallucinations and the effectiveness of our framework across diverse model architectures. 
+
+Index Terms —Open-ended emotion reasoning, Emotion hallu-cination, Multimodal large language models. 
+
+I. I NTRODUCTION 
+
+# MULTIMODAL emotion understanding seeks to bridge the gap between human emotional intelligence and ma-chine capabilities by enabling models to infer affective states from multimodal signals [1]. The rise of Multimodal Large Language Models (MLLMs) has shifted multimodal emotion understanding from traditional closed-set classification [2], [3] toward open-ended, generative interpretation [4]–[6]. However, this generative paradigm also introduces emo-tion hallucinations, where MLLMs produce incorrect or un-grounded emotional interpretations [7]. Evaluating such hal-lucinations requires accounting for two defining character-istics: (1) Multi-faceted Cognition: emotion understanding                            
+
+> This work is sponsored by CCF-Lenovo Blue Ocean Research Fund (No 20240106). Corresponding authors: Peipei Song, Beier Zhu and Xun Yang. Bowen Zeng, Peipei Song, Weidong Chen, Beier Zhu and Xun Yang are with School of Information Science and Technology, Uni-versity of Science and Technology of China, Hefei, 230026, Anhui, China (e-mail: ralph0225@mail.ustc.edu.cn; beta.songpp@gmail.com; chen-weidong@ustc.edu.cn; beier.zhu@ustc.edu.cn; xyang21@ustc.edu.cn). Shengeng Tang is with School of Computer Science and Information Engineering, Hefei University of Technology, Hefei, 230601, Anhui, China (e-mail: tangsg@hfut.edu.cn). Song Ye is with Lenovo Group, China. Yuanhong Zhong is with Chongqing University, Chongqing, 400044, China.
+
+spans multiple cognitive facets, from multimodal perception to psychological reasoning, beyond the object-centric scope of conventional hallucination evaluation [8]–[10]. For example, as shown in Fig. 1(a), the object-centric CHAIR [8] metric cannot assess emotion-specific cues such as averted gaze or 
+
+aggressive tone . (2) Free-form Generation: emotional inter-pretations are expressed in unconstrained natural language, where different models may rely on different yet valid cues and reasoning trajectories, making closed-ended evaluation protocols insufficient. For instance, one model may infer anger 
+
+from a raised voice , while another relies on a frown . Restricted QA protocols, such as POPE evaluation [9] shown in Fig. 1(a), cannot capture these distinct yet valid reasoning trajectories. To operationalize these principles, we introduce the 
+
+EHR (Emotion Hallucination Rate) evaluator, a psychology-grounded framework for identifying and quantifying emo-tion hallucinations. Inspired by Ekman’s emotion signal sys-tems [11], we define three perception facets —expression ,
+
+action , and audio —to assess whether generated interpretations are grounded in observable multimodal cues. Drawing on Shamay-Tsoory’s dual-system theory of empathy [12], we fur-ther introduce three psychological reasoning facets —instinct ,
+
+logic , and conclusion —to characterize higher-level affective inference. To accommodate free-form outputs, EHR decom-poses each generated interpretation into semantically coherent claims, assigns them to the corresponding facets, and verifies each claim against relevant multimodal evidence. Notably, 
+
+EHR shows strong agreement with human judgments as shown in Fig 3, supporting its reliability. Our EHR evaluator reveals that existing mitigation methods often improve some facets at the expense of others. As shown in Fig. 1(c), VCD [13] and EmotionHallucer [14] reduce audio hallucinations while substantially increasing expression and action hallucinations. These trade-offs expose the limitation of current coarse-grained mitigation: suppressing hallucinations in one facet may inadvertently exacerbate errors in others. This motivates the need to localize and correct hallucinated emotional claims in a facet-aware manner. To bridge the gap, we propose HMER (Hallucination-aware 
+
+Memory-guided Emotion Reasoning), a training-free frame-work for hallucination mitigation. HMER maintains two mem-ories: the Hallucination Memory stores hallucinated claims with their facet labels and tokens identified by the EHR 
+
+evaluator, while the Anchor Memory preserves trusted rea-soning sentences selected by the lowest EHR scores. During decoding, HMER converts the hallucinated tokens stored in the 
+
+Hallucination Memory into a vocabulary-level hallucination direction by taking their vocabulary-wise maximum logits, and suppresses this direction for targeted logit rectification. arXiv:2609.11154v1 [cs.MM] 10 Sep 2026 2Multimodal 
+
+Input  
+
+> "I'm sorry, I'm wrong." The woman feels angry with an averted gaze and an aggresive tone.
+> CHAIR misses emotion-specific cues.
+> Perception Psychology
+> Expression Action Audio Instinct Logic
+> EHR enables multi-faceted and free-form evaluation.
+> Conclusion
+
+(a) CHAIR Evaluation (d) EHR of Mitigation Methods 
+
+> Video Audio Text
+> Expression Action Audio Instinct Logic Conclusion
+> PerceptionPsychology
+> 20 40 60 80
+> Vanilla VCD EmotionHallucer Ours
+
+(b) POPE Evaluation (c) EHR Evaluation  
+
+> Evaluate [woman]
+> Is the woman angry? Yes, her voice is raised.
+> Evaluate [Yes]
+> Yes, she shows a frown.
+> Evaluate [Yes] POPE misses distinct valid reasoning.
+> In the video, we see a man and a woman talking. The woman’s facial expression appears angry with an open mouth showing some teeth. As time goes on, she points at him in frustration. In the audio, the tone is high-pitched and aggressive. She feels betrayed by what the man said. Combined with the text content "I'm sorry, I'm wrong", it expresses the person's dissatisfaction and anger towards the other party.
+> Evaluate
+
+Fig. 1. (a) Object-centric evaluation such as CHAIR miss emotion-specific cues. (b) Restricted QA protocols such as POPE overlook distinct valid reasoning paths in free-form generation. (c) EHR evaluates emotion hallucinations across six facets of multimodal perception and psychological reasoning. (d) EHR 
+
+further reveals facet-wise differences among mitigation methods, with our method consistently reducing hallucination across all facets. 
+
+Meanwhile, sentences in the Anchor Memory are fed back as trusted reasoning context, preventing unsupported claims from propagating along the generation trajectory. Extensive experiments on 19 MLLMs across multiple datasets reveal that emotion hallucination remains pervasive across current MLLMs, cannot be reliably resolved by model scaling or richer modalities, and exhibits a pronounced relia-bility gap between multimodal perception and psychological reasoning. Our method consistently reduces all facet-wise EHR 
+
+metrics across all evaluated backbones and datasets, lowering 
+
+EHR total by 3.27%–11.85% while improving emotion predic-tion performance. Our contributions can be summarized as follows:  
+
+> •
+
+Evaluation: We propose EHR (Emotion Hallucination 
+
+Rate) evaluator that decomposes emotion hallucinations into six facets across multimodal perception and affective reasoning, enabling fine-grained evaluation of free-form emotional interpretations.  
+
+> •
+
+Methodology: We introduce HMER (Hallucination-aware 
+
+Memory-guided Emotion Reasoning), which converts lo-calized evaluator feedback into generation-time regula-tion. HMER maintains a Hallucination Memory for logit rectification and an Anchor Memory for trust-anchored reasoning, thereby reducing both local hallucinations and their propagation through subsequent reasoning.  
+
+> •
+
+Performance: We systematically evaluate 19 MLLMs spanning video-language, audio-language, omni-modal, and emotion-specialized architectures. The results reveal the prevalence and progression of emotion hallucinations and demonstrate the effectiveness of HMER across repre-sentative model backbones. II. R ELATED WORKS 
+
+A. Emotion Multimodal Large Language Models 
+
+Multimodal emotion understanding has evolved from tradi-tional discriminative recognition [2], [3] toward open-ended emotional reasoning [15]. Early studies primarily focused on predicting predefined emotion categories from multimodal signals. With the emergence of MLLMs and their enhanced multimodal comprehension and linguistic expressiveness, re-cent research has shifted toward generative emotional interpre-tation beyond fixed taxonomies [4]–[6], [16]–[19]. However, in the absence of explicit grounding constraints, the gener-ative paradigm introduces new hallucination risks, such as fabricated emotional cues and psychologically implausible rea-soning [14]. Ensuring reliable multimodal emotion reasoning remains an open challenge. 
+
+B. Hallucination in Multimodal Large Models 
+
+Hallucination in multimodal large models has been widely studied in object-centric settings, typically involving errors in object existence, attributes, or relations [7]. Some studies focus on fine-grained analysis of hallucinations, revealing that errors often stem from inconsistencies between generated semantic claims and visual evidence [20]. Evaluation methods quantify such mismatches through discriminative probing [9], generative faithfulness metrics [8], claim-level [20], and LLM-based verification [21], [22]. Mitigation strategies mainly sup-press hallucination generation through inference-time interven-tion [13], [23]–[25] or representation-based mitigation [26], while test-time scaling provides another direction [27]–[29]. Meanwhile, a growing number of dedicated benchmarks [30] have been constructed to facilitate systematic and standardized diagnosis of multimodal hallucinations. In contrast, emotion hallucination has only recently gained attention with the rise of emotion MLLMs and exhibits more implicit and multi-faceted characteristics than object hallucination. EmotionHallucer [14] represents the first attempt to study emotion hallucination. It uses an adversarial binary question–answer (QA) framework but struggles to capture the diverse errors in open-ended emotional reasoning. In this work, we propose a unified evaluation and-mitigation framework that enables interpretable quantification of emotion hallucinations under a psychology-3Response Glk
+
+Response Glk  
+
+> Video Audio Text
+
+MLLM Response Glk
+
+> k-iter
+
+Hallucination Memory Anchor Memory 
+
+logits raw 
+
+logits new 
+
+> aggressive frown
+
+dhallu         
+
+> Based on sorrowful tone she feels
+> Perception
+> Expression Action Audio
+> Psychology
+> Logic Instinct Conclusion
+> Evaluator Facet-aware EHR
+> Hallucination token Judge Model Atomizer Text
+> arg min
+> EHR
+
++
+
+> Anchor tokens
+
+<start> 
+
+Inputs Perception Psychology            
+
+> Logits Rectification
+> MAX
+> Trust-anchored Reasoning Expression Action Audio Logic Instinct Conclusion
+> Fig. 2. Overview of the EHR evaluator and HMER . The evaluator produces facet-aware hallucination feedback and localized hallucinated tokens from generated responses. HMER then maintains a Hallucination Memory for Logit Rectification, which suppresses a vocabulary-level hallucination direction during iterative decoding, and an Anchor Memory for Trust-Anchored Reasoning, which conditions subsequent generation on the lowest-EHR trusted anchors.
+
+inspired multi-faceted protocol and converts evaluation signals into controllable generation mechanisms. III. M ETHODS 
+
+We study emotion hallucination in MLLMs during open-ended emotion reasoning. Given multimodal inputs X =
+
+{V, A, T }, the model generates a natural-language emotional interpretation with L sentences {Gl}Ll=1 through autoregres-sive decoding. At each decoding step t, the model pro-duces token-level logits z(yt|X, y <t ) that reflect the internal generation dynamics. First, EHR evaluator defines emotion hallucinations across perception and psychology dimensions and converts free-form generations into claim-level reliability feedback. HMER then uses the identified hallucination spans to construct a hallucination memory for logit rectification, while maintaining a anchor memory to control what can enter subsequent reasoning. An overview is provided in Fig. 2. 
+
+A. Emotion Hallucination Rate Evaluator 
+
+Unlike object hallucinations that can be verified against ex-plicit entities, emotion hallucinations in open-ended reasoning are obscure and compositional, often manifesting as subtle dis-tortions in multimodal perception or breakdowns in affective inference. To make such failures diagnostically observable, we introduce a structured formulation grounded in psychological theory. Drawing on Ekman’s emotion signal systems [11] and Shamay-Tsoory’s dual-system empathy theory [12], we conceptualize emotion understanding as a two-stage process of evidence acquisition and cognitive synthesis, and decompose it into six facets organized into two hierarchical levels:  
+
+> •
+
+Perception Hallucination. This level measures whether emotional claims are supported by observable multimodal evidence: Expression (facial and micro-expression cues), 
+
+Action (body movement and gesture cues), and Audio 
+
+(paralinguistic vocal signals).  
+
+> •
+
+Psychology Hallucination. This level evaluates the va-lidity of emotion inference conditioned on perceived evidence: Instinct (direct affective appraisal), Logic 
+
+(evidence-consistent reasoning), and Conclusion (glob-ally coherent affective judgment). Given the six-facet taxonomy S = {expression , action ,
+
+audio , instinct , logic , conclusion }, we construct EHR evaluator to convert a free-form emotional interpretation into local-ized reliability feedback for metric computation and memory update. As shown in Fig. 2, this process consists of claim atomization and verification. The evaluator first decomposes a generated response G into a set of semantically coherent and independently verifiable claims, 
+
+C = {ci}Ni=1 = Atomize( G), ci 7 → si, s i ∈ S , (1) where each claim corresponds to a single perceptual observa-tion or psychology reasoning step, such as a facial movement, an action cue, an acoustic cue, an immediate affective im-pression, a logical bridge, or a final emotion conclusion. The facet label si specifies the evidence required for verification: expression and action claims are checked mainly against visual evidence, audio claims against acoustic evidence, and reasoning claims against multimodal evidence and the stated reasoning context. A judge then returns a binary reliability label, 
+
+ri = Judge( ci | X, s i), ri ∈ { 0, 1}, (2) where ri = 1 indicates that the claim is supported and 
+
+ri = 0 indicates an emotion hallucination. For generation-4
+
+Algorithm 1: Hallucination-Aware Memory-Guided Emotion Reasoning 
+
+Input: multimodal input X, maximum rectification round 
+
+K, maximum sentence number L
+
+Output: anchor archive MA
+
+Init MH ← ∅ , MA ← ∅ ;
+
+for l = 1 to L do 
+
+G0 
+
+> l
+
+← MLLM( X, MA);
+
+for k = 0 to K − 1 do 
+
+(Hkl , EHR (Gkl )) ← Evaluator( Gkl , X, MA);
+
+MH ← Update( MH , Hkl );
+
+if EHR (Gkl ) = 0 then break 
+
+dkl ← BuildDirection( Hkl );
+
+znew ← Rectify( zraw , dkl );
+
+Gk+1  
+
+> l
+
+∼ P (znew );
+
+k∗ ← arg min k EHR total (Gkl );
+
+MA ← Update( MA, G k∗ 
+
+> l
+
+);
+
+if EOS reached then break return MA;
+
+time mitigation, the evaluator additionally localizes the token span τi associated with each hallucinated claim, which is subsequently stored in the Hallucination Memory of HMER .The facet-wise Emotion Hallucination Rate is then com-puted as 
+
+EHR s = 1
+
+|Cs|
+
+X
+
+> c∈Cs
+
+I(rc = 0) , s ∈ S , (3) where Cs denotes the set of claims assigned to facet s. Let 
+
+Sper and Spsy denote the perception and reasoning subsets defined above. The two group-level rates are 
+
+EHR per =
+
+P
+
+> s∈S per
+
+P
+
+> c∈Cs
+
+I(rc = 0) 
+
+P
+
+> s∈S per
+
+|Cs| , EHR psy =
+
+P
+
+> s∈S psy
+
+P
+
+> c∈Cs
+
+I(rc = 0) 
+
+P
+
+> s∈S psy
+
+|Cs| .
+
+(4) For an unavailable modality, such as audio in a video-language model, we set the corresponding claim set to Cs = ∅; it there-fore contributes to neither the numerator nor the denominator. The overall rate is 
+
+EHR total =
+
+X
+
+> s∈S
+
+X
+
+> c∈Cs
+
+I(rc = 0) 
+
+X
+
+> s∈S
+
+|Cs| . (5) Beyond quantifying emotion hallucinations, the EHR scores also serve as reliability criteria for HMER . In particular, 
+
+EHR total is used as the selection metric for constructing the Anchor Memory, where lower scores indicate more reliable reasoning sentences. 
+
+B. Hallucination-Aware Memory-Guided Emotion Reasoning 
+
+The evaluator identifies unreliable claims, but post-hoc evaluation cannot prevent them from entering the subse-quent reasoning context. This limitation is critical in open-ended emotion understanding, where generation commonly progresses from multimodal observations to psychological in-terpretation. We propose HMER (Hallucination-aware Memory-guided Emotion Reasoning), a training-free generation-time framework. HMER performs mitigation by maintaining a Hal-lucination Memory and an Anchor Memory , which respectively support Logit Rectification and Trust-Anchored Reasoning. The overall procedure is summarized in Algorithm 1. 
+
+Memory Construction. HMER maintains a Hallucination Memory MH and an Anchor Memory MA. The Hallucina-tion Memory stores hallucinated claims with their facet labels and token spans identified by the EHR evaluator, while the 
+
+Anchor Memory preserves trusted reasoning sentences selected by the lowest EHR scores. For a candidate Gkl , the evaluator returns the hallucination set Hkl = {(ci, s i, τ i) | ri = 0 }, where ci is an unreliable claim, si is its facet, and τi denotes the token corresponding to the claim. If a claim contains multiple hallucinated tokens, each token is stored as a separate entry. HMER writes these entries into the Hallucination Memory, 
+
+MH = {(l, k, c i, s i, τ i, zτi ) | ri = 0 , s i ∈ S} , (6) where l and k denote the sentence index and rectification round, respectively, and zτi contains the vocabulary-level logits of τi.In parallel, the Anchor Memory retains the most reliable candidate generated at each sentence step. Specifically, among all candidates {Gkl }Kk=0 , HMER selects the one with the lowest total EHR as the trusted anchor: 
+
+k∗ = arg min  
+
+> k∈{ 0,...,K }
+
+EHR total (Gkl ). (7) This selection ensures that the anchor reflects the lowest hallucination risk observed during iterative rectification. The Anchor Memory is then updated as 
+
+MAl = MAl−1 ∪
+
+n
+
+Gk∗
+
+> l
+
+o
+
+, MA 
+
+> 0
+
+= ∅, (8) where MAl accumulates trusted reasoning sentences and pro-vides a reliable reasoning context for subsequent generation. 
+
+Logit Rectification. Given the hallucination feedback stored in the Hallucination Memory from the previous candidate 
+
+Gk−1 
+
+> l
+
+, Logit Rectification retrieves the logits associated with the identified hallucinated spans and constructs a vocabulary-level hallucination direction. For each vocabulary index v, we take the maximum logit across all hallucinated tokens: 
+
+dk−1 
+
+> l,v
+
+= max 
+
+> (ci,s i,τ i)∈H k−1
+> l
+
+zτi,v . (9) The max operator preserves the strongest vocabulary-level signal across hallucinated claim tokens, preventing salient hallucination tendencies from being diluted by weaker ones. Since the direction is constructed from the full vocabulary logits at hallucinated positions, it captures alternative contin-uations assigned high probability by the model rather than only the tokens selected in the final output. For example, suppressing only “aggressive” may cause a lexical substitution such as “hostile” without changing the unsupported interpreta-tion, whereas dk−1 
+
+> l
+
+retains the broader distributional tendency associated with the hallucinated content. 5
+
+TABLE I 
+
+EMOTION HALLUCINATION RATES (%) ACROSS MLLM S UNDER DIFFERENT MODALITIES (A: A UDIO , V: V IDEO , T: T EXT ) ON OV-MERD+. L OWER VALUES INDICATE FEWER HALLUCINATIONS . T HE TOP TWO RESULTS ARE HIGHLIGHTED IN GREEN (1 ST ) AND BLUE (2 ND ), RESPECTIVELY . † FOR 
+
+GPT-4 O, WE SAMPLE 10 FRAMES PER VIDEO .
+
+Model Size Modality Emotion Hallucination Rate (%) A V T Expr. Act. Aud. Inst. Log. Conc. Per. Psy. Total Open-source MLLMs 
+
+Qwen2-audio [31] 7B ✓ ✓ – – 37.8 34.2 21.8 29.7 37.9 28.7 29.5 SALMONN [32] 7B ✓ ✓ – – 38.0 30.0 24.4 31.3 36.8 28.4 29.0 Video-ChatGPT [33] 7B ✓ ✓ 28.3 44.8 – 35.3 18.7 41.0 41.7 31.3 35.2 mPLUG-Owl [34] 7B ✓ ✓ 24.7 55.0 – 31.8 22.3 35.2 40.3 29.6 33.2 LLaMA-VID [35] 7B ✓ ✓ 33.9 50.6 – 36.0 19.1 41.3 42.3 32.0 35.3 Otter [36] 7B ✓ ✓ 38.3 60.9 – 45.6 14.3 60.2 48.5 38.7 42.2 Chat-UniVi [37] 7B ✓ ✓ 19.1 33.4 – 35.5 22.3 32.7 24.0 29.7 27.9 InternVL [38] 7B ✓ ✓ 7.1 14.4 – 24.5 19.1 15.9 9.9 19.8 17.5 Qwen2.5-VL [39] 7B ✓ ✓ 6.1 13.3 – 24.1 18.1 16.6 9.0 19.2 16.4 Qwen3-VL-8B [39] 8B ✓ ✓ 4.1 10.0 – 22.6 18.9 13.9 5.7 18.9 15.3 Qwen3-VL-30B [39] 30B ✓ ✓ 3.8 12.1 – 19.5 19.2 15.8 6.1 18.3 14.9 R1-Omni [6] 0.5B ✓ ✓ ✓ 25.4 59.2 67.6 50.9 29.0 46.0 42.2 40.6 41.3 Emotion-LLaMA [5] 7B ✓ ✓ ✓ 40.7 77.9 40.0 50.0 12.4 36.8 51.6 33.4 35.6 HumanOmni [16] 7B ✓ ✓ ✓ 30.1 55.7 17.0 22.0 13.9 33.1 39.8 23.3 32.8 AffectGPT [4] 7B ✓ ✓ ✓ 37.7 55.6 53.0 34.9 25.0 22.2 48.7 27.3 32.4 Qwen2.5-Omni [40] 7B ✓ ✓ ✓ 6.4 10.8 24.8 19.1 19.0 12.5 14.0 16.9 16.1 Qwen3-Omni-30B [40] 30B ✓ ✓ ✓ 6.5 15.5 23.6 21.9 16.5 14.9 12.9 18.2 15.9 
+
+Closed-source MLLMs 
+
+GPT-4o † [41] – ✓ ✓ 23.8 18.7 – 34.8 21.3 20.5 19.2 25.9 24.4 Gemini-2.5-flash [42] – ✓ ✓ ✓ 7.0 15.8 27.6 24.0 16.1 12.2 15.4 20.1 18.0 
+
+We then use this direction to rectify the decoding distribu-tion for the next candidate Gkl . Let z(k)raw denote the original logits for rectification round k, with p(k) 
+
+> raw
+
+= Softmax( z(k)
+
+> raw
+
+).The rectified logits are 
+
+z(k) 
+
+> new
+
+= z(k) 
+
+> raw
+
+− λ ·
+
+
+
+p(k) 
+
+> raw
+
+⊙ Softmax( dk−1 
+
+> l
+
+)
+
+
+
+, (10) where λ controls the suppression strength and ⊙ denotes element-wise multiplication. Applying Softmax to dk−1 
+
+> l
+
+en-sures that the suppression term remains non-negative and normalized, thereby making its scale comparable across rec-tification rounds while preserving the relative strength of hallucination-associated vocabulary entries. Meanwhile, p(k)raw 
+
+serves as a soft gate, restricting strong suppression to vocab-ulary entries that are both associated with the hallucination direction and probable under the current decoding context, thereby minimizing interference with unrelated tokens and preserving generation fluency. Sampling from the rectified distribution produces Gkl , which is evaluated again to update the Hallucination Memory before the next rectification round. Consequently, EHR evaluator feedback is not only used to rank completed responses, but also directly reshapes the subsequent decoding trajectory. 
+
+Trust-Anchored Reasoning. The Anchor Memory accumu-lates the lowest-EHR reasoning sentence selected at each generation step, providing a sequence of trusted intermediate anchors. At each sentence generation step, HMER retrieves the Anchor Memory and uses the accumulated anchors as the trusted reasoning context for generating the next sentence: 
+
+G0 
+
+> l+1
+
+= MLLM  X, MA = MLLM 
+
+
+
+X, G k∗ 
+
+> 1
+
+, . . . , G k∗
+
+> l
+
+
+
+.
+
+(11) Expression Action Audio Instinct Logic Conclusion Total 010 20 30 40 50 60 EHR (%)    
+
+> Perception Psychology
+> 45.6 55.0 50.0 36.0 22.4 25.5 32.9 35.3 40.0 56.1 35.6 26.0 24.4 33.5
+> Human EHR Evaluator
+
+Fig. 3. Human vs. EHR evaluator assessments of emotion hallucination. 
+
+This trust-anchored context prevents rejected candidates from entering the autoregressive history, reducing the in-heritance of unsupported perceptual or reasoning claims in subsequent generations. By continually re-anchoring genera-tion to trusted reasoning sentences, Trust-Anchored Reasoning constrains hallucination propagation along the trajectory. IV. E XPERIMENTS 
+
+A. Experimental Setup 
+
+Datasets and Metrics. Experiments are conducted under two settings: hallucination evaluation and hallucination mitigation. For open-ended emotion reasoning, we conduct zero-shot evaluations on the OV-MERD+ [4] dataset. It consists of 532 samples characterized by unfixed emotion categories and a diverse number of labels per instance, providing a fine-grained platform that transcends restricted, predefined taxonomies. 6
+
+TABLE II 
+
+PERFORMANCE COMPARISON ACROSS DATASETS AND BACKBONES . LOWER EHR AND HIGHER EMOTION PREDICTION SCORES ARE BETTER .AFFECT GPT IS USED AS THE BACKBONE FOR CROSS -DATASET EVALUATION ON CMU-MOSI AND CH-SIMS. VCD, ICD, M3ID, AND 
+
+EMOTION HALLUCER ARE REPRODUCED FOR FAIR COMPARISON , AND THE BEST RESULTS ARE BOLDED .
+
+Method Emotion Hallucination Rate ( ↓) Emotion ACC ( ↑)Expr. Act. Aud. Inst. Log. Conc. Per. Psy. Total F1 Recall OV-MERD+ 
+
+AffectGPT 37.65 55.55 53.03 34.93 25.00 22.22 47.55 25.24 32.43 52.22 53.00 + VCD [13] 37.72 50.00 49.95 31.55 26.04 18.40 46.02 24.42 32.38 53.83 54.40 + ICD [45] 25.83 54.02 41.92 35.32 20.07 23.65 37.35 24.98 29.97 53.97 55.55 + M3ID [46] 35.28 48.21 45.59 30.69 20.59 18.69 42.03 22.69 30.79 53.89 53.53 + EmotionHallucer [14] 29.49 66.66 50.51 33.87 22.60 26.60 48.54 29.86 31.70 47.11 49.34 
+
++ Ours 13.81 39.31 34.54 25.70 19.80 21.17 28.14 22.50 23.52 55.23 58.45 
+
+Qwen2.5-Omni 6.45 10.89 24.80 19.11 19.01 12.55 14.02 16.97 16.10 57.32 55.68 + VCD [13] 8.15 12.76 25.22 19.44 15.50 12.16 15.50 15.85 15.74 56.78 55.83 + ICD [45] 5.01 10.14 29.17 15.88 13.23 16.22 13.88 15.07 14.60 56.24 55.21 + M3ID [46] 4.44 9.90 19.92 17.80 12.76 12.78 9.17 14.30 12.84 55.02 53.38 + EmotionHallucer [14] 6.21 12.96 18.08 15.83 11.30 13.11 10.74 13.98 12.14 58.61 54.53 
+
++ Ours 4.31 9.84 15.25 12.84 18.54 11.93 9.14 14.28 12.83 58.02 57.23 
+
+R1-Omni 25.38 59.23 67.61 50.89 28.99 46.01 42.16 40.62 41.28 42.88 40.55 + VCD [13] 30.17 68.40 59.03 55.34 27.43 46.94 48.71 41.70 44.72 42.22 41.49 
+
++ ICD [45] 27.59 71.76 51.47 51.64 22.05 47.66 44.67 37.57 41.24 39.94 38.29 + M3ID [46] 24.82 65.94 60.17 46.82 24.59 46.85 43.38 36.82 40.62 36.72 33.68 + EmotionHallucer [14] 32.77 73.84 59.00 56.43 24.76 50.62 47.71 44.52 45.66 38.76 39.68 
+
++ Ours 14.09 51.84 41.49 43.18 17.49 39.55 30.10 32.70 31.47 44.24 41.49 CMU-MOSI 
+
+AffectGPT 38.12 50.28 80.35 46.84 23.65 59.94 65.69 42.49 52.87 77.77 77.94 + VCD [13] 40.00 48.67 71.30 46.30 23.02 60.07 60.31 42.36 50.50 75.73 76.19 + ICD [45] 36.48 44.19 80.33 44.62 17.39 62.79 63.98 40.89 50.74 77.84 78.05 + M3ID [46] 44.61 56.25 78.09 47.04 21.41 60.34 65.79 42.02 52.47 75.84 76.37 + EmotionHallucer [14] 28.32 45.93 77.08 54.43 17.28 69.98 58.84 45.30 50.73 73.65 72.76 
+
++ Ours 19.83 32.40 75.43 39.87 13.45 59.04 52.96 36.97 42.98 78.41 78.57 CH-SIMS 
+
+AffectGPT 31.48 51.85 56.14 33.07 24.54 21.18 47.96 24.54 32.20 79.99 80.41 + VCD [13] 37.97 65.82 48.58 36.71 20.09 19.19 46.37 23.99 33.68 75.71 76.55 + ICD [45] 30.22 52.54 46.71 35.58 13.72 23.22 41.09 22.55 30.25 76.78 77.32 + M3ID [46] 33.62 50.00 51.21 34.24 24.89 20.34 44.76 25.88 33.31 78.32 79.12 + EmotionHallucer [14] 30.03 63.68 50.50 48.89 15.79 32.38 44.66 28.13 34.81 71.10 73.45 
+
++ Ours 13.29 22.26 24.71 19.12 21.75 20.98 18.84 20.93 20.35 82.41 82.47 
+
+For hallucination mitigation, we further evaluate on CMU-MOSI [43] and CH-SIMS [44], covering English and Chinese emotion reasoning respectively, to examine the generalizability of our method across datasets. We report EHR for reasoning reliability, including EHR s, EHR per, psy , and EHR total , and F1-Score/Recall [4] for emotion prediction accuracy. 
+
+Evaluated MLLMs. To analyze emotion hallucinations, we evaluate both open-source and closed-source MLLMs spanning different capability profiles, including emotion-specialized ( e.g. , AffectGPT [4], R1-Omni [6]), audio-centric (e.g. , Qwen2-Audio [31]), video-understanding ( e.g. , Video-ChatGPT [33]), general-purpose models (e.g. , Qwen2.5-Omni [40]), and so on. Experiments are conducted via official implementations or APIs. For hallucination mitigation experi-ments, we select AffectGPT, Qwen2.5-Omni, and R1-Omni as backbones, and compare our method with representative miti-gation solutions: VCD [13], ICD [45], M3ID [46] (contrastive decoding for object hallucination), and EmotionHallucer [14] (self-verification for emotion hallucination). 
+
+Implementation Details. For hallucination evaluation, we employ Qwen3 [47] as our atomizer, and include Qwen2.5-Omni [40] and Qwen3 as the judge models. The models are locally deployed. Regarding the iterative rectification, we set the logit suppression coefficient λ=50, maximum retry iterations K=3, and maximum sentence number L=20. All experiments are conducted on an A800 GPU. 
+
+B. Emotion Hallucination Evaluation 
+
+Benchmarking MLLMs. Table I presents a comprehensive evaluation of state-of-the-art MLLMs under the proposed EHR protocol. We have three key observations. (1) Emo-tion hallucination is a pervasive issue in existing MLLMs. Across models, the overall EHR total remains substantial ( e.g. ,Otter: 42.2%, LLaMA-VID: 35.3%). (2) Model scaling cannot resolve hallucination; for instance, Qwen3-VL-30B lowers 
+
+EHR total relative to its 8B counterpart, yet residual errors persist across multiple facets. Also, enriching modality is insufficient; omni-models do not consistently outperform VL models ( e.g. , Qwen3-Omni-30B vs. Qwen3-VL-30B), suggest-ing potential multimodal interference. (3) A pronounced dis-crepancy exists between perception and reasoning reliability. For example, Qwen3-VL-8B has superior perceptual ground-ing ( EHR per =5.7% ), but its reasoning hallucination remains elevated ( EHR psy =18.9%), indicating that emotion hallucina-tion is inherently a multi-level reliability failure. 7
+
+TABLE III 
+
+ABLATION STUDY AND COMPARISON WITH TEST -TIME SCALING . WE EVALUATE THE CONTRIBUTIONS OF LOGIT RECTIFICATION (LR) AND 
+
+TRUST -ANCHORED REASONING (TR), TOGETHER WITH BEST -OF -N (B ON) AS A TEST -TIME SCALING BASELINE . “ W/O LR & TR” CORRESPONDS TO THE VANILLA MODEL WITHOUT EITHER COMPONENT . L OWER EHR IS BETTER , AND THE BEST RESULTS FOR EACH BACKBONE ARE BOLDED .
+
+Variant Emotion Hallucination Rate ( ↓)Expression Action Audio Instinct Logic Conclusion Perception Psychology Total 
+
+AffectGPT 37.65 55.55 53.03 34.93 25.00 22.22 47.55 25.24 32.43 w/o TR 27.75 52.56 48.26 28.97 22.61 21.22 41.17 23.04 29.02 w/o LR 21.80 41.94 36.30 26.12 23.71 21.19 30.96 23.09 25.29 + BoN 32.08 56.03 51.93 31.65 22.26 21.35 45.57 23.41 30.78 
+
++ Ours 13.81 39.31 34.54 25.70 19.80 21.17 28.14 22.50 23.52 
+
+Qwen2.5-Omni 6.45 10.89 24.80 19.11 19.01 12.55 14.02 16.97 16.10 w/o TR 5.81 10.09 17.51 16.18 18.91 12.27 10.20 15.81 14.46 w/o LR 6.41 10.79 23.64 16.77 18.65 12.18 11.90 15.91 14.76 + BoN 5.64 7.05 18.18 15.67 17.80 15.67 8.47 16.72 13.26 
+
++ Ours 4.31 9.84 15.25 12.84 18.54 11.93 9.14 14.28 12.83 
+
+R1-Omni 25.38 59.23 67.61 50.89 28.99 46.01 42.16 40.62 41.28 w/o TR 19.60 52.97 50.72 45.80 28.74 42.28 33.38 38.12 35.57 w/o LR 23.00 56.74 64.59 48.65 23.29 45.02 38.46 37.85 38.12 + BoN 26.69 56.97 59.56 52.68 22.55 44.32 41.58 38.85 39.81 
+
++ Ours 14.09 51.84 41.49 43.18 17.49 39.55 30.10 32.70 31.47 1 2 3 4 5 6      
+
+> K
+> 1.0 1.5 2.0 2.5
+> 𝖪̂
+> (b) Effect of K
+> 020 30 50 70 100
+> λ
+> 22 26 30 34
+> 𝖤𝖧𝖱 𝗍𝗈𝗍𝖺𝗅  (%)
+> (a) Effect of λ
+> Baseline (λ = 0) Ours
+
+Fig. 4. Hyperparameter analysis of λ and K. Performance peaks at λ = 50 ,and we set K = 3 to balance rectification effectiveness and efficiency. 
+
+Human Evaluation. To validate the evaluator, we perform a human study on 100 randomly sampled instances. Three expert annotators score the model outputs across six fine-grained emotion hallucination dimensions. As shown in Fig. 3, the automatically computed EHR closely matches human judg-ments. Specifically, the Pearson correlation [48] between the two sets of scores is 0.8364, the Spearman rank correlation coefficient [49] is 0.9167, the Cohen Kappa coefficient [50] is 0.7692, and the intra-class correlation coefficient (ICC) [51] is 0.7959. These results demonstrate that the evaluator provides a scalable proxy for human assessment. 
+
+C. Emotion Hallucination Mitigation 
+
+Performance Comparison. Table II compares our method with VCD, ICD, M3ID, and EmotionHallucer across different backbones and datasets. We make three observations. (1) Our method is the only approach that reduces all six EHR facets in every setting. In contrast, the baselines often improve some facets while degrading others. For example, VCD increases 
+
+EHR per from 42.16% to 48.71% and EHR psy from 40.62% to 41.70% on R1-Omni. This suggests that object-centric mitigation may not transfer well to emotion hallucination, where the relevant evidence spans multiple modalities and 
+
+TABLE IV WALL -CLOCK LATENCY AND TOKEN -COST UNDER DIFFERENT MAXIMUM RECTIFICATION ITERATION K.
+
+K In-Token Out-Token Latency (s) ˆK
+
+1 940.82 137.39 79.80 1.00 2 1303.95 214.54 124.43 1.44 3 1559.42 271.70 157.44 1.75 4 1757.64 316.26 183.41 2.00 5 1926.14 352.62 204.99 2.20 6 2071.80 384.87 224.07 2.38 
+
+cognitive facets. ICD, M3ID, and EmotionHallucer also show facet-wise variations across backbones. In particular, Emotion-Hallucer performs better on models with stronger instruction-following ability, such as Qwen2.5-Omni, but is less stable on other backbones. (2) Our method demonstrates cross-dataset generalization. On AffectGPT, our method reduces EHR total 
+
+by 8.91, 9.89, and 11.85 percentage points on OV-MERD+, CMU-MOSI, and CH-SIMS, respectively. It also reduces both perception and reasoning hallucinations on all three datasets, while the baselines show smaller or less consistent gains. The results on CMU-MOSI and CH-SIMS further show that the method remains effective across English and Chinese datasets. (3) Hallucination reduction does not sacrifice emotion prediction performance. Our method improves F1 from 52.22 to 55.23 on AffectGPT and from 42.88 to 44.24 on R1-Omni. On CMU-MOSI and CH-SIMS, F1 also increases from 77.77 to 78.41 and from 79.99 to 82.41, respectively. Recall shows the same trend, including an increase from 53.00 to 58.45 on AffectGPT. This suggests that suppressing hallucinated reasoning does not make the model overly conservative, but can preserve emotion-related evidence during prediction. 
+
+Ablation Study. (1) Main Module. Table III presents the ablation results of Logit Rectification (LR) and Trust-anchored Reasoning (TR) on AffectGPT. Compared to the baseline, in-troducing LR reduces the total hallucination rate from 32.43% to 29.02%, demonstrating that token-level logit rectification 80.0 0.2 0.4 0.6 0.8 1.0                                  
+
+> Relative Position
+> 0.0 0.5 1.0 1.5 2.0
+> Density
+> Perception Psychology
+> Instinct Logic Conclusion Expression Action Audio
+> 0.20 0.46 0.34 0.13 0.39 0.48 0.20 0.40 0.40
+> 0.0 0.1 0.2 0.3 0.4 0.5
+> R1-Omni AffectGPT Qwen2.5-Omni 020 40 60 80 100
+> Proportion (%)  53.44% 21.26% 12.84%
+> Non-hallucinatory Hallucinatory
+> 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7
+> Emotion Co-occurrence Score
+> 012345
+> Density
+> Non-hallucinatory Hallucinatory
+> 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7
+> Emotion Co-occurrence Score
+> 012345
+> Density
+> Non-hallucinatory Hallucinatory
+> 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7
+> Emotion Co-occurrence Score
+> 012345
+> Density
+> Non-hallucinatory Hallucinatory
+
+(d) R1-Omni (e) AffectGPT (f) Qwen2.5-Omni (a) Position Distribution (c) Logic-Conclusion Shortcut (b) Hallucination Dependency 
+
+Fig. 5. Hallucination mechanism analysis . (a) Positional distribution of perceptual and reasoning elements in generated emotion interpretations. (b) Co-occurrence matrix between different hallucination types. (c) Dependency between logic and conclusion reliability across different MLLMs. (d) (e) (f) Distributions of emotion co-occurrence scores for hallucinated and non-hallucinated pairs on R1-Omni, AffectGPT, and Qwen2.5-Omni. 
+
+effectively suppresses hallucinated tokens during decoding. When only TR is enabled, the hallucination rate further decreases to 25.29%, showing a larger improvement than LR alone. This suggests that progressive sentence verification plays a more critical role than post-hoc token correction in preventing error snowballing in long-form generation. Finally, combining LR and TR yields the best performance, con-sistently outperforming all variants across evaluation facets. 
+
+(2) Test-time Scaling Alternative. Table III compares HMER 
+
+with the Best-of-N (BoN) sampling strategy using evaluator-produced EHR as the selection score. BoN reduces EHR 
+
+compared with vanilla baselines, supporting the evaluator’s ability to rank reasoning quality during test-time scaling [52]. However, BoN relies on output diversity: it performs well on models that generate diverse reasoning paths ( e.g. , Qwen2.5-Omni), but is less effective when sampled responses converge to similar erroneous reasoning patterns. In contrast, HMER in-tervenes during generation to suppress hallucination pathways and guide the model toward grounded reasoning, consistently achieving lower EHR psy across all three models. 
+
+Hyperparameter Analysis. The hallucination penalty coeffi-cient λ and the maximum rectification iteration K are two key hyperparameters in our framework. As shown in Fig. 4, setting 
+
+λ=0 disables hallucination suppression, resulting in a substan-tially higher hallucination rate. Introducing a moderate penalty consistently reduces hallucinations, with the best performance observed around λ=50. Besides, we examine the average effective round ˆK under different K. ˆK is defined as the iteration where a sentence is verified as hallucination-free. As shown in Fig. 4, ˆK increases with K, indicating that iterative refinement improves sentence reliability. However, the gains gradually saturates, while inference latency grows steadily. Considering the trade-off between reliability and efficiency, we adopt K = 3 in all experiments. .
+
+Wall-Clock Latency and Token-Cost To evaluate the com-putational overhead of iterative rectification, we analyze token consumption and wall-clock latency under different maximum rectification iterations K, as shown in Table IV. As K in-creases, both input/output token usage and end-to-end latency grow accordingly, since each additional iteration introduces a new evaluation–rectification cycle. However, the average effective iteration ˆK (the round at which generated claims are verified as hallucination-free) remains consistently lower than the maximum K. The early stopping mechanism keeps the actual inference cost relatively controlled. 
+
+D. Hallucination Mechanism Analysis 
+
+Structured Dependency in Emotion Reasoning. To inves-tigate the structural origin of emotion hallucination, we first analyze the positional distribution of perceptual and reasoning elements in Fig. 5 (a). It reveals a natural transition from obser-vation to abstraction in long-form generation. In this context, Fig. 5 (b) further examines cross-type hallucination dependen-cies. It can be found that early perceptual hallucinations tend to influence subsequent logical inference and final conclusions. Such dependency patterns provide empirical evidence for the snowballing phenomenon observed in affective reasoning. 
+
+Shortcut Reliance in Conclusion Formation. We next an-alyze the relationship between logical reliability and con-clusion reliability across models (Fig. 5 (c)). We measure the proportion of correct Logic but incorrect Conclusion in test set. When logical reasoning is verified as reliable, the probability of conclusion hallucination remains relatively low in the general-purpose model Qwen2.5-Omni (12.84%), but is higher in emotion-specialized models AffectGPT (21.26%) and R1-Omni (53.44%). This gap may reflect a redistribution of model capacity after emotion-specific fine-tuning. The model may allocate greater emphasis to emotion-consistent 9Qwen2.5 -Omni:   
+
+> The speaker is a male with short black hair, wearing a brown leather jacket over a blue shirt. He is standing in an outdoor setting, possibly a park or a street, with blurred lights and trees in the background. The lighting suggests it is nighttime. The speaker is talking about cats, expressing that he loves them and that cats also love him. His facial expression is neutral, and he appears to be speaking calmly. There are no significant body movements or changes in his posture throughout the video. The overall atmosphere is casual and relaxed.
+> Qwen2.5-Omni + Ours :
+> The individual in the video appears to be expressing a positive and affectionate emotion towards cats. The subtitle "Cats? I love cats. Cats also love me." suggests that the person has a strong fondness for cats and feels a mutual affection from them. The tone of the speech, combined with the body language and facial expressions, likely conveys enthusiasm and warmth. The environment, which seems to be an outdoor setting at night, adds a casual and relaxed context to the interaction.
+
+AffectGPT : 
+
+In the text, the subtitle reads: "Years have passed without any setbacks for Yan Fei." This sentence may be a description or evaluation of the individual's career development. Based on the audio clues of the individual's trembling voice and slow, cautious speech , as well as the video clues of the individual displaying a calm and focused emotional state, we can infer that this sentence may carry a tone of pride or confidence . Therefore, this sentence may be an expression of the individual's success and achievements in their career, aligning with the overall positive emotions displayed by the individual. 
+
+AffectGPT + Ours: 
+
+Based on the video and audio clues, we can analyze the emotional state of the individual. The video clue describes the individual's facial expression as neutral, lacking clear signs of emotion, and the audio clue describes the individual speaking in a calm and composed manner , with a clear and easily understandable voice. This suggests that the individual may be experiencing a neutral emotional state. However, due to the lack of more context or information, we cannot determine the specific emotional state.        
+
+> R1-Omni:
+> In the video, at the beginning of the video, we see a man and a woman. The woman's facial expression appears somewhat angry , …… Her eyebrows are raised, her eyes widen. This suggests that she may be emotionally excited and has expressed her dissatisfaction and anger towards the male character. In the audio, the tone is high -pitched and aggressive . When expressing "I'm sorry, I'm wrong," there is a noticeable increase in volume and an urgent tone, conveying the inner emotions. Combined with the text content, it expresses the person's dissatisfaction and anger towards the other party.
+> R1-Omni + Ours :
+> In the video, the screen shows a man and a woman. …… Her facial expression is very negative .Her mouth is slightly open, and her gaze is downward . At the end of the video, she looks very sad, with her mouth slightly open and closed. In the audio, at the beginning of the speech, we can see that the woman's facial expression is very negative. In the middle of the speech, she pauses briefly and then continues speaking, with a downward tone in her voice. In the final part of the speech, the woman looks very sad, with her mouth slightly open and closed.
+
+Fig. 6. Case study on R1-Omni, AffectGPT, and Qwen2.5-Omni. The red and green text represent hallucinatory words and correct words, respectively. The cases show that our method effectively rectifies incoherent emotional inference. 
+
+surface patterns, potentially reducing the implicit constraint between intermediate reasoning and final conclusions. 
+
+Emotion Co-occurrence Bias. Finally, we analyze emo-tion word pair co-occurrence patterns in Fig. 5 (d). Across Qwen2.5-Omni, AffectGPT, and R1-Omni, hallucinated pairs tend to concentrate in high co-occurrence pairs compared to non-hallucinated pairs. In particular, the lightweight R1-Omni exhibits the largest proportion of high co-occurrence hallucinated pairs. These findings indicate that strong statis-tical associations between emotion terms can bias generation toward overconfident yet insufficiently grounded predictions. 
+
+Case study. Fig. 6 presents qualitative examples of hallu-cination mitigation across three backbones. (1) Our method effectively rectifies different facets of emotion understanding. For instance, it corrects audio hallucinations ( e.g. , “increased volume” → “downward tone” on R1-Omni) and instinct hallucinations ( e.g. , “neutral” → “positive and affectionate” on Qwen2.5-Omni). (2) Hallucinated perception can introduce modality conflicts that lead to contradictory reasoning. On the R1-Omni, hallucinated “eyebrows raised” suggests “excited,” while an “aggressive tone” implies “anger”. By grounding perceptual evidence ( e.g. , “gaze is downward” and “downward tone”) as trusted anchors, our method restores a coherent reasoning chain and infers the correct “sad” emotion. (3) The cases also reveal the limitation of the rectification process: the model may occasionally rely on conservative reasoning anchors, producing cautious or repetitive interpretations ( e.g. ,“cannot determine” on AffectGPT). This reflects a trade-off between hallucination suppression and exploration during generation. V. C ONCLUSION 
+
+In this paper, we introduce EHR , a psychologically grounded protocol for evaluating emotion hallucinations across multi-modal perception and affective reasoning. Experiments across diverse MLLMs reveal that these failures are prevalent and can propagate along open-ended reasoning trajectories. To mitigate them, we propose HMER , which converts localized evaluator feedback into trajectory-level logit rectification and maintains low-risk reasoning states as recurrent anchors. HMER 
+
+consistently reduces hallucination rates across representative model backbones while preserving emotion prediction quality. Our findings provide a systematic basis for evaluating and regulating the reliability of open-ended multimodal emotion reasoning. REFERENCES [1] F. Zhang, Z. Cheng, C. Deng, H. Li, Z. Lian, Q. Chen, H. Liu, W. Wang, Y.-F. Zhang, R. Zhang et al. , “Mme-emotion: A holistic evaluation benchmark for emotional intelligence in multimodal large language models,” in ICLR , 2026. [2] S. Li, W. Deng, and J. Du, “Reliable crowdsourcing and deep locality-preserving learning for expression recognition in the wild,” in CVPR ,2017. [3] Z. Lian, H. Sun, L. Sun, K. Chen, M. Xu, K. Wang, K. Xu, Y. He, Y. Li, J. Zhao et al. , “Mer 2023: Multi-label learning, modality robustness, and semi-supervised learning,” in ACM MM , 2023. [4] Z. Lian, H. Chen, L. Chen, H. Sun, L. Sun, Y. Ren, Z. Cheng, B. Liu, R. Liu, X. Peng et al. , “Affectgpt: A new dataset, model, and benchmark for emotion understanding with multimodal large language models,” in 
+
+ICML , 2025. [5] Z. Cheng, Z.-Q. Cheng, J.-Y. He, K. Wang, Y. Lin, Z. Lian, X. Peng, and A. Hauptmann, “Emotion-llama: Multimodal emotion recognition and reasoning with instruction tuning,” in NIPS , 2024. [6] J. Zhao, X. Wei, and L. Bo, “R1-omni: Explainable omni-multimodal emotion recognition with reinforcement learning,” arXiv preprint arXiv:2503.05379 , 2025. [7] Z. Bai, P. Wang, T. Xiao, T. He, Z. Han, Z. Zhang, and M. Z. Shou, “Hallucination of multimodal large language models: A survey,” arXiv preprint arXiv:2404.18930 , 2024. [8] A. Rohrbach, L. A. Hendricks, K. Burns, T. Darrell, and K. Saenko, “Object hallucination in image captioning,” in EMNLP , 2018. [9] Y. Li, Y. Du, K. Zhou, J. Wang, W. X. Zhao, and J.-R. Wen, “Evaluating object hallucination in large vision-language models,” in EMNLP , 2023. [10] Y. Tu, R. Hu, and J. Sang, “Ode: Open-set evaluation of hallucinations in multimodal large language models,” in CVPR , 2025. [11] P. Ekman, “Emotions revealed,” Bmj , 2004. 10 
+
+[12] S. G. Shamay-Tsoory, J. Aharon-Peretz, and D. Perry, “Two systems for empathy: a double dissociation between emotional and cognitive empathy in inferior frontal gyrus versus ventromedial prefrontal lesions,” 
+
+Brain , vol. 132, no. 3, 2009. [13] S. Leng, H. Zhang, G. Chen, X. Li, S. Lu, C. Miao, and L. Bing, “Mit-igating object hallucinations in large vision-language models through visual contrastive decoding,” in CVPR , 2024. [14] B. Xing, X. Liu, G. Zhao, C. Liu, X. Fu, and H. K¨ alvi¨ ainen, “Emo-tionhallucer: Evaluating emotion hallucinations in multimodal large language models,” in ICLR , 2026. [15] Z. Lian, H. Sun, L. Sun, L. Chen, H. Chen, H. Gu, Z. Wen, S. Chen, Z. Siyuan, H. Yao et al. , “Open-vocabulary multimodal emotion recog-nition: Dataset, metric, and benchmark,” 2024. [16] J. Zhao, Q. Yang, Y. Peng, D. Bai, S. Yao, B. Sun, X. Chen, S. Fu, X. Wei, L. Bo et al. , “Humanomni: A large vision-speech language model for human-centric video understanding,” arXiv preprint arXiv:2501.15111 , 2025. [17] Z. Han, B. Zhu, Y. Xu, P. Song, and X. Yang, “Benchmarking and bridging emotion conflicts for multimodal emotion reasoning,” in ACM MM , 2025. [18] Z. Han, B. Zhu, W. Tong, P. Shao, P. Song, X. Wang, J. Chen, L. Lu, and X. Yang, “Omni-perception policy optimization for multimodal emotion reasoning,” 2026. [19] Z. Han, B. Zhu, W. Tong, C. Qin, X. Wang, J. Zhang, J. Chen, H. Guo, D. Ran, L. Lu et al. , “Mer-r1: Multimodal emotion reasoning via slow-fast thinking synergy,” arXiv preprint arXiv:2606.27652 , 2026. [20] L. Jing, R. Li, Y. Chen, and X. Du, “Faithscore: Fine-grained evaluations of hallucinations in large vision-language models,” in EMNLP Findings ,2024. [21] F. Liu, K. Lin, L. Li, J. Wang, Y. Yacoob, and L. Wang, “Mitigating hallucination in large multi-modal models via robust instruction tuning,” 2024. [22] P. Kaul, Z. Li, H. Yang, Y. Dukler, A. Swaminathan, C. Taylor, and S. Soatto, “Throne: An object-based hallucination benchmark for the free-form generations of large vision-language models,” in CVPR , 2024. [23] Q. Huang, X. Dong, P. Zhang, B. Wang, C. He, J. Wang, D. Lin, W. Zhang, and N. Yu, “Opera: Alleviating hallucination in multi-modal large language models via over-trust penalty and retrospection-allocation,” in CVPR , 2024. [24] Z. Jiang, J. Chen, B. Zhu, T. Luo, Y. Shen, and X. Yang, “Devils in middle layers of large vision-language models: Interpreting, detecting and mitigating object hallucinations via attention lens,” in CVPR , 2025. [25] X. Zhu, K. Zhao, L. Yi, S. Wang, Z. Wang, B. Zhu, H. Zhang, and X. He, “Look carefully: Adaptive visual reinforcements in multimodal large language models for hallucination mitigation,” in ICLR , 2026. [26] X. Zhu, J. Fang, S. Wang, B. Zhu, Z. Wang, Y. Yang, and X. He, “Mitigating hallucinations in large vision-language models without performance degradation,” in ACL , 2026. [27] N. Stiennon, L. Ouyang, J. Wu, D. Ziegler, R. Lowe, C. Voss, A. Rad-ford, D. Amodei, and P. F. Christiano, “Learning to summarize with human feedback,” in NIPS , 2020. [28] J. Wei, X. Wang, D. Schuurmans, M. Bosma, F. Xia, E. Chi, Q. V. Le, D. Zhou et al. , “Chain-of-thought prompting elicits reasoning in large language models,” in NIPS , 2022. [29] Z. Gou, Z. Shao, Y. Gong, Y. Shen, Y. Yang, N. Duan, and W. Chen, “Critic: Large language models can self-correct with tool-interactive critiquing,” arXiv preprint arXiv:2305.11738 , 2023. [30] Y. Bang, Z. Ji, A. Schelten, A. Hartshorn, T. Fowler, C. Zhang, N. Cancedda, and P. Fung, “Hallulens: Llm hallucination benchmark,” in ACL , 2025. [31] Y. Chu, J. Xu, Q. Yang, H. Wei, X. Wei, Z. Guo, Y. Leng, Y. Lv, J. He, J. Lin et al. , “Qwen2-audio technical report,” arXiv preprint arXiv:2407.10759 , 2024. [32] C. Tang, W. Yu, G. Sun, X. Chen, T. Tan, W. Li, L. Lu, Z. Ma, and C. Zhang, “Salmonn: Towards generic hearing abilities for large language models,” arXiv preprint arXiv:2310.13289 , 2023. [33] M. Maaz, H. Rasheed, S. Khan, and F. Khan, “Video-chatgpt: Towards detailed video understanding via large vision and language models,” in 
+
+ACL , 2024. [34] Q. Ye, H. Xu, G. Xu, J. Ye, M. Yan, Y. Zhou, J. Wang, A. Hu, P. Shi, Y. Shi et al. , “mplug-owl: Modularization empowers large language models with multimodality,” arXiv preprint arXiv:2304.14178 , 2023. [35] Y. Li, C. Wang, and J. Jia, “Llama-vid: An image is worth 2 tokens in large language models,” in ECCV . Springer, 2024. [36] B. Li, Y. Zhang, L. Chen, J. Wang, F. Pu, J. A. Cahyono, J. Yang, C. Li, and Z. Liu, “Otter: A multi-modal model with in-context instruction tuning,” IEEE TPAMI , 2025. [37] P. Jin, R. Takanobu, W. Zhang, X. Cao, and L. Yuan, “Chat-univi: Unified visual representation empowers large language models with image and video understanding,” in CVPR , 2024. [38] W. Wang, Z. Gao, L. Gu, H. Pu, L. Cui, X. Wei, Z. Liu, L. Jing, S. Ye, J. Shao et al. , “Internvl3. 5: Advancing open-source multi-modal models in versatility, reasoning, and efficiency,” arXiv preprint arXiv:2508.18265 , 2025. [39] S. Bai, Y. Cai, R. Chen, K. Chen, X. Chen, Z. Cheng, L. Deng, W. Ding, C. Gao, C. Ge et al. , “Qwen3-vl technical report,” arXiv preprint arXiv:2511.21631 , 2025. [40] J. Xu, Z. Guo, H. Hu, Y. Chu, X. Wang, J. He, Y. Wang, X. Shi, T. He, X. Zhu et al. , “Qwen3-omni technical report,” arXiv preprint arXiv:2509.17765 , 2025. [41] OpenAI, “Gpt-4o system card,” 2024. [Online]. Available: https: //openai.com/index/gpt-4o-system-card [42] Google, “Gemini 2.5 flash preview model card,” 2025. [On-line]. Available: https://storage.googleapis.com/model-cards/documents/ gemini-2.5-flash-preview.pdf [43] M. Chen, S. Wang, P. P. Liang, T. Baltruˇ saitis, A. Zadeh, and L.-P. Morency, “Multimodal sentiment analysis with word-level fusion and reinforcement learning,” in Proceedings of the 19th ACM international conference on multimodal interaction , 2017. [44] W. Yu, H. Xu, F. Meng, Y. Zhu, Y. Ma, J. Wu, J. Zou, and K. Yang, “Ch-sims: A chinese multimodal sentiment analysis dataset with fine-grained annotation of modality,” in ACL , 2020. [45] X. Wang, J. Pan, L. Ding, and C. Biemann, “Mitigating hallucinations in large vision-language models with instruction contrastive decoding,” in ACL Findings , 2024. [46] A. Favero, L. Zancato, M. Trager, S. Choudhary, P. Perera, A. Achille, A. Swaminathan, and S. Soatto, “Multi-modal hallucination control by visual information grounding,” in CVPR , 2024. [47] A. Yang, A. Li, B. Yang, B. Zhang, B. Hui, B. Zheng, B. Yu, C. Gao, C. Huang, C. Lv et al. , “Qwen3 technical report,” arXiv preprint arXiv:2505.09388 , 2025. [48] K. Pearson, “Vii. mathematical contributions to the theory of evolu-tion.—iii. regression, heredity, and panmixia,” Philosophical Transac-tions of the Royal Society of London. Series A, containing papers of a mathematical or physical character , 1896. [49] C. Spearman, “The proof and measurement of association between two things.” 1961. [50] M. L. McHugh, “Interrater reliability: the kappa statistic,” Biochemia medica , 2012. [51] G. G. Koch, “Intraclass correlation coefficient,” Encyclopedia of statis-tical sciences , 2004. [52] V. Venktesh, M. Rathee, and A. Anand, “Trust but verify! a sur-vey on verification design for test-time scaling,” arXiv preprint arXiv:2508.16665 , 2025.

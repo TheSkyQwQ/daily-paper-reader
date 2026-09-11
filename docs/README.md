@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-10</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-11</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 1 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-10 21:45:48 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-11 21:25:56 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读2篇语音AI论文：跨语言帕金森检测与东南亚语音理解基准，均获6.0分。</p>
-<p>最值得看的是“跨语言自监督语音表征正交化用于帕金森检测”和“覆盖东南亚的多任务语音理解基准SEA-SpeechBench”这两个方向。</p>
-<p>普通读者可先读两篇摘要与实验设置，关注语音AI在医疗早筛和区域语言评测中的实际可用性，再决定是否深入。</p>
+<p>今日仅速读1篇，聚焦多模态大模型（MLLMs）中的&quot;情绪幻觉&quot;问题——模型会凭空&quot;感受&quot;到并不存在的情感。该文（6.0/10）提出多维度评估并尝试缓解这类幻觉，是目前唯一可看方向，但分数中等，结论宜谨慎参考。普通读者可先记住&quot;AI读图识情绪未必靠谱&quot;这一点，等后续更高分或精读论文出现再深入。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -93,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson&#x27;s Detection">Language Orthogonalization of Self-Supervised Speech Representations for Cross-lingual Parkinson&#x27;s Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia">SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs">Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
 </section>
 </div>
 
