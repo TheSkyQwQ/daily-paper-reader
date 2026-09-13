@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-13 <!--dpr-date:20260913-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/13/2609.11864v1-retrothinker-enabling-retrospective-thinking-in-speech-llms" data-sidebar-item="{&quot;title&quot;: &quot;RetroThinker: Enabling Retrospective Thinking in Speech LLMs&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.11864v1-retrothinker-enabling-retrospective-thinking-in-speech-llms&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ser-da&quot;}], &quot;evidence&quot;: &quot;语音大语言模型、副语言细节、流式口语交互&quot;}">RetroThinker: Enabling Retrospective Thinking in Speech LLMs</a>
   * 2026-09-11 <!--dpr-date:20260911-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/11/2609.11154v1-multi-faceted-evaluation-and-mitigation-of-emotion-hallucinations-in-mllms" data-sidebar-item="{&quot;title&quot;: &quot;Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.11154v1-multi-faceted-evaluation-and-mitigation-of-emotion-hallucinations-in-mllms&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ser-da&quot;}], &quot;evidence&quot;: &quot;多模态大模型的情感理解与音频情感幻觉评估&quot;}">Multi-Faceted Evaluation and Mitigation of Emotion Hallucinations in MLLMs</a>

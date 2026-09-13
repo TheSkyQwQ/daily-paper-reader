@@ -1,0 +1,25 @@
+{
+  "date": "20260913",
+  "date_label": "",
+  "generated_at": "2026-09-13 21:54:56 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.11864v1",
+      "route": "202609/13/2609.11864v1-retrothinker-enabling-retrospective-thinking-in-speech-llms",
+      "title": "RetroThinker: Enabling Retrospective Thinking in Speech LLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "语音大语言模型、副语言细节、流式口语交互",
+      "first_seen_at": "2026-09-13 21:54:56 UTC",
+      "updated_at": "2026-09-13 21:54:56 UTC"
+    }
+  ]
+}

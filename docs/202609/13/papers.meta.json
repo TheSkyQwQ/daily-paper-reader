@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-13",
+  "date": "2026-09-13",
+  "generated_at": "2026-09-13T21:54:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/13/2609.11864v1-retrothinker-enabling-retrospective-thinking-in-speech-llms",
+      "section": "quick",
+      "title_en": "RetroThinker: Enabling Retrospective Thinking in Speech LLMs",
+      "authors": "Yi-Jen Shih, Puyuan Peng, Abdelrahman Mohamed, David Harwath",
+      "date": "2026-09-10",
+      "pdf": "https://arxiv.org/pdf/2609.11864v1",
+      "score": "7.0",
+      "evidence": "语音大语言模型、副语言细节、流式口语交互",
+      "tldr": "语音大模型在复杂推理上仍落后于纯文本大模型，而实时语音交互又受严格延迟约束，准确率与延迟难以兼顾。为此，作者提出 RetroThinker，一种多阶段后训练框架，让流式 Moshi 在推理中自我验证并前向修正思维链步骤，以支持边听边说时的回顾式思考。在 GSM8K 上，该方法在相近延迟下取得 11% 绝对准确率提升，显著改善准确率—延迟权衡，为实时 SpeechLLM 推理提供新路径。",
+      "tags": "query:ser-da",
+      "abstract_en": "Speech large language models (SpeechLLMs) offer reduced latency and retain paralinguistic nuances that are typically lost in cascaded automatic speech recognition (ASR) and text-based LM architectures. However, they continue to lag behind text-only LLMs on complex reasoning tasks, while real-time spoken interaction imposes strict latency constraints. Although prior works employ Chain-of-Thought (CoT) and concurrent reasoning to enhance reasoning capabilities without inducing prohibitive delays, an inherent accuracy-latency trade-off persists. In this paper, we investigate whether a streaming SpeechLLM can dynamically revise its reasoning traces on the fly. We introduce RetroThinker, a multi-stage post-training framework that equips the Moshi model to self-verify and forward-correct CoT steps during inference. RetroThinker combines supervised fine-tuning (SFT) on curated retrospective thinking data with length-based direct preference optimization (DPO) to optimize retrospective during early reasoning (i.e., reasoning concurrently while the user speaks). Evaluated on the GSM8K benchmark, RetroThinker significantly improves the accuracy-latency trade-off over non-retrospective baselines, achieving an 11% absolute accuracy gain at a comparable latency.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
