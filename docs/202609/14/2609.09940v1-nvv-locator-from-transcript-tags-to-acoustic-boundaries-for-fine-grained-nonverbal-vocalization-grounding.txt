@@ -1,0 +1,522 @@
+Title: NVV-Locator: From Transcript Tags to Acoustic Boundaries for Fine-Grained Nonverbal Vocalization Grounding
+
+URL Source: https://arxiv.org/pdf/2609.09940v1
+
+Published Time: Thu, 10 Sep 2026 00:49:08 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# NVV-Locator: From Transcript Tags to Acoustic Boundaries for Fine-Grained Nonverbal Vocalization Grounding 
+
+Yuang Cao 1, Bingshen Mu 1, Zhennan Lin 1, Guojian Li 1, Haoyue Zhan 3, Jie Liu 3, Chuan Xie 3, Qiang Zhang 3, Liumeng Xue 2⋆, and Lei Xie 1⋆ 
+
+> 1
+
+ASLP@NPU, Northwestern Polytechnical University, China  
+
+> 2
+
+Nanjing University, China  
+
+> 3
+
+Shanghai Lingguang Zhaxian Technology, China 
+
+yacao@mail.nwpu.edu.cn, lmxue@nju.edu.cn, lxie@nwpu.edu.cn 
+
+Abstract. Human speech includes nonverbal vocalizations (NVVs), such as laughter, sighs, breaths, and coughs, which convey affective and inter-actional information. Existing approaches typically represent NVVs as transcript-level tags, providing limited supervision for their waveform-time boundaries. We present NVV-Locator for fine-grained NVV temporal grounding. We first unify 26 NVV categories across public resources and construct large-scale timestamp-supervised training data through dual-LLM verification, transcript-guided forced alignment, and energy-based boundary refinement. We further introduce NVV-TimeBench, an expert-refined benchmark with 667 utterances and 1,094 events. NVV-Locator uses a non-autoregressive slot-filling architecture to jointly predict lexical timestamps, NVV categories, and event boundaries. On NVV-TimeBench, it achieves 71.0% Micro F1, 70.2% Macro F1, 80.4% Macro mIoU, and 59.6 ms Macro mMAE, outperforming the evaluated large audio model counterparts. Evaluation on an external corpus further demonstrates the cross-corpus generalization of NVV-Locator.Our demo is available. 4
+
+Keywords: Paralinguistics · Nonverbal vocalizations · Temporal grounding and Speech-text alignment · Speech large language models · Benchmark · Dataset. 
+
+1 Introduction 
+
+Human spoken communication extends beyond lexical content. Nonverbal vocal-izations (NVVs), such as laughter, sighs, breaths, and coughs, convey affective, attitudinal, and interactional information [1, 3, 6, 7, 10, 17, 19, 22, 23]. Unlike lexical words, these events often lack stable linguistic forms but occupy specific acoustic intervals in continuous speech. Their accurate recognition and temporal local-ization are therefore important for speech understanding, expressive generation, and downstream audio editing.  
+
+> ⋆
+
+Corresponding authors.  
+
+> 4
+
+Demo page: https://nvv-locator.github.io/Demo-Page/ arXiv:2609.09940v1 [eess.AS] 9 Sep 2026 2 Y. Cao et al. 
+
+Early NVV studies mainly formulate the problem as clip- or utterance-level acoustic event classification, as in ESC-50 [11] and VocalSound [5], providing limited supervision for continuous-speech localization. More recent work has collected, synthesized, or annotated NVV corpora through automatic detect-then-align pipelines, including NonverbalTTS [3] and NonVerbalSpeech-38K [23]; synthesis- or editing-based approaches, such as SynParaSpeech [1] and Cap-Speech [16]; and manually curated or hybrid resources, including MNV-17 [7], SMIIP-NV [17], and NVSpeech-170k [6]. These resources differ substantially in category inventories, scale, annotation precision, and acoustic naturalness. Recent benchmarks have further advanced NVV generation and transcript-level understanding. NVV-SuperBench [19] and NV-Bench [10] evaluates con-trollable NVV generation, whereas WESR-Bench [21] evaluates NVV locations relative to the transcript. However, many existing approaches still represent NVVs primarily as discrete semantic tags, for example by inserting [laughter] 
+
+into a transcript. Such representations capture event identity and textual context, but do not explicitly preserve acoustic onset, offset, or duration on the waveform timeline. Moreover, transcript-relative positions do not directly reflect the physi-cal location of an NVV in the audio signal. Timestamped NVV data therefore remain scarce, while manual boundary annotation is expensive and difficult to scale. Fine-grained waveform-time grounding also poses modeling challenges. Con-ventional forced-alignment systems, such as Montreal Forced Aligner (MFA) [8] built on Kaldi [12], can estimate accurate lexical boundaries but rely on pronun-ciation lexicons and are difficult to extend to out-of-vocabulary NVVs. Neural systems, including NeMo [13] and WhisperX [2], reduce lexicon dependence but are primarily designed for lexical speech and may yield degraded alignments when transcripts contain non-lexical events. Recent Speech-LLMs have also explored timestamp prediction; however, autoregressive timestamp generation does not inherently enforce temporal consistency. LLM-ForcedAligner [9] addresses this issue through globally conditioned parallel boundary prediction, motivating a non-autoregressive formulation for joint lexical and NVV grounding. To address these limitations, we formulate NVV temporal grounding as joint event recognition and waveform-time localization. We construct a unified 26-category taxonomy, develop a scalable automated pipeline for timestamp-supervised data construction, and curate NVV-TimeBench for fine-grained evalu-ation. We further propose NVV-Locator, a non-autoregressive slot-filling model that jointly predicts lexical timestamps, NVV categories, and NVV boundaries. In summary, our main contributions are threefold: 
+
+– We construct a unified paralinguistic taxonomy comprising 26 physical NVV categories, resolving annotation fragmentation across existing open corpora. We further develop a scalable automated pipeline for constructing a large-scale NVV dataset with timestamp supervision. 
+
+– We introduce NVV-TimeBench, a high-quality manually corrected benchmark for fine-grained NVV temporal grounding, with sub-20 ms inter-annotator boundary discrepancy. NVV-Locator 3
+
+– We propose NVV-Locator, a lightweight non-autoregressive slot-filling model for joint lexical and NVV temporal grounding. By avoiding autoregressive timestamp decoding, it mitigates temporal inconsistency and achieves strong temporal grounding performance. 
+
+2 Dataset Construction 
+
+2.1 A Unified Taxonomy of Nonverbal Vocalizations 
+
+Existing NVV resources differ substantially in category inventories, naming conventions, and annotation granularity. Acoustically similar events may receive different labels across datasets, while functionally similar interjections may be split according to surface phonetic form. Such inconsistency hinders data aggregation, exacerbates sparsity for rare categories, and limits cross-corpus generalization. We construct a unified taxonomy of 26 NVV categories by harmonizing four public resources: NVSpeech-170k [6], MNV-17 [7], NVS-38K [23], and SMIIP-NV [17]. The taxonomy supports cross-corpus integration and fine-grained tem-poral grounding through two principles: acoustic normalization for physically defined vocal events and functional abstraction for lexicalized paralinguistic expressions. 
+
+Acoustic normalization for physical vocal events. For non-lexical events with identifiable acoustic or physiological realizations, synonymous or near-synonymous labels are merged into canonical categories. For example, [Throat Clearing] 
+
+combines [throatclearing] from NVS-38K [23] and [ahem] from MNV-17 [7], while 
+
+[Sniff] unifies [sniff] and [sniffle] . Similarly, [Laughter] , [Cough] , [Sigh] , and 
+
+[Breath] are aligned across corpora when their source labels denote acoustically comparable events. This reduces unnecessary fragmentation while preserving distinctions between materially different acoustic phenomena. 
+
+Functional abstraction for lexicalized interjections. Some datasets distinguish interjections mainly by phonetic realization. NVSpeech-170k [6], for example, separately annotates [Surprise-ah] , [Surprise-oh] , and [Surprise-wa] , as well as 
+
+[Question-en] and [Question-ah] . As these variants share pragmatic functions despite differing vowels or surface forms, we map them to [Surprise-X] and 
+
+[Question-X] . The same strategy maps [Confirmation-en] and [Dissatisfaction-hnn] to [Confirmation-X] and [Dissatisfaction-X] , respectively. This reduces phonetic-variant sparsity and encourages functionally meaningful representations. When available, original temporal boundaries are retained during data integra-tion. We further add [Scream] , [Roar] , and [Burp] to broaden taxonomy coverage beyond the source inventories. The resulting unified taxonomy is summarized in Table 1. 4 Y. Cao et al. 
+
+Table 1. Unified 26-category NVV taxonomy and mappings from source datasets to canonical labels.                                                                        
+
+> Family Canonical Category Source Datasets and Original Labels
+> Physical Vocal Event Sniff NVS-38K ([sniff]); MNV-17 ([sniffle]) Snore NVS-38K ([snore]) Whistle MNV-17 ([whistle]) Hum MNV-17 ([hum]) Sneeze MNV-17 ([sneeze]) Yawn NVS-38K ([yawn]) Moan MNV-17 ([moan]) Cry NVS-38K ,SMIIP-NV ([crying]); NVSpeech-170k
+> ([Crying]) Cough NVS-38K ([coughing]); NVSpeech-170k ([Cough]);
+> MNV-17 ,SMIIP-NV ([cough]) Throat Clearing NVS-38K ([throatclearing]); MNV-17 ([ahem]) Sigh NVS-38K ,MNV-17 ([sigh]); NVSpeech-170k ([Sigh]) Lip Smack MNV-17 ([smack]) Hiss MNV-17 ([hiss]) Gasp NVS-38K ([gasp]) Laughter NVS-38K ([laughing]); NVSpeech-170k ([Laughter]);
+> MNV-17 ([laugh], [chuckle]); SMIIP-NV ([laughter]) Breath NVS-38K ([breath]); NVSpeech-170k ([Breathing]);
+> MNV-17 ([inhale/exhale/pant]) Scream Added in this work
+> Roar Added in this work
+> Burp Added in this work
+> Functional Interjection Shush NVSpeech-170k ([Shh]) Confirmation-X NVSpeech-170k ([Confirmation-en]) Dissatisfaction-X NVSpeech-170k ([Dissatisfaction-hnn]) Question-X NVSpeech-170k ([Question-en/ah/oh/ei/yi]) Filled Pause NVSpeech-170k ([Uhm]) Surprise-X NVSpeech-170k ([Surprise-ah/oh/wa/yo]) Associated Non-Speech Event Applause MNV-17 ([clap], [applaud])
+
+2.2 Automatic Data Construction Pipeline 
+
+To construct large-scale training data for transcript-conditioned NVV temporal grounding under the unified taxonomy, we develop a four-stage automatic data construction pipeline. Figure 1 illustrates an overview of the pipeline. 
+
+Phase 1: Candidate Data Acquisition and Dual-LLM Verification We acquire candidate training instances from three complementary sources: open-source resources containing NVV annotations, targeted synthetic NVV data for categories with limited coverage, and speech-only recordings used as negative controls. Because source annotations may contain background interference, over-lapping speech, category ambiguity, or transcript–audio mismatch, candidate NVV instances are subjected to a sequential dual-LLM verification procedure. Specifically, Qwen3-Omni [18] first analyzes each audio–label pair and pro-duces an initial diagnostic report concerning NVV presence, category consistency, and potential ambiguity. Gemini-2.5 subsequently reviews the original audio and candidate annotation, with the first-stage report provided as auxiliary evidence, and makes the final binary keep/discard decision. An instance is retained only NVV-Locator 5Open source nv data Text Synthetic nv data Pure                     
+
+> Speech
+> Data Collection Dual-LLM
+> Cross-Verification
+> Original
+> data Opinions
+> Phase 1: Data Acquisition and Dual-LLM Verification
+> Discard
+> Phase 2: Coarse Alignment via LLM-ForcedAligner
+> Hello [Cough] World LLM-ForcedAligner Hello World [Cough]
+> start time: 0.65 end time: 0.74
+> Keep
+> Energy-based Algorithm
+> [Cough]
+> Phase 3: Energy-Based Boundary Refinement
+> Phase 4: Decoupled Data Augmentation
+> Data with timestamps
+> Class Balancing Triplet Augmentation
+> Speech With NV Original Data Isolated NV NVV-Removed Speech Context Noise Injection Time Stretching TETs Te E0 T0.65 0.74 0.68 0.72
+> Hello [0.52] [0.65] World [0.74] [0.86]
+> T0.65 0.74
+
+Fig. 1. The proposed four-phase automated data production pipeline. 
+
+when the target NVV is acoustically present, consistent with its assigned category, and sufficiently unambiguous for temporal grounding. Human spot checks are further conducted on a randomly sampled subset to audit the quality of the automated verification process. 
+
+Phase 2: Transcript-Guided Coarse Alignment via LLM-ForcedAligner 
+
+For each retained utterance, we remove NVV tags from the corresponding tran-scription to obtain a lexical transcript. We then apply LLM-ForcedAligner [9] to align the lexical transcript with the audio and estimate character-level timestamps for Chinese and word-level timestamps for English. For an NVV tag located between two adjacent lexical units, we construct a coarse bracketing window using the end time of the preceding unit and the start time of the succeeding unit W = [ te
+
+left , t s
+
+right ], where te
+
+left denotes the end time of the preceding lexical unit and ts
+
+right denotes the start time of the succeeding lexical unit. This transcript-guided interval provides a candidate region for the target NVV event; it is not treated as its final acoustic boundary. 
+
+Phase 3: Energy-Based Boundary Refinement The coarse bracketing window may include leading or trailing silence, residual background noise, and non-NVV acoustic content. We therefore refine the boundary estimates using the local energy profile within W. Specifically, we compute an RMS-based short-time energy contour using a 5 ms analysis window and smooth it with a 10 ms moving window. Let E(t) denote the smoothed RMS energy at time t. We define an adaptive energy threshold as τ = α max t∈W E(t), where α = 0 .15 . Starting from the two 6 Y. Cao et al. 
+
+edges of W, the algorithm removes low-energy regions until the smoothed energy reaches the threshold τ . The resulting interval [ˆ ts, ˆte ] serves as the acoustically refined onset–offset estimate for the target NVV event. This procedure reduces the mismatch between transcript-derived lexical gaps and the temporal extent of the corresponding acoustic event. 
+
+Phase 4: Class Balancing and Decoupled Data Augmentation To mit-igate class imbalance and improve discrimination between lexical speech and NVVs, we perform class balancing and decoupled data augmentation. For under-represented categories, we apply noise injection and time stretching to increase acoustic diversity. When time stretching is applied, the associated onset and offset annotations are transformed using the same temporal scaling factor. Each refined utterance is subsequently represented in three complementary views: (i) the original mixed speech recording containing the NVV event, (ii) an isolated NVV segment cropped using the refined timestamps, and (iii) an NVV-removed speech context obtained by removing the localized NVV interval from the original recording. These views provide mixed-context examples, event-focused examples, and negative-control speech contexts, respectively. The resulting data encourage the downstream model to distinguish acoustically grounded NVV events from lexical speech and speech-adjacent acoustic variation. 
+
+2.3 NVV-TimeBench: An Expert-Refined Benchmark for Fine-Grained NVV Temporal Grounding 
+
+We introduce NVV-TimeBench, an expert-refined benchmark for fine-grained NVV temporal grounding. Each instance contains an audio recording, its lexical transcript, and one or more annotations (c, t s, t e), where c denotes the canonical NVV category and ts and te denote its acoustic onset and offset. The bench-mark evaluates both event-category recognition and waveform-time boundary localization, rather than transcript-relative tag placement alone. The benchmark is curated from public resources and generated data that are excluded from the model training set. Expert annotation and review are conducted throughout the curation process; a randomly selected subset is independently annotated by five experts, with two additional validators performing quality checks. The final benchmark contains 667 utterances with 1,094 target events, totaling approximately 112.6 minutes of audio and covering all 26 categories in the unified taxonomy. Generic background-noise labels are excluded because they do not define a target event under the present grounding formulation. Category counts range from 22 to 159 instances, covering rare events such as [Scream] , [Roar] ,and [Burp] , as well as frequent events including [Laughter] and [Breath] ;NVV-TimeBench is therefore category-diverse rather than strictly class-balanced. Event durations have a mean of 0.52 s and a median of 0.40 s, spanning brief transients and sustained vocalizations of up to nearly 8 s. NVV-Locator 7
+
+3 NVV-Locator: A Transcript-Conditioned Model for Fine-Grained NVV Temporal Grounding 
+
+We propose NVV-Locator , a transcript-conditioned model for fine-grained temporal grounding of nonverbal vocalizations (NVVs) and a dedicated baseline for NVV-TimeBench. Given a speech recording and its lexical transcript, with all NVV annotations removed, NVV-Locator jointly estimates the temporal boundaries of lexical units and identifies locally associated NVV events, including their categories and acoustic onset and offset times. The lexical transcript is treated as an observed input rather than a generation target, allowing the model to focus its capacity on multimodal temporal alignment. Hello[time][time][cough][0.68][0.72]        
+
+> World[time][time][ null ] [----] [----]
+> AUT Encoder Tokenizer
+> Hello[time][time][nv_t][time][time] World
+> LLM (Causal Attention Mask) Timestamp & NV Prediction Layer
+> Results: Output IDs:
+> (Arbitrary Slot Placement)
+> AUT Encoder Tokenizer
+> LLM (Causal Attention Mask) Timestamp & NV Prediction Layer
+> Labels: Output IDs:
+> Non-Shifted Text Time Loss Event Time Loss NV Type Loss Decomposed Slot Loss Non-Autoagressive
+> [0.52] [0.65] [ cough ] [ 0.68 ] [ 0.72 ]
+> Hello[time][time][nv_t][time][time]
+> World[time][time][nv_t][time][time]
+
+Training Inference  
+
+> Dynamic Slot Insertion
+> [cough] start time: 0.68s end time: 0.72s
+> Ignored Timestamp Slot Speech Embedding Text Token Timestamp Slot NV Slot
+> Ignored NV Slot Timestamp Index NV Index Ignored Token LLM Hidden
+
+Fig. 2. Architecture of NVV-Locator. A five-slot template is inserted at transcript positions to encode lexical start and end times, NVV type, and NVV onset and offset times. During training, the slot labels are supervised directly at their corresponding positions without next-token shifting. During inference, all slot labels are predicted in parallel and decoded into lexical boundaries and NVV temporal intervals. 
+
+3.1 Non-Autoregressive Slot-Filling Architecture 
+
+NVV-Locator is built on Qwen3-ASR-0.6B [14], comprising a pretrained audio encoder and a 0.6B-parameter language-model decoder. It reformulates continuous temporal grounding as structured slot filling over a transcript-aligned sequence. Autoregressive timestamp generation can propagate errors across the output sequence and increases inference cost with the number of predicted boundaries. NVV-Locator instead predicts predefined temporal and event slots in parallel. Al-though the decoder retains the causal attention mask inherited from Qwen3-ASR, labels for all inserted slots are predicted simultaneously rather than generated recursively. Let x denote an input waveform and HA = Enc A(x) the acoustic feature sequence. Given a lexical transcript W = ( w1, w 2, . . . , w N ),, where each wi is a Chinese character or English word, we insert a five-slot template after each 8 Y. Cao et al. 
+
+transcript unit: Si = ⟨c(i) 
+
+> s
+
+, c (i) 
+
+> e
+
+, nv (i) 
+
+> t
+
+, nv (i) 
+
+> s
+
+, nv (i) 
+
+> e
+
+⟩. Here, c(i) 
+
+> s
+
+and c(i) 
+
+> e
+
+denote the start and end times of wi, while nv (i) 
+
+> t
+
+, nv (i) 
+
+> s
+
+, and nv (i) 
+
+> e
+
+denote the category, onset, and offset of the NVV associated with this position. When no NVV is present, 
+
+nv (i) 
+
+> t
+
+is assigned [Null] , and its timestamp slots are masked from supervision. The resulting slot-augmented transcript is denoted by fW. Dense lexical timestamp slots and sparse NVV slots jointly establish a shared temporal reference frame. Continuous time is discretized into B = 750 bins with resolution ∆t = 40 
+
+ms, covering audio up to 30 seconds. The tokenizer is augmented with 778 task-specific output tokens: 750 timestamp-index tokens, 26 NVV-category tokens, one [Null] token, and one reserved background token not used for supervision. Given HA and fW, the decoder produces representations for all inserted slots in one forward pass: 
+
+Z = LLM θ
+
+
+
+HA, fW
+
+
+
+. (1) Let R = {cs, c e, nv t, nv s, nv e} denote the slot types. The output distribution is factorized over slot positions: 
+
+Pθ
+
+
+
+Y | HA, fW
+
+
+
+=
+
+> N
+
+Y
+
+> i=1
+
+Y
+
+> r∈R
+
+Pθ (yi,r | zi,r ) , (2) where zi,r is the representation of slot r at position i. Timestamp slots predict one of the B time bins, whereas NVV-type slots predict an NVV category or 
+
+[Null] .Unlike standard next-token language modeling, supervision is applied directly at each slot without label shifting. All lexical and NVV boundaries are thus inferred in parallel, and soft expectation decoding over time-bin posteriors yields continuous timestamps with sub-bin precision. 
+
+3.2 Noise-Robust Training and Optimization Strategies 
+
+Because the training corpus is constructed through an automated large-scale pipeline, the resulting supervision may contain residual boundary noise. In ad-dition, NVV events are sparse relative to lexical units, resulting in substantial imbalance between dense lexical timestamp labels and sparse event-level labels. To improve robustness under these conditions, we freeze the audio encoder during training and fine-tune the language-model decoder together with the timestamp and NVV prediction layer. This constrains adaptation to the multimodal align-ment and slot-prediction components while reducing overfitting to noisy acoustic supervision. 
+
+Decomposed Slot Optimization and Conditional Masking We optimize the Timestamp & NVV Prediction Layer using three complementary objectives: lexical timestamp loss Ltext_time , NVV type loss Lnv_type , and NVV timestamp loss Levent_time :NVV-Locator 9
+
+Ltotal = Ltext_time + Lnv_type + Levent_time (3) Each term is computed as the mean cross-entropy over its valid supervision positions. Specifically, Ltext_time is evaluated on valid lexical timestamp slots, while Lnv_type is evaluated on all valid NVV-type slots, including the [Null] 
+
+class. This allows the model to learn both NVV category recognition and the absence of an NVV event. For NVV timestamps, supervision is meaningful only when an NVV is present. Let 
+
+ΩNV =
+
+n
+
+i | y(i)
+
+> nv t
+
+̸ = [Null] 
+
+o
+
+(4) denote the set of transcript positions associated with valid NVV events. The event timestamp loss is defined as 
+
+Levent_time = 12|ΩNV |
+
+X
+
+> i∈ΩNV
+
+h
+
+CE 
+
+
+
+ˆy(i) 
+
+> nv s
+
+, y (i)
+
+> nv s
+
+
+
++ CE 
+
+
+
+ˆy(i) 
+
+> nv e
+
+, y (i)
+
+> nv e
+
+i 
+
+. (5) Here, the subscripts s and e denote the onset (start) and offset (end) of an NVV event, respectively. y(i) 
+
+> nv s
+
+and y(i) 
+
+> nv e
+
+are the ground-truth discrete time-bin labels for the onset and offset of the NVV associated with position i. Correspondingly, 
+
+ˆy(i) 
+
+> nv s
+
+and ˆy(i) 
+
+> nv e
+
+denote the model’s predicted categorical distributions over the B
+
+timestamp bins. Thus, the two cross-entropy terms supervise onset and offset prediction separately. The factor of 2 averages the loss over the two temporal boundaries of each valid NVV event. For mini-batches without valid NVV events, Levent_time is set to zero. This conditional masking prevents the model from learning arbitrary timestamps for non-existent events and ensures that event-boundary gradients originate only from acoustically grounded NVV instances. The per-term normalization also prevents dense lexical timestamp supervision from numerically dominating the sparse NVV-specific objectives. 
+
+Event-Level Hungarian Matching Validation Token-level cross-entropy does not directly assess utterance-level event correspondence. We therefore reserve the validation set and use category-aware Hungarian matching for checkpoint selection. Let E∗ = {e∗
+
+> 1
+
+, ..., e ∗ 
+
+> U
+
+} and ˆE = {ˆe1, ..., ˆeV } denote the ground-truth and predicted NVV events, respectively, each with a category, onset, and offset. Their temporal Intersection over Union (t-IoU) is t-IoU (e∗, ˆe) = ℓ∩(e∗, ˆe)
+
+ℓ∪(e∗, ˆe) , (6) where ℓ∩(e∗, ˆe) = max  0, min( t∗ 
+
+> e
+
+, ˆte) − max( t∗ 
+
+> s
+
+, ˆts) , and ℓ∪(e∗, ˆe) = ( t∗ 
+
+> e
+
+− t∗ 
+
+> s
+
+) + (ˆ te − ˆts) − ℓ∩(e∗, ˆe). We define the category-aware matching cost as 
+
+Ci,j =
+
+(
+
+1 − t-IoU (e∗ 
+
+> i
+
+, ˆej ), if c∗ 
+
+> i
+
+= ˆ cj and t-IoU (e∗ 
+
+> i
+
+, ˆej ) ≥ τval ,
+
++∞, otherwise , (7) 10 Y. Cao et al. 
+
+where c∗ 
+
+> i
+
+and ˆcj are the ground-truth and predicted categories. We set τval =0.3, a more permissive threshold than the t-IoU ≥ 0.5 criterion used for final benchmarking. We augment the bipartite graph with dummy nodes and obtain the minimum-cost one-to-one assignment using the Hungarian algorithm. Matched pairs are counted as true positives, while unmatched predictions and references are counted as false positives and false negatives. We monitor Macro F1 and boundary Mean Absolute Error (MAE) over matched pairs: 
+
+MAE = 12|M| 
+
+X
+
+> (i,j )∈M
+
+ |t∗ 
+
+> s,i
+
+− ˆts,j | + |t∗ 
+
+> e,i
+
+− ˆte,j | , (8) where M denotes the matched real-event pairs. This protocol selects checkpoints according to event-level temporal grounding quality rather than token-level accuracy alone. 
+
+4 Experiments and Results 
+
+4.1 Experimental Setup Dataset Following the first three phases of the automated data construction pipeline, a total of 283.20 hours of candidate audio data are yielded. From this initial corpus, approximately 7.49 hours are partitioned for validation and evaluation, while the remaining 275.71 hours are subjected to Phase 4 (decoupled data augmentation), effectively expanding the final training set to 551.42 hours. Within the 7.49-hour validation split, 1.88 hours are allocated for expert manual refinement to construct the high-precision evaluation benchmark, whereas 5.61 hours serve as the development validation set for model selection and checkpoint optimization during training. 
+
+Baselines We evaluate NVV-Locator on NVV-TimeBench, the expert-refined benchmark for fine-grained NVV temporal grounding. We compare it with four representative large audio models (LAMs): Gemini-2.5-Pro [4], Qwen3-Omni-Instruct (30B) [18], Step-Audio-R1.1 [15], and MOSS-Audio-8B-Instruct [20]. The LAMs are evaluated zero-shot and prompted to output canonical NVV categories together with their onset and offset times. Their outputs are mapped to the unified 26-category taxonomy and evaluated using the same protocol as NVV-Locator. 
+
+Evaluation Metrics To evaluate NVV event recognition and temporal boundary accuracy, we adopt three complementary metrics. Event-Level F1 (t-IoU ≥ 0.5) is the primary measure of event identification under a temporal matching criterion. A prediction is counted as a true positive only when its predicted NVV category matches the ground-truth category and the temporal Intersection over Union (t-IoU) between the predicted and reference intervals is at least 0.5. Mean absolute NVV-Locator 11 
+
+error (mMAE) measures boundary precision by averaging the absolute onset and offset errors over successfully matched pairs, reported in milliseconds. Mean IoU (mIoU) is computed over the same matched pairs as an auxiliary measure of temporal overlap. Both micro- and macro-averaged results are reported. The Micro average 
+
+pools true positives, false positives, and false negatives across all categories to derive global Precision, Recall, and F1; micro mIoU and mMAE are averaged over all matched pairs. The Macro average for F1 is the arithmetic mean of category-wise F1 scores. For mIoU and mMAE, macro averages are computed only over categories with at least one successfully matched pair (t-IoU ≥ 0.5), thereby avoiding undefined boundary statistics for categories without matched events. 
+
+4.2 Main Results 
+
+Table 2 summarizes the results on NVV-TimeBench. Among the LAM baselines, Gemini-2.5-Pro achieves the strongest aggregate performance, with a Macro F1 of 49.8%, a Macro mIoU of 72.8%, and a Macro mMAE of 92.6 ms. Qwen3-Omni, Step-Audio, and MOSS-Audio obtain substantially lower Macro F1 scores of 32.9%, 27.9%, and 12.5%, respectively. These results indicate that, despite occasional accurate matches for individual event types, current general-purpose LAMs remain limited in reliably identifying and temporally grounding fine-grained NVV events. NVV-Locator achieves the best aggregate performance across all three metrics. It attains a Micro F1 of 71.0% and a Macro F1 of 70.2%, improving over the strongest baseline by 25.2 and 20.4 absolute percentage points, respectively. It further achieves a Macro mIoU of 80.4% and a Macro mMAE of 59.6 ms, corresponding to a 7.6-point gain in temporal overlap and a 33.0 ms reduction in boundary error relative to Gemini-2.5-Pro. Together, these results demonstrate the effectiveness of NVV-Locator for fine-grained NVV event identification and temporal boundary localization. 
+
+4.3 Fine-Grained Category Analysis 
+
+Despite the strong aggregate results, Table 2 reveals considerable variation across the 26 NVV categories, reflecting differences in acoustic saliency and boundary ambiguity. Whistle (96.9% F1, 44.2 ms mMAE), Cough (78.1%, 50.0 ms), Sneeze 
+
+(89.3%, 47.0 ms), and Shush (91.2%, 28.7 ms) achieve high Event-Level F1 with relatively precise boundaries. Their abrupt energy transitions and distinctive harmonic or broadband spectral patterns provide clear cues for both event identification and onset–offset estimation. In contrast, sustained or repetitive events can achieve high Event-Level F1 while exhibiting larger boundary errors. Laughter (83.7% F1) and Hum (95.2% F1) yield mMAEs of 112.6 ms and 129.4 ms, respectively. Their periodic and gradually evolving acoustic structure makes the exact onset and offset less sharply 12 Y. Cao et al. 
+
+Table 2. Main results on NVV-TimeBench. Each cell reports Event-Level F1 ↑ / mIoU 
+
+↑ / mMAE ↓, where F1 (%) is computed with t-IoU ≥ 0.5, and mIoU (%) and mMAE (ms) are computed over successfully matched event pairs. Micro and Macro averages are given in the last two rows. Bold and underlining denote the best and second-best values, respectively, for each metric within a row. 
+
+Tag Gemini-2.5-Pro Qwen3-Omni Step-Audio MOSS-Audio NVV-Locator (Ours) 
+
+F1 / mIoU / mMAE F1 / mIoU / mMAE F1 / mIoU / mMAE F1 / mIoU / mMAE F1 / mIoU / mMAE 
+
+Applause 32.7 / 74.9 / 91.0 17.6 / 61.9 / 222.0 13.3 / 64.3 / 154.3 5.7 / 91.8 / 44.0 90.6 / 78.0 / 81.1 
+
+Breath 18.8 / 69.1 / 84.4 4.9 / 59.4 / 260.2 30.1 / 66.9 / 75.4 17.5 / 69.3 / 62.0 47.7 / 77.7 / 62.0 
+
+Burp 62.1 / 73.1 / 48.6 30.6 / 63.7 / 79.4 26.2 / 64.0 / 58.9 0.0 / 0.0 / 0.0 59.1 / 83.6 / 30.4 
+
+Confirmation-X 27.7 / 74.7 / 56.0 8.1 / 81.4 / 23.7 22.2 / 70.2 / 62.5 2.9 / 74.0 / 65.0 48.5 / 79.0 / 40.5 
+
+Cough 41.9 / 66.6 / 105.9 36.8 / 71.5 / 140.6 32.3 / 75.0 / 93.3 35.8 / 72.4 / 95.9 78.1 / 83.0 / 50.0 
+
+Cry 64.9 / 75.2 / 240.9 70.3 / 77.5 / 200.9 56.5 / 75.6 / 285.3 30.7 / 66.1 / 296.0 75.5 / 83.5 /129.9 
+
+Dissatisfaction-X 18.9 / 71.7 / 85.1 27.5 / 71.5 / 51.1 12.3 / 65.9 / 60.9 0.0 / 0.0 / 0.0 82.8 / 73.7 / 39.9 
+
+Filled Pause 50.9 / 76.5 / 66.9 17.6 / 65.7 / 74.0 26.8 / 68.9 / 84.5 0.0 / 0.0 / 0.0 76.5 / 87.9 / 29.1 
+
+Gasp 32.5 / 64.7 / 73.8 26.7 / 70.7 / 64.4 12.9 / 72.3 / 63.1 20.4 / 65.5 / 82.3 16.7 / 62.3 / 98.0 
+
+Hiss 49.2 / 74.7 / 58.5 9.3 / 71.1 / 55.7 0.0 / 0.0 / 0.0 0.0 / 0.0 / 0.0 58.6 / 77.0 / 51.9 
+
+Hum 84.4 / 75.3 / 182.9 66.7 / 74.6 / 176.7 45.5 / 73.1 / 194.3 30.4 / 71.6 / 137.1 95.2 / 83.2 /129.4 
+
+Laughter 47.4 / 68.8 / 168.2 44.9 / 74.5 / 120.0 42.1 / 75.0 / 153.7 20.1 / 71.8 / 128.0 83.7 / 78.3 /112.6 
+
+Lip Smack 10.8 / 66.9 / 32.0 6.8 / 59.1 / 47.2 3.2 / 58.5 / 166.0 0.0 / 0.0 / 0.0 21.1 / 58.7 / 73.7 
+
+Moan 71.4 / 77.6 / 70.1 26.7 / 76.4 / 79.4 4.8 / 70.1 / 45.5 0.0 / 0.0 / 0.0 74.6 / 86.0 / 41.3 
+
+Question-X 42.0 / 70.4 / 54.8 10.5 / 73.8 / 73.0 25.0 / 77.5 / 48.5 0.0 / 0.0 / 0.0 61.9 / 78.0 / 39.5 
+
+Roar 88.5 / 77.8 / 95.2 67.9 / 80.1 / 85.0 37.2 / 74.4 / 141.3 12.1 / 63.0 / 83.0 35.9 / 83.9 / 62.1 
+
+Scream 82.2 / 75.3 / 93.9 70.4 / 75.5 / 99.2 41.7 / 71.2 / 134.4 39.0 / 68.0 / 133.8 40.0 / 91.0 / 27.0 
+
+Shush 72.2 / 77.8 / 66.9 63.3 / 76.3 / 62.1 56.3 / 75.9 / 59.8 24.4 / 79.0 / 62.4 91.2 / 87.2 / 28.7 
+
+Sigh 38.8 / 79.2 / 78.9 24.1 / 81.7 / 65.8 33.8 / 77.9 / 77.1 13.1 / 69.3 / 101.0 84.6 / 85.1 / 58.9 
+
+Sneeze 62.3 / 74.6 / 87.9 59.6 / 76.6 / 108.8 29.5 / 67.0 / 113.8 14.5 / 67.7 / 110.3 89.3 / 85.4 / 47.0 
+
+Sniff 33.9 / 72.8 / 66.6 33.3 / 69.3 / 76.3 22.1 / 67.3 / 78.1 8.9 / 65.1 / 51.7 85.0 / 82.9 / 40.7 
+
+Snore 68.6 / 71.4 / 111.3 36.7 / 68.2 / 190.1 37.5 / 66.4 / 197.2 20.0 / 64.1 / 78.0 95.4 / 84.5 / 46.7 
+
+Surprise-X 24.7 / 69.2 / 76.1 18.2 / 84.8 / 30.2 40.8 / 67.9 / 85.2 3.0 / 70.8 / 32.0 70.8 / 79.4 / 48.3 
+
+Throat Clearing 32.1 / 70.8 / 69.7 21.5 / 73.5 / 56.3 32.0 / 68.7 / 85.1 8.9 / 72.6 / 73.5 82.2 / 75.9 / 74.9 
+
+Whistle 65.6 / 68.5 / 104.0 30.4 / 79.7 / 72.9 29.2 / 67.3 / 129.9 11.1 / 69.1 / 77.8 96.9 / 77.5 / 44.2 
+
+Yawn 71.2 / 75.5 / 137.6 25.8 / 86.4 / 83.6 11.8 / 67.5 / 166.3 6.7 / 52.8 / 154.5 82.6 / 88.0 / 60.8 
+
+Micro avg. 45.8 / 73.6 / 99.0 30.1 / 74.6 / 104.9 28.8 / 70.9 / 104.4 16.7 / 69.2 / 100.3 71.0 / 81.9 / 60.6 
+
+Macro avg. 49.8 / 72.8 / 92.6 32.9 / 73.3 / 100.0 27.9 / 69.9 / 112.6 12.5 / 69.7 / 98.3 70.2 / 80.4 / 59.6 
+
+defined. Applause (90.6% F1, 81.1 ms) and Yawn (82.6%, 60.8 ms) show a similar but less pronounced pattern. Brief, low-energy, and speech-adjacent events remain more challenging. Lip Smack (21.1% F1) is typically an ultra-short transient, often shorter than 50 ms, and can be easily masked by reverberation or background noise. Gasp (16.7%) and Breath (47.7%) often exhibit diffuse broadband energy with weak harmonic structure, making them less distinguishable from the local noise floor. Moreover, respiratory events frequently occur near lexical boundaries and may blend with neighboring speech or articulatory preparation, further increasing onset–offset ambiguity. In contrast, Sniff achieves 85.0% F1 with a 40.7 ms mMAE, suggesting that its characteristic spectral profile provides more stable discriminative cues. Overall, the category-wise results indicate that performance is shaped by acoustic saliency, event duration, and boundary ambiguity. 
+
+4.4 Ablation Study: Validating the Data Construction Pipeline 
+
+To quantify the contribution of each pipeline component, we remove Dual-LLM Verification (Phase 1), Energy-Based Boundary Refinement (Phase 3), and Decoupled Data Augmentation (Phase 4), while keeping the model architecture and training protocol unchanged. Table 3 reports the results. We emphasize Macro F1 because it weights all categories equally and is more sensitive to degradation in sparse NVV types; mIoU and mMAE further assess temporal boundary accuracy. NVV-Locator 13                 
+
+> Table 3. Ablation results on NVV-TimeBench. Each variant removes one component of the automatic data construction pipeline while keeping the downstream model architecture and training protocol unchanged.
+> Model Configuration Macro F1(%) mIoU(%) mMAE(ms) NVV-Locator (Full Pipeline) 70.2 80.4 59.6
+> w/o Dual-LLM Filtering (Phase 1) 55.1 74.9 73.2 w/o Energy Refinement (Phase 3) 51.7 62.5 133.6 w/o Decoupled Augmentation (Phase 4) 66.4 78.3 67.5
+
+Impact of Dual-LLM Verification (Phase 1) Removing Dual-LLM Ver-ification reduces Macro F1 from 70.2% to 55.1%, decreases mIoU from 80.4% to 74.9%, and increases mMAE from 59.6 ms to 73.2 ms. Without this quality-control stage, samples with incorrect labels, background interference, overlapping speech, or acoustically ambiguous vocalizations are more likely to remain in the training set, especially for sparse categories. Such noisy supervision can introduce spurious acoustic–label associations and weaken both category discrimination and boundary learning. The 15.1-point Macro F1 drop highlights the importance of reliable category supervision. 
+
+Impact of Energy-Based Boundary Refinement (Phase 3) Removing Energy-Based Boundary Refinement causes the largest localization degradation: mMAE rises from 59.6 ms to 133.6 ms, mIoU falls from 80.4% to 62.5%, and Macro F1 drops to 51.7%. The transcript-guided windows from LLM-ForcedAligner identify the lexical gap around an NVV but may include silence, background noise, or speech-adjacent content, thereby overestimating the true event extent and providing imprecise onset–offset supervision. Under the Event-Level F1 criterion, category-correct predictions with t-IoU below 0.5 are counted as unmatched, affecting both precision and recall. Energy-based refinement is therefore essential for converting coarse lexical gaps into acoustically grounded NVV boundaries. 
+
+Impact of Decoupled Data Augmentation (Phase 4) Removing Decoupled Data Augmentation yields a smaller but consistent decline: Macro F1 decreases to 66.4%, mIoU to 78.3%, and mMAE increases to 67.5 ms. Phase 4 supplements each refined sample with the original mixed speech–NVV recording, an isolated NVV segment, and an NVV-removed speech context, while increasing diversity for underrepresented categories through class balancing. These complementary views help distinguish genuine NVVs from lexical speech and speech-adjacent acoustic variation, providing useful additional supervision beyond the original mixed recordings alone. 
+
+4.5 Cross-Corpus Generalization Evaluation 
+
+We further evaluate NVV-Locator on WESR-Bench to assess its cross-corpus transferability. WESR-Bench contains over 900 utterances with diverse vocal 14 Y. Cao et al. 
+
+events. After mapping its labels to our unified taxonomy, NVV-Locator is evalu-ated zero-shot without dataset-specific fine-tuning, achieving a Micro F1 of 70.2% and a Macro F1 of 45.7%. For reference, the WESR-trained systems reported in the original WESR-Bench study achieve Micro F1 scores of 70.5–71.4% and Macro F1 scores of 37.7–38.0%. Although a strict comparison is not possible because our evaluation involves taxonomy mapping and no target-corpus train-ing, the results are of a comparable overall scale. In particular, the zero-shot performance suggests that NVV-Locator retains effective NVV event recognition ability beyond the NVV-TimeBench distribution. 
+
+5 Conclusion 
+
+In this paper, we present a scalable approach to fine-grained nonverbal vocal-ization (NVV) temporal grounding, covering taxonomy construction, automatic timestamp annotation, benchmark curation, and model formulation. We unify 26 NVV categories and develop a four-stage data construction pipeline that com-bines dual-LLM verification, transcript-guided alignment, energy-based boundary refinement, and decoupled augmentation. We further introduce NVV-TimeBench and propose NVV-Locator, a non-autoregressive slot-filling model for joint NVV recognition and waveform-time localization. Experimental results show that the proposed approach substantially outperforms the evaluated large audio model counterparts, while ablation studies validate the importance of the data construc-tion pipeline for both event recognition and boundary localization. Evaluation on an external corpus further supports its cross-corpus generalization. 
+
+References 
+
+> 1. Bai, B., Lu, Q., Yang, W., Sun, Z., Hou, Y., Jia, P., Pu, S., Fu, R., Gao, Y., Li, Y., et al.: SynParaSpeech: Automated synthesis of paralinguistic datasets for speech generation and understanding. In: ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP). pp. 15527–15531. IEEE (2026) 2. Bain, M., Huh, J., Han, T., Zisserman, A.: WhisperX: Time-accurate speech transcription of long-form audio. In: INTERSPEECH. pp. 4489–4493. ISCA (2023) 3. Borisov, M., Spirin, E., Diatlova, D.: NonverbalTTS: A public english corpus of text-aligned nonverbal vocalizations with emotion annotations for Text-to-Speech. arXiv preprint arXiv:2507.13155 (2025) 4. Comanici, G., Bieber, E., Schaekermann, M., Pasupat, I., Sachdeva, N., Dhillon, I., Blistein, M., Ram, O., Zhang, D., Rosen, E., et al.: Gemini 2.5: Pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities. arXiv preprint arXiv:2507.06261 (2025) 5. Gong, Y., Yu, J., Glass, J.R.: Vocalsound: A dataset for improving human vocal sounds recognition. In: ICASSP. pp. 151–155. IEEE (2022) 6. Liao, H., Ni, Q., Wang, Y., Lu, Y., Zhan, H., Xie, P., Zhang, Q., Wu, Z.: NVSpeech: An integrated and scalable pipeline for human-like speech modeling with paralin-guistic vocalizations. arXiv preprint arXiv:2508.04195 (2025)
+
+NVV-Locator 15 7. Mai, J., Ji, J., Xing, X., Yang, C., Chen, W., Xing, J., Xu, X.: MNV-17: A high-quality performative mandarin dataset for nonverbal vocalization recognition in speech. In: ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP). pp. 18312–18316. IEEE (2026) 8. McAuliffe, M., Socolof, M., Mihuc, S., Wagner, M., Sonderegger, M.: Montreal Forced Aligner: Trainable text-speech alignment using Kaldi. In: INTERSPEECH. pp. 498–502. ISCA (2017) 9. Mu, B., Shi, X., Wang, X., Liu, H., Xu, J., Xie, L.: LLM-ForcedAligner: A non-autoregressive and accurate LLM-based forced aligner for multilingual and long-form speech. arXiv preprint arXiv:2601.18220 (2026) 10. Ni, Q., Liao, H., Chen, D., Wang, Y., Wu, Z.: NV-Bench: Benchmark of nonver-bal vocalization synthesis for expressive text-to-speech generation. arXiv preprint arXiv:2603.15352 (2026) 11. Piczak, K.J.: ESC: Dataset for Environmental Sound Classification. In: ACM Multimedia. pp. 1015–1018. ACM (2015) 12. Povey, D., Ghoshal, A., Boulianne, G., Burget, L., Glembek, O., Goel, N., Hanne-mann, M., Motlicek, P., Qian, Y., Schwarz, P., et al.: The Kaldi speech recognition toolkit. In: IEEE 2011 workshop on automatic speech recognition and understanding. IEEE Signal Processing Society (2011) 13. Rastorgueva, E., Lavrukhin, V., Ginsburg, B.: NeMo forced aligner and its applica-tion to word alignment for subtitle generation. In: INTERSPEECH. pp. 5257–5258. ISCA (2023) 14. Shi, X., Wang, X., Guo, Z., Wang, Y., Zhang, P., Zhang, X., Guo, Z., Hao, H., Xi, Y., Yang, B., et al.: Qwen3-ASR technical report. arXiv preprint arXiv:2601.21337 (2026) 15. Tian, F., Zhang, X.T., Zhang, Y., Zhang, H., Li, Y., Liu, D., Deng, Y., Wu, D., Chen, J., Zhao, L., et al.: Step-Audio-R1 technical report. arXiv preprint arXiv:2511.15848 (2025) 16. Wang, H., Hai, J., Chong, D., Thakkar, K., Feng, T., Yang, D., Lee, J., Thebaud, T., Moro-Velázquez, L., Villalba, J., et al.: CapSpeech: Enabling downstream applications in style-captioned Text-to-Speech. IEEE Transactions on Audio, Speech and Language Processing (2026) 17. Wu, Z., Liu, D., Liu, J., Wang, Y., Li, L., Jin, L., Bu, H., Zhang, P., Li, M.: SMIIP-NV: A multi-annotation non-verbal expressive speech corpus in mandarin for LLM-based speech synthesis. In: ACM Multimedia. pp. 12564–12570. ACM (2025) 18. Xu, J., Guo, Z., Hu, H., Chu, Y., Wang, X., He, J., Wang, Y., Shi, X., He, T., Zhu, X., et al.: Qwen3-Omni technical report. arXiv preprint arXiv:2509.17765 (2025) 19. Xue, L., Bian, W., Pan, J., Wu, W., Ren, Y., Kang, B., Hu, J., Ma, Z., Wang, S., Qian, X., Lee, H.y., Guo, Y.: NVV-SuperBench: Beyond words, beyond quality—benchmarking nonverbal vocalizations in speech generation. arXiv preprint arXiv:2604.16211 (2026) 20. Yang, C., Yu, C., Chen, H., Zhu, J., Chen, J., Chen, K., Wang, W., Wang, Y., Jiang, Y., Jiang, Y., et al.: MOSS-Audio technical report. arXiv preprint arXiv:2606.01802 (2026) 21. Yang, C., Huang, K., Fan, L., Tu, Q., Jiang, B., Zhang, D., Yin, L., Li, S., Fei, Z., Cheng, Q., et al.: WESR: Scaling and evaluating Word-level event-speech recognition. In: Findings of the Association for Computational Linguistics: ACL 2026. pp. 3121–3134 (2026) 16 Y. Cao et al. 22. Yang, G., Wu, H., Su, P., Huang, R., Shon, S., Do, B., Niu, M., Ni, Z., Li, S.W., Metze, F., et al.: Beyond Words: Towards Effective Modeling of Non-Verbal Vocal-izations in ASR. arXiv preprint arXiv:2607.01563 (2026) 23. Ye, R., Zhou, Y., Yu, R., Lin, Z., Li, K., Li, X., Liu, X., Zeng, G., Wu, Z.: A scalable pipeline for enabling non-verbal speech generation and understanding. arXiv preprint arXiv:2508.05385 (2025)

@@ -1,0 +1,181 @@
+Title: Semantic Refinement of Universal Audio Representations through Audio-Description Alignment
+
+URL Source: https://arxiv.org/pdf/2609.08429v1
+
+Published Time: Wed, 09 Sep 2026 03:09:56 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# SEMANTIC REFINEMENT OF UNIVERSAL AUDIO REPRESENTATIONS THROUGH AUDIO-DESCRIPTION ALIGNMENT 
+
+# Lejun Min 1,2 , Junyu Dai 1, Ruichen Zheng 1, Xinyue Fan 1, Yang Xiang 1, Huaichen Zhang 1
+
+# Xingchen Song 1, Yufei Shi 1, Han Zhao 1, Xiangang Li 1
+
+> 1
+
+# Alibaba Token Foundry 
+
+> 2
+
+# Center for Computer Research in Music and Acoustics, Stanford University 
+
+ABSTRACT 
+
+Universal audio representations must preserve acoustic detail while making high-level concepts accessible across speech, music, envi-ronmental sound, and downstream models of different capacities. We study semantic refinement of an acoustically pretrained encoder by adding audio–description alignment to a foundation of BEST-RQ, reconstruction, and CTC. We compare matched control, shuffled-description, and correctly paired trajectories to distinguish correct correspondence from an extra contrastive objective. Each endpoint is frozen and evaluated with a temporal-mean linear probe and a sequence-aware LLM readout, testing whether the refined informa-tion is directly accessible and remains useful to a stronger model. Across three paired seeds, correct alignment improves domain-balanced classification by 4.66 points with the linear probe and 2.59 points with the sequence-aware LLM, with positive changes in every domain. Correct pairing accounts for 87% of the linear-probe gain, while the LLM shows its clearest correspondence-specific benefit in captioning. Dense acoustic objectives provide complementary gains under both readouts. A separate 24-layer continuation remains competitive with leading public encoders under the shared evaluator, supporting the recipe beyond the controlled study. 
+
+Index Terms — universal audio representation learning, se-mantic refinement, audio–language alignment, contrastive learning, frozen transfer 
+
+1. INTRODUCTION 
+
+As audio systems expand from domain-specific recognition toward language-conditioned understanding and generation across speech, music, and environmental sound, a universal representation can pro-vide a shared interface between waveforms and downstream models. It must preserve fine temporal and spectral structure while organiz-ing sound around concepts that transfer across tasks and domains. Acoustic pretraining supplies much of the former; we use seman-tic refinement for the deliberate addition of the latter. This goal is concrete in semantic-aware music tokenizers [1]. Dai et al. [2], for example, place one before hierarchical autoregressive planning and flow-matching rendering. Their training path combines BEST-RQ pretraining, ASR/reconstruction/chroma refinement, and discrete-token training: BEST-RQ learns contextual acoustics, reconstruction retains spectral detail, chroma carries pitch, and ASR supplies lex-ical supervision. These objectives form a strong acoustic–lexical basis, yet do not explicitly organize it around scene, style, or instru-mentation. Two lines of work motivate this refinement. Masked predic-tion provides the acoustic foundation [3, 4, 5, 6, 7, 8, 9]; audio– language methods add semantics through clip alignment [10], joint masked/contrastive or captioning objectives [11, 12], multidomain captions [13], and frame-level grounding [14]. Their gains establish the value of language supervision, but are measured across different recipes, mixtures, and downstream systems. They therefore leave unclear how much correct correspondence adds within a matched continuation, and whether the change is directly accessible from the representation or mainly exposed by a capable downstream model. We address this gap by extending the encoder-refinement stage of Dai et al. [2] from music to speech, music, and environmen-tal sound with a shared BEST-RQ–Conformer [3, 15]. We re-tain masked acoustic learning, mel/chroma reconstruction, and a CTC-based ASR objective, then add clip-level audio–description alignment and test time-structured and event-description variants. To isolate their contribution, three paired seeds compare acous-tic+CTC, shuffled-description, and correctly aligned trajectories under matched initialization, audio exposure and order, control ob-jectives, and optimizer schedule (Figure 1). Descriptions come from Music and Sound, leaving Speech to test transfer without description supervision. Temporal-mean linear probes measure class structure available through a simple decision surface; a sequence-aware LLM readout following XARES-LLM [16] tests whether the frozen se-quence remains useful to a higher-capacity downstream model under the same X-ARES-style tasks and exposure [17]. Our contributions are twofold. First, we develop a multidomain semantic-refinement recipe combining masked prediction, spec-tral/pitch reconstruction, lexical supervision, and audio–description alignment under uneven annotations. Second, we characterize how semantic supervision should enter this stack: correct clip-level cor-respondence supplies the main transferable semantic signal, while dense acoustic objectives preserve complementary structure and finer time/event targets add a smaller gain in linearly accessible semantics. The two readouts reveal where each benefit appears, and the scaled continuation remains competitive with public encoders. 
+
+2. CONTROLLED SEMANTIC REFINEMENT 2.1. Acoustic and semantic objectives 
+
+We continue a shared BEST-RQ representation across speech, mu-sic, and environmental sound. All trajectories begin from the same 12-block slice of a pretrained 24-block encoder, which converts 24-kHz audio into 128-bin mel features, reduces the frame rate to 25 Hz with two ConvNeXt blocks [18], and processes the sequence with a 1024-dimensional Conformer. Continued BEST-RQ prediction pre-serves masked acoustic context. The acoustic+CTC control also re-constructs mel and chroma for signal and pitch structure and ap-arXiv:2609.08429v1 [eess.AS] 8 Sep 2026 Fig. 1 . Overview of the matched training intervention and frozen evaluation. Speech, Music, and Sound share the BEST-RQ–Conformer ini-tialization but provide different supervision. Three paired trajectories produce control, shuffled-description, and correctly aligned endpoints, which are frozen and evaluated with identical linear and sequence-aware LLM protocols. plies a CTC-based ASR objective to available transcripts or lyrics for sequence-aligned lexical cues [19]. Reconstruction and CTC still leave many global concepts un-named, especially in music and environmental sound. We there-fore align each clip with its descriptions. The audio embedding is obtained by masked temporal averaging, projection, and normaliza-tion; a two-layer Transformer over frozen multilingual-BERT token embeddings [20] produces the text embedding. For normalized em-beddings ai and tj , symmetric multi-positive InfoNCE [10] is 
+
+ℓa→t = − 1
+
+|A| 
+
+X
+
+> i∈A
+
+log 
+
+P 
+
+> j∈P (i)
+
+eγa⊤ 
+
+> itj
+
+P 
+
+> j∈T
+
+eγa⊤ 
+
+> itj
+
+,
+
+Lclip = 12 (ℓa→t + ℓt→a). (1) 
+
+P(i) contains every description view of a recording, including exact duplicates that would otherwise become false negatives; the reverse term swaps audio and text anchors. Music and Sound provide de-scriptions, while Speech continues through the shared control objec-tives. Missing targets are masked, and annotated losses are normal-ized within domain before fixed domain weighting. Finer targets reuse the text encoder and contrastive loss. Music time text encodes ordered section ranges, intensity, and instruments; Sound time text describes recording-level spatiotemporal dynamics. The time loss applies position-aware query pooling to the full se-quence; the Sound event loss aligns a mean-pooled clip with up to four event phrases. Missing targets are skipped. 
+
+2.2. Matched training trajectories 
+
+Better downstream scores after adding descriptions could come from correct semantic pairing or simply from adding another contrastive objective. To separate the two, let ERQ  
+
+> s
+
+, E0 
+
+> s
+
+, Eshuf  
+
+> s
+
+, and Eclip  
+
+> s
+
+denote the RQ-only, acoustic+CTC, shuffled, and correctly paired frozen encoders for representation seed s. For readout r and metric Mr ,our primary estimate is 
+
+∆clip −0 
+
+> s,r
+
+= Mr (Eclip  
+
+> s
+
+) − Mr (E0 
+
+> s
+
+). (2) Within a seed, the three main trajectories share encoder initialization, accepted audio and order, control objectives, and optimizer sched-ule. Correct and shuffled training also share the text-side initializa-tion, caption counts, and contrastive weight; shuffling only permutes caption bundles within domain and length strata and forbids self-assignment. Thus correct–control measures the complete alignment component, whereas correct–shuffled tests the contribution of cor-rect correspondence. Secondary comparisons place clip alignment in the objective stack. Clip-only and all-description variants match data, order, con-trol objectives, and clip loss; the latter adds time/event losses under pooled or domain-normalized aggregation. RQ-only versus acous-tic+CTC tests reconstruction and CTC; removing BEST-RQ, mel, and chroma tests whether semantics replace or complement dense learning. 
+
+3. EVALUATION PROTOCOL 3.1. Training setup and frozen readouts 
+
+We freeze every continued encoder to test whether the information sought by the training design is already present in its representa-tion. The three training domains play different roles in this test: Speech supplies transcripts but no descriptions, Music supplies both lyrics and descriptions, and Sound supplies descriptions without CTC. Speech therefore reveals whether description learning trans-fers beyond the captioned data, while Music and Sound measure its direct effect. The smaller time/event subsets support the tests of finer supervision. Table 1 summarizes this routing and the evaluated conditions. Training draws from agreement-governed internal speech, mu-sic, and environmental-audio collections that are separate from the downstream evaluation benchmarks. After deduplication and validity filtering, we select whole records toward a 5:5:1 Speech/ Music/Sound duration target. The 50k controlled runs share the filtered pool, 23.7k accepted audio-hours, batch order, and opti-Table 1 . Target coverage and matched 50k training conditions. Checkmarks denote dense audio-derived objectives; percentages give annotation coverage among effective records. “All desc.” means clip+time+event; “domain”/“pool” specify annotated-loss aggrega-tion.                                                                        
+
+> Entry RQ Mel/Chr. CTC Clip Time Event Avg.
+> (a) Target coverage by domain
+> SPEECH ✓✓100% 0% 0% 0% –MUSIC ✓✓79.1% 100% 94.3% 0% –SOUND ✓✓0% 100% 37.2% 37.3% –
+> (b) Evaluated training conditions
+> RQ-only ✓––––––Acoustic+CTC ✓✓✓–––domain + Shuffled clip ✓✓✓✓––domain + Correct clip ✓✓✓✓––domain All desc.; no RQ/Mel/Chr. ––✓✓✓✓domain All desc.; pool ✓✓✓✓✓✓pool All desc.; domain ✓✓✓✓✓✓domain
+
+mization schedule; accepted hours measure exposure rather than unique corpus size. Speech/Music text targets are transcripts or lyrics, while automated internal pipelines provide Music/Sound de-scriptions. Each controlled trajectory runs for 50k AdamW updates, with β = .9/. 96 , weight decay 10 −6, gradient clipping at 1, and a 4k-step warmup followed by cosine decay from 8×10 −5 to 8×10 −6.RQ/Mel/Chroma have unit weight; Speech/Music CTC use .5/. 2,and clip/time/event use .1/. 05 /. 05 . Routed losses ramp over 5k steps, and the learnable InfoNCE scale starts at γ0 = 1 /. 07 .The two readouts answer complementary questions. The linear probe mean-pools valid states and trains one classifier per dataset, asking whether semantic categories are already accessible through a simple decision surface. The sequence-aware LLM readout follows XARES-LLM [16]: it retains the frozen sequence and connects it through a learned projector to rank-8 LoRA-adapted Qwen3-0.6B [21, 22], asking whether the same representation remains useful to a stronger downstream model. Both follow fixed X-ARES-style pro-tocols [17], share splits, labels, exposure sequences, and representa-tion seeds, and hold readout initialization and data order fixed within protocol. Linear probes train for 6250 steps; the sequence-aware protocol uses 400k downstream examples. 
+
+3.2. Tasks, metrics, and statistical analysis 
+
+We first test whether the representation supports recognition across all three domains. Task 1 follows X-ARES across 14 datasets. Speech comprises CREMA-D, FSC, LibriCount, SC-V1, Vocal-Sound, VoxCeleb1, and VoxLingua33; Music comprises FMA, GTZAN, and NSynth; Sound comprises ESC-50, FSD50K, FSDK-aggle2018, and US8K. We use accuracy except mAP for the FSD datasets, average within domain, and weight the three domain means equally. This prevents the larger Speech suite from dominating T1. The sequence-aware LLM also tests whether these represen-tations support generation. Task 2 ASR averages 1 − CER on AISHELL-1 [23] and 1 − WER on LibriSpeech [24]; captioning uses FENSE [25] on Clotho [26] and SongDescriber [27], and DATE on MECAT [28]. Scores are mapped to a 0–100 higher-is-better scale. We use their macro-average only as a compact description and interpret ASR and captioning separately. Each primary comparison uses three representation-training seeds, except the initial RQ-only checkpoint. Pairing within seed 
+
+Table 2 . Task 1 classification under the linear probe and sequence-aware LLM readout (%). Absolute rows are seed means; contrast rows are matched paired differences over three representation seeds. Brackets report 95% paired intervals for the T1 contrasts.                                                         
+
+> (a) Linear probe
+> Condition Speech Music Sound T1 avg. Control 74.11 62.30 54.24 63.55 Shuffled 74.02 63.74 54.64 64.14 Correct 75.16 68.05 61.39 68.20
+> Correct −control +1.06 +5.76 +7.16 +4.66 [4.43,4.89]
+> Correct −shuffled +1.14 +4.31 +6.75 +4.07 [3.63,4.50]
+> (b) Sequence-aware LLM readout
+> Condition Speech Music Sound T1 avg. Control 78.00 68.28 57.38 67.88 Shuffled 78.32 68.32 58.48 68.38 Correct 79.12 71.60 60.71 70.48
+> Correct −control +1.13 +3.32 +3.33 +2.59 [1.42,3.77]
+> Correct −shuffled +0.80 +3.28 +2.23 +2.10 [-1.78,5.98]
+
+lets us report mean differences and 95% Student-t intervals. For scale context, both readouts also compare the 24-layer continua-tion with WavLM Large, MuQ-large, DaSheng-Base, and SPEAR XLarge v2 [4, 6, 8, 29]. These unmatched rows do not support attribution. 
+
+4. RESULTS 4.1. Correct correspondence improves frozen transfer 
+
+The central comparison asks whether descriptions improve the frozen encoder beyond acoustic and CTC training. Correct align-ment raises T1 by 4.66 points with the linear probe and 2.59 points with the sequence-aware LLM (Table 2). Every paired seed im-proves in every domain under both readouts. The gain is therefore visible after simple temporal averaging and remains useful when a stronger model reads the full sequence. The domain pattern is consistent with where the descriptions en-ter training. Music and Sound receive the largest gains, while uncap-tioned Speech improves in all six readout–seed combinations with a smaller effect. Alignment learned from Music and Sound therefore also strengthens Speech features rather than remaining confined to the captioned training sources. The shuffled control separates correct correspondence from sim-ply adding contrastive training. Shuffled descriptions add only 0.59 linear T1 points, whereas correct descriptions add a further 4.07 points—87% of the full control-to-correct gain. Every seed–domain difference favors correct pairing. The sequence-aware LLM pro-vides complementary evidence: correct pairing exceeds shuffling by 2.10 T1 points and gives a consistent +2.02-point captioning advan-tage. Thus correct correspondence explains most of the linearly ac-cessible gain; its improvement over the acoustic+CTC control also remains useful to a full-sequence LLM, with the correspondence-specific benefit clearest in captioning. The task-level results in Table 3 support the same picture. Cor-rect alignment improves 12 of 14 datasets with the linear probe and 13 with the LLM; FSC, VoxLingua33, and NSynth account for the readout-dependent signs. Task 2 further separates the effect: correct pairing exceeds shuffling by 2.02 captioning points but only 0.33 Table 3 . Detailed three-seed treatment results (%). Panel (a) gives mean Correct − Control Task 1 changes; panel (b) gives sequence-aware LLM Task 2 means and contrasts.                                                     
+
+> (a) Task 1 dataset-level effects
+> Dataset Linear change LLM change
+> Speech
+> CREMA-D +1.32 +1.67 FSC -0.44 +0.20 LibriCount +0.47 +2.43 SC-V1 +0.67 +0.30 VocalSound +2.28 +0.30 VoxCeleb1 +3.72 +1.97 VoxLingua33 -0.62 +1.03
+> Music
+> FMA +4.58 +2.20 GTZAN +8.42 +9.43 NSynth +4.27 -1.67
+> Sound
+> ESC-50 +11.50 +5.13 FSD50K +6.88 +1.77 FSDKaggle2018 +4.94 +2.30 UrbanSound8K +5.30 +4.13
+> (b) Sequence-aware LLM Task 2
+> Condition / contrast ASR Caption Task 2 Control 87.33 50.33 65.13 Shuffled 87.67 51.34 65.87 Correct 88.00 53.37 67.22
+> Correct −control +0.67 +3.03 +2.09 Correct −shuffled +0.33 +2.02 +1.35
+
+ASR points. Description alignment therefore changes broad seman-tic transfer more clearly than ASR. 
+
+4.2. How clip alignment fits the objective stack 
+
+The main comparison establishes the value of clip alignment; Table 4 places it in the full objective stack through matched contrasts. In the single-seed diagnostic, Acoustic+CTC improves linear/LLM T1 by 3.24/ 1.28 points and raises ASR from 45.30 to 86.95, while caption-ing remains unchanged. The linear gain is concentrated in Speech (+13.75); Music and Sound change by -2.23 and -1.77 points. This diagnostic indicates that the reconstruction-and-CTC bundle primar-ily strengthens recognition; it does not attribute the change to CTC alone. The next comparison shows why the semantic objective should not replace acoustic learning. Restoring BEST-RQ, mel, and chroma to the semantic system improves T1 by 1.80 points [0.59, 3.01] under the linear probe and 2.02 points [0.79, 3.25] under the LLM. Sound gains 4.16/4.67 points, and captioning also rises by 0.93. The agree-ment across both readouts supports a combined representation: de-scriptions add semantics while dense objectives retain useful acous-tic structure. Finer supervision provides a further semantic gain, most clearly in the simple readout. Time/event targets raise linear T1 by 1.31 points ([0.82, 1.79]), indicating that the additional targets make se-mantic structure more accessible to a linear classifier. LLM T1 also moves upward by 0.78 points, while Task 2 shows only small changes, so the benefit is concentrated in classification rather than generation. Domain-wise rather than pooled averaging changes lin-ear/LLM T1 by -0.21/+ 0.11 points, leaving the two aggregation recipes with similar aggregate transfer. 
+
+Table 4 . Objective-stack and source analyses (%). Panel (a) re-ports the named condition minus its reference; 1 marks a single-seed matched diagnostic, while the remaining rows use three paired seeds. Panel (b) is a single-seed source intervention. Mu./So.: Mu-sic/Sound macros.                                                          
+
+> (a) Matched objective-stack contrasts
+> Contrast Lin. T1 LLM T1 ASR Cap. Ac.+CTC vs. RQ-only 1+3.24 +1.28 +41.65 -0.03 Dense −no dense +1.80 +2.02 -0.30 +0.93 Time/event −clip +1.31 +0.78 -0.18 +0.11 Domain −pool avg. -0.21 +0.11 -0.15 +0.14
+> (b) Exploratory description-source intervention
+> Linear Sequence-aware LLM Source Mu. So. T1 Mu. So. T1 None 61.11 53.43 62.55 68.60 57.25 67.88 Music 67.77 55.48 65.78 71.50 57.38 68.68 Sound 63.80 59.78 65.91 67.83 59.98 68.77 Music + Sound 66.61 61.36 67.54 70.97 59.77 69.79
+
+Table 5 . Single-endpoint public comparison (%; higher is better). ASR/Caption use the LLM readout. Rows differ in architecture, ca-pacity, data, and optimization; our 24L/105k row uses its preselected layer-12 representation.                         
+
+> Encoder Lin. T1 LLM T1 ASR Caption WavLM Large 67.75 68.67 79.55 50.50 MuQ-large 66.05 71.03 25.00 52.53 DaSheng-Base 76.81 77.43 70.45 54.77 SPEAR XLarge v2 78.18 76.70 82.80 55.73
+> Ours, 24L/105k 73.59 75.78 87.45 54.40
+
+Panel (b) offers a final, exploratory view of where the seman-tic gain originates. Each single description source gives the largest point estimate in its own domain under at least one readout. Combin-ing Music and Sound produces the broadest profile and the highest overall T1, favoring both sources when domain-balanced transfer is the goal. 
+
+4.3. Scaling and public-model context 
+
+The full 24-layer encoder reaches 73.59 linear T1 and 75.78 LLM T1. It trails SPEAR and DaSheng, exceeds WavLM and MuQ under both readouts, and has the highest ASR point estimate in Table 5. It follows the same routing policy and accumulates 99.7k accepted audio-hours, an exposure count rather than unique corpus size or total pretraining. This unmatched comparison supports the recipe at scale; the matched 12-block study remains the basis for attribution. 
+
+5. CONCLUSION 
+
+Correct audio–description alignment improves all three domains under linear and sequence-aware LLM readouts; shuffling explains little of the linear gain. BEST-RQ, spectral/pitch reconstruction, and CTC remain complementary, while finer targets mainly improve classification. These results favor refining an acoustic–lexical foun-dation with correctly paired descriptions. The competitive 24-layer run supports the recipe beyond the controlled study. 6. REFERENCES 
+
+[1] Rui Lin, Zhiyue Wu, Jiahe Le, Kangdi Wang, Weixiong Chen, Junyu Dai, and Tao Jiang, “DuoTok: Source-aware dual-track tokenization for multi-track music language modeling,” arXiv preprint arXiv:2511.20224 , 2025. [2] Junyu Dai, Xinyue Fan, Weiqin Li, Xiangang Li, Yunjia Li, Bin Ma, Yukun Ma, Chongjia Ni, Yufei Shi, Biao Tian, Haoxu Wang, Menglin Wu, Jianwei Yu, Huaicheng Zhang, Han Zhao, Shengkui Zhao, and Haina Zhu, “Pushing the frontier of full-song generation: Hierarchical autoregressive planning meets flow-matching rendering,” arXiv preprint arXiv:2607.20253 ,2026. [3] Chung-Cheng Chiu, James Qin, Yu Zhang, Jiahui Yu, and Yonghui Wu, “Self-supervised learning with random-projection quantizer for speech recognition,” in Proc. ICML ,2022, pp. 3915–3924. [4] Sanyuan Chen et al., “WavLM: Large-scale self-supervised pre-training for full stack speech processing,” IEEE Journal of Selected Topics in Signal Processing , vol. 16, no. 6, pp. 1505– 1518, 2022. [5] Yizhi Li et al., “MERT: Acoustic music understanding model with large-scale self-supervised training,” in Proc. ICLR , 2024. [6] Haina Zhu et al., “MuQ: Self-supervised music representation learning with mel residual vector quantization,” arXiv preprint arXiv:2501.01108 , 2025. [7] Sanyuan Chen et al., “BEATs: Audio pre-training with acous-tic tokenizers,” in Proc. ICML , 2023, pp. 5178–5193. [8] Heinrich Dinkel, Zhiyong Yan, Yongqing Wang, Junbo Zhang, Yujun Wang, and Bin Wang, “Scaling up masked audio en-coder learning for general audio classification,” in Proc. Inter-speech , 2024. [9] Leonardo Pepino, Pablo Riera, and Luciana Ferrer, “EnCodec-MAE: Leveraging neural codecs for universal audio represen-tation learning,” in Proc. Interspeech , 2025, pp. 3519–3523. [10] Benjamin Elizalde, Soham Deshmukh, Mahmoud Al Ismail, and Huaming Wang, “CLAP: Learning audio concepts from natural language supervision,” in Proc. IEEE ICASSP , 2023, pp. 1–5. [11] Daisuke Niizumi, Daiki Takeuchi, Masahiro Yasuda, Binh Thien Nguyen, Yasunori Ohishi, and Noboru Harada, “M2D-CLAP: Exploring general-purpose audio-language representations beyond CLAP,” IEEE Access , vol. 13, pp. 163313–163330, 2025. [12] Xinhao Mei, Gael Le Lan, Haohe Liu, Zhaoheng Ni, Varun Na-garaja, Yang Liu, Yangyang Shi, and Vikas Chandra, “SLAP: Scalable language-audio pretraining with variable-duration au-dio and multi-objective training,” in Proc. IEEE ICASSP , 2026. [13] Wei-Cheng Tseng, Xuanru Zhou, Mingyue Huo, Yiwen Shao, Hao Zhang, and Dong Yu, “Revisiting audio-language pre-training for learning general-purpose audio representation,” in 
+
+Proc. ACL , 2026, pp. 34244–34263. [14] Xiquan Li, Xuenan Xu, Ziyang Ma, Wenxi Chen, Haolin He, Qiuqiang Kong, and Xie Chen, “FineLAP: Taming hetero-geneous supervision for fine-grained language-audio pretrain-ing,” in Proc. ACL , 2026, pp. 10393–10408. [15] Anmol Gulati et al., “Conformer: Convolution-augmented transformer for speech recognition,” in Proc. Interspeech ,2020, pp. 5036–5040. [16] Heinrich Dinkel, Jiahao Zhou, Guanbo Wang, Yadong Niu, Junbo Zhang, Yufeng Hao, Ying Liu, Ke Li, Wenwu Wang, Zhiyong Wu, and Jian Luan, “The Interspeech 2026 audio en-coder capability challenge for large audio language models,” 
+
+CoRR , vol. abs/2603.22728, 2026. [17] Junbo Zhang et al., “X-ARES: A comprehensive framework for assessing audio encoder performance,” in Proc. Inter-speech , 2025. [18] Zhuang Liu, Hanzi Mao, Chao-Yuan Wu, Christoph Feichten-hofer, Trevor Darrell, and Saining Xie, “A ConvNet for the 2020s,” in Proc. IEEE/CVF CVPR , 2022, pp. 11966–11976. [19] Alex Graves, Santiago Fern´ andez, Faustino Gomez, and J¨ urgen Schmidhuber, “Connectionist temporal classification: La-belling unsegmented sequence data with recurrent neural net-works,” in Proc. ICML , 2006, pp. 369–376. [20] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova, “BERT: Pre-training of deep bidirectional trans-formers for language understanding,” in Proc. NAACL-HLT ,2019, pp. 4171–4186. [21] Qwen Team, “Qwen3 technical report,” arXiv preprint arXiv:2505.09388 , 2025. [22] Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen, “LoRA: Low-rank adaptation of large language models,” in Proc. ICLR ,2022. [23] Hui Bu, Jiayu Du, Xingyu Na, Bengu Wu, and Hao Zheng, “AISHELL-1: An open-source mandarin speech corpus and a speech recognition baseline,” in Proc. O-COCOSDA , 2017, pp. 1–5. [24] Vassil Panayotov, Guoguo Chen, Daniel Povey, and Sanjeev Khudanpur, “LibriSpeech: An ASR corpus based on public domain audio books,” in Proc. IEEE ICASSP , 2015, pp. 5206– 5210. [25] Zelin Zhou, Zhiling Zhang, Xuenan Xu, Zeyu Xie, Mengyue Wu, and Kenny Q. Zhu, “Can audio captions be evaluated with image caption metrics?,” in Proc. IEEE ICASSP , 2022, pp. 981–985. [26] Konstantinos Drossos, Samuel Lipping, and Tuomas Virtanen, “Clotho: An audio captioning dataset,” in Proc. IEEE ICASSP ,2020, pp. 736–740. [27] Ilaria Manco et al., “The song describer dataset: A corpus of audio captions for music-and-language evaluation,” CoRR , vol. abs/2311.10057, 2023. [28] Yadong Niu et al., “MECAT: A multi-experts constructed benchmark for fine-grained audio understanding tasks,” CoRR ,vol. abs/2507.23511, 2025. [29] Xiaoyu Yang et al., “SPEAR: A unified SSL framework for learning speech and audio representations,” in Proc. ICML ,2026.

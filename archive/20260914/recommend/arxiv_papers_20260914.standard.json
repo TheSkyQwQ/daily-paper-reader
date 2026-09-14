@@ -1,0 +1,107 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-14T22:09:17.482948+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.08429v1",
+      "source": "arxiv",
+      "title": "Semantic Refinement of Universal Audio Representations through Audio-Description Alignment",
+      "abstract": "Universal audio representations must preserve acoustic detail while making high-level concepts accessible across speech, music, environmental sound, and downstream models of different capacities. We study semantic refinement of an acoustically pretrained encoder by adding audio-description alignment to a foundation of BEST-RQ, reconstruction, and CTC. We compare matched control, shuffled-description, and correctly paired trajectories to distinguish correct correspondence from an extra contrastive objective. Each endpoint is frozen and evaluated with a temporal-mean linear probe and a sequence-aware LLM readout, testing whether the refined information is directly accessible and remains useful to a stronger model. Across three paired seeds, correct alignment improves domain-balanced classification by 4.66 points with the linear probe and 2.59 points with the sequence-aware LLM, with positive changes in every domain. Correct pairing accounts for 87% of the linear-probe gain, while the LLM shows its clearest correspondence-specific benefit in captioning. Dense acoustic objectives provide complementary gains under both readouts. A separate 24-layer continuation remains competitive with leading public encoders under the shared evaluator, supporting the recipe beyond the controlled study.",
+      "authors": [
+        "Lejun Min",
+        "Junyu Dai",
+        "Ruichen Zheng",
+        "Xinyue Fan",
+        "Yang Xiang",
+        "Huaichen Zhang",
+        "Xingchen Song",
+        "Yufei Shi",
+        "Han Zhao",
+        "Xiangang Li"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-08T08:34:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.08429v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "audio-description alignment for transferable universal audio representations with LLM readout",
+      "llm_evidence_cn": "音频-描述对齐提升通用音频表征并用LLM读出评测",
+      "llm_evidence": "音频-描述对齐提升通用音频表征并用LLM读出评测",
+      "canonical_evidence": "音频-描述对齐提升通用音频表征并用LLM读出评测",
+      "llm_tldr_en": "To make universal audio representations both acoustically detailed and semantically accessible, this work adds audio-description alignment on top of BEST-RQ, reconstruction and CTC, then probes frozen endpoints with a linear probe and an LLM readout.",
+      "llm_tldr_cn": "针对通用音频表征需在保留声学细节的同时让语音、音乐与环境声中的高层语义概念可被不同容量下游模型访问的问题，本文在BEST-RQ、重建与CTC基础上引入音频-描述对齐进行语义精炼，并通过配对、乱序描述与对照轨迹区分真实语义对应与额外对比目标。冻结编码器后采用时间均值线性探针与序列感知LLM读出进行评测，检验精炼信息能否被直接访问并对更强模型仍然有用，为可迁移的语音与音频表征学习提供了可借鉴的对齐范式。",
+      "llm_tldr": "针对通用音频表征需在保留声学细节的同时让语音、音乐与环境声中的高层语义概念可被不同容量下游模型访问的问题，本文在BEST-RQ、重建与CTC基础上引入音频-描述对齐进行语义精炼，并通过配对、乱序描述与对照轨迹区分真实语义对应与额外对比目标。冻结编码器后采用时间均值线性探针与序列感知LLM读出进行评测，检验精炼信息能否被直接访问并对更强模型仍然有用，为可迁移的语音与音频表征学习提供了可借鉴的对齐范式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.09940v1",
+      "source": "arxiv",
+      "title": "NVV-Locator: From Transcript Tags to Acoustic Boundaries for Fine-Grained Nonverbal Vocalization Grounding",
+      "abstract": "Human speech includes nonverbal vocalizations (NVVs), such as laughter, sighs, breaths, and coughs, which convey affective and interactional information. Existing approaches typically represent NVVs as transcript-level tags, providing limited supervision for their waveform-time boundaries. We present NVV-Locator for fine-grained NVV temporal grounding. We first unify 26 NVV categories across public resources and construct large-scale timestamp-supervised training data through dual-LLM verification, transcript-guided forced alignment, and energy-based boundary refinement. We further introduce NVV-TimeBench, an expert-refined benchmark with 667 utterances and 1,094 events. NVV-Locator uses a non-autoregressive slot-filling architecture to jointly predict lexical timestamps, NVV categories, and event boundaries. On NVV-TimeBench, it achieves 71.0% Micro F1, 70.2% Macro F1, 80.4% Macro mIoU, and 59.6 ms Macro mMAE, outperforming the evaluated large audio model counterparts. Evaluation on an external corpus further demonstrates the cross-corpus generalization of NVV-Locator.",
+      "authors": [
+        "Yuang Cao",
+        "Bingshen Mu",
+        "Zhennan Lin",
+        "Guojian Li",
+        "Haoyue Zhan",
+        "Jie Liu",
+        "Chuan Xie",
+        "Qiang Zhang",
+        "Liumeng Xue",
+        "Lei Xie"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-09T09:30:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.09940v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "nonverbal vocalizations convey affective and interactional information",
+      "llm_evidence_cn": "非言语发声承载情感与互动信息",
+      "llm_evidence": "非言语发声承载情感与互动信息",
+      "canonical_evidence": "非言语发声承载情感与互动信息",
+      "llm_tldr_en": "NVV-Locator grounds nonverbal vocalizations like laughter and sighs to waveform-time boundaries, unifying 26 categories, building timestamp-supervised data and an expert-refined benchmark for fine-grained temporal localization.",
+      "llm_tldr_cn": "论文针对笑声、叹息、呼吸等非言语发声承载情感与互动信息，但现有方法仅用转写级标签、缺乏波形时间边界监督的问题，统一了26类非言语发声并构建大规模时间戳监督数据，提出非自回归槽填充式定位器NVV-Locator。研究还构建了包含667条话语和1094个事件的专家精修基准NVV-TimeBench，实现细粒度时间定位，为副语言发声的声学边界建模与情感相关分析奠定数据与方法基础。",
+      "llm_tldr": "论文针对笑声、叹息、呼吸等非言语发声承载情感与互动信息，但现有方法仅用转写级标签、缺乏波形时间边界监督的问题，统一了26类非言语发声并构建大规模时间戳监督数据，提出非自回归槽填充式定位器NVV-Locator。研究还构建了包含667条话语和1094个事件的专家精修基准NVV-TimeBench，实现细粒度时间定位，为副语言发声的声学边界建模与情感相关分析奠定数据与方法基础。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

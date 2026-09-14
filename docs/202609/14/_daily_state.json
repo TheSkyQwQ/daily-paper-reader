@@ -1,0 +1,41 @@
+{
+  "date": "20260914",
+  "date_label": "",
+  "generated_at": "2026-09-14 22:09:58 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.08429v1",
+      "route": "202609/14/2609.08429v1-semantic-refinement-of-universal-audio-representations-through-audio-description-alignment",
+      "title": "Semantic Refinement of Universal Audio Representations through Audio-Description Alignment",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "音频-描述对齐提升通用音频表征并用LLM读出评测",
+      "first_seen_at": "2026-09-14 22:09:58 UTC",
+      "updated_at": "2026-09-14 22:09:58 UTC"
+    },
+    {
+      "paper_id": "2609.09940v1",
+      "route": "202609/14/2609.09940v1-nvv-locator-from-transcript-tags-to-acoustic-boundaries-for-fine-grained-nonverbal-vocalization-grounding",
+      "title": "NVV-Locator: From Transcript Tags to Acoustic Boundaries for Fine-Grained Nonverbal Vocalization Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "非言语发声承载情感与互动信息",
+      "first_seen_at": "2026-09-14 22:09:58 UTC",
+      "updated_at": "2026-09-14 22:09:58 UTC"
+    }
+  ]
+}

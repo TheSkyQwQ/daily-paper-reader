@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-13</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-14</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 1 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-13 21:54:56 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-14 22:09:58 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天只筛出 1 篇论文，0 篇精读、1 篇速读，主线落在语音大模型上。</p>
-<p>最值得看的是速读 7.0 分的《RetroThinker: Enabling Retrospective Thinking in Speech LLMs》，方向是让语音 LLM 具备&quot;回溯式思考&quot;，适合关注语音推理与交互的人。</p>
-<p>普通读者可先看这篇的摘要与实验设置，判断&quot;回溯思考&quot;是否能对应到你手头的语音场景，再决定要不要深读。</p>
+<p>今日速读两篇音频AI论文，均聚焦声音表征与定位。值得关注的是用音频-描述对齐提升通用音频语义，以及从转写标签定位细粒度非语言发声。普通读者可留意音频理解在语义细化和副语言声音定位上的进展。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -93,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RetroThinker: Enabling Retrospective Thinking in Speech LLMs">RetroThinker: Enabling Retrospective Thinking in Speech LLMs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Semantic Refinement of Universal Audio Representations through Audio-Description Alignment">Semantic Refinement of Universal Audio Representations through Audio-Description Alignment</span></li><li><span class="dpr-home-dashboard-paper-title" title="NVV-Locator: From Transcript Tags to Acoustic Boundaries for Fine-Grained Nonverbal Vocalization Grounding">NVV-Locator: From Transcript Tags to Acoustic Boundaries for Fine-Grained Nonverbal Vocalization Grounding</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
 </section>
 </div>
 
