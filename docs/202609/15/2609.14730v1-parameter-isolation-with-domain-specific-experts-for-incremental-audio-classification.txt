@@ -1,0 +1,646 @@
+Detection and Classification of Acoustic Scenes and Events 2026
+28–29 October 2026, Boston, MA, USA
+Parameter Isolation with Domain-Specific Experts for Incremental Audio
+Classification
+Jongyeon Park1, Do-Hyeon Lim1,
+Sang-won Park2, Hong Kook Kim1,2,3
+1Dept. of AI Convergence, 2Dept. of EECS
+Gwangju Institute of Science and Technology (GIST),
+3AunionAI Co., Ltd., Gwangju, Korea
+{jypark3737, do-hyeon, sangwonpark}@gm.gist.ac.kr
+hongkook@gist.ac.kr
+Kyungdeuk Ko4, Hyeongcheol Geum4,
+Jeong Eun Lim4
+4AI Lab., R&D Center, Hanwha Vision
+Seongnam, Korea
+{kd.kyung, hch.geum, je04.lim}@hanwha.com
+Abstract—To successfully deploy a model in time-varying environments
+such as streaming data prediction and sensing control, domain-incremental
+learning (DIL) has attracted attention since it aims to adapt a previously
+trained model to newly arriving domains, while preserving knowledge from
+earlier domains without accessing their data. Incremental learning across
+domains can be regarded as a recurrent update, in which the current
+model is obtained by updating the model carried over from previous
+domains. Conventional DIL approaches that rely on domain-invariant
+feature learning and weight regularization gradually overwrite or constrain
+parameters learned in previous domains, leading to catastrophic forgetting.
+Instead, this paper proposes a new domain-specific parameter-isolation
+architecture that retains all past domains. The proposed architecture
+mitigates catastrophic forgetting through a full-order recurrent update,
+constructing a new expert using domain-specific data conditioned on
+all previously frozen models. To achieve this, we incorporate data-free
+generative replay to reconstruct previous-domain data and cross-domain
+feature generation to recover later expert features missing from earlier
+domain samples. Finally, we apply the proposed model architecture to
+domain-agnostic incremental learning for audio classification, as defined in
+the DCASE 2026 Challenge Task 7. Consequently, we achieve micro and
+macro accuracies of 78.4% and 78.9%, respectively, representing increases
+of 33 and 25 percentage points over the Challenge baseline. Ablation
+studies are conducted to examine the effectiveness of each processing
+component in terms of classification accuracy.
+Index Terms—Domain-incremental learning, audio classification, pro-
+totype classifier, cross-domain feature generation, data-free generative
+replay
+1. INTRODUCTION
+Machine learning models deployed in real-world environments in-
+evitably encounter data whose conditions shift over time, requiring
+continual adaptation. In audio applications, room acoustics, sound
+characteristics, and even the type of audio itself can change over
+time. Such time-varying factors degrade the performance of a
+deployed model, because it must handle data unseen during training,
+a phenomenon known as domain shift. To address this, domain-
+incremental learning (DIL) has attracted increasing attention, as it
+aims to adapt a previously trained model to newly arriving domains
+while preserving knowledge from earlier ones without accessing their
+raw data [1].
+Existing DIL methods can generally be classified into three
+categories: regularization-based, replay-based, and parameter-isolation
+methods [1]. Regularization-based methods, such as elastic weight
+consolidation (EWC) [2], add a penalty term that discourages changes
+to weights important for previous domains, preserving prior knowledge
+This work was partly supported by Hanwha Vision Co. Ltd., by the
+Technology Innovation Program (RS-2025-25454727) funded by Korea
+Ministry of Trade, Industry & Energy, and by the ‘Project for science and
+technology opens the future of the region’ program, funded by the Ministry of
+Science and ICT (MSIT) and Gwangju Metropolitan City, Republic of Korea
+in 2026.
+without storing any past data. However, they protect this knowledge
+only indirectly through the penalty, and their performance depends
+on a stability-plasticity balance that careful tuning alone cannot
+fully resolve [3]. This issue becomes more pronounced over long
+domain sequences, as the estimated importance becomes increasingly
+unreliable [4]. On the other hand, replay-based methods take a different
+approach, keeping a small buffer of past exemplars and interleaving
+them with new data during training [5], [6]. This tends to retain prior
+knowledge more effectively, but the buffer grows with the number of
+domains [1].
+Parameter-isolation methods avoid both problems by assigning each
+domain its own parameters and freezing those of earlier domains,
+thereby preserving prior knowledge directly, without a buffer or penalty.
+A representative example designed for audio is Audio DIL [7], which
+divides the network into a domain-shared backbone and a domain-
+specific processing block, updating only the latter for each new domain.
+However, Audio DIL’s performance is limited by its shared backbone,
+which learns features only from the first domain and then remains
+frozen. Consequently, every subsequent domain is constrained to the
+initial feature set, which is never updated with new data, a limitation
+that becomes more pronounced as a domain diverges further from the
+first.
+To address this, we propose full-order incremental learning (FoIL).
+This new DIL framework reinterprets DIL as a recurrent update
+process in which knowledge accumulated from previous domains is
+carried forward and integrated as new domains arrive. It is termed
+full-order because each update conditions on the entire history of
+previously trained models, rather than only the most recent or the
+initial one. Concretely, we assign a dedicated expert to each domain,
+so that each domain is represented by features learned from its own
+data rather than a backbone fixed to the first domain. New experts are
+appended to the accumulated ones rather than replacing them. Since
+every past expert stays frozen and intact, the combined model never
+degrades on domains it has already learned. However, realizing this
+recurrent update under the DIL setting is not straightforward: once a
+new expert is trained, the raw audio of previous domains is no longer
+available, and an expert added at a later stage produces no output
+for samples from earlier domains, leaving gaps in what the shared
+classifier receives. Thus, we implement the recurrent update through
+two components that together carry previous-domain knowledge into
+the current step. Data-free generative replay reconstructs data from
+the previous domain using the frozen experts without storing any
+raw audio [8]. At the same time, a cross-domain feature-generation
+module synthesizes missing expert features, ensuring that the classifier
+always receives a complete input.
+Finally, we apply the proposed framework to domain-agnostic
+arXiv:2609.14730v1  [eess.AS]  13 Sep 2026
+
+
+Detection and Classification of Acoustic Scenes and Events 2026
+28–29 October 2026, Boston, MA, USA
+incremental learning for audio classification, as defined in the
+DCASE 2026 Challenge Task 7 [9]. Consequently, the proposed
+framework achieves micro and macro accuracy of 78.4% and 78.9%,
+corresponding to increases of 33 and 25 percentage points over the
+Challenge baseline, respectively. We further analyze each component
+through ablation studies on DCASE 2026 Task 7.
+Our main contributions are summarized as follows:
+• We reinterpret DIL as a recurrent update process and propose
+FoIL, a framework that appends a dedicated expert for each
+domain, thereby guaranteeing no forgetting of previously learned
+domains.
+• We make FoIL realizable under the strict DIL setting through data-
+free generative replay, which reconstructs previous-domain data
+without storing raw audio, and cross-domain feature generation,
+which completes the missing expert features.
+• We achieve the best performance among all submissions to
+DCASE 2026 Challenge Task 7 (78.4% micro, 78.9% macro
+accuracy), with gains of 33 and 25 percentage points over the
+baseline.
+Following this Introduction, Section 2 reviews related work on
+parameter-isolation-based DIL. Section 3 then presents the proposed
+FoIL framework for audio classification. Section 4 evaluates the
+framework on the DCASE 2026 Challenge Task 7 and conducts
+ablation studies to examine how each component contributes to
+classification accuracy. Finally, Section 5 concludes the paper.
+2. RELATED WORK
+DIL for audio classification was recently formalized [7] and posed
+as the domain-incremental DCASE 2026 Challenge Task 7 [9]. As
+mentioned in Section 1, our proposed framework is based on parameter
+isolation, generative replay, and cross-domain feature generation.
+Therefore, we briefly review related work on each of these topics.
+Parameter isolation mitigates forgetting by allocating domain-
+specific parameters and later combining them [10]–[12]. Closest to
+our design, the dynamically expandable representation (DER) freezes
+the previously learned representation. It augments it with a new
+feature extractor at each step, concatenating their features for a single
+classifier [13]. Adapter-based variants instead isolate only low-rank
+updates on a frozen backbone via low-rank adaptation (LoRA) [14],
+as in orthogonal knowledge-distilled LoRA (OR-KDL) for DCASE
+2026 Task 7 [15].
+Rehearsal is among the most effective methods for continual
+learning [1]. Exemplar-based replay stores and interleaves past samples
+with new data [5], [6]. When storing raw data is disallowed, generative
+replay synthesizes data instead [16]. In our case, we adopt data-free
+DeepInversion [8], which inverts a frozen classifier using its batch-
+normalization statistics, allowing each new expert to inherit earlier
+domain knowledge without raw audio.
+Finally, cross-domain feature generation relates to feature imputation
+and hallucination, which synthesizes unobserved features from the
+available ones [17]–[19]. Unlike these methods, our approach generates
+the new expert’s missing features from the previous experts’ features,
+giving our classifier a richer representation.
+3. PROPOSED FOIL
+This section presents the FoIL framework for audio classification,
+and details the data-free generative replay and cross-domain feature
+generation techniques that make it realizable.
+M1
+M2
+M3
+M3 =F(M2)
+(a)
+M1
+M2
+M3
+M3 =F(M1)
+(b)
+M1
+M2
+M3
+M3 =F(M1, M2)
+(c)
+Fig. 1: Conceptual diagram for representing three different realizations of
+domain incremental update: (a) first-order, (b) anchored, and (c) our full-order
+update.
+3.1. Motivation of proposed FoIL
+As noted in Section 1, DIL can be regarded as a recurrent update
+across domains: the model at the t-th domain, Mt, is produced from
+the models {Mi}t−1
+i=1 trained on the earlier domains {Di}t−1
+i=1. Figure 1
+compares three realizations of this update for t = 3.
+In the first-order approach (Fig. 1(a)), Mt is updated only from the
+immediately preceding model, i.e., Mt = F(Mt−1). Regularization-
+and distillation-based DIL methods fall under this approach, which is
+prone to catastrophic forgetting of the earlier models Mi, i < t −1.
+As an alternative (Fig. 1(b)), Mt can instead be anchored to the initial
+model M1, i.e., Mt = F(M1). This anchored approach suits settings
+where every new domain is invariably a variant of the initial one,
+such as autonomous driving, hospital-based medical imaging, and
+voice assistants. Still, its performance degrades under concept drift,
+i.e., once a domain departs substantially from the initial domain.
+To retain the full history rather than a single reference model, we
+define the FoIL framework. When adapting to a new domain, Dt,
+FoIL forms Mt by conditioning on the entire lineage of previously
+trained models {Mi}t−1
+i=1, not just the most recent (first-order) or the
+initial (anchored) one, so that Mt retains the joint knowledge of every
+previous domain: Mt = F(M1, . . . , Mt−1). For t = 3, this gives
+M3 = F(M1, M2), as shown in Fig. 1(c).
+3.2. Overview of audio classification system
+Fig. 2 shows the network architecture of the domain-agnostic
+audio classification inference pipeline, based on the proposed FoIL
+framework. First, the input audio is segmented into frames, and log-
+mel analysis is performed on each frame. Then, the extracted feature
+vector is applied to each of three experts, {E1, E2, E3}, resulting in
+three embedding vectors, {ϕ1, ϕ2, ϕ3}, which are concatenated into a
+single vector, z. The concatenated embedding vector is used as input
+to the audio classifier to assign a class index to the input frame.
+To construct a model in the current domain (Dt), Mt, we first train
+an expert, Et, using only data from Dt. Specifically, when the audio
+classification is initiated from the beginning, the initial expert E1 is
+trained using the data of D1. Thus, the audio classification model M1
+is constructed by M1=E1. Next, suppose the domain shifts from D1
+to D2. Then, a new expert E2 is trained solely on the data from D2.
+Consequently, a new audio classification model, M2, is constructed
+as M2 = F(M1, E2). Similarly, for a new domain D3, we repeat
+the procedure described above, yielding M3 = F(M2, E3). Note that
+because M2 is a function of M1, it incorporates all prior domain
+knowledge, aligning with the proposed FoIL framework.
+In this paper, all the experts are basically designed using the same
+neural architecture, CNN14 [20], and the update function, F(X, Y ),
+
+
+Detection and Classification of Acoustic Scenes and Events 2026
+28–29 October 2026, Boston, MA, USA
+raw audio of D3
+log-mel
+E2
+CNN14 + CRNN
+E1
+CNN14
+E3
+CNN14 + CNN14
+update function F
+classifier G3
+class index
+ϕ1(D3)
+ϕ2(D3)
+ϕ3(D3)
+z3(D3)
+Fig. 2: Domain-agnostic inference pipeline for T=3. Frozen experts
+E1, E2, E3 emit features ϕ1, ϕ2, ϕ3, concatenated into z and mapped to
+class probabilities p by a single classifier G.
+is realized as concatenating x and y, which are the output vectors of
+the experts X and Y , respectively. As shown in Fig. 2, Mi is updated
+using zi(Di) = [zi−1(Di), ϕi(Di)] with z0(Di) = ∅because Mi =
+F(Mi−1, Ei), where ϕj(Di) means the embedding vector of Ej using
+the data of Di. In practice, the information carried by a new domain
+can be decomposed into information projected from previous domains
+and new information specific to the current domain. Therefore, the
+neural architecture of Ei for i ≥2 needs to combine two sub-networks
+for projected and new information, respectively. To this end, E2 is
+extended to include a convolutional recurrent neural network (CRNN),
+with the former fine-tuned from CNN14 of E1 and the latter trained
+on D2 data from scratch. Similarly, E3 is also composed of two
+CNN14s for projected and new information regarding D3.
+Lastly, to classify each audio frame, a learnable prototype per class
+is optimized using a cross-entropy objective [21], [22]. Then, a cosine
+similarity-based prototype classifier Gi for the i-th domain is applied
+to each embedding vector zi(Di).
+3.3. Data-free generative replay
+The proposed FoIL is designed to train two sub-experts: one that
+retains previous-domain knowledge and another that represents the
+new domain. As mentioned in the previous subsection, E2 has two
+networks: CNN14 and CRNN, with CNN14 fine-tuned on D2 data.
+Therefore, the fine-tuning process does not guarantee that knowledge
+from the previous domain (D1) is retained in E2 because data from
+D1 is unavailable.
+To remedy this issue, we generate data for D1 using data-free
+generative replay based on DeepInversion [8]. Specifically, to generate
+an audio signal belonging to a given class, the previously frozen expert,
+e.g., E1, is first inferred from random noise with a target class label.
+The cross-entropy loss is then computed from the resulting output.
+Simultaneously, the L2 norm is calculated to measure the degree of
+fit between the mean and variance of the random input and the batch-
+normalization statistics of the frozen E1. Consequently, the noise
+input is updated via backpropagation of the sum of the cross-entropy
+loss and L2 norm.
+We then train the new sub-expert, e.g., CNN14 in E2, using a mix
+of current-domain data and these synthesized samples. In this way
+each new expert inherits earlier-domain competence without storing
+any raw audio, which respects the no-revisit constraint of DIL [1].
+This expert-training approach, based on data-free generative replay,
+Table 1: List of four different systems depending on the configuration of
+domain experts. Each expert is a CNN14, optionally paired with one additional
+model except for FoIL-FineTune; a subscript of ‘inv’ denotes a DeepInversion-
+based replay variant and ‘s’ means a model trained from scratch.
+System
+E1 (D1)
+E2 (D2)
+E3 (D3)
+FoIL-FineTune
+CNN14
+CNN14inv
+CNN14inv
+FoIL
+CNN14
+CNN14inv, CRNN
+CNN14inv, CNN14s
+FoIL-FDY
+CNN14
+CNN14inv, FDY-CNN14
+CNN14, CNN14s
+FoIL-NoReplay
+CNN14
+CNN14, FDY-CNN14
+CNN14, CNN14s
+is one of the main components of the proposed FoIL; it is applied
+whenever a new domain arrives, although we illustrate it here using
+E1 and E2 as examples.
+3.4. Cross-domain feature generation
+Another main component of the proposed FoIL is to utilize the
+information of {Ej}i−1
+j=1 for constructing the i-th audio classifier, Gi,
+in the feature space. This is motivated by the observation that the
+feature space of previous domains overlaps, to some extent, with that
+of a new domain. In other words, zi−1(Di−1) could help train Ei if
+the cross-domain information can be extracted.
+Thus, this paper proposes a cross-domain feature generation tech-
+nique to estimate ˆϕi(Di−1) from zi−1(Di−1). To this end, a multi-
+layer perceptron (MLP) [23] is trained to approximate this relation,
+ˆϕi(Di−1) = MLP(zi−1(Di−1)). These two feature embedding vectors
+are then passed to the update function, F(·, ·), to obtain zi(Di−1).
+Finally, a collection of zi(Di) and zi(Di−1) is used for training Gi.
+4. EXPERIMENTS AND RESULTS
+4.1. Dataset and evaluation
+We used the DCASE 2026 Challenge Task 7 DIL dataset, which
+presented three domains in sequence spanning ten target classes, with
+the constraint that D1 audio was unavailable, while D2/D3 audio were
+provided. Each per-domain test set covered only a subset of the ten
+classes: D2 has 639 clips (missing baby cry and telephone ringing)
+and D3 has 806 clips (missing knock). Unfortunately, the training set
+was heavily imbalanced, with counts ranging from 1, 125 clips for
+speech to 170 for fire and 56 for baby cry. Since the macro metric
+was highly sensitive to minority classes, we report micro accuracy
+(overall clips) and macro accuracy (the mean of per-class accuracies)
+on the D2 and D3 dev-test sets, along with their average.
+4.2. Implementation details
+Table 1 lists our four systems, depending on the neural network
+configuration of Ei. FoIL incorporated all the approaches described
+in Sections 3.2–3.4. FoIL-FDY replaced an auxiliary sub-model of
+CRNN with frequency dynamic convolution (FDY) for representation
+diversity. FoIL-FineTune was a version of regular FoIL without
+auxiliary sub-models, retaining only fine-tuned models. Additionally,
+FoIL-NoReplay was constructed without replay data because replay
+data could harm neural network performance, depending on domain
+characteristics, according to the ablation study in Section 4.4.
+All the systems shown in the table shared the same front end
+as follows: 32 kHz mono audio cropped to 4 s and converted to a
+64-bin log-mel spectrogram (1, 024-point window, 320-point hop,
+f ∈[50, 14,000] Hz). Since the domain tag was unavailable at
+inference, every system ran a domain-agnostic forward pass once per
+clip, with no test-time augmentation. Each expert emitted a 2, 048- or
+4, 096-dimensional embedding ϕi, depending on whether it included
+an auxiliary sub-model for E2 and E3, and the three were concatenated
+into a 10, 240-dimensional vector z in our three-domain setting. The
+classifier was trained on z with balanced sampling [24] to counter
+
+
+Detection and Classification of Acoustic Scenes and Events 2026
+28–29 October 2026, Boston, MA, USA
+Table 2: Comparison of micro and macro average classification accuracy
+(%) between our proposed systems and comparison systems, including the
+Challenge baseline, for D2 and D3 domains.
+D2
+D3
+Dev-test Avg.
+System
+micro
+macro
+micro
+macro
+micro
+macro
+Challenge Baseline
+54.77
+58.95
+36.23
+47.34
+45.50
+53.15
+OR-KDL
+–
+79.73
+–
+66.55
+–
+73.14
+FoIL-FineTune
+68.86
+71.94
+70.10
+70.15
+69.48
+71.05
+FoIL
+79.97
+81.88
+75.19
+73.97
+77.58
+77.92
+FoIL-Ensemble
+81.69
+83.62
+75.06
+74.22
+78.38
+78.92
+Table 3: Ablation results of the macro accuracy according to different
+combinations of the processing components in the proposed FoIL framework.
+Components
+Macro Acc. (%)
+Variant
+Replay
+MLP-Gen
+Feat-Mean
+D2
+D3
+Avg.
+FoIL-None
+72.88
+72.05
+72.47
+FoIL-R
+✓
+74.98
+74.19
+74.59
+FoIL-M
+✓
+79.22
+74.42
+76.82
+FoIL-RM
+✓
+✓
+81.88
+73.97
+77.92
+FoIL-RF
+✓
+✓
+65.33
+75.50
+70.42
+class imbalance, using Adam (learning rate 10−3, batch 64, 200
+epochs, cosine schedule); its prototypes were centroid-initialized from
+the cached class means and its temperature τ was learned. The cross-
+domain feature generation technique was implemented by a two-layer
+MLP (hidden size 4, 096) trained on the D3 rows with a mean squared
+error loss for 50 epochs.
+4.3. Results
+Table 2 reports our systems, as described in Table 1, and their
+ensemble against the DCASE 2026 Challenge Task 7 baseline [7]
+and OR-KDL [15]. As shown in the first and second rows of the
+table, the Challenge baseline achieved 45.5% and 53.2% in micro and
+macro accuracy, respectively, while OR-KDL, a knowledge distillation
+approach with domain-specific low-rank adapters, achieved 73.14%
+macro accuracy. Our proposed single system, FoIL, surpassed both,
+improving macro accuracy by 24.77 and 4.78 percentage points over
+the baseline and OR-KDL, respectively. This implies that the proposed
+FoIL framework benefits domain-incremental audio classification by
+fully preserving previous-domain knowledge in its experts.
+Finally, to further improve the classification accuracy, we con-
+structed an ensemble system by combining all four systems described
+in Table 1. Consequently, the ensemble system achieved the highest
+micro- and macro-accuracy for the dev-test set.
+4.4. Ablation studies
+In this subsection, we examined the effectiveness of each processing
+component in FoIL on audio classification accuracy. Table 3 shows
+the results of this ablation study, in which the processing components
+studied were data-free generative replay in Section 3.3 (denoted as
+Replay) and MLP-based cross-domain feature generation in Section 3.4
+(MLP-Gen). Additionally, for the performance comparison with MLP-
+Gen, we simply replaced MLP-Gen-based feature-embedding vector
+with the class-wise mean vector obtained from the new domain, which
+was denoted as Feat-Mean. In the table, Replay, MLP-Gen, and Feat-
+Mean are abbreviated as R, M, and F, respectively. For example,
+FoIL-RF means a model trained by applying Replay and Feat-Mean
+techniques, while FoIL-RM is identical to FoIL in Table 2.
+We first evaluated the performance of a FoIL system without
+Replay or MLP-Gen. In other words, FoIL-None was implemented
+as described in Section 3.2. Next, we incorporated Replay into FoIL-
+None (FoIL-R in the table). Compared with FoIL-None, FoIL-R
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+cosine similarity to true feature
+0
+2
+4
+6
+8
+density of D2 clips
+MLP-Gen
+Feat-Mean
+Fig. 3: Plot of the distribution of cosine similarity scores calculated between
+the ground truth and generated feature.
+improved macro accuracy for D2 and D3 owing to the increased
+amount of training data. Instead of Replay, MLP-Gen was applied
+to construct the classifier, and it was shown that FoIL-M provided
+higher macro accuracy than FoIL-R in both domains. In particular,
+the improvement in classification for D2 was significant, indicating
+that cross-domain feature generation could contribute more to the
+transfer of domain knowledge than data-free generative replay. This
+phenomenon reappeared in FoIL-RM, further improving macro
+accuracy for D2 but slightly reducing it for D3. There was a trade-
+off between preventing forgetting and maintaining current-domain
+knowledge.
+Next, we assessed the quality of the feature generation technique.
+As shown in the last row of the table, FoIL-RF severely degraded
+the classification performance for D2 compared with FoIL-RM. This
+implies that a feature generation technique for incremental learning
+must be carefully designed. To support this with a feature-level
+comparison between the MLP-Gen and Feat-Mean approaches, we
+first obtained the ground-truth (GT) feature by applying the data from
+D2 to an expert E3, ϕ3(D2). This GT was compared with ˆϕ3(D2)
+= MLP(z2(D2)) using cosine similarity. In parallel, we repeated
+this computation using ¯ϕ3(D2) = Feat-Mean(D3). Figure 3 plots the
+distribution of cosine similarity scores for MLP-Gen and Feat-Mean,
+where the long, vertical dotted line indicates the average score for
+each distribution. Also, the yellow vertical bar around a similarity
+score of zero was due to a mismatch between the audio class types
+of D2 and D3. The distribution is expected to be skewed toward the
+rightmost end, because the ideal case is an impulse at a similarity of
+one. As shown in the figure, MLP-Gen provided a better fit to GT
+than Feat-Mean, resulting in better performance for FoIL-RM than
+for FoIL-RF.
+5. CONCLUSION
+In this paper, we addressed domain-incremental audio classification
+under the DIL constraint and proposed FoIL, a domain-specific
+parameter-isolation framework. Each domain was handled by a
+dedicated expert that was frozen once trained and appended to the
+accumulated model, preventing forgetting. A single classifier over
+the concatenated features enabled a domain-agnostic forward pass.
+Data-free generative replay let each new expert inherit earlier-domain
+knowledge without stored audio, and an MLP-based cross-domain
+feature generator completed the expert features for earlier-domain
+samples. On DCASE 2026 Challenge Task 7, FoIL improved micro and
+macro accuracy over the Challenge baseline by 33 and 25 percentage
+points, respectively. The ablation study confirmed the contribution of
+each component, offering an effective route to audio DIL.
+
+
+Detection and Classification of Acoustic Scenes and Events 2026
+28–29 October 2026, Boston, MA, USA
+REFERENCES
+[1] L. Wang, X. Zhang, H. Su, and J. Zhu, “A comprehensive survey of
+continual learning: Theory, method and application,” IEEE Trans. Pattern
+Anal. Mach. Intell., 2024.
+[2] J. Kirkpatrick, R. Pascanu, N. Rabinowitz, J. Veness, G. Desjardins et al.,
+“Overcoming catastrophic forgetting in neural networks,” Proc. National
+Academy of Sciences, vol. 114, no. 13, pp. 3521–3526, 2017.
+[3] M. D. Lange, R. Aljundi, M. Masana, S. Parisot, X. Jia, A. Leonardis,
+G. Slabaugh, and T. Tuytelaars, “A continual learning survey: Defying
+forgetting in classification tasks,” IEEE Trans. Pattern Anal. Mach. Intell.,
+vol. 44, no. 7, pp. 3366–3385, 2022.
+[4] J. Schwarz, J. Luketina, W. M. Czarnecki, A. Grabska-Barwinska, Y. W.
+Teh, R. Pascanu, and R. Hadsell, “Progress & Compress: A scalable
+framework for continual learning,” in Proc. Int. Conf. Machine Learning
+(ICML), 2018, pp. 4528–4537.
+[5] S.-A. Rebuffi, A. Kolesnikov, G. Sperl, and C. H. Lampert, “iCaRL:
+Incremental classifier and representation learning,” in Proc. IEEE Conf.
+Computer Vision and Pattern Recognition (CVPR), 2017, pp. 5533–5542.
+[6] D. Rolnick, A. Ahuja, J. Schwarz, T. Lillicrap, and G. Wayne, “Experience
+replay for continual learning,” in Proc. Conf. Neural Information
+Processing Systems (NeurIPS), 2019.
+[7] M. Mulimani and A. Mesaros, “Domain-incremental learning for audio
+classification,” in Proc. IEEE Int. Conf. Acoustics, Speech and Signal
+Processing (ICASSP), 2025.
+[8] H. Yin, P. Molchanov, J. M. Alvarez, Z. Li, A. Mallya, D. Hoiem, N. K.
+Jha, and J. Kautz, “Dreaming to distill: Data-free knowledge transfer via
+DeepInversion,” in Proc. IEEE/CVF Conf. Computer Vision and Pattern
+Recognition (CVPR), 2020, pp. 8715–8724.
+[9] R. Casciotti, M. Mulimani, M. Harju, J. R. Jensen, and A. Mesaros,
+“Domain-agnostic incremental learning for sound classification: A DCASE
+2026 challenge task,” arXiv preprint arXiv:2606.02173, 2026.
+[10] A. A. Rusu, N. C. Rabinowitz, G. Desjardins, H. Soyer, J. Kirkpatrick,
+K. Kavukcuoglu, R. Pascanu, and R. Hadsell, “Progressive neural
+networks,” arXiv preprint arXiv:1606.04671, 2016.
+[11] A. Mallya and S. Lazebnik, “PackNet: Adding multiple tasks to a single
+network by iterative pruning,” in Proc. IEEE Conf. Computer Vision and
+Pattern Recognition (CVPR), 2018, pp. 7765–7773.
+[12] R. Aljundi, P. Chakravarty, and T. Tuytelaars, “Expert gate: Lifelong
+learning with a network of experts,” in Proc. IEEE Conf. Computer
+Vision and Pattern Recognition (CVPR), 2017, pp. 3366–3375.
+[13] S. Yan, J. Xie, and X. He, “DER: Dynamically expandable representation
+for class incremental learning,” in Proc. IEEE/CVF Conf. Computer
+Vision and Pattern Recognition (CVPR), 2021, pp. 3014–3023.
+[14] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang,
+and W. Chen, “LoRA: Low-rank adaptation of large language models,”
+in Proc. Int. Conf. Learning Representations (ICLR), 2022.
+[15] H. Kim, E. Kim, J. Lee, J. Bae, D. Park, and C. Chun, “OR-KDL:
+Orthogonal knowledge distilled LoRA for domain-agnostic incremen-
+tal learning in DCASE 2026 task 7,” DCASE2026 Challenge, Tech.
+Rep., 2026, https://dcase.community/documents/challenge2026/technical
+reports/DCASE2026 Chun 123 t7.pdf.
+[16] H. Shin, J. K. Lee, J. Kim, and J. Kim, “Continual learning with deep
+generative replay,” in Proc. Conf. Neural Information Processing Systems
+(NeurIPS), 2017.
+[17] B. Hariharan and R. Girshick, “Low-shot visual recognition by shrinking
+and hallucinating features,” in Proc. IEEE Int. Conf. Computer Vision
+(ICCV), 2017, pp. 3037–3046.
+[18] Y. Xian, T. Lorenz, B. Schiele, and Z. Akata, “Feature generating networks
+for zero-shot learning,” in Proc. IEEE Conf. Computer Vision and Pattern
+Recognition (CVPR), 2018, pp. 5542–5551.
+[19] M. Ma, J. Ren, L. Zhao, S. Tulyakov, C. Wu, and X. Peng, “SMIL:
+Multimodal learning with severely missing modality,” in Proc. AAAI
+Conf. Artificial Intelligence (AAAI), 2021, pp. 2302–2310.
+[20] Q. Kong, Y. Cao, T. Iqbal, Y. Wang, W. Wang, and M. D. Plumbley,
+“PANNs: Large-scale pretrained audio neural networks for audio pattern
+recognition,” IEEE/ACM Trans. Audio, Speech, Lang. Process., vol. 28,
+pp. 2880–2894, 2020.
+[21] J. Snell, K. Swersky, and R. S. Zemel, “Prototypical networks for few-
+shot learning,” in Proc. Conf. Neural Information Processing Systems
+(NeurIPS), 2017.
+[22] F. Wang, X. Xiang, J. Cheng, and A. L. Yuille, “NormFace: L2
+hypersphere embedding for face verification,” in Proc. ACM Multimedia,
+2017, pp. 1041–1049.
+[23] D. E. Rumelhart, G. E. Hinton, and R. J. Williams, “Learning repre-
+sentations by back-propagating errors,” Nature, vol. 323, no. 6088, pp.
+533–536, 1986.
+[24] Y. Gong, Y.-A. Chung, and J. Glass, “PSLA: Improving audio tagging
+with pretraining, sampling, labeling, and aggregation,” IEEE/ACM Trans.
+Audio, Speech, Lang. Process., vol. 29, pp. 3292–3306, 2021.

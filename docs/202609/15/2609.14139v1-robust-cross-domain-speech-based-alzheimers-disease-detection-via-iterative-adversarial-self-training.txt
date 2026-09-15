@@ -1,0 +1,810 @@
+Robust Cross-Domain Speech-Based Alzheimer’s
+Disease Detection via Iterative Adversarial
+Self-Training
+Luqi Sun
+Johns Hopkins University
+Baltimore, USA
+lsun59@jh.edu
+Shreeram Suresh Chandra
+Johns Hopkins University
+Baltimore, USA
+schand30@jh.edu
+Aurosweta Mahapatra
+Johns Hopkins University
+Baltimore, USA
+mahapatra2@jhu.edu
+Emily Mower Provost
+University of Michigan
+Ann Arbor, USA
+saneesha@umich.edu
+Brian MacWhinney
+Carnegie Mellon University
+Pittsburgh, USA
+macw@andrew.cmu.edu
+Berrak Sisman
+Johns Hopkins University
+Baltimore, USA
+sisman@jhu.edu
+Abstract
+As Alzheimer’s disease (AD) has increasingly become a major global public health
+issue, speech-based AD detection has attracted widespread attention. However,
+most existing methods are trained and evaluated on a single dataset, often leading
+to severe cross-domain performance degradation due to reliance on dataset-specific
+artifacts rather than disease-related speech cues. In real-world applications, reliable
+Alzheimer’s disease detection requires models that are robust to variations in
+recording environments, speakers and data collection conditions. To address
+this challenge, this paper adopts unsupervised domain adaptation to learn robust,
+domain-invariant feature representations in the absence of target-domain diagnosis
+labels. On this basis, a novel unsupervised domain adaptation method, Iterative
+Adversarial Self-Training (IAST), is proposed. Results demonstrate that IAST
+significantly improves the generalization ability and robustness under various
+cross-domain settings.1
+1
+Introduction
+Alzheimer’s disease has become a major global public health issue. According to estimates by
+Alzheimer’s Disease International, there are currently approximately 50 million people with dementia
+worldwide, and this number is still growing rapidly, and is expected to triple by 2050 [Alzheimer
+Europe, 2019]. Alzheimer’s disease is the leading cause of dementia and is rapidly developing into one
+of the most expensive, deadliest, and most socially burdensome diseases of this century [Alzheimer’s
+Association, 2023]. Against this background, how to achieve automated detection of Alzheimer’s
+disease in a highly reliable, low-cost, and easily scalable manner has become an important direction
+of current research.
+In recent years, deep learning has become the dominant approach for speech-based AD detection.
+Prior work has explored a wide range of architectures and representations, including end-to-end
+automatic speech recognition frameworks [Lin et al., 2024], transformer-based models for speech-
+level AD recognition [Dong et al., 2024], and hybrid approaches that incorporate disfluency-related
+paralinguistic features [Jin et al., 2023]. At the same time, over the past five years, Interspeech
+1We release our codes and models with this submission: https://sleepwalker554.github.io/IAST_website/
+40th Conference on Neural Information Processing Systems (NeurIPS 2026). Workshop: .
+arXiv:2609.14139v1  [cs.SD]  12 Sep 2026
+
+
+and ICASSP have also organized several Alzheimer’s Dementia Recognition through Spontaneous
+Speech recognition challenges, including the ADReSS [Luz et al., 2020], ADReSSo [Luz et al.,
+2021], ADReSS-M [Luz et al., 2023], and PROCESS [Tao et al., 2025], attracting participation from
+many research teams. Collectively, these studies demonstrate that speech-based AD detection models
+can achieve strong performance when trained and evaluated under matched, single-dataset conditions.
+However, in real-world applications, AD detection often needs to cope with different recording
+environments, device conditions, and data collection processes. Although existing models can
+achieve high detection performance when trained and evaluated on a single dataset, their performance
+often degrades substantially when applied to data collected under different conditions, revealing
+limited robustness. This degradation arises in part because models trained on a single dataset may
+learn to rely on dataset-specific recording characteristics rather than disease-related speech features.
+Prior work has provided clear evidence of this behavior: Liu et al. [Liu et al., 2024] demonstrated
+that models trained using only silent segments from the Pitt Corpus [Becker et al., 1994] can still
+achieve extremely high detection accuracy on the same dataset. This suggests the presence of a Clever
+Hans effect, in which models exploit recording-environment artifacts instead of clinically meaningful
+speech cues.
+Since the training conditions and real-world testing conditions often do not match, when the model is
+applied to different datasets or different recording environments, this reliance on the specific training
+environment can lead to a significant degradation in recognition performance. Our cross-domain
+experiments further confirm these limitations: across multiple model architectures, we observe
+consistent drops in recognition accuracy under cross-domain evaluation, with a maximum decrease of
+34.38% (see Table 2). These results indicate that AD detection models trained and evaluated solely on
+a single dataset exhibit limited cross-domain generalization, significantly constraining their practical
+applicability. To address this challenge, this paper investigates unsupervised domain adaptation for
+speech-based AD detection.
+Recent advances in self-supervised speech representation learning [Devlin et al., 2019] have shown
+that large pre-trained models can capture robust and transferable speech features across speakers
+and recording conditions. In particular, XLSR [Conneau et al., 2021], pre-trained on large-scale
+multilingual unlabeled speech data, has demonstrated strong performance in AD detection and related
+speech-based cognitive impairment tasks [Chen et al., 2023, Pérez-Toro et al., 2022]. These properties
+make self-supervised speech representations especially promising for cross-domain Alzheimer’s
+disease detection, where recording conditions and data distributions often vary substantially. Mo-
+tivated by these insights, this work investigates how different levels of speech representation and
+unsupervised domain adaptation strategies can be combined to improve robustness and generalization
+in cross-domain settings. Our main contributions are summarized as follows:
+• We design three AD detection models with increasing representational capacity, spanning
+handcrafted acoustic features, pre-trained self-supervised speech embeddings, and task-
+specific fine-tuning.
+• We conduct a systematic cross-domain evaluation of AD detection across multiple models
+and unsupervised domain adaptation strategies.
+• We propose a novel unsupervised domain adaptation method, Iterative Adversarial Self-
+Training (IAST), which significantly improves cross-domain generalization and robustness.
+2
+Related Work
+2.1
+Existing AD Detection Models
+Early AD detection studies primarily explored traditional machine learning approaches. For example,
+the ADReSS [Luz et al., 2020], ADReSSo [Luz et al., 2021] and ADReSS-M [Luz et al., 2023]
+Challenges adopted support vector machines as a baseline, while Hason et al. [Hason and Krishnan,
+2022] used random forests for speech-based AD detection. More recently, deep learning has become
+the dominant paradigm in AD detection. For example, Lin et al. [Lin et al., 2024] adopted a Seq2Seq-
+based end-to-end automatic speech recognition framework for Alzheimer’s disease detection. Dong et
+al. [Dong et al., 2024] proposed a hierarchical attention-free transformer model for speech-level AD
+recognition. In addition, Jin et al. [Jin et al., 2023] combined disfluency-based paralinguistic features
+with a complementary ensemble strategy for speech-based Alzheimer’s disease detection, achieving
+2
+
+
+favorable experimental results. Recent work has also begun exploring large language models and
+large audio-language models for AD detection. For example, Heitz et al. [Heitz et al., 2025] used
+GPT-4 to extract semantic features from spontaneous speech transcripts, while Park et al. [Park et al.,
+2025] applied Chain-of-Thought reasoning and supervised fine-tuning for AD detection.
+Although recent studies have explored various architectures for AD detection, the main focus of
+this paper is not to design a new AD classifier, but to investigate cross-domain robustness and
+unsupervised domain adaptation. Therefore, we consider three representative model settings for
+experiments. They cover feature representation methods with different representational capabilities
+commonly used in AD detection tasks, including handcrafted acoustic features, frozen self-supervised
+speech representations, and task-adaptive speech representations. By comparing models with different
+representational capabilities, this paper can more comprehensively evaluate the impact of cross-
+domain distribution shifts on AD detection models, as well as the broad effectiveness of the proposed
+domain adaptation method. The specific architectures of these models will be described in detail in
+Section 3.
+2.2
+Datasets
+Three public English speech datasets relevant to Alzheimer’s disease detection are considered in
+this study: the Pitt Corpus [Becker et al., 1994], the ADReSS dataset [Luz et al., 2020], and the
+Lu Corpus. All three datasets are available through DementiaBank [Lanzi et al., 2023] and contain
+recordings from the Cookie Theft picture description task [Goodglass and Kaplan, 1983], which
+elicits spontaneous speech and has been widely adopted for Alzheimer’s disease assessment because
+speech disfluencies and other paralinguistic characteristics provide important indicators of cognitive
+impairment [Haider et al., 2019].
+The Pitt Corpus is one of the most widely used benchmarks for speech-based Alzheimer’s disease
+detection and contains recordings from both individuals with Alzheimer’s disease (AD) and healthy
+controls (HC). The ADReSS dataset was released as part of the ADReSS Challenge at Interspeech
+2020 and provides age- and gender-balanced Cookie Theft recordings. The Lu Corpus is an English
+spontaneous speech dataset collected under different recording conditions, making it particularly
+suitable for cross-domain evaluation. Table 1 summarizes the numbers of AD and HC recordings in
+each dataset. Detailed source-target configurations and data splits are presented in Section 4.
+Table 1: Sample numbers of datasets.
+Dataset
+Total Num
+AD Num
+Control Num
+Pitt Corpus
+552
+309
+243
+ADReSS
+156
+78
+78
+Lu
+74
+38
+36
+3
+Methodology
+This section presents the designed AD detection models, traditional unsupervised domain adaptation
+methods, and the proposed Iterative Adversarial Self-Training (IAST).
+3.1
+Models
+We implement three speech-based Alzheimer’s disease detection models with increasing represen-
+tational capacity: an eGeMAPS-based model using handcrafted acoustic features, a pre-trained
+embedding-based model with frozen parameters, and a fine-tuned pre-trained model for the target
+task. The architectures are detailed below and illustrated in Figure 1. For the specific implementation
+of the models, please refer to our released code.
+eGeMAPS-based model. As shown in Fig. 1(a), each input utterance is first divided into 10 equal-
+length segments. Then, the OpenSMILE toolkit [Eyben et al., 2010] is used to extract 25-dimensional
+eGeMAPS [Eyben et al., 2015] acoustic features from each segment, thereby representing each
+sample as a temporal feature tensor of shape (10, 25). Subsequently, two linear layers are applied to
+remap the feature dimension. Batch Normalization, ReLU activation, and Dropout are used between
+3
+
+
+Feature 
+Projection
+OpenSMILE
+Toolkit
+Audio
+Segments
+eGeMAPS
+Features
+Input Audio
+Frozen
+XLSR
+Embedding
+Input Audio
+Attention
+Pooling
+Prediction
+Feature 
+Projection
+Linear
+Layer
+Input Audio
+Frozen XLSR
+Layers
+Embedding
+Attention
+Pooling
+Feature 
+Projection
+Linear
+Layer
+Prediction
+Last 3 Transformer
+Layers
+Fine-tuned
+XLSR
+Attention
+Pooling
+Linear
+Layer
+Prediction
+(a)
+(b)
+(c)
+Figure 1: Model architectures: (a) eGeMAPS-based model, (b) frozen-parameter XLSR-based model,
+and (c) fine-tuned XLSR-based model.
+the layers to stabilize training and mitigate overfitting. Next, an attention pooling layer is used to
+perform weighted aggregation over the 10 segments along the temporal dimension. Finally, a linear
+classification layer outputs the AD prediction result.
+Frozen-parameter XLSR model. As shown in Fig. 1(b), the audio input is first truncated or padded
+to a fixed length of 60 seconds and then fed into the pretrained XLS-R model [Conneau et al., 2021]
+with frozen parameters to extract frame-level embedding features. Subsequently, the embeddings are
+passed through five linear layers, each of which reduces the feature dimension, followed by Batch
+Normalization and a ReLU activation function. The mapped features are then fed into an attention
+pooling layer for temporal aggregation. Meanwhile, we introduce a mask mechanism [Vaswani et al.,
+2017] to mark the padded time steps, ensuring that they do not contribute to the pooled representation.
+Finally, a linear classification layer outputs the AD prediction result.
+Fine-tuned XLSR model. As illustrated in Fig. 1(c), we fine-tune XLS-R using the Pitt Corpus and
+the ADReSS dataset, respectively. During fine-tuning, to mitigate catastrophic forgetting [French,
+1999] and reduce the risk of overfitting, only the last three Transformer layers are updated, while
+the remaining layers are kept frozen. The classification head is exactly the same as that of the
+frozen-parameter XLSR model, namely, a structure consisting of five linear dimensionality-reduction
+layers, mask-based attention pooling, and a linear classification layer.
+3.2
+Domain Adversarial Training
+Domain Adversarial Training (DAT) [Ganin et al., 2016] is used to promote domain-invariant feature
+learning between the labeled source domain and the unlabeled target domain. During training, the
+domain discriminator is jointly optimized with the Alzheimer’s disease classification task through
+adversarial learning. The Alzheimer’s disease predictor is trained to minimize the classification loss
+on the source domain while maximizing the confusion of the domain discriminator, thereby reducing
+domain-specific information in the learned representations. This adversarial objective promotes
+alignment between the feature distributions of the source and target domains without requiring
+target-domain labels. This training strategy is consistently applied to all three AD detection models
+described in Section 3.1.
+Although DAT can effectively reduce the distributional distance between the source and target
+domains in the feature space, the model cannot access any labels from the target domain during
+training. This means that, when updating its parameters, the Alzheimer’s disease classifier learns a
+decision boundary that is entirely driven by the source-domain distribution.
+4
+
+
+3.3
+Self Training
+Self-Training (ST) [Scudder, 1965] is used to leverage unlabeled target-domain data through a
+pseudo-labeling mechanism. This training strategy is also consistently applied to all three models.
+The self-training procedure consists of an initialization stage and several learning stages that alternate
+between pseudo-label generation and retraining. In the initialization stage, the model is first trained
+using labeled source-domain data and is then used to generate predictions for target-domain samples.
+In the k-th round, the model fk−1 performs Softmax prediction on target-domain samples. If the
+maximum class probability (confidence) is no lower than τ, then arg maxc ˆpc is adopted as the
+pseudo-label for that sample and combined with the source-domain data for subsequent training. In
+the experiments, we set τ = 0.9. This process is repeated iteratively, allowing the model to gradually
+incorporate more reliable target-domain supervisory information, thereby continuously improving its
+performance on the target domain and enhancing cross-domain generalization.
+The effectiveness of self-training depends largely on the discriminative ability of the initial model
+and the quality of the pseudo-labels. If the initial model has not yet adapted to the target-domain
+distribution, it will produce many incorrect pseudo-labels on the target domain. As these incorrect
+labels are repeatedly incorporated into training, the errors continuously accumulate over iterations
+and eventually deviate from the true target-domain decision boundary.
+3.4
+Iterative Adversarial Self-Training
+Iterative Adversarial Self-Training (IAST) is the unsupervised domain adaptation method proposed in
+this paper, which combines the advantages of DAT and ST in cross-domain learning while overcoming
+the two major limitations of DAT lacking target-domain class supervision and ST relying on high-
+quality initialization. The key idea of IAST is to progressively improve target-domain pseudo-label
+quality through repeated feature alignment and target-domain adaptation. The proposed pipeline of
+Iterative Adversarial Self-Training is illustrated in Figure 2. It begins with an initialization stage
+in which Domain Adversarial Training is applied to align feature distributions between the labeled
+source domain and the unlabeled target domain. This initial alignment reduces domain-specific
+biases and yields a more stable model that produces more reliable predictions on target-domain
+samples. Based on these predictions, Self-Training is then employed to generate pseudo-labels for
+high-confidence target-domain samples, which are incorporated into subsequent training.
+IAST alternates between adversarial feature alignment and self-training in multiple iterations. As do-
+main adversarial training progressively reduces inter-domain feature discrepancies, the quality of the
+pseudo-labels generated by the model gradually improves. In turn, more reliable pseudo-labels help
+the model reduce the negative impact of incorrectly classified pseudo-labels during the self-training
+stage, enabling better adaptation to the target-domain data distribution. Meanwhile, as an increas-
+ing number of reliable target-domain samples are incorporated into training, the model’s decision
+boundary gradually shifts toward the target-domain data distribution, which in turn promotes domain
+adversarial training to learn more appropriate feature representations. Through this cyclic process,
+the model is able to simultaneously improve feature alignment and target-domain discriminative
+capability in each iteration.
+The advantage of IAST lies in the complementarity between DAT and ST. DAT first narrows the
+feature gap between the source and target domains, providing a better initialization for ST and
+preventing the generation of a large number of incorrect pseudo-labels at the beginning. ST then
+incorporates category information from the target domain into training by using high-confidence
+pseudo-labels, addressing the limitation that the task classifier in DAT cannot learn discriminative
+information from the target domain. Through iterative interaction, the two components reinforce each
+other, ultimately improving both feature alignment and target-domain classification performance.
+4
+Experiments
+4.1
+Experimental Protocol
+As described in Section 3, we evaluate speech-based Alzheimer’s disease detection models under
+one baseline setting and three unsupervised domain adaptation (UDA) settings. We consider two
+source domains, namely the Pitt Corpus [Becker et al., 1994] and the ADReSS dataset [Luz et al.,
+5
+
+
+Labeled
+Source
+Domain
+Dataset
+Feature Extractor
+Alzheimer Predictor
+Unlabeled
+Target
+Domain
+Dataset
+Target Domain
+Pseudo Labels
+Iterate
+AD Label
+AD/HC
+Domain Classifier
+Domain Label
+Source/Target
+Gradent
+Reverse
+Layer
+Figure 2: Iterative Adversarial Self-Training pipeline (AD: Alzheimer’s disease; HC: healthy con-
+trols).
+2020], while the English Lu Corpus serves as the target domain in all experiments. The Pitt Corpus
+contains 552 speech recordings (309 AD and 243 healthy controls), the ADReSS dataset contains
+156 recordings (78 AD and 78 healthy controls), and the Lu Corpus contains 74 recordings (38 AD
+and 36 healthy controls). All datasets are based on the Cookie Theft picture description task and are
+obtained from DementiaBank [Lanzi et al., 2023].
+For source-domain training, each dataset is divided at the speaker level into 80% training data
+and 20% validation data. Specifically, the Pitt Corpus provides approximately 442 recordings for
+source-domain training and 110 recordings for validation, while the ADReSS dataset provides 125
+recordings for training and 31 recordings for validation. For the target domain, the Lu Corpus is
+divided at the speaker level into 80% unlabeled adaptation data (59 recordings) and 20% held-out
+evaluation data (15 recordings). Speaker overlap is avoided across all splits. In the baseline setting,
+models are trained using only the labeled source-domain training data and are directly evaluated on
+the held-out Lu evaluation subset without adaptation. In the UDA settings, the source-domain training
+data and the unlabeled Lu adaptation subset are jointly used during training. The target-domain
+adaptation subset is used only for domain alignment or pseudo-label generation, and no target-domain
+diagnosis labels are accessed during training. Domain Adversarial Training, Self-Training, and the
+proposed Iterative Adversarial Self-Training are evaluated under the same source-target protocol for
+fair comparison.
+4.2
+Model Training Details
+In terms of training settings, all models in this paper are trained for AD classification using the
+cross-entropy loss function and the AdamW optimizer. The learning rate of the eGeMAPS-based
+model is set to 3 × 10−3. When training on the ADReSS dataset, the batch size is set to 10; when
+training on the Pitt Corpus, the batch size is set to 16. The learning rate of the XLSR model with frozen
+parameters is set to 3 × 10−3, and the batch size is set to 32. For the trainable XLSR parameters of
+the fine-tuned XLSR model, a smaller learning rate of 1 × 10−5 is used; for the classification head, a
+larger learning rate of 1 × 10−3 is used. The batch size is set to 16. For the baseline experiments,
+we set the maximum number of training epochs to 60 and adopt an early stopping strategy with a
+patience value of 10.
+Based on the above model training settings, we implement three unsupervised domain adaptation
+methods, including Domain Adversarial Training (DAT), Self Training (ST), and Iterative Adversarial
+Self-Training (IAST). DAT also adopts a maximum number of training epochs of 60 and an early
+stopping strategy with a patience value of 10 in each training run. ST first performs one round of
+initialization training based only on labeled source-domain data, and then performs at most 5 rounds
+of pseudo-label iterations. IAST first undergoes an initialization training using the DAT method, and
+then performs at most 5 rounds of iterative training; in each iteration, we combine the target-domain
+6
+
+
+Figure 3: t-SNE visualization of embeddings from the XLSR-based model fine-tuned on Pitt Corpus.
+data with pseudo-labels and the labeled source-domain data, and train using the DAT method. For ST
+and IAST, only target-domain pseudo-labels with confidence greater than or equal to 0.9 are retained
+in each iteration. A single round of training lasts for at most 60 epochs and adopts an early stopping
+strategy with a patience value of 10; if fewer than 5 high-confidence pseudo-labels are available in a
+certain round, subsequent iterations are stopped.
+All models were trained on an RTX5090 GPU. We used OpenSMILE (v2.6.0) for eGeMAPS feature
+extraction, and the software environment included Python 3.9, PyTorch (v2.8.0), and torchaudio
+(v0.13.1).
+4.3
+Evaluation Metrics
+For evaluation, we report classification accuracy and F1 score, treating Alzheimer’s disease as
+the positive class.
+Each experiment is independently repeated using five fixed random seeds
+21, 42, 84, 168, 336, and the result with the highest accuracy is reported. In addition, we conduct
+significance testing on all experimental results.
+5
+Results and Analysis
+Baseline Cross-Domain Performance. Table 2 reports cross-domain results under the baseline
+setting, where models are trained on a single source dataset and evaluated on the target domain
+without adaptation. A consistent performance gap is observed across all architectures. For instance,
+the ADReSS-finetuned XLSR model achieves 84.38% accuracy in-domain but drops to 50.00% on the
+Lu corpus, which is a 34.38% decrease. Similarly, the Frozen-XLSR model trained on Pitt decreases
+from 70.27% to 58.11%, and the eGeMAPS-based model drops from 65.62% to 54.05% when
+transferred from ADReSS to Lu. These results show that strong in-domain performance does not
+guarantee cross-domain generalization. Even large pretrained models such as XLSR suffer substantial
+degradation under domain shift, suggesting reliance on source-domain–specific characteristics rather
+than stable disease-related speech features.
+Traditional Domain Adaptation Methods. We next examine the effect of traditional unsupervised
+domain adaptation methods on cross-domain AD detection performance. As shown in Table 2,
+both Domain Adversarial Training and Self-Training improve target-domain performance across
+most model architectures compared to the baseline setting, although the degree of improvement
+varies substantially by model. For the eGeMAPS-based model trained on the ADReSS dataset, DAT
+improves target-domain accuracy from 54.05% to 62.50%, while ST yields a similar improvement to
+62.50%. When trained on the Pitt Corpus, both DAT and ST again improve target-domain accuracy
+relative to the baseline, indicating that feature alignment and pseudo-labeling can partially help
+domain mismatch even for handcrafted acoustic features. More pronounced gains are observed for
+models based on pre-trained speech representations. For example, the XLSR-based model with frozen
+7
+
+
+Table 2: Cross-domain performance comparison of speech-based Alzheimer’s disease detection mod-
+els under different unsupervised domain adaptation methods. (DAT: Domain Adversarial Training;
+ST: Self-Training; IAST: Iterative Adversarial Self-Training. Asterisks∗: performance significantly
+different from the binomial majority-class baseline, p < 0.05.)
+Model
+Source
+Domain
+Target
+Domain
+Domain
+Adaptation
+Within Domain
+Cross Domain
+Src Acc
+Src F1
+Tgt Acc
+Tgt F1
+eGeMAPS-based
+model
+ADReSS
+Lu
+–
+65.62%
+0.6667
+54.05%
+0.4516
+DAT
+62.50%
+0.6667
+62.50%
+0.7000
+ST
+68.75%∗
+0.7222∗
+62.50%
+0.6667
+IAST
+(proposed)
+71.88%∗
+0.7429∗
+75.00%∗
+0.7778∗
+Pitt
+Lu
+–
+61.26%∗
+0.7190∗
+58.11%
+0.6931
+DAT
+62.16%∗
+0.7042∗
+62.50%
+0.7273
+ST
+59.46%∗
+0.7134∗
+62.50%
+0.7273
+IAST
+(proposed)
+58.56%∗
+0.6462∗
+68.75%
+0.7368
+XLSR-based model
+(Frozen
+Parameters)
+ADReSS
+Lu
+–
+87.50%∗
+0.8750∗
+68.92%∗
+0.6102∗
+DAT
+81.25%∗
+0.8421∗
+81.25%∗
+0.8235∗
+ST
+84.38%∗
+0.8571∗
+75.00%∗
+0.7500∗
+IAST
+(proposed)
+81.25%∗
+0.8235∗
+81.25%∗
+0.8235∗
+Pitt
+Lu
+–
+70.27%∗
+0.7442∗
+58.11%
+0.6804
+DAT
+70.27%∗
+0.7227∗
+75.00%∗
+0.7778∗
+ST
+71.17%∗
+0.7576∗
+81.25%∗
+0.8421∗
+IAST
+(proposed)
+67.57%∗
+0.7568∗
+87.50%∗
+0.8750∗
+XLSR-based model
+(Fine-tuned on
+ADReSS Dataset)
+ADReSS
+Lu
+–
+84.38%∗
+0.8485∗
+50.00%
+0.4789
+DAT
+81.25%∗
+0.8235∗
+68.75%
+0.6154
+ST
+84.38%∗
+0.8387∗
+81.25%∗
+0.8235∗
+IAST
+(proposed)
+87.50%∗
+0.8667∗
+81.25%∗
+0.8235∗
+XLSR-based model
+(Fine-tuned on
+Pitt Corpus)
+Pitt
+Lu
+–
+69.37%∗
+0.7213∗
+63.51%∗
+0.6494∗
+DAT
+67.57%∗
+0.7313∗
+75.00%∗
+0.7500∗
+ST
+70.27%∗
+0.7317∗
+87.50%∗
+0.8571∗
+IAST
+(proposed)
+70.27%∗
+0.7660∗
+87.50%∗
+0.8571∗
+parameters trained on the Pitt Corpus improves from 58.11% accuracy on the target domain under
+the baseline setting to 75.00% with DAT and 81.25% with ST. Similarly, for the XLSR-based model
+fine-tuned on the ADReSS dataset, ST increases target-domain accuracy from 50.00% to 81.25%.
+These results suggest that self-training is particularly effective when the underlying model produces
+sufficiently reliable target-domain predictions, as is often the case for pre-trained representation-based
+models.
+The proposed IAST. We next analyze the effect of the proposed IAST method on cross-domain AD
+detection. As shown in Table 2, IAST consistently yields the strongest target-domain performance
+across different model architectures and source–target settings, outperforming or matching the
+best results achieved by traditional unsupervised domain adaptation methods. For the eGeMAPS-
+based model trained on the ADReSS dataset, IAST improves target-domain accuracy to 75.00%,
+substantially exceeding the performance of both DAT and ST (62.50%). When trained on the
+Pitt Corpus, IAST again achieves the highest target-domain accuracy of 68.75%, compared to
+62.50% obtained with DAT and ST. These results indicate that the proposed iterative combination
+of adversarial feature alignment and self-training is particularly beneficial for models with limited
+representational capacity. For models based on representations extracted from large-scale pre-trained
+model, IAST also demonstrates clear advantages. In the case of the XLSR-based model with
+frozen parameters trained on the Pitt Corpus, IAST increases target-domain accuracy to 87.50%,
+outperforming both DAT (75.00%) and ST (81.25%). Similarly, for the XLSR-based model fine-tuned
+8
+
+
+on the ADReSS, IAST improves target-domain accuracy to 81.25%, exceeding the result obtained
+with DAT and matching the best performance achieved by ST.
+Embedding Space. Figure 3 visualizes the embedding distribution of the Pitt-finetuned XLSR
+model using t-SNE [Maaten and Hinton, 2008]. To quantitatively assess clustering behavior, Table 3
+reports two metrics, silhouette score [Rousseeuw, 1987] and separation ratio [Davies and Bouldin,
+2009], under different domain adaptation methods. We evaluate two clustering structures: (i) domain
+separation (Pitt Corpus vs. English Lu Corpus) and (ii) class separation (Alzheimer’s disease
+vs. healthy controls). The results show that IAST substantially reduces inter-domain discrepancy
+while simultaneously increasing class separability. This indicates that IAST not only aligns feature
+distributions across datasets but also enhances discriminative structure in the embedding space.
+Table 3: Clustering evaluation from the XLSR-based model fine-tuned on Pitt Corpus (AD:
+Alzheimer’s disease; HC: healthy controls; SS: Silhouette score; SR: Separation ratio).
+Domain adaptation
+Pitt vs Lu
+AD vs HC
+SS ↓
+SR ↓
+SS ↑
+SR ↑
+–
+0.2062
+0.9612
+0.0189
+0.2318
+DAT
+0.0010
+0.9791
+0.3707
+1.4624
+ST
+0.1218
+0.9747
+0.0069
+0.1299
+IAST (proposed)
+0.0031
+0.0892
+0.4857
+1.9484
+Source–Target Performance Trade-offs. While unsupervised domain adaptation improves target-
+domain performance, it can slightly reduce source-domain accuracy. Compared to the baseline,
+DAT, ST, and IAST occasionally exhibit modest source-domain degradation. For example, for the
+frozen XLSR model trained on the Pitt Corpus, source-domain accuracy decreases from 70.27% to
+67.57% with IAST, while target-domain accuracy increases substantially from 58.11% to 87.50%.
+This trend reflects a trade-off in which improved cross-domain generalization comes at the cost of
+reduced specialization to source-domain characteristics, favoring more domain-invariant and robust
+representations.
+6
+Conclusion
+This study shows that although speech-based Alzheimer’s disease detection models can achieve good
+performance within a single dataset, they still face a clear performance drop when evaluated across
+datasets. To improve model robustness in real-world application scenarios, this paper investigates the
+role of unsupervised domain adaptation methods in cross-domain AD detection and validates them
+on three types of models: an eGeMAPS-based model, a Frozen-parameter XLSR-based model, and a
+fine-tuned XLSR-based model.
+This paper proposes the Iterative Adversarial Self-Training method. This method continuously and
+iteratively performs domain adversarial training and self-training to gradually improve the quality
+of pseudo-labels in the target domain and guide the model to learn more domain-invariant speech
+features. We conducted experiments on three types of models. The experimental results show that,
+under different model architecture settings, IAST achieves the best performance on the target domain.
+References
+Alzheimer Europe. Dementia in Europe Yearbook 2019: Estimating the prevalence of dementia in Europe.
+Alzheimer Europe, 180, 2019.
+Alzheimer’s Association. 2023 Alzheimer’s disease facts and figures. Alzheimer’s & Dementia, 19(4):1598–1695,
+2023.
+James T Becker, François Boiler, Oscar L Lopez, Judith Saxton, and Karen L McGonigle. The natural history of
+Alzheimer’s disease: description of study cohort and accuracy of diagnosis. Archives of neurology, 51(6):
+585–594, 1994.
+Xuchu Chen, Yu Pu, Jinpeng Li, and Wei-Qiang Zhang. Cross-lingual Alzheimer’s disease detection based
+on paralinguistic and pre-trained features. In International Conference on Acoustics, Speech and Signal
+Processing (ICASSP), pages 1–2. IEEE, 2023.
+9
+
+
+Alexis Conneau, Alexei Baevski, Ronan Collobert, Abdelrahman Mohamed, and Michael Auli. Unsupervised
+Cross-Lingual Representation Learning for Speech Recognition. In Interspeech, pages 2426–2430, 2021.
+David L Davies and Donald W Bouldin. A cluster separation measure. IEEE transactions on pattern analysis
+and machine intelligence, (2):224–227, 2009.
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. "BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding". In Jill Burstein, Christy Doran, and Thamar Solorio, editors,
+Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Lin-
+guistics: Human Language Technologies, Volume 1 (Long and Short Papers), pages 4171–4186, Minneapolis,
+Minnesota, June 2019. Association for Computational Linguistics.
+Zhongren Dong, Zixing Zhang, Weixiang Xu, Jing Han, Jianjun Ou, and Björn W Schuller. HAFFormer:
+A hierarchical attention-free framework for Alzheimer’s disease detection from spontaneous speech. In
+International Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 11246–11250. IEEE,
+2024.
+Florian Eyben, Martin Wöllmer, and Björn Schuller. Opensmile: the munich versatile and fast open-source audio
+feature extractor. In Proceedings of the 18th ACM international conference on Multimedia, pages 1459–1462.
+ACM, 2010.
+Florian Eyben, Klaus R Scherer, Björn W Schuller, Johan Sundberg, Elisabeth André, Carlos Busso, Laurence Y
+Devillers, Julien Epps, Petri Laukka, Shrikanth S Narayanan, et al. The Geneva minimalistic acoustic
+parameter set (GeMAPS) for voice research and affective computing.
+IEEE transactions on affective
+computing, 7(2):190–202, 2015.
+Robert M French. Catastrophic forgetting in connectionist networks. Trends in cognitive sciences, 3(4):128–135,
+1999.
+Yaroslav Ganin, Evgeniya Ustinova, Hana Ajakan, Pascal Germain, Hugo Larochelle, François Laviolette, Mario
+March, and Victor Lempitsky. Domain-adversarial training of neural networks. Journal of machine learning
+research, 17(59):1–35, 2016.
+Harold Goodglass and Edith Kaplan. Boston diagnostic aphasia examination booklet. Lea & Febiger, 1983.
+Fasih Haider, Sofia De La Fuente, and Saturnino Luz. An assessment of paralinguistic acoustic features
+for detection of alzheimer’s dementia in spontaneous speech. IEEE Journal of Selected Topics in Signal
+Processing, 14(2):272–281, 2019.
+Lior Hason and Sri Krishnan. Spontaneous speech feature analysis for alzheimer’s disease screening using a
+random forest classifier. Frontiers in Digital Health, 4:901419, 2022.
+Jonathan Heitz, Gerold Schneider, and Nicolas Langer. Linguistic features extracted by gpt-4 improve alzheimer’s
+disease detection based on spontaneous speech. In Proceedings of the 31st International Conference on
+Computational Linguistics, pages 1850–1864, 2025.
+Pamela Herd, Deborah Carr, and Carol Roan. Cohort profile: Wisconsin longitudinal study (wls). International
+journal of epidemiology, 43(1):34–41, 2014.
+Longbin Jin, Yealim Oh, Hyunseo Kim, Hyuntaek Jung, Hyo Jin Jon, Jung Eun Shin, and Eun Yi Kim. Consen:
+Complementary and simultaneous ensemble for alzheimer’s disease detection and mmse score prediction. In
+International Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 1–2. IEEE, 2023.
+Alyssa M Lanzi, Anna K Saylor, Davida Fromm, Houjun Liu, Brian MacWhinney, and Matthew L Cohen.
+DementiaBank: Theoretical rationale, protocol, and illustrative analyses. American Journal of Speech-
+Language Pathology, 32(2):426–438, 2023.
+Xiaohui Liang, John A Batsis, Youxiang Zhu, Tiffany M Driesse, Robert M Roth, David Kotz, and Brian
+MacWhinney. Evaluating voice-assistant commands for dementia detection. Computer Speech & Language,
+72:101297, 2022.
+Zih-Jyun Lin, Yi-Ju Chen, Po-Chih Kuo, Likai Huang, Chaur-Jong Hu, and Cheng-Yu Chen. Dementia
+Assessment Using Mandarin Speech with an Attention-Based Speech Recognition Encoder. In International
+Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 12461–12465. IEEE, 2024.
+Yin-Long Liu, Rui Feng, Jia-Hong Yuan, and Zhen-Hua Ling. Clever Hans Effect Found in Automatic Detection
+of Alzheimer’s Disease through Speech. In Interspeech, pages 2435–2439, 2024.
+10
+
+
+Saturnino Luz, Fasih Haider, Sofia de la Fuente, Davida Fromm, and Brian MacWhinney. Alzheimer’s Dementia
+Recognition Through Spontaneous Speech: The ADReSS Challenge. In Interspeech, pages 2172–2176, 2020.
+Saturnino Luz, Fasih Haider, Sofia de la Fuente, Davida Fromm, and Brian MacWhinney. Detecting cognitive
+decline using speech only: The adresso challenge. In Interspeech, pages 3780–3784, 2021.
+Saturnino Luz, Fasih Haider, Davida Fromm, Ioulietta Lazarou, Ioannis Kompatsiaris, and Brian MacWhinney.
+Multilingual alzheimer’s dementia recognition through spontaneous speech: a signal processing grand
+challenge. In International Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 1–2.
+IEEE, 2023.
+Laurens van der Maaten and Geoffrey Hinton. Visualizing data using t-SNE. Journal of machine learning
+research, 9(Nov):2579–2605, 2008.
+Chanwoo Park, Anna Seo Gyeong Choi, Sunghye Cho, and Chanwoo Kim. Reasoning-Based Approach with
+Chain-of-Thought for Alzheimer’s Detection Using Speech and Large Language Models. In Interspeech
+2025, pages 2185–2189, 2025.
+Paula Andrea Pérez-Toro, Philipp Klumpp, Abner Hernandez, Tomas Arias, Patricia Lillo, Andrea Slachevsky,
+Adolfo Martín García, Maria Schuster, Andreas K Maier, Elmar Noeth, et al. Alzheimer’s Detection from
+English to Spanish Using Acoustic and Linguistic Embeddings. In Interspeech, pages 2483–2487, 2022.
+Peter J Rousseeuw. Silhouettes: a graphical aid to the interpretation and validation of cluster analysis. Journal
+of computational and applied mathematics, 20:53–65, 1987.
+Henry Scudder. Probability of error of some adaptive pattern-recognition machines. IEEE Transactions on
+Information Theory, 11(3):363–371, 1965.
+Fuxiang Tao, Bahman Mirheidari, Madhurananda Pahar, Sophie Young, Yao Xiao, Hend Elghazaly, Fritz
+Peters, Caitlin Illingworth, Dorota Braun, Ronan O’Malley, et al. Early dementia detection using multiple
+spontaneous speech prompts: The process challenge. In International Conference on Acoustics, Speech and
+Signal Processing (ICASSP), pages 1–2. IEEE, 2025.
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser,
+and Illia Polosukhin. Attention is all you need. Advances in neural information processing systems, 30, 2017.
+A
+Responsible-use Statement
+A.1
+Limitations
+Our research focuses on Alzheimer’s disease speech detection from speech in English contexts. In
+this field, the vast majority of studies have used the Pitt Corpus [Becker et al., 1994] and its derived
+datasets, and the number of publicly available English AD speech datasets independent of the Pitt
+Corpus is very limited. We note that although there are some larger English AD speech datasets, these
+datasets have not yet been made publicly available and therefore cannot be used for experimental
+validation in this study.
+Other publicly accessible English dementia datasets, such as the VAS Corpus [Liang et al., 2022]
+and the English WLS Corpus [Herd et al., 2014], are not restricted to AD patients, as they include
+individuals with MCI or other forms of cognitive decline without distinguishing these diagnostic
+groups. To ensure the rigor of the research, we did not use these datasets in our experiments.
+Therefore, due to the limited number of publicly available English AD speech datasets independent
+of the Pitt Corpus, this paper selects the English Lu Corpus [Lanzi et al., 2023] as the target domain.
+A.2
+Ethical Considerations
+As speech data contain sensitive health-related and personally identifiable information, appropriate
+privacy and data-governance procedures are necessary. The proposed model should be viewed as a
+research or screening tool rather than a clinical diagnostic system, and real-world deployment would
+require broader external validation and professional oversight.
+The predictions of the proposed model may remain uncertain when applied to populations, recording
+environments, or clinical settings that differ from those represented in the datasets used in this study.
+In particular, the limited number of independent English AD speech datasets constrains our ability
+11
+
+
+to fully characterize model reliability under broader distribution shifts. Therefore, the reported
+performance should not be interpreted as evidence of reliable clinical performance across unseen
+populations or acquisition conditions.
+A.3
+Licensing
+We use the DementiaBank dataset, a shared multimedia database for studying communication in
+dementia. DementiaBank is part of TalkBank. Therefore, use of the data is generally governed
+by the Creative Commons Attribution–NonCommercial–ShareAlike 3.0 license (CC BY-NC-SA
+3.0), unless otherwise specified. This license requires attribution, restricts commercial use, and
+requires share-alike for derivatives. Access to DementiaBank is password-protected and restricted to
+approved members of the DementiaBank consortium. We comply with the DementiaBank data use
+requirements, including restrictions on redistributing or posting password-protected data on external
+websites or servers.
+12

@@ -1,0 +1,105 @@
+{
+  "date": "20260915",
+  "date_label": "",
+  "generated_at": "2026-09-15 21:54:49 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.09864v1",
+      "route": "202609/15/2609.09864v1-shifting-relational-paradigms-for-affective-computing-affective-resonance-vitality-affects-and-vocal-interaction-fields",
+      "title": "Shifting Relational Paradigms for Affective Computing: Affective Resonance, Vitality Affects, and Vocal Interaction Fields",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于自监督语音表示的情感计算",
+      "first_seen_at": "2026-09-15 21:54:49 UTC",
+      "updated_at": "2026-09-15 21:54:49 UTC"
+    },
+    {
+      "paper_id": "2609.09924v1",
+      "route": "202609/15/2609.09924v1-multimodal-emotion-recognition-in-conversations-via-class-wise-adaptive-modality-fusion-and-affective-geometry",
+      "title": "Multimodal Emotion Recognition in Conversations via Class-Wise Adaptive Modality Fusion and Affective Geometry",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "融合音频线索与情感几何的多模态情感识别",
+      "first_seen_at": "2026-09-15 21:54:49 UTC",
+      "updated_at": "2026-09-15 21:54:49 UTC"
+    },
+    {
+      "paper_id": "2609.13857v1",
+      "route": "202609/15/2609.13857v1-reh-fuse-reliability-aware-hierarchical-fusion-of-experts-for-multimodal-emotion-recognition-in-conversation",
+      "title": "ReH-FUSE: Reliability-Aware Hierarchical Fusion of Experts for Multimodal Emotion Recognition in Conversation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "会话多模态情感识别并在三个独立数据集上评估",
+      "first_seen_at": "2026-09-15 21:54:49 UTC",
+      "updated_at": "2026-09-15 21:54:49 UTC"
+    },
+    {
+      "paper_id": "2609.14139v1",
+      "route": "202609/15/2609.14139v1-robust-cross-domain-speech-based-alzheimers-disease-detection-via-iterative-adversarial-self-training",
+      "title": "Robust Cross-Domain Speech-Based Alzheimer's Disease Detection via Iterative Adversarial Self-Training",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无监督域适应学习跨域鲁棒语音表征",
+      "first_seen_at": "2026-09-15 21:54:49 UTC",
+      "updated_at": "2026-09-15 21:54:49 UTC"
+    },
+    {
+      "paper_id": "2609.14730v1",
+      "route": "202609/15/2609.14730v1-parameter-isolation-with-domain-specific-experts-for-incremental-audio-classification",
+      "title": "Parameter isolation with domain-specific experts for incremental audio classification",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以域特定专家进行域增量学习以应对域偏移",
+      "first_seen_at": "2026-09-15 21:54:49 UTC",
+      "updated_at": "2026-09-15 21:54:49 UTC"
+    },
+    {
+      "paper_id": "2609.15313v1",
+      "route": "202609/15/2609.15313v1-reducing-the-output-mode-gap-in-speech-language-models-via-joint-output-on-policy-distillation",
+      "title": "Reducing the Output-Mode Gap in Speech Language Models via Joint-Output On-Policy Distillation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语音大语言模型与文本声学交织生成",
+      "first_seen_at": "2026-09-15 21:54:49 UTC",
+      "updated_at": "2026-09-15 21:54:49 UTC"
+    }
+  ]
+}

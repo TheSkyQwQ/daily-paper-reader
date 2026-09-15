@@ -1,0 +1,253 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-15T21:52:30.362279+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.09864v1",
+      "source": "arxiv",
+      "title": "Shifting Relational Paradigms for Affective Computing: Affective Resonance, Vitality Affects, and Vocal Interaction Fields",
+      "abstract": "Affective computing has largely followed an individual-state paradigm, extracting discrete emotion labels or arousal/valence from isolated speakers. We argue this framing is incomplete for interaction. Drawing on affective resonance and vitality-contour accounts, we propose a relational framework in which the primary unit of affective analysis is the interactional field constituted within vocal dynamics. As a proof of concept, we present a preliminary empirical study using continuous self-supervised speech representations to detect directional expressive coupling in multi-party conversation. Coupling is regime-specific, concentrated at sub-second timescales, and collapses under exclusive-speech negative controls, consistent with a relational account of affective dynamics. We introduce design frameworks for Artificial Affective Resonance Intelligence grounded in Affective Resonance Dynamic Ontologies, supported by null-calibrated directional coupling analyses across interaction regimes.",
+      "authors": [
+        "Cy Gorman",
+        "Yihang Yao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-09T08:16:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.09864v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech-based affective computing with self-supervised representations",
+      "llm_evidence_cn": "基于自监督语音表示的情感计算",
+      "llm_evidence": "基于自监督语音表示的情感计算",
+      "canonical_evidence": "基于自监督语音表示的情感计算",
+      "llm_tldr_en": "Affective computing has largely extracted emotion labels from isolated speakers, which is incomplete for interaction. This paper proposes a relational framework where the interactional field in vocal dynamics is the unit of analysis, using self-supervised speech representations to detect expressive coupling in multi-party conversation.",
+      "llm_tldr_cn": "情感计算多沿个体状态范式，从孤立说话人抽取离散情绪或效价唤醒度，该文认为这对交互而言并不完整。作者基于情感共鸣与活力轮廓，提出以声音动态中形成的关系场为分析单元的关系框架。作为概念验证，使用连续自监督语音表示检测多人对话中的方向性表达耦合。结果显示耦合具有状态特异性、集中于亚秒尺度，且在排除语音条件下消失。工作为语音情感表征学习提供新视角。",
+      "llm_tldr": "情感计算多沿个体状态范式，从孤立说话人抽取离散情绪或效价唤醒度，该文认为这对交互而言并不完整。作者基于情感共鸣与活力轮廓，提出以声音动态中形成的关系场为分析单元的关系框架。作为概念验证，使用连续自监督语音表示检测多人对话中的方向性表达耦合。结果显示耦合具有状态特异性、集中于亚秒尺度，且在排除语音条件下消失。工作为语音情感表征学习提供新视角。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.09924v1",
+      "source": "arxiv",
+      "title": "Multimodal Emotion Recognition in Conversations via Class-Wise Adaptive Modality Fusion and Affective Geometry",
+      "abstract": "Emotion Recognition in Conversations (ERC) requires integrating heterogeneous textual, audio, and visual cues while accounting for conversational context and emotional dynamics. We extend the Self-Distillation Transformer architecture for ERC with appearance+geometry visual representations, class-wise adaptive modality fusion, and a valence-arousal prior for affective transitions. On the MELD and IEMOCAP datasets, geometry-enhanced visual representations improve weighted F1 by 0.27 and 4.36 points over appearance-only features, respectively, while class-wise adaptive fusion provides further gains of 0.17 and 0.25 points over the original softmax gate. The valence-arousal prior yields targeted improvements of 0.30 and 0.74 accuracy points on emotionally shifted utterances while preserving performance on stable turns. These results indicate that structured facial cues, emotion-dependent modality weighting, and affective geometry provide complementary benefits for multimodal ERC.",
+      "authors": [
+        "Oriol Marín",
+        "Roger Marí",
+        "Gloria Haro",
+        "Rafael Redondo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-09T09:15:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.09924v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal emotion recognition integrating audio cues and affective geometry",
+      "llm_evidence_cn": "融合音频线索与情感几何的多模态情感识别",
+      "llm_evidence": "融合音频线索与情感几何的多模态情感识别",
+      "canonical_evidence": "融合音频线索与情感几何的多模态情感识别",
+      "llm_tldr_en": "Emotion recognition in conversations must fuse text, audio and visual cues with conversational context. The paper extends a self-distillation transformer with geometry visual features, class-wise adaptive fusion and a valence-arousal prior, improving F1 on MELD and IEMOCAP.",
+      "llm_tldr_cn": "对话情感识别需融合文本、音频与视觉等异构线索并建模对话上下文与情感动态。论文在自蒸馏Transformer基础上引入外观加几何的视觉表征、类别自适应模态融合以及效价-唤醒先验。在MELD和IEMOCAP上，几何增强视觉表征使加权F1分别提升0.27和4.36个点，类别自适应融合进一步提升0.17和0.25个点，效价-唤醒先验也带来针对性增益，展示了多模态情感建模的有效性。",
+      "llm_tldr": "对话情感识别需融合文本、音频与视觉等异构线索并建模对话上下文与情感动态。论文在自蒸馏Transformer基础上引入外观加几何的视觉表征、类别自适应模态融合以及效价-唤醒先验。在MELD和IEMOCAP上，几何增强视觉表征使加权F1分别提升0.27和4.36个点，类别自适应融合进一步提升0.17和0.25个点，效价-唤醒先验也带来针对性增益，展示了多模态情感建模的有效性。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.13857v1",
+      "source": "arxiv",
+      "title": "ReH-FUSE: Reliability-Aware Hierarchical Fusion of Experts for Multimodal Emotion Recognition in Conversation",
+      "abstract": "Multimodal emotion recognition in conversation (ERC) requires adapting to the instance-dependent reliability of different evidence sources. Lexical content may be decisive, vocal expression may provide complementary cues, or accurate recognition may require cross-modal interaction; fixed fusion does not explicitly account for this variation. We propose ReH-FUSE, a reliability-aware framework with dialogue-aware text, audio, and cross-modal experts. Its decision-level router first models the relative preference between text and audio and then balances the resulting unimodal mixture against the cross-modal expert. This factorization separates unimodal competition from cross-modal selection. Across three independent runs on IEMOCAP, ReH-FUSE achieves 74.34% weighted F1 and 73.11% macro F1; on MELD, it achieves 68.03% weighted F1. Controlled ablations show that learned routing outperforms uniform expert averaging and benefits from cross-modal interaction.",
+      "authors": [
+        "Guan-Hua Wen",
+        "Hou-Chiang Tseng",
+        "Kuan-Yu Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-12T10:19:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.13857v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal emotion recognition in conversation evaluated across three independent datasets",
+      "llm_evidence_cn": "会话多模态情感识别并在三个独立数据集上评估",
+      "llm_evidence": "会话多模态情感识别并在三个独立数据集上评估",
+      "canonical_evidence": "会话多模态情感识别并在三个独立数据集上评估",
+      "llm_tldr_en": "Proposes ReH-FUSE, a reliability-aware hierarchical fusion of dialogue-aware text, audio and cross-modal experts that adapts to instance-dependent evidence reliability for emotion recognition in conversation.",
+      "llm_tldr_cn": "会话情感识别需要适应不同证据来源的实例相关可靠性，而固定融合无法刻画这种变化，可能导致跨语料性能下降。作者提出 ReH-FUSE 可靠性感知框架，包含对话感知的文本、音频与跨模态专家，其决策级路由器先建模文本与音频的相对偏好，再与跨模态专家平衡，从而将单模态竞争与跨模态选择分离。研究在三个独立数据集上评估。该方法提升了跨数据集情感识别鲁棒性，为多证据融合提供新思路。",
+      "llm_tldr": "会话情感识别需要适应不同证据来源的实例相关可靠性，而固定融合无法刻画这种变化，可能导致跨语料性能下降。作者提出 ReH-FUSE 可靠性感知框架，包含对话感知的文本、音频与跨模态专家，其决策级路由器先建模文本与音频的相对偏好，再与跨模态专家平衡，从而将单模态竞争与跨模态选择分离。研究在三个独立数据集上评估。该方法提升了跨数据集情感识别鲁棒性，为多证据融合提供新思路。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "emotion recognition trained and evaluated on different independent speech emotion corpora",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.14139v1",
+      "source": "arxiv",
+      "title": "Robust Cross-Domain Speech-Based Alzheimer's Disease Detection via Iterative Adversarial Self-Training",
+      "abstract": "As Alzheimer's disease (AD) has increasingly become a major global public health issue, speech-based AD detection has attracted widespread attention. However, most existing methods are trained and evaluated on a single dataset, often leading to severe cross-domain performance degradation due to reliance on dataset-specific artifacts rather than disease-related speech cues. In real-world applications, reliable Alzheimer's disease detection requires models that are robust to variations in recording environments, speakers and data collection conditions. To address this challenge, this paper adopts unsupervised domain adaptation to learn robust, domain-invariant feature representations in the absence of target-domain diagnosis labels. On this basis, a novel unsupervised domain adaptation method, Iterative Adversarial Self-Training (IAST), is proposed. Results demonstrate that IAST significantly improves the generalization ability and robustness under various cross-domain settings.",
+      "authors": [
+        "Luqi Sun",
+        "Shreeram Suresh Chandra",
+        "Aurosweta Mahapatra",
+        "Emily Mower Provost",
+        "Brian MacWhinney",
+        "Berrak Sisman"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "eess.AS"
+      ],
+      "published": "2026-09-12T20:40:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.14139v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unsupervised domain adaptation for robust cross-domain speech representation",
+      "llm_evidence_cn": "无监督域适应学习跨域鲁棒语音表征",
+      "llm_evidence": "无监督域适应学习跨域鲁棒语音表征",
+      "canonical_evidence": "无监督域适应学习跨域鲁棒语音表征",
+      "llm_tldr_en": "Most speech-based AD detectors are trained on a single corpus and degrade across recording conditions. This work applies unsupervised domain adaptation with iterative adversarial self-training to learn domain-invariant features, improving robustness to new speakers and collection environments.",
+      "llm_tldr_cn": "现有语音阿尔茨海默病检测多在单一数据集上训练评估，跨录音环境、说话人和采集条件时性能严重下降。论文采用无监督域适应与迭代对抗自训练，学习对域偏移鲁棒、与疾病相关的域不变语音表征。实验表明该方法在缺乏目标域诊断标签时仍能缓解跨域退化，为真实场景下可靠的语音疾病检测提供了可迁移的域适应范式。",
+      "llm_tldr": "现有语音阿尔茨海默病检测多在单一数据集上训练评估，跨录音环境、说话人和采集条件时性能严重下降。论文采用无监督域适应与迭代对抗自训练，学习对域偏移鲁棒、与疾病相关的域不变语音表征。实验表明该方法在缺乏目标域诊断标签时仍能缓解跨域退化，为真实场景下可靠的语音疾病检测提供了可迁移的域适应范式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.14730v1",
+      "source": "arxiv",
+      "title": "Parameter isolation with domain-specific experts for incremental audio classification",
+      "abstract": "To successfully deploy a model in time-varying environments such as streaming data prediction and sensing control, domain-incremental learning (DIL) has attracted attention since it aims to adapt a previously trained model to newly arriving domains, while reserving knowledge from earlier domains without accessing their data. Incremental learning across domains can be regarded as a recurrent update, in which the current model is obtained by updating the model carried over from previous domains. Conventional DIL approaches that rely on domain-invariant feature learning and weight regularization gradually overwrite or constrain parameters learned in previous domains, leading to catastrophic forgetting. Instead, this paper proposes a new domain-specific parameter-isolation architecture that retains all past domains. The proposed architecture mitigates catastrophic forgetting through a full-order recurrent update, constructing a new expert using domain-specific data conditioned on all previously frozen models. To achieve this, we incorporate data-free generative replay to reconstruct previous-domain data and cross-domain feature generation to recover later expert features missing from earlier domain samples. Finally, we apply the proposed model architecture to domain-agnostic incremental learning for audio classification, as defined in the DCASE 2026 Challenge Task 7. Consequently, we achieve micro and macro accuracies of 78.4% and 78.9%, respectively, representing increases of 33 and 25 percentage points over the Challenge baseline. Ablation studies are conducted to examine the effectiveness of each processing component in terms of classification accuracy.",
+      "authors": [
+        "Jongyeon Park",
+        "Do-Hyeon Lim",
+        "Sang-won Park",
+        "Hong Kook Kim",
+        "Kyungdeuk Ko",
+        "Hyeongcheol Geum",
+        "Jeong Eun Lim"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.LG",
+        "cs.SD"
+      ],
+      "published": "2026-09-13T18:47:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.14730v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "domain-incremental learning with domain-specific experts to handle domain shift",
+      "llm_evidence_cn": "以域特定专家进行域增量学习以应对域偏移",
+      "llm_evidence": "以域特定专家进行域增量学习以应对域偏移",
+      "canonical_evidence": "以域特定专家进行域增量学习以应对域偏移",
+      "llm_tldr_en": "Domain-incremental learning adapts models to new domains without old data, but domain-invariant features and weight regularization overwrite or constrain prior parameters, causing catastrophic forgetting. This paper proposes parameter isolation with domain-specific experts to preserve old-domain knowledge while learning new domains. Experiments on incremental audio classification reduce forgetting.",
+      "llm_tldr_cn": "在流式预测等时变环境中，域增量学习需在不访问旧域数据的前提下把模型适配到新到域。传统方法依赖域不变特征与权重正则，会逐渐覆盖或约束旧域参数，导致灾难性遗忘。本文提出基于域特定专家与参数隔离的新框架，在适应新域的同时保留旧域知识。实验表明该方法在增量音频分类中有效缓解遗忘、提升跨域适应表现，其域适应思路对跨域语音情感识别具有可复用价值。",
+      "llm_tldr": "在流式预测等时变环境中，域增量学习需在不访问旧域数据的前提下把模型适配到新到域。传统方法依赖域不变特征与权重正则，会逐渐覆盖或约束旧域参数，导致灾难性遗忘。本文提出基于域特定专家与参数隔离的新框架，在适应新域的同时保留旧域知识。实验表明该方法在增量音频分类中有效缓解遗忘、提升跨域适应表现，其域适应思路对跨域语音情感识别具有可复用价值。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15313v1",
+      "source": "arxiv",
+      "title": "Reducing the Output-Mode Gap in Speech Language Models via Joint-Output On-Policy Distillation",
+      "abstract": "Autoregressive generation of interleaved text and acoustic tokens is a common approach to spoken-response generation in speech large language models. Although this design enables streaming generation with explicit textual guidance, generated acoustic tokens become part of the context for subsequent text predictions. Given identical speech inputs, we observe markedly lower answer accuracy for the internal text generated in speech-to-text-and-speech (S2TS) mode than for speech-to-text (S2T) responses. We term this discrepancy the \\emph{output-mode gap} (OMG). To reduce OMG, we propose \\emph{Joint-Output On-Policy Distillation} (JO-OPD), which distills the model's stronger S2T policy into joint generation using student-generated S2TS trajectories. At each text position, the S2T teacher provides soft targets from a text-only projection of the student's preceding outputs, while the student predicts from the corresponding full interleaved history. A preservation objective further regularizes native non-text predictions. Experiments on Step-Audio-2-mini and Baichuan-Audio-Instruct reveal OMG across two interleaved generation architectures. On Step-Audio-2-mini, JO-OPD reduces OMG from 42.87 to 16.26 percentage points on Spoken-MQA and from 29.72 to 13.04 points on speech-rendered GSM8K, with little change in S2T accuracy and substantially larger reductions than matched SFT baselines. ASR-based evaluation further shows a 7.49-point improvement in spoken-answer accuracy on Spoken-MQA.",
+      "authors": [
+        "Daxin Tan",
+        "Dehua Tao",
+        "Chengxi Deng",
+        "Hanlin Zhang",
+        "Xiao Chen"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-09-14T10:03:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.15313v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech large language models with interleaved text and acoustic tokens",
+      "llm_evidence_cn": "语音大语言模型与文本声学交织生成",
+      "llm_evidence": "语音大语言模型与文本声学交织生成",
+      "canonical_evidence": "语音大语言模型与文本声学交织生成",
+      "llm_tldr_en": "Speech LLMs that autoregressively generate interleaved text and acoustic tokens show lower answer accuracy in speech-to-text-and-speech mode than in speech-to-text. The paper proposes Joint-Output On-Policy Distillation to close this output-mode gap.",
+      "llm_tldr_cn": "语音大语言模型常用自回归方式生成交织的文本与声学token，但生成声学token会进入后续文本预测的上下文，导致同一语音输入下语音到文本加语音模式的答案准确率明显低于纯语音到文本模式。论文将这一差异定义为输出模式差距，并提出联合输出在线策略蒸馏，把更强的S2T策略蒸馏到联合生成中。实验表明该方法缩小了模式差距，为语音大语言模型的文本与语音联合生成质量提供改进。",
+      "llm_tldr": "语音大语言模型常用自回归方式生成交织的文本与声学token，但生成声学token会进入后续文本预测的上下文，导致同一语音输入下语音到文本加语音模式的答案准确率明显低于纯语音到文本模式。论文将这一差异定义为输出模式差距，并提出联合输出在线策略蒸馏，把更强的S2T策略蒸馏到联合生成中。实验表明该方法缩小了模式差距，为语音大语言模型的文本与语音联合生成质量提供改进。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
