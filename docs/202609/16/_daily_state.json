@@ -1,0 +1,41 @@
+{
+  "date": "20260916",
+  "date_label": "",
+  "generated_at": "2026-09-16 22:13:17 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.14431v1",
+      "route": "202609/16/2609.14431v1-exploiting-speech-llm-representations-for-multilingual-and-cross-lingual-parkinsons-disease-detection",
+      "title": "Exploiting Speech LLM Representations for Multilingual and Cross-Lingual Parkinson's Disease Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "音频语言模型编码器表征用于跨语言语音分析",
+      "first_seen_at": "2026-09-16 22:13:17 UTC",
+      "updated_at": "2026-09-16 22:13:17 UTC"
+    },
+    {
+      "paper_id": "2609.15089v1",
+      "route": "202609/16/2609.15089v1-er-edf-a-psychology-grounded-emotion-regulation-framework-for-speech-empathetic-dialogue-generation-in-large-audio-language-models",
+      "title": "ER-EDF: A Psychology-Grounded Emotion Regulation Framework for Speech Empathetic Dialogue Generation in Large Audio-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "大型音频语言模型的情感感知",
+      "first_seen_at": "2026-09-16 22:13:17 UTC",
+      "updated_at": "2026-09-16 22:13:17 UTC"
+    }
+  ]
+}

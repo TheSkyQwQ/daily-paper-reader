@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-16",
+  "date": "2026-09-16",
+  "generated_at": "2026-09-16T22:13:18",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/16/2609.14431v1-exploiting-speech-llm-representations-for-multilingual-and-cross-lingual-parkinsons-disease-detection",
+      "section": "quick",
+      "title_en": "Exploiting Speech LLM Representations for Multilingual and Cross-Lingual Parkinson's Disease Detection",
+      "authors": "Sarthak Giri, Zi Haur Pang, Tatsuya Kawahara",
+      "date": "2026-09-13",
+      "pdf": "https://arxiv.org/pdf/2609.14431v1",
+      "score": "6.0",
+      "evidence": "音频语言模型编码器表征用于跨语言语音分析",
+      "tldr": "语音大模型在病理语音分析中尚未充分探索。本文系统评估其编码器与解码器内部表征在多语言及跨语言帕金森病检测中的效果，发现编码器普遍优于解码器，且病理线索在投影到语言模型空间时可能逐步衰减。作者提出基于SE的动态层聚合框架，在多项实验中超过最佳单层选择，表明PD相关声学线索分散于Transformer各层而非集中于单层。该研究为多语言病理语音分析提供了新思路。",
+      "tags": "query:ser-da",
+      "abstract_en": "Speech Large Language Models (Speech LLMs) have shown strong performance across diverse tasks, yet their utility for pathological speech analysis remains underexplored. In this work, we investigate the effectiveness of internal representations from encoder and decoder components of Speech LLMs for Parkinson's Disease (PD) detection across multilingual and cross-lingual settings. Our findings reveal that encoder representations consistently outperform their decoder counterparts in most models and settings and that pathological cues may be progressively attenuated as audio representations are projected into the language model space. We further show that generative outputs are less reliable for clinical tasks compared to internal representations. To leverage information spread across multiple layers, we propose a Squeeze-and-Excitation (SE)-based dynamic layer aggregation framework, which surpasses best-layer selection in multiple experiments, suggesting that PD-relevant acoustic cues are distributed across transformer layers rather than concentrated in one.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/16/2609.15089v1-er-edf-a-psychology-grounded-emotion-regulation-framework-for-speech-empathetic-dialogue-generation-in-large-audio-language-models",
+      "section": "quick",
+      "title_en": "ER-EDF: A Psychology-Grounded Emotion Regulation Framework for Speech Empathetic Dialogue Generation in Large Audio-Language Models",
+      "authors": "Hongyu Jin, Wenda Zhang, Runqiu Fei, Gongping Huang, Mike Conway, Ting Dang",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15089v1",
+      "score": "6.0",
+      "evidence": "大型音频语言模型的情感感知",
+      "tldr": "语音共情对话需要既准确感知情绪又恰当调节情绪表达，但现有大型音频语言模型多把情绪当作直接条件信号，缺少显式调节机制，易产生情绪镜像而非有分寸的支持。为此提出ER-EDF，一个基于心理学理论、将情绪感知与情绪调节显式解耦的模型无关框架：感知追踪用户情绪状态，调节决定其如何引导共情回复生成，可无缝接入现有LALM。作者还构建了语音共情对话数据集与超越词汇匹配的共情感知指标。在五个LALM、两个数据集上，自动与人工评估均显示共情回复质量一致提升。",
+      "tags": "query:ser-da",
+      "abstract_en": "Empathetic response generation in spoken dialogue systems requires both accurate emotion perception and appropriate emotion regulation. Grounded in psychological theories such as the Perception-Action Model and emotion regulation theory, effective empathy depends not only on inferring a user's affective state but also on regulating how it is expressed in responses. However, recent large audio-language models (LALMs) largely treat emotion as a direct conditioning signal, lacking explicit regulatory mechanisms, which often leads to affect mirroring rather than calibrated support. We propose ER-EDF, a psychology-grounded framework that explicitly decouples emotion perception and emotion regulation in LALMs. Perception tracks the user's emotional state, while regulation determines how this state should guide empathetic response generation. The framework is model-agnostic and integrates seamlessly into existing LALMs. We further construct a spoken empathetic dialogue dataset and introduce empathy-aware evaluation metrics beyond lexical matching. Experiments across five LALMs and two datasets show that ER-EDF consistently improves empathetic response quality in both automatic and human evaluations, highlighting the importance of jointly modeling emotion perception and regulation in spoken empathetic dialogue systems, paving a new direction for psychologically grounded empathetic AI.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

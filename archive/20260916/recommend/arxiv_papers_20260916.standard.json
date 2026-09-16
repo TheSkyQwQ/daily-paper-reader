@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-16T22:12:39.950572+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.14431v1",
+      "source": "arxiv",
+      "title": "Exploiting Speech LLM Representations for Multilingual and Cross-Lingual Parkinson's Disease Detection",
+      "abstract": "Speech Large Language Models (Speech LLMs) have shown strong performance across diverse tasks, yet their utility for pathological speech analysis remains underexplored. In this work, we investigate the effectiveness of internal representations from encoder and decoder components of Speech LLMs for Parkinson's Disease (PD) detection across multilingual and cross-lingual settings. Our findings reveal that encoder representations consistently outperform their decoder counterparts in most models and settings and that pathological cues may be progressively attenuated as audio representations are projected into the language model space. We further show that generative outputs are less reliable for clinical tasks compared to internal representations. To leverage information spread across multiple layers, we propose a Squeeze-and-Excitation (SE)-based dynamic layer aggregation framework, which surpasses best-layer selection in multiple experiments, suggesting that PD-relevant acoustic cues are distributed across transformer layers rather than concentrated in one.",
+      "authors": [
+        "Sarthak Giri",
+        "Zi Haur Pang",
+        "Tatsuya Kawahara"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "eess.AS"
+      ],
+      "published": "2026-09-13T11:12:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.14431v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "audio language model encoder representations for cross-lingual speech analysis",
+      "llm_evidence_cn": "音频语言模型编码器表征用于跨语言语音分析",
+      "llm_evidence": "音频语言模型编码器表征用于跨语言语音分析",
+      "canonical_evidence": "音频语言模型编码器表征用于跨语言语音分析",
+      "llm_tldr_en": "Speech LLMs are underexplored for pathological speech. This work probes encoder and decoder representations of Speech LLMs for multilingual and cross-lingual Parkinson's disease detection, finding encoder features outperform decoder ones and that pathological cues attenuate as audio is projected into the LM space.",
+      "llm_tldr_cn": "语音大语言模型在病理语音分析中的效用尚不明确。本文系统考察Speech LLM编码器与解码器内部表征在多语言及跨语言帕金森病检测中的表现。结果显示编码器表征在多数模型与设置下优于解码器，且病理线索在音频表征投影到语言模型空间时逐渐衰减。该发现为跨域、跨语言的语音表征迁移与音频语言模型推理提供了证据，与音频语言模型特征用于跨域推断的需求高度相关。",
+      "llm_tldr": "语音大语言模型在病理语音分析中的效用尚不明确。本文系统考察Speech LLM编码器与解码器内部表征在多语言及跨语言帕金森病检测中的表现。结果显示编码器表征在多数模型与设置下优于解码器，且病理线索在音频表征投影到语言模型空间时逐渐衰减。该发现为跨域、跨语言的语音表征迁移与音频语言模型推理提供了证据，与音频语言模型特征用于跨域推断的需求高度相关。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15089v1",
+      "source": "arxiv",
+      "title": "ER-EDF: A Psychology-Grounded Emotion Regulation Framework for Speech Empathetic Dialogue Generation in Large Audio-Language Models",
+      "abstract": "Empathetic response generation in spoken dialogue systems requires both accurate emotion perception and appropriate emotion regulation. Grounded in psychological theories such as the Perception-Action Model and emotion regulation theory, effective empathy depends not only on inferring a user's affective state but also on regulating how it is expressed in responses. However, recent large audio-language models (LALMs) largely treat emotion as a direct conditioning signal, lacking explicit regulatory mechanisms, which often leads to affect mirroring rather than calibrated support. We propose ER-EDF, a psychology-grounded framework that explicitly decouples emotion perception and emotion regulation in LALMs. Perception tracks the user's emotional state, while regulation determines how this state should guide empathetic response generation. The framework is model-agnostic and integrates seamlessly into existing LALMs. We further construct a spoken empathetic dialogue dataset and introduce empathy-aware evaluation metrics beyond lexical matching. Experiments across five LALMs and two datasets show that ER-EDF consistently improves empathetic response quality in both automatic and human evaluations, highlighting the importance of jointly modeling emotion perception and regulation in spoken empathetic dialogue systems, paving a new direction for psychologically grounded empathetic AI.",
+      "authors": [
+        "Hongyu Jin",
+        "Wenda Zhang",
+        "Runqiu Fei",
+        "Gongping Huang",
+        "Mike Conway",
+        "Ting Dang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-14T06:07:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.15089v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "emotion perception with large audio-language models",
+      "llm_evidence_cn": "大型音频语言模型的情感感知",
+      "llm_evidence": "大型音频语言模型的情感感知",
+      "canonical_evidence": "大型音频语言模型的情感感知",
+      "llm_tldr_en": "ER-EDF grounds empathetic spoken dialogue in psychological theory, decoupling emotion perception from regulation in large audio-language models to avoid affect mirroring.",
+      "llm_tldr_cn": "大型音频语言模型在共情对话中常把情绪当作直接条件信号，缺乏显式调节，导致情绪镜像而非校准支持。作者提出心理学驱动的ER-EDF框架，将情绪感知与情绪调节显式解耦。该框架据此生成更恰当的共情回应，避免简单模仿用户情绪。为音频语言模型中的情绪理解与生成提供新范式。",
+      "llm_tldr": "大型音频语言模型在共情对话中常把情绪当作直接条件信号，缺乏显式调节，导致情绪镜像而非校准支持。作者提出心理学驱动的ER-EDF框架，将情绪感知与情绪调节显式解耦。该框架据此生成更恰当的共情回应，避免简单模仿用户情绪。为音频语言模型中的情绪理解与生成提供新范式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
