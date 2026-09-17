@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-17",
+  "date": "2026-09-17",
+  "generated_at": "2026-09-17T22:20:19",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/17/2609.10896v1-llm-anchored-paralinguistic-enrichment-for-alzheimers-disease-detection",
+      "section": "quick",
+      "title_en": "LLM-Anchored Paralinguistic Enrichment for Alzheimer's Disease Detection",
+      "authors": "Xiao Wei, Yuqin Lin, Yaru Cao, Jinyu Li, Bin Wen, Kai Li, Yueying Chen, Longbiao Wang, Jianwu Dang",
+      "date": "2026-09-09",
+      "pdf": "https://arxiv.org/pdf/2609.10896v1",
+      "score": "6.0",
+      "evidence": "副语言与韵律线索融合进语言模型表征",
+      "tldr": "语音自动检测阿尔茨海默病（AD）可用于无创早期筛查，但现有方法未充分融合副语言线索与语言内容。LAPE 通过韵律事件文本化、词汇-韵律单元化与分块、文本锚定副语言融合三项创新，将停顿和拖长等线索注入 LLM 语言表征。在 ADReSS 与 ADReSSo 上采用参与者级交叉验证和留一被试评估，LAPE 在四个主要设置中均取得最优结果，代码将开源。",
+      "tags": "query:ser-da",
+      "abstract_en": "Speech-based automatic detection of Alzheimer's disease (AD) provides a non-invasive and scalable approach to early cognitive screening. AD affects both lexical-semantic organization and speech production, including atypical pauses and word elongations. However, existing methods have yet to fully integrate these paralinguistic cues with linguistic content. We propose LLM-Anchored Paralinguistic Enrichment (LAPE), which enriches LLM-derived linguistic representations with paralinguistic cues through three coordinated innovations. The first is prosodic event textualization, which enables the LLM to model pauses and elongations jointly with lexical content by encoding them as explicit markers with bounded duration-aware repetition. The second is lexico-prosodic unitization and chunking, which preserves event identity and magnitude in both modalities by pooling only consecutive word units. The third is text-anchored paralinguistic fusion, which integrates local and utterance-level speech features by using NormGate to normalize and dynamically scale them relative to text. We evaluate LAPE on ADReSS and ADReSSo using participant-level cross-validation and leave-one-subject-out evaluation. LAPE achieves state-of-the-art performance across all four primary settings. Code will be released upon acceptance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/17/2609.16582v1-clash-counterfactual-auditing-of-lexical-and-prosodic-reliance-in-spoken-sarcasm-detection",
+      "section": "quick",
+      "title_en": "CLASH: Counterfactual Auditing of Lexical and Prosodic Reliance in Spoken Sarcasm Detection",
+      "authors": "Qiyang Sun, Xudong Li, Yupei Li, Jiabin Xue, Yuhang Dai, Jiaming Li, Bjorn W. Schuller",
+      "date": "2026-09-15",
+      "pdf": "https://arxiv.org/pdf/2609.16582v1",
+      "score": "6.0",
+      "evidence": "用大型音频语言模型审计韵律与词汇线索",
+      "tldr": "口语讽刺检测器可能依赖词汇、韵律或其交互，但常规评测无法揭示究竟是哪些线索驱动预测。本文提出双语反事实诊断框架CLASH，在原始、保留词汇、保留韵律和近似中性化四种条件下评测手工声学特征、SSL探针与LALM。在CMMA和MUStARD上，仅用目标语音的Qwen3-Omni在时长平衡后，保留词汇的语音相对保留韵律的语音仍有0.135–0.148的AUROC优势，聚类自助区间不含零。结果说明声学敏感性并不等同于讽刺判别力，并暴露时长、说话人身份与变换带来的混淆效应。",
+      "tags": "query:ser-da",
+      "abstract_en": "Spoken sarcasm detectors may exploit lexical content, prosody, or their interaction, yet conventional evaluation cannot reveal which cues drive their predictions. We introduce CLASH (Controlled Lexical-Acoustic Separation Harness), a bilingual counterfactual diagnostic framework that evaluates each utterance under original, lexical-preserving, prosody-preserving, and approximately neutralised conditions. We evaluate handcrafted acoustic-feature systems, self-supervised learning (SSL) probes, and large audio language models (LALMs) on CMMA and MUStARD. For target-only Qwen3-Omni, lexical-preserving speech retains a 0.135--0.148 AUROC advantage over prosody-preserving speech after duration balancing, with cluster-bootstrap intervals above zero; alternative lexical resynthesis preserves this advantage. Acoustic interventions shift scores without consistently improving discrimination or changing binary predictions under the evaluated conditions. Context and interaction estimates vary across corpora. These findings distinguish acoustic sensitivity from sarcasm discrimination while exposing duration, identity, and transformation effects.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/17/2609.17981v1-encoder-awakening-via-adapters-effective-domain-adaptive-fine-tuning-of-speech-llms",
+      "section": "quick",
+      "title_en": "Encoder Awakening via Adapters: Effective Domain-Adaptive Fine-tuning of Speech-LLMs",
+      "authors": "Mohan Shi, Zilai Wang, Natarajan Balaji Shankar, Kaiyuan Zhang, Eray Eren, Abeer Alwan",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.17981v1",
+      "score": "6.0",
+      "evidence": "通过适配器对语音大模型进行域自适应微调",
+      "tldr": "Speech-LLM通常由语音编码器、模态投影器和LoRA微调的LLM构成，在通用语音ASR上表现优异，但在儿童或方言等域偏移场景中，目标数据有限且编码器适配不足，性能明显下降。为此，本文提出EAVA：在编码器每层插入轻量适配器并单独训练，将目标域声学知识注入编码器，同时保留预训练知识；随后联合微调全模型，并对LLM应用LoRA。在三个域偏移ASR数据集上，EAVA持续优于常规微调等基线，取得新的SOTA，展现出有效性与泛化性。",
+      "tags": "query:ser-da",
+      "abstract_en": "Speech Large Language Models (Speech-LLMs), typically built from a pre-trained speech encoder, a modality projector, and an LLM fine-tuned with Low-Rank Adapters (LoRA), have shown strong Automatic Speech Recognition (ASR) performance on general-domain speech. However, adapting them to domain-shifted speech, such as child or dialectal speech, remains challenging under limited target-domain data. Given the dominant role of the LLM in Speech-LLMs, with cross-entropy loss applied only at the LLM output, the speech encoder may receive insufficient adaptation to new acoustic conditions. In this paper, we propose Encoder Awakening via Adapters (EAVA), a simple yet effective domain-adaptive fine-tuning method for Speech-LLM-based ASR. First, lightweight adapters are inserted into each encoder layer and trained exclusively, enabling target-domain acoustic knowledge to be incorporated into the encoder while preserving its pre-trained knowledge. Second, the full model is jointly fine-tuned on the target domain with LoRA applied to the LLM. Experiments on three domain-shifted ASR datasets, covering child and dialectal speech, show that EAVA consistently outperforms vanilla fine-tuning and other baselines, achieving new state-of-the-art performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,144 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-17T22:19:30.911076+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.10896v1",
+      "source": "arxiv",
+      "title": "LLM-Anchored Paralinguistic Enrichment for Alzheimer's Disease Detection",
+      "abstract": "Speech-based automatic detection of Alzheimer's disease (AD) provides a non-invasive and scalable approach to early cognitive screening. AD affects both lexical-semantic organization and speech production, including atypical pauses and word elongations. However, existing methods have yet to fully integrate these paralinguistic cues with linguistic content. We propose LLM-Anchored Paralinguistic Enrichment (LAPE), which enriches LLM-derived linguistic representations with paralinguistic cues through three coordinated innovations. The first is prosodic event textualization, which enables the LLM to model pauses and elongations jointly with lexical content by encoding them as explicit markers with bounded duration-aware repetition. The second is lexico-prosodic unitization and chunking, which preserves event identity and magnitude in both modalities by pooling only consecutive word units. The third is text-anchored paralinguistic fusion, which integrates local and utterance-level speech features by using NormGate to normalize and dynamically scale them relative to text. We evaluate LAPE on ADReSS and ADReSSo using participant-level cross-validation and leave-one-subject-out evaluation. LAPE achieves state-of-the-art performance across all four primary settings. Code will be released upon acceptance.",
+      "authors": [
+        "Xiao Wei",
+        "Yuqin Lin",
+        "Yaru Cao",
+        "Jinyu Li",
+        "Bin Wen",
+        "Kai Li",
+        "Yueying Chen",
+        "Longbiao Wang",
+        "Jianwu Dang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-09-09T22:58:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.10896v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "paralinguistic and prosodic cues fused with LLM linguistic representations",
+      "llm_evidence_cn": "副语言与韵律线索融合进语言模型表征",
+      "llm_evidence": "副语言与韵律线索融合进语言模型表征",
+      "canonical_evidence": "副语言与韵律线索融合进语言模型表征",
+      "llm_tldr_en": "Alzheimer's detection from speech needs paralinguistic cues integrated with linguistic content; LAPE enriches LLM representations via prosodic event textualization, letting the LLM jointly model pauses/elongations and lexical content.",
+      "llm_tldr_cn": "语音阿尔茨海默病检测是非侵入式早筛手段，但现有方法未能充分融合停顿、拖长等副语言线索与语言内容。本文提出LLM锚定副语言增强LAPE，通过韵律事件文本化等三项创新，把副语言线索以显式标记形式注入LLM的语言表征。实验表明LLM可联合建模韵律与词汇内容，从而提升检测表现。该工作为韵律与副语言线索驱动的语音表征学习提供了可迁移范式。",
+      "llm_tldr": "语音阿尔茨海默病检测是非侵入式早筛手段，但现有方法未能充分融合停顿、拖长等副语言线索与语言内容。本文提出LLM锚定副语言增强LAPE，通过韵律事件文本化等三项创新，把副语言线索以显式标记形式注入LLM的语言表征。实验表明LLM可联合建模韵律与词汇内容，从而提升检测表现。该工作为韵律与副语言线索驱动的语音表征学习提供了可迁移范式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.16582v1",
+      "source": "arxiv",
+      "title": "CLASH: Counterfactual Auditing of Lexical and Prosodic Reliance in Spoken Sarcasm Detection",
+      "abstract": "Spoken sarcasm detectors may exploit lexical content, prosody, or their interaction, yet conventional evaluation cannot reveal which cues drive their predictions. We introduce CLASH (Controlled Lexical-Acoustic Separation Harness), a bilingual counterfactual diagnostic framework that evaluates each utterance under original, lexical-preserving, prosody-preserving, and approximately neutralised conditions. We evaluate handcrafted acoustic-feature systems, self-supervised learning (SSL) probes, and large audio language models (LALMs) on CMMA and MUStARD. For target-only Qwen3-Omni, lexical-preserving speech retains a 0.135--0.148 AUROC advantage over prosody-preserving speech after duration balancing, with cluster-bootstrap intervals above zero; alternative lexical resynthesis preserves this advantage. Acoustic interventions shift scores without consistently improving discrimination or changing binary predictions under the evaluated conditions. Context and interaction estimates vary across corpora. These findings distinguish acoustic sensitivity from sarcasm discrimination while exposing duration, identity, and transformation effects.",
+      "authors": [
+        "Qiyang Sun",
+        "Xudong Li",
+        "Yupei Li",
+        "Jiabin Xue",
+        "Yuhang Dai",
+        "Jiaming Li",
+        "Bjorn W. Schuller"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CL"
+      ],
+      "published": "2026-09-15T03:26:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.16582v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "audits prosodic and lexical cues using large audio language models",
+      "llm_evidence_cn": "用大型音频语言模型审计韵律与词汇线索",
+      "llm_evidence": "用大型音频语言模型审计韵律与词汇线索",
+      "canonical_evidence": "用大型音频语言模型审计韵律与词汇线索",
+      "llm_tldr_en": "CLASH introduces a counterfactual diagnostic framework that separates lexical and prosodic cues in spoken sarcasm detection, evaluating handcrafted features, SSL probes and large audio language models on CMMA and MUStARD.",
+      "llm_tldr_cn": "针对口语讽刺检测难以判断预测究竟依赖词汇还是韵律线索的问题，论文提出CLASH反事实诊断框架，在原始、保留词汇、保留韵律与近中性化四种条件下评测同一话语。研究比较手工声学特征系统、自监督探针与大型音频语言模型，在CMMA和MUStARD上发现仅用目标语音的Qwen3-Omni中保留词汇比保留韵律仍高出约0.135至0.148 AUROC。该工作为声学线索与音频语言模型的可解释评测提供了可复用范式。",
+      "llm_tldr": "针对口语讽刺检测难以判断预测究竟依赖词汇还是韵律线索的问题，论文提出CLASH反事实诊断框架，在原始、保留词汇、保留韵律与近中性化四种条件下评测同一话语。研究比较手工声学特征系统、自监督探针与大型音频语言模型，在CMMA和MUStARD上发现仅用目标语音的Qwen3-Omni中保留词汇比保留韵律仍高出约0.135至0.148 AUROC。该工作为声学线索与音频语言模型的可解释评测提供了可复用范式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.17981v1",
+      "source": "arxiv",
+      "title": "Encoder Awakening via Adapters: Effective Domain-Adaptive Fine-tuning of Speech-LLMs",
+      "abstract": "Speech Large Language Models (Speech-LLMs), typically built from a pre-trained speech encoder, a modality projector, and an LLM fine-tuned with Low-Rank Adapters (LoRA), have shown strong Automatic Speech Recognition (ASR) performance on general-domain speech. However, adapting them to domain-shifted speech, such as child or dialectal speech, remains challenging under limited target-domain data. Given the dominant role of the LLM in Speech-LLMs, with cross-entropy loss applied only at the LLM output, the speech encoder may receive insufficient adaptation to new acoustic conditions. In this paper, we propose Encoder Awakening via Adapters (EAVA), a simple yet effective domain-adaptive fine-tuning method for Speech-LLM-based ASR. First, lightweight adapters are inserted into each encoder layer and trained exclusively, enabling target-domain acoustic knowledge to be incorporated into the encoder while preserving its pre-trained knowledge. Second, the full model is jointly fine-tuned on the target domain with LoRA applied to the LLM. Experiments on three domain-shifted ASR datasets, covering child and dialectal speech, show that EAVA consistently outperforms vanilla fine-tuning and other baselines, achieving new state-of-the-art performance.",
+      "authors": [
+        "Mohan Shi",
+        "Zilai Wang",
+        "Natarajan Balaji Shankar",
+        "Kaiyuan Zhang",
+        "Eray Eren",
+        "Abeer Alwan"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.CL"
+      ],
+      "published": "2026-09-16T01:10:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.17981v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "domain-adaptive fine-tuning of Speech-LLMs via adapters",
+      "llm_evidence_cn": "通过适配器对语音大模型进行域自适应微调",
+      "llm_evidence": "通过适配器对语音大模型进行域自适应微调",
+      "canonical_evidence": "通过适配器对语音大模型进行域自适应微调",
+      "llm_tldr_en": "Speech-LLMs struggle to adapt to domain-shifted speech because the encoder receives little adaptation. The paper proposes EAVA, a domain-adaptive fine-tuning method that awakens the speech encoder via adapters, improving ASR under limited target-domain data.",
+      "llm_tldr_cn": "针对语音大模型在儿童或方言等域偏移语音上因交叉熵损失仅作用于LLM输出、语音编码器适应不足而难以迁移的问题，本文提出EAVA域自适应微调方法。该方法通过适配器唤醒语音编码器，使其在有限目标域数据下获得更充分的声学条件适应。在域偏移语音识别任务上验证了有效性。其域自适应微调思路对语音大模型的跨域情感识别具有借鉴意义，但任务为ASR而非情感分类。",
+      "llm_tldr": "针对语音大模型在儿童或方言等域偏移语音上因交叉熵损失仅作用于LLM输出、语音编码器适应不足而难以迁移的问题，本文提出EAVA域自适应微调方法。该方法通过适配器唤醒语音编码器，使其在有限目标域数据下获得更充分的声学条件适应。在域偏移语音识别任务上验证了有效性。其域自适应微调思路对语音大模型的跨域情感识别具有借鉴意义，但任务为ASR而非情感分类。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

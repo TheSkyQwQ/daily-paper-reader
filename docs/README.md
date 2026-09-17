@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-16</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-17</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-16 22:13:17 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-17 22:20:17 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-16 日报速读2篇，聚焦语音大模型在帕金森病检测与情感对话生成中的新应用。两篇均获6.0分：前者探索多语言及跨语言的帕金森病语音识别，后者提出基于心理学的情绪调节框架以提升语音共情对话。普通读者可关注语音AI在医疗筛查与情感交互中的落地潜力，留意其临床验证与伦理边界。</p>
+<p>2026-09-17 日报共收录 3 篇，均为速读（各 6.0 分），无精读，主题集中在语音与大模型交叉领域。</p>
+<p>最值得关注两个方向：一是用 LLM 增强副语言特征来检测阿尔茨海默病，二是用反事实审计检验语音讽刺识别究竟依赖词汇还是韵律。</p>
+<p>普通读者可先看这两篇的摘要与方法示意，理解&quot;语音信号＋大模型&quot;如何互补，再决定是否深入。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -91,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Exploiting Speech LLM Representations for Multilingual and Cross-Lingual Parkinson&#x27;s Disease Detection">Exploiting Speech LLM Representations for Multilingual and Cross-Lingual Parkinson&#x27;s Disease Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="ER-EDF: A Psychology-Grounded Emotion Regulation Framework for Speech Empathetic Dialogue Generation in Large Audio-Language Models">ER-EDF: A Psychology-Grounded Emotion Regulation Framework for Speech Empathetic Dialogue Generation in Large Audio-Language Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LLM-Anchored Paralinguistic Enrichment for Alzheimer&#x27;s Disease Detection">LLM-Anchored Paralinguistic Enrichment for Alzheimer&#x27;s Disease Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="CLASH: Counterfactual Auditing of Lexical and Prosodic Reliance in Spoken Sarcasm Detection">CLASH: Counterfactual Auditing of Lexical and Prosodic Reliance in Spoken Sarcasm Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Encoder Awakening via Adapters: Effective Domain-Adaptive Fine-tuning of Speech-LLMs">Encoder Awakening via Adapters: Effective Domain-Adaptive Fine-tuning of Speech-LLMs</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
 </section>
 </div>
 

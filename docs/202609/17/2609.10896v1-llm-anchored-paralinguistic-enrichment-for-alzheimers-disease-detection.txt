@@ -1,0 +1,350 @@
+Title: LLM-Anchored Paralinguistic Enrichment for Alzheimer's Disease Detection
+
+URL Source: https://arxiv.org/pdf/2609.10896v1
+
+Published Time: Fri, 11 Sep 2026 00:28:35 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# LLM-Anchored Paralinguistic Enrichment for Alzheimer’s Disease Detection 
+
+# Xiao Wei 1,2 , Yuqin Lin 3, Yaru Cao 2, Jinyu Li 1, Bin Wen 1,Kai Li 2, Yueying Chen 1, Longbiao Wang 1,4 , Jianwu Dang 2
+
+> 1
+
+Tianjin Key Laboratory of Cognitive Computing and Application, College of Intelligence and Computing, Tianjin University, Tianjin, China 
+
+> 2
+
+Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences, Shenzhen, China 
+
+> 3
+
+College of Computer and Data Science, Fuzhou University, Fuzhou, China 
+
+> 4
+
+Huiyan Technology (Tianjin) Co., Ltd, Tianjin, China weixiao@tju.edu.cn 
+
+Abstract 
+
+Speech-based automatic detection of Alzheimer’s disease (AD) provides a non-invasive and scalable approach to early cognitive screening. AD affects both lexical-semantic organi-zation and speech production, including atypical pauses and word elongations. However, existing methods have yet to fully integrate these paralinguistic cues with linguistic content. We propose LLM-Anchored Paralinguistic Enrichment (LAPE), which enriches LLM-derived linguistic representations with paralinguistic cues through three coordinated innovations. The first is prosodic event textualization, which enables the LLM to model pauses and elongations jointly with lexical content by encoding them as explicit markers with bounded duration-aware repetition. The second is lexico-prosodic unitization and chunking, which preserves event identity and magnitude in both modalities by pooling only consecutive word units. The third is text-anchored paralinguistic fusion, which integrates local and utterance-level speech features by using NormGate to normalize and dynamically scale them relative to text. We evaluate LAPE on ADReSS and ADReSSo using participant-level cross-validation and leave-one-subject-out evaluation. LAPE achieves state-of-the-art performance across all four primary settings. Code will be released upon acceptance. 
+
+# Introduction 
+
+Alzheimer’s disease (AD) is a progressive neurodegenerative disorder and a leading cause of dementia in older adults. Ear-lier identification can support timely clinical assessment, dis-ease management, and care planning, motivating the search for accessible, non-invasive, and low-cost screening meth-ods (de la Fuente Garcia, Ritchie, and Luz 2020; Yang et al. 2022). Among candidate signals, spontaneous speech is par-ticularly promising because it combines practical accessibil-ity with discriminative value for cognitive status. It can be collected remotely or incorporated into routine cognitive as-sessment, while capturing both what a person says and how the speech is produced. The former reflects linguistic abili-ties such as lexical retrieval and semantic organization, while the latter reflects speech-production abilities such as fluency, timing, and articulation; together, they capture complemen-tary aspects of cognitive decline (Voleti, Liss, and Berisha 2020). ADReSS (Luz et al. 2020) and ADReSSo (Luz et al. 2021) provide standard benchmarks for studying this com-plementarity under two representative input conditions: the former includes official manual transcripts, while the latter provides speech only. AD detection therefore needs both linguistic and paralin-guistic information. For simplicity, we use paralinguistic cues to denote speech-production information beyond lin-guistic content, including prosodic timing, local acoustic realization, and utterance-level voice characteristics. Re-cent multimodal systems often report stronger text-only than speech-only performance (Ying, Yang, and Zhou 2023; Bang, Han, and Kang 2024; Ortiz-Perez et al. 2025; Wei et al. 2026), suggesting unequal discriminative contributions. The central challenge is therefore to cover heterogeneous paralin-guistic cues while accounting for this asymmetry. Prior work has explored relevant aspects of this chal-lenge along two separate lines. At the transcription level, plain transcripts leave pauses and elongations implicit (Zol-noori, Zolnour, and Topaz 2023; Feng et al. 2026; Pérez-Toro et al. 2025). Pause-enhanced protocols map timestamp-derived pauses to punctuation (Liu et al. 2024), but punc-tuation also serves syntactic and discourse functions, poten-tially conflating timing with linguistic structure. Figure 1 shows the remaining coverage gap: plain text omits timing events, whereas punctuation-based and uncapped-repetition protocols encode only pauses (Yuan et al. 2021; Wang et al. 2026). At the feature level, multimodal systems combine acoustic and linguistic representations through concatena-tion, attention, or gating (Casu et al. 2026; Ortiz-Perez et al. 2025; Pan et al. 2026). Although effective, these systems emphasize fusion operators, leaving local prosodic struc-ture and utterance-level speech features insufficiently coor-dinated. Together, limited transcript cue coverage and insuffi-cient coordination between local and utterance-level speech features, compounded by unequal modality contributions, motivate a unified design that connects transcription proto-col design with feature fusion. To address these limitations, we propose LLM-Anchored 
+
+Paralinguistic Enrichment (LAPE) for speech-based AD de-tection. Rather than treating text and speech symmetrically, LAPE uses LLM-derived linguistic representations as the organizing anchor, with paralinguistic cues serving as struc-tured complements across transcript and speech representa-tions. Our contributions are: 1. Prosodic event textualization. We enrich transcripts arXiv:2609.10896v1 [cs.CL] 9 Sep 2026 with explicit pause and elongation cues using bounded duration-aware marker repetition, enabling the LLM to model them alongside lexical content. To our knowledge, LAPE is the first to make elongations explicit in text. 2. Lexico-prosodic unitization and chunking. We orga-nize text and speech into units and introduce chunk ag-gregation that preserves event identity and magnitude in both modalities by pooling only consecutive word units. 3. Text-anchored paralinguistic fusion. We integrate local and utterance-level speech features through NormGate, which normalizes and dynamically scales the speech-derived blocks relative to text. 4. Extensive evaluation. Across ADReSS and ADReSSo under CV and LOSO, LAPE achieves state-of-the-art per-formance in all four settings. 
+
+# Related Work 
+
+Prosody-Enriched Transcript Modeling 
+
+Transcript-based AD detection has progressed from hand-crafted indicators to pretrained language models. Plain tran-scripts primarily preserve lexical content, whereas times-tamps expose prosodic timing such as inter-word pauses (Luz et al. 2020; Zheng et al. 2025) and word-level elon-gations. Earlier studies summarize pause behavior over an entire recording using aggregate statistics or duration dis-tributions (Pastoriza-Domínguez et al. 2022; Ke, Mak, and Meng 2024), providing interpretable biomarkers. By con-trast, explicit transcript enrichment serializes prosodic events alongside words to preserve event order and lexical context; existing work has focused primarily on pauses. Explicit pause encodings involve two related design choices. The first concerns how markers enter the lan-guage model. Punctuation-based schemes map forced-aligned pauses to commas, periods, or ellipses. Yuan et al. (2021) use three pause-duration categories and find that us-ing six bins provides no further improvement, while Liu et al. (2024) adopt a similar three-level scheme in a diag-nostic template. Although these schemes exploit pretrained punctuation representations, they may conflate speech tim-ing with syntactic or discourse boundaries. Alternatives use dedicated literal markers (Soleimani et al. 2024; Wang et al. 2026) or added tokens (Braun et al. 2024). Literal markers avoid vocabulary modification but may be fragmented by the tokenizer or inherit unrelated semantics; added tokens ensure atomic units but require learning new embeddings from limited downstream data. The second concerns how pause duration is encoded. One approach assigns a different marker to each predefined duration interval, whereas another repeats a single marker at fixed increments, as in LPM-Aug. The former bounds the added length but relies on predefined thresholds and a larger marker inventory; the latter uses one marker type but adds more tokens for longer pauses. Overall, explicit schemes still focus mainly on inter-word pauses, whereas word-level elongation is usually treated as a continuous duration or acoustic feature (Zolnoori, Zolnour, and Topaz 2023; Pérez-Toro et al. 2025). LAPE addresses this gap by jointly textualizing pause events and word-level Timeline The booooooy 1.4 s silence is stealing cookies.                     
+
+> word elongation inter-word pause
+> Protocol Transcript Timing Cues Intensity
+> Plain The boy is stealing cookies. None None
+> Punc. The boy .is stealing cookies. Pause Mark Type
+> Symbol The boy ##### is stealing cookies. Pause Repetition Uncapped × n
+> LAPE The boy <elongated><elongated> <pause><pause> is stealing cookies.
+> Pause +
+> Elong. Repetition
+> n∈{1, 2, 3}
+
+Figure 1: Transcription protocols for the same speech time-line. LAPE places bounded duration-aware repetitions of pause markers before the following word and elongation markers after the host word. elongation cues with dedicated event markers instead of stan-dard marks. 
+
+Acoustic–Linguistic Organization and Fusion 
+
+Acoustic–linguistic fusion in AD detection involves two re-lated considerations: how speech and text are organized and how their relative contributions are handled. Utterance-level methods independently pool both modalities over an entire recording and combine them through concatenation, feature selection, attention, or higher-order interactions (Ying, Yang, and Zhou 2023; Bang, Han, and Kang 2024; Casu et al. 2026; Wang et al. 2021; Chatzianastasis et al. 2023). These designs offer broad coverage and straightforward integration but col-lapse local timing structure, obscuring acoustic variation as-sociated with specific words or prosodic events. To retain local timing, finer-grained methods establish speech–text relations before fusion. Unsupervised Alignment Feature Fusion learns soft affinities (Pan et al. 2026), while MCI-OTFusion uses an optimal-transport constraint and bidirectional cross-attention (Lin et al. 2026). CogniAlign and FAL-AD instead use explicit temporal anchors with cross-attention (Ortiz-Perez et al. 2025; Wei et al. 2026). The former two infer correspondences from feature sequences, whereas the latter two rely on timestamps. These methods strengthen local interaction but generally operate on a single speech–text sequence pair, leaving utterance-level acoustic features less explicitly coordinated. Beyond organization, reported results often show that text-only models outperform their speech-only counterparts, indi-cating unequal modality contributions. This asymmetry be-comes more relevant as language backbones grow stronger. Overall, existing fusion methods do not jointly preserve local prosodic structure, incorporate utterance-level speech fea-tures, and account for unequal modality contributions. LAPE uses LLM-derived text as the anchor for coordinating speech evidence across temporal scales. Methodology: LAPE 
+
+Overview 
+
+Figure 2 presents LAPE for AD detection. Linguistic content often provides the stronger diagnostic signal, while paralin-guistic evidence is heterogeneous across temporal scales and should serve as a structured complement. LAPE therefore fol-lows two principles: organizing linguistic and local speech evidence through unitization and event-preserving chunking, and using LLM-derived text as the anchor for integrating lo-cal and utterance-level speech evidence. 
+
+Prosodic Event Textualization 
+
+The first stage augments the transcript. Word timestamps provide two AD-relevant timing cues: inter-word pauses and word duration. Prosodic event textualization writes both as explicit markers in the word sequence, allowing the LLM to model timing with lexical content. Dedicated markers sepa-rate speech timing from syntactic and discourse punctuation. Let the original transcript be the sequence of timestamped words with retained punctuation T = (( wi, π i, b i, e i)) Li=1 ,where L is the number of original words, wi is the i-th word, 
+
+πi is the possibly empty punctuation sequence immediately following it, and bi and ei denote its begin and end times in ms. All timestamp and duration variables in this section use ms. Let ∆i denote the non-negative inter-word pause immediately preceding wi; we set ∆1 = 0 so that the first word receives an empty pause prefix: 
+
+∆1 = 0 , ∆i = max(0 , b i − ei−1), i = 2 , . . . , L. (1) We encode pauses using the marker <pause> . Following the final protocol, pause durations are mapped to three bins: 
+
+ϕp(∆ i) = 
+
+
+
+∅, ∆i ≤ 500 ,
+
+⟨pause ⟩ × 1, 500 < ∆i ≤ 1000 ,
+
+⟨pause ⟩ × 2, 1000 < ∆i ≤ 2000 ,
+
+⟨pause ⟩ × 3, ∆i > 2000 
+
+. (2) Because expected word duration depends on syllable count, we compare each word against a fixed syllable-conditioned reference and treat any excess duration as elongation. Let 
+
+ni = g(wi) denote the estimated syllable count and di =max(0 , e i − bi) the observed word duration in ms. The ref-erence duration is: 
+
+Dref (n) = 
+
+
+
+260 , n = 1 ,
+
+360 , n = 2 ,
+
+450 , n = 3 ,
+
+580 , n = 4 ,
+
+700 + 150( n − 5) , n ≥ 5
+
+. (3) Reference anchors were initialized from syllable-conditioned duration statistics of ADReSSo ASR word alignments, then rounded and smoothed. Sparse data for words with at least five syllables required linear extrapolation for longer words. This fixed table provides a task-specific baseline for coarse duration normalization. The residual ri and its 
+
+<elongated> encoding are: Timestamped Transcript Speech Waveform                     
+
+> 1. Prosodic Event Textualization
+> Prosodic Event Textualization
+> Augmented Transcript T*
+> 2. Lexico-Prosodic Unitization and Chunking
+> Frozen Kimi Frozen Whisper
+> Unitization & Chunking Chunk-Pooled Text xtChunk-Pooled Speech xs
+> 3. Text-Anchored Paralinguistic Fusion
+> Text Anchor xt
+> Speech Blocks
+> xs,xp,xa
+> NormGate
+> [xt;gs·xs;gp·xp;ga·xa]
+> MLP →AD / HC
+> ASR
+
+Figure 2: LAPE workflow. Prosodic events are textualized in the transcript; frozen Kimi and Whisper features undergo unitization and event-preserving chunking; NormGate scales speech features relative to a text anchor for classification. 
+
+ri = max (0 , d i − Dref (ni)) , (4) 
+
+ϕe(ri) = 
+
+
+
+∅, ri ≤ 200 ,
+
+⟨elongated ⟩ × 1, 200 < r i ≤ 500 ,
+
+⟨elongated ⟩ × 2, 500 < r i ≤ 800 ,
+
+⟨elongated ⟩ × 3, ri > 800 
+
+. (5) Writing the binned pause and elongation markers into T
+
+while retaining punctuation yields LAPE’s augmented tran-script, organized as units centered on the original words: 
+
+Ai = ϕp(∆ i)wiϕe(ri)πi, T ⋆ = A =  Ai
+
+Li=1 . (6) Index i links each Ai to timestamps (bi, e i).LAPE feeds T ⋆ to Kimi-K2.7-Code 1 together with a fixed task instruction; we denote this input by Prompt( T ⋆). The instruction defines a binary classification task that distin-guishes participants with AD from healthy controls (HCs) using cognitive-linguistic information, and explains the du-ration bins represented by repeated pause and elongation markers. The exact prompt template is given in the supple-mentary material. 
+
+Lexico-Prosodic Unitization and Chunking 
+
+Figure 3 details the unitization and chunking procedure. We use L, M , and N throughout this subsection for the lengths                           
+
+> 1https://huggingface.co/moonshotai/Kimi-K2.7-Code. Lexico-Prosodic Unitization and Chunking
+> : pool full-transcript states in token span ·: pool full-audio states in word / pre-gap / post-gap frame spans
+> E= elongated P= pause |= subword split = mean pooling over a maximal run
+> Transcript [ The ] [ boy <E> <E> ] [ <P> <P> is ] [ steal | ing ] [ cookie | s . ]
+> Unit Sequence The boy <E> <E> <P> <P> is stealing cookies .
+> Word Pool Chunk Pool
+
+Figure 3: Lexico-prosodic unitization and chunking. Augmented word groups are first unitized into text and speech units. Consecutive word units are then mean-pooled into lexical chunks, while each pause, elongation, and boundary unit remains a singleton chunk; repeated markers therefore preserve event magnitude. of the augmented-word-group sequence A, unit sequence U ,and chunk sequence C, respectively. Prosodic event textual-ization makes timing cues legible to the LLM, but Kimi still emits subword states and Whisper-small emits frame-level states. Pooling either output directly would weight text by tokenizer fragmentation and blur the word and inter-word intervals that carry timing evidence. We therefore use word timestamps as a deterministic scaffold for a word-level back-bone: lexical units organize both modalities, while prosodic events determine which local acoustic intervals are selected and, through repetition, how strongly they contribute. When the marker mappings and punctuation field are empty, Ai re-duces to wi; hence T ⋆ always contains exactly L augmented word groups, one for each original word. Each Ai is expanded in transcript order into one word unit and zero or more marker units, providing a basis for text and speech organization and pooling. The word unit corre-sponds to wi; every marker instance in ϕp(∆ i) and ϕe(ri)
+
+contributes one pause or elongation unit, respectively; and each punctuation mark in a nonempty πi contributes a cor-responding punctuation-derived boundary unit. Let W, P,
+
+E, and B denote these four unit classes. Empty fields con-tribute no additional units, whereas repeated markers re-main separate units and preserve event magnitude explicitly. Ordering the expanded units from A1 through AL yields 
+
+U = ( U1, . . . , U M ). Each Uj derives from exactly one Ai,denoted by Uj ∈ A i. The frozen Kimi language model pro-cesses Prompt( T ⋆), jointly contextualizing the fixed task instruction and the augmented transcript; only token states 
+
+h(t) 
+
+> ℓ
+
+corresponding to T ⋆ are retained for subsequent ag-gregation. In parallel, the frozen Whisper encoder (Radford et al. 2023) processes the speech waveform. Let h(s) 
+
+> ℓ
+
+denote its frame state at timestamp τℓ.The two modalities follow the same unit order while pre-serving their distinct evidence structures. A marker derives its textual meaning from the word to which it is attached and the surrounding syntactic context, so all members of 
+
+Ai share a jointly contextualized text span. Its speech real-ization, however, is localized in time, so speech spans are selected separately for individual units. Specifically, let Ti
+
+denote the retained Kimi token-position span that covers the original word and all attached markers in Ai. The selected token states are mean-pooled once, and the resulting vector is assigned to every Uj ∈ A i.Speech evidence is selected from the acoustic interval in-dicated by each unit. Let Sj denote the Whisper frame span of Uj . We call [bi, e i) the word span of wi, which covers the time-frame interval occupied by the current word; [ei−1, b i)
+
+and [ei, b i+1 ) are its pre-gap and post-gap , namely the inter-vals separating it from the preceding and following words. For a terminal boundary, we set bL+1 = eL. All intervals are left-closed and right-open; when their endpoints coin-cide, the nearest valid encoder frame is retained. For units 
+
+Uj ∈ A i, the word and elongation units use the word span, whereas pause and boundary units use the pre-gap and post-gap, respectively: 
+
+Sj =
+
+
+
+{ℓ | τℓ ∈ [bi, e i)}, Uj ∈ W ∪ E ,
+
+{ℓ | τℓ ∈ [ei−1, b i)}, Uj ∈ P ,
+
+{ℓ | τℓ ∈ [ei, b i+1 )}, Uj ∈ B 
+
+. (7) The text and speech representations of each unit are therefore 
+
+u(t) 
+
+> j
+
+= 1
+
+|T i|
+
+X
+
+> ℓ∈T i
+
+h(t) 
+
+> ℓ
+
+, u (s) 
+
+> j
+
+= 1
+
+|S j |
+
+X
+
+> ℓ∈S j
+
+h(s) 
+
+> ℓ
+
+. (8) When Ai contains only its original word, these definitions reduce to that word’s token and frame spans. When it also contains attached markers, the word and all markers share one text vector, while their speech vectors follow the corre-sponding word-internal or inter-word intervals. Chunk aggregation is applied to both word-level views. Let C = ( C1, . . . , C N ) be an ordered partition of U into N
+
+chunks. Each sequence of consecutive word units is mean-pooled into one lexical chunk, while each pause, elongation, or boundary unit remains a singleton. For each Ck ∈ C , we compute the text and speech representations: 
+
+c(t) 
+
+> k
+
+= 1
+
+|Ck|
+
+X 
+
+> Uj∈Ck
+
+u(t) 
+
+> j
+
+, c(s) 
+
+> k
+
+= 1
+
+|Ck|
+
+X 
+
+> Uj∈Ck
+
+u(s) 
+
+> j
+
+. (9) Mean-pooling the N text and speech chunk representations yields the chunk-pooled features xt and xs, respectively. In Figure 3, the ten units form seven chunks: the consecutive word units in The boy and is stealing cookies are mean-pooled into two lexical chunks, while the four event units and final boundary unit remain singletons. Repeated markers therefore remain separate and each contributes once to the final mean, preserving event magnitude in both modal-ities; only consecutive word units are pooled. 
+
+Text-Anchored Paralinguistic Fusion 
+
+The preceding stage yields local text and speech blocks orga-nized around words and prosodic events. Two utterance-level speech blocks complement them with recording-wide vocal characteristics. To account for unequal modality contribu-tions, all four blocks condition a dynamic gate that adjusts the three speech-derived blocks per recording, while text en-ters as the direct anchor. From each complete recording, eGeMAPSv02 Func-tionals extracted with openSMILE (Eyben, Wöllmer, and Schuller 2010; Eyben et al. 2016) yield a handcrafted feature vector xp that captures prosody, phonation, and voice qual-ity. In parallel, the pretrained WavLM Base+ encoder (Chen et al. 2022) produces frame-level hidden states, which are temporally mean-pooled into the acoustic representation xa.Exact feature dimensionalities are provided in the implemen-tation details. WavLM complements eGeMAPS by capturing broader speech patterns not explicitly characterized by pre-defined acoustic descriptors. The model consequently contains four blocks: xt, the LLM text representation; xs, the locally aggregated Whis-per speech representation; and xp and xa, the utterance-level eGeMAPS and WavLM blocks, respectively. The mean-pooled xt and xs first undergo sample-wise LayerNorm (Ba, Kiros, and Hinton 2016) with fixed unit scale and zero bias. All four blocks are then standardized dimension-wise using statistics estimated from the actual training data used in each run. Let ˆxq denote the resulting block for q ∈ { t, s, p, a }.Before its block-specific summary projection, each stan-dardized block is rescaled as ˆxq /pdq , where dq is its di-mensionality, so that higher-dimensional blocks do not dom-inate gate generation. The concatenated summaries are then used to predict one scalar logit oq for each auxiliary block 
+
+q ∈ { s, p, a }. Because these logits depend on all four blocks, the sample-specific gates are bounded as follows: 
+
+gq = 1 + 0 .5 tanh( oq ). (10) The final predictor layer is zero-initialized, so every gate starts at 1 and remains within (0 .5, 1.5) . Each auxiliary block therefore retains 50–150% of its standardized baseline mag-nitude, while the text block remains unscaled. The text block is kept as the direct anchor, while the three auxiliary blocks are gated as follows: 
+
+˜x = [ˆ xt; gs ˆxs; gp ˆxp; ga ˆxa]. (11) This identity-initialized design starts from standardized con-catenation and learns sample-dependent modulation of the auxiliary blocks during training. The fused representation ˜x
+
+is classified by a 3-layer MLP trained with cross-entropy. 
+
+# Experimental Setup 
+
+Datasets and Transcription 
+
+We evaluate LAPE on two controlled-access DementiaBank benchmarks built from Cookie Theft picture descriptions: ADReSS, which provides audio and manual transcripts for 108 training and 48 test participants, and ADReSSo, which provides audio only for 166 training and 71 test partici-pants. Each participant contributes one sample. ADReSSo is the primary benchmark because its larger, speech-only setting requires both linguistic and acoustic information to be obtained automatically and better reflects fully automatic use; ADReSS serves as an additional benchmark under a manual-transcript condition. For ADReSSo, Whisper large-v3 (Radford et al. 2023) generates transcripts and word times-tamps, whereas for ADReSS we retain the official transcripts for comparability and align them with the recordings using Qwen3-ForcedAligner-0.6B (Shi et al. 2026). 
+
+Evaluation Protocols 
+
+We evaluate each benchmark’s official training partition using participant-level five-fold cross-validation (CV) and leave-one-subject-out (LOSO). For CV, each metric is com-puted separately on each test fold and then averaged across the five folds. For LOSO, because each test fold contains only one participant, we pool the out-of-sample predictions from all folds and compute each metric once on the pooled pre-dictions; fold-wise computation is not applicable to the com-plete metric set. Main comparisons report accuracy, macro F1-Score, precision, and recall; later analyses use accuracy (Acc) and area under the receiver operating characteristic curve (ROC-AUC), based on AD probabilities. For com-pactness, tables abbreviate ROC-AUC as Auc. 
+
+Baselines 
+
+We use Multi-View Gated GAT (MVG-GAT; Li et al. 2026) and CogniAlign (Ortiz-Perez et al. 2025) as the two cross-setting baselines. MVG-GAT models semantic, syntactic, and discourse-flow structure with adaptive fusion, whereas CogniAlign provides a multimodal reference based on token-level audio–text alignment and cross-attention fusion. To keep Tables 1 and 2 compact, we use short row labels rather than in-table citations: FFeat-SVM (Mahmoud, Mahmoud, and Elhadad 2026), LLaMA2-PL (Zheng et al. 2025), W2V-BERT (Ying, Yang, and Zhou 2023), LLM-A-SVC (Casu et al. 2026), Wrap-Ridge (Niemelä et al. 2026), and GPT-Op (Bang, Han, and Kang 2024). ADReSS Accuracy F1-Score Precision Recall ADReSSo Accuracy F1-Score Precision Recall FFeat-SVM 86.90 86.90 86.90 86.90 W2V-BERT 83.70 83.60 85.30 84.00 LLaMA2-PL 81.31 81.13 82.69 79.63 LLM-A-SVC 91.80 91.80 94.60 88.20 MVG-GAT 89.81 89.91 89.09 90.74 MVG-GAT 88.81 88.81 89.43 88.81 CogniAlign 88.73 87.38 94.00 82.91 CogniAlign 90.36 90.11 90.15 90.76 
+
+LAPE 98.18 98.18 100.00 96.36 LAPE 94.01 94.01 96.39 92.03 
+
+Table 1: Cross-validation (CV) results on ADReSS and ADReSSo (%). ADReSS Accuracy F1-Score Precision Recall ADReSSo Accuracy F1-Score Precision Recall Wrap-Ridge 86.50 86.60 86.08 87.18 GPT-Op 87.32 87.25 88.06 87.32 MVG-GAT 87.04 86.79 88.46 85.19 MVG-GAT 86.75 86.25 94.52 79.31 CogniAlign 87.96 88.07 87.27 88.89 CogniAlign 87.35 87.57 90.24 85.06 
+
+LAPE 95.37 95.37 96.23 94.44 LAPE 91.57 91.56 92.94 90.80 
+
+Table 2: Leave-one-subject-out (LOSO) results on ADReSS and ADReSSo (%). 
+
+Implementation Details 
+
+Unless otherwise stated, LAPE uses the Joint protocol and the chunk-pooled features described above. The four protocols and aggregation levels are analyzed separately below. Text features are extracted with Kimi-K2.7-Code, which shares the Kimi K2.5 architecture (Kimi Team 2026), via llama.cpp. 2 The four feature blocks xt, xs, xp, and xa have dimensions 7168, 768, 88, and 768, respectively, yielding an 8792-D classifier input. NormGate maps each block to a 32-dimensional summary and predicts the three speech-side gates with a dropout-free 128 → 64 → 3 MLP; the final task head is a 3-layer MLP with ReLU and dropout. Training uses AdamW (Loshchilov and Hutter 2019) and gradient clipping at 1.0. The early-stopping patience is set to 15. We fix the learning rate, weight decay, dropout, and label smoothing to 5e −4, 1e −4, 0.3, and 0.1. In LOSO, 
+
+15% of the remaining training data is reserved for validation. We then use grid search over H1 ∈ { 256 , 512 , 768 , 1024 },
+
+H2 ∈ { 64 , 128 , 256 }, and batch size ∈ { 8, 16 , 32 }.
+
+# Experimental Results 
+
+Main Results. Tables 1 and 2 report the primary CV and LOSO comparisons. Because LAPE’s macro F1-Score dif-fers from accuracy by at most 0.01%, we focus on accuracy. The small official test sets produce coarse metric increments and split sensitivity; participant-level CV and LOSO instead evaluate every participant out of sample, and agreement be-tween them provides a more stable assessment. LAPE ranks first throughout, reaching 98.18% & 94.01% under CV and 95.37% & 91.57% under LOSO on ADReSS and ADReSSo. Its lead over the strongest listed baseline spans 2.21–8.37%, averaging 5.55%. LOSO reduces LAPE’s accuracy by 2.81% on ADReSS and 2.44% on ADReSSo, yet its margins remain 7.41% and 4.22%, respectively, compared with 8.37% and 2.21% under 
+
+> 2https://github.com/ggml-org/llama.cpp.
+
+CV. LAPE therefore remains first under the stricter subject-wise evaluation. Its accuracy on ADReSSo is 3.80–4.17% lower than on ADReSS, consistent with the fully automatic speech-only setting, although dataset differences preclude attributing this gap to transcription alone. 
+
+Transcription Protocol Analysis. Table 3 compares the four protocols with Kimi and chunk aggregation under the same search grid and budget. Relative to Basic, Pause im-proves ADReSS by 3.63% under CV and 1.86% under LOSO, but changes ADReSSo by 0.00% and −1.20%; Elong changes the four settings by −1.18%, −3.70%, −0.02%, and −1.20%. Thus, neither single-event protocol is reliable alone. Joint instead improves over Basic by 5.45%, 5.56%, 1.82%, and 3.62%, averaging 4.11%, and exceeds the bet-ter single-event protocol by 2.74% on average. Its gain is larger under LOSO than CV on both datasets, especially ADReSSo (3.62% vs. 1.82%). This supports complemen-tary roles: pauses mark interruptions, whereas elongations capture prolonged speech in context, making Joint more ro-bust to held-out speakers. 
+
+Aggregation Analysis. Table 4 compares three granulari-ties under Joint: Token retains subword elements, Word uses lexico-prosodic units, and Chunk mean-pools consecutive word units while keeping each pause, elongation, and bound-ary unit separate. All other settings are unchanged. Moving from Token to Word is inconsistent, chang-ing accuracy by 0.00%, 2.78%, −0.51%, and 0.61% across ADReSS CV, ADReSS LOSO, ADReSSo CV, and ADReSSo LOSO. Chunk ranks first throughout and exceeds the better fine-grained alternative by 2.73%, 2.78%, 0.68%, and 2.41% (2.15% on average). Relative to Token, its mean gain grows from 1.71% under CV to 4.29% under LOSO, suggesting that pooling consecutive word units suppresses speaker-specific redundancy while preserving sparse paralin-guistic events. Together, Tables 3 and 4 show that comple-mentary event markers must remain salient rather than being diluted across a long token sequence. ADReSS CV LOSO ADReSSo CV LOSO Protocol Acc Auc Acc Auc Protocol Acc Auc Acc Auc Basic 92.73 95.21 89.81 93.14 Basic 92.19 94.66 87.95 92.80 Pause 96.36 99.01 91.67 95.85 Pause 92.19 94.86 86.75 91.23 Elong 91.55 88.68 86.11 89.51 Elong 92.17 94.01 86.75 91.91 
+
+Joint 98.18 97.19 95.37 96.95 Joint 94.01 94.74 91.57 93.70 
+
+Table 3: Comparison of transcription protocols on ADReSS and ADReSSo (%). ADReSS CV LOSO ADReSSo CV LOSO Level Acc Auc Acc Auc Level Acc Auc Acc Auc Token 95.45 97.19 89.81 96.33 Token 93.33 94.06 88.55 93.05 Word 95.45 97.02 92.59 94.44 Word 92.82 93.95 89.16 93.53 
+
+Chunk 98.18 97.19 95.37 96.95 Chunk 94.01 94.74 91.57 93.70 
+
+Table 4: Aggregation comparison on ADReSS and ADReSSo (%). ADReSS CV LOSO ADReSSo CV LOSO Variant Acc Auc Acc Auc Variant Acc Auc Acc Auc Text only 96.36 96.20 92.59 94.51 Text only 92.80 94.49 88.55 93.92 
+
+Speech only 87.09 86.86 80.56 85.19 Speech only 89.21 90.58 81.33 86.21 Local Feats. 97.27 98.35 95.37 96.43 Local Feats. 93.40 94.07 88.55 92.07 w/o NG 97.27 97.52 92.59 95.78 w/o NG 93.39 94.05 90.36 92.29 
+
+LAPE 98.18 97.19 95.37 96.95 LAPE 94.01 94.74 91.57 93.70 Table 5: Component ablation on ADReSS and ADReSSo under CV and LOSO (%). NG abbreviates NormGate; w/o NG is the variant without it. The local-feature variant uses only the chunk-pooled text and Whisper speech representations, with NormGate disabled. 
+
+Component Ablation. Table 5 first contrasts the two uni-modal variants: text only uses the text anchor, whereas speech only combines local Whisper with both utterance-level speech blocks. It then follows a nested multimodal path, adding local Whisper to text, the utterance-level blocks with-out NormGate, and finally full LAPE. Because NormGate in-cludes normalization and bounded gating, the last transition measures their joint contribution. Text only outperforms speech only by 9.27% & 12.03% on ADReSS and 3.59% & 7.22% on ADReSSo under CV and LOSO. The larger LOSO gaps on both datasets suggest greater speaker sensitivity in speech representations and sup-port the text anchor. Adding local Whisper never reduces ac-curacy, yielding gains of 0.91%, 2.78%, 0.60%, and 0.00% (1.07% on average). These consistent gains show that lo-cal acoustics complement linguistic content, with the largest benefit under ADReSS LOSO. By contrast, utterance-level blocks without NormGate help only ADReSSo LOSO and are neutral or worse else-where. NormGate raises accuracy by 0.91%, 2.78%, 0.62%, and 1.21% over this variant (1.38% on average). Its larger mean gain under LOSO than CV (2.00% vs. 0.77%) indi-cates greater benefit for held-out speakers. Auc also rises in three of four settings, except ADReSS CV, supporting adap-tive scaling of global speech cues against the text anchor. 
+
+# Conclusion 
+
+We presented LAPE, an LLM-anchored paralinguistic en-richment framework for speech-based AD detection. LAPE enriches LLM-derived linguistic representations through prosodic event textualization, lexico-prosodic unitization and chunking, and text-anchored fusion of local and utterance-level speech features. It achieves state-of-the-art accuracy and F1 on ADReSS and ADReSSo under both CV and LOSO. Future work will extend LAPE toward speech-aware reasoning by textualizing richer paralinguistic cues and dis-tilling this capability into smaller LLMs without sacrificing diagnostic performance. 
+
+# Generative AI Use Disclosure 
+
+ChatGPT was used solely to polish text originally written by the authors. All suggestions were reviewed and revised by the authors, who take full responsibility for the manuscript. The tool was not used to generate scientific content or references. References 
+
+Ba, J. L.; Kiros, J. R.; and Hinton, G. E. 2016. Layer Nor-malization. arXiv:1607.06450. Bang, J.-U.; Han, S.-H.; and Kang, B.-O. 2024. Alzheimer’s Disease Recognition from Spontaneous Speech Using Large Language Models. ETRI Journal , 46(1): 96–105. Braun, F.; Bayerl, S. P.; Hönig, F.; Lehfeld, H.; Hillemacher, T.; Bocklet, T.; and Riedhammer, K. 2024. Infusing Acoustic Pause Context into Text-Based Dementia Assessment. In 
+
+Interspeech 2024 , 1980–1984. Casu, F.; Lagorio, A.; Ruiu, P.; Trunfio, G. A.; and Grosso, E. 2026. Integrating Fine-Tuned LLM With Acoustic Fea-tures for Enhanced Detection of Alzheimer’s Disease. IEEE Journal of Biomedical and Health Informatics , 30(7): 5656– 5669. Chatzianastasis, M.; Ilias, L.; Askounis, D.; and Vazirgian-nis, M. 2023. Neural Architecture Search with Multimodal Fusion Methods for Diagnosing Dementia. In 2023 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP) , 1–5. Chen, S.; Wang, C.; Chen, Z.; Wu, Y.; Liu, S.; Chen, Z.; Li, J.; Kanda, N.; Yoshioka, T.; Xiao, X.; Wu, J.; Zhou, L.; Ren, S.; Qian, Y.; Qian, Y.; Wu, J.; Zeng, M.; Yu, X.; and Wei, F. 2022. WavLM: Large-Scale Self-Supervised Pre-Training for Full Stack Speech Processing. IEEE Journal of Selected Topics in Signal Processing , 16(6): 1505–1518. de la Fuente Garcia, S.; Ritchie, C. W.; and Luz, S. 2020. Artificial Intelligence, Speech, and Language Processing Ap-proaches to Monitoring Alzheimer’s Disease: A Systematic Review. Journal of Alzheimer’s Disease , 78(4): 1547–1574. Eyben, F.; Scherer, K. R.; Schuller, B. W.; Sundberg, J.; André, E.; Busso, C.; Devillers, L. Y.; Epps, J.; Laukka, P.; Narayanan, S. S.; and Truong, K. P. 2016. The Geneva Minimalistic Acoustic Parameter Set (GeMAPS) for Voice Research and Affective Computing. IEEE Transactions on Affective Computing , 7(2): 190–202. Eyben, F.; Wöllmer, M.; and Schuller, B. 2010. openSMILE: The Munich Versatile and Fast Open-Source Audio Feature Extractor. In Proceedings of the 18th ACM International Conference on Multimedia , 1459–1462. Feng, T.; Xu, A.; Lee, J.; and Narayanan, S. 2026. VoxCog: Towards End-to-End Multilingual Cognitive Im-pairment Classification through Dialectal Knowledge. ArXiv:2601.07999 [cs.SD]. Ke, X.; Mak, M. W.; and Meng, H. M. 2024. Automatic Selection of Spoken Language Biomarkers for Dementia De-tection. Neural Networks , 169: 191–204. Kimi Team. 2026. Kimi K2.5: Visual Agentic Intelligence. arXiv:2602.02276. Li, J.; Wei, X.; Wen, B.; Li, K.; Lin, Y.; Wang, X.; Wang, L.; and Dang, J. 2026. Gated Multi-Graph Fusion via Graph Attention Networks for Alzheimer’s Disease Detec-tion. ArXiv:2606.31186 [cs.CL]. Lin, Y.; Zhang, J.; Wei, X.; Li, K.; Wen, B.; Gu, M.; and Dang, J. 2026. MCI-OTFusion: A Multimodal Model for MCI Detection and Cognitive Score Prediction. In 2026 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP) , 15557–15561. Liu, Y.-L.; Feng, R.; Yuan, J.-H.; and Ling, Z.-H. 2024. Leveraging Prompt Learning and Pause Encoding for Alzheimer’s Disease Detection. In 2024 IEEE 14th Interna-tional Symposium on Chinese Spoken Language Processing (ISCSLP) , 486–490. Loshchilov, I.; and Hutter, F. 2019. Decoupled Weight Decay Regularization. In International Conference on Learning Representations .Luz, S.; Haider, F.; de la Fuente, S.; Fromm, D.; and MacWhinney, B. 2020. Alzheimer’s Dementia Recognition Through Spontaneous Speech: The ADReSS Challenge. In 
+
+Interspeech 2020 , 2172–2176. Luz, S.; Haider, F.; de la Fuente, S.; Fromm, D.; and MacWhinney, B. 2021. Detecting Cognitive Decline Us-ing Speech Only: The ADReSSo Challenge. In Interspeech 2021 , 3780–3784. Mahmoud, M. A.; Mahmoud, T. A.; and Elhadad, M. K. 2026. A Robust Acoustic Feature Extraction Framework for Alzheimer’s Detection: A Study on the ADReSS Dataset. In 
+
+2026 ICEENG International Conference for Innovations in Intelligent Computing and Cybersecurity (IICC) , 1–6. IEEE. Niemelä, M.; von Bonsdorff, M.; Äyrämö, S.; and Kärkkäi-nen, T. 2026. Dementia Classification from Spontaneous Speech Using Wrapper-Based Feature Selection. Applied Computing and Intelligence , 6(1): 89–114. Ortiz-Perez, D.; Benavent-Lledo, M.; Rodriguez-Juan, J.; García-Rodríguez, J.; and Tomás, D. 2025. CogniAlign: Word-Level Multimodal Speech Alignment with Gated Cross-Attention for Alzheimer’s Detection. Knowledge-Based Systems , 329: 114264. Pan, Y.; Gong, Z.; Wang, S.; Tian, Z.; Yih, T.; and Huang, L. 2026. An Unsupervised Alignment Feature Fusion System for Spoken Language-Based Dementia Detection. In 2026 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP) , 15597–15601. Pastoriza-Domínguez, P.; Torre, I. G.; Diéguez-Vide, F.; Gómez-Ruiz, I.; Geladó, S.; Bello-López, J.; Ávila-Rivera, A.; Matías-Guiu, J. A.; Pytel, V.; and Hernández-Fernández, A. 2022. Speech Pause Distribution as an Early Marker for Alzheimer’s Disease. Speech Communication , 136: 107– 117. Pérez-Toro, P. A.; Ferrante, F. J.; Pérez, G.; Tee, B. L.; de Leon, J.; Nöth, E.; Schuster, M.; Maier, A.; Slachevsky, A.; Gorno-Tempini, M. L.; Ibáñez, A.; Orozco-Arroyave, J. R.; and García, A. 2025. Automated Speech Markers of Alzheimer Dementia: Test of Cross-Linguistic Generaliz-ability. Journal of Medical Internet Research , 27: e74200. Radford, A.; Kim, J. W.; Xu, T.; Brockman, G.; McLeavey, C.; and Sutskever, I. 2023. Robust Speech Recognition via Large-Scale Weak Supervision. In Proceedings of the 40th International Conference on Machine Learning , vol-ume 202 of Proceedings of Machine Learning Research ,28492–28518. Shi, X.; Wang, X.; Guo, Z.; Wang, Y.; Zhang, P.; Zhang, X.; Guo, Z.; Hao, H.; Xi, Y.; Yang, B.; Xu, J.; Zhou, J.; and Lin, J. 2026. Qwen3-ASR Technical Report. arXiv:2601.21337. Soleimani, R.; Guo, S.; Haley, K. L.; Jacks, A.; and Lobaton, E. 2024. The Impact of Pause and Filler Word Encoding on Dementia Detection with Contrastive Learning. Applied Sciences , 14(19): 8879. Voleti, R.; Liss, J. M.; and Berisha, V. 2020. A Review of Automated Speech and Language Features for Assessment of Cognitive and Thought Disorders. IEEE Journal of Selected Topics in Signal Processing , 14(2): 282–298. Wang, N.; Cao, Y.; Hao, S.; Shao, Z.; and Subbalakshmi, K. P. 2021. Modular Multi-Modal Attention Network for Alzheimer’s Disease Detection Using Patient Audio and Lan-guage Data. In Interspeech 2021 , 3835–3839. Wang, X.; Wen, B.; Wei, X.; Lin, Y.; Li, K.; Cao, Y.; Wang, T.; Gu, M.; Jiang, Y.; Li, J.; Wang, L.; and Dang, J. 2026. LPM-Aug: Latent Pathology-Informed Multimodal Augmentation for Generalized Cognitive Decline Detection Via Speech. 
+
+IEEE Transactions on Affective Computing , 1–14. Wei, X.; Wen, B.; Lin, Y.; Li, K.; Gu, M.; Wang, X.; Wang, L.; and Dang, J. 2026. Breaking Data Efficiency Dilemma: A Federated and Augmented Learning Framework for Alzheimer’s Disease Detection Via Speech. In 2026 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP) , 19147–19151. Yang, Q.; Li, X.; Ding, X.; Xu, F.; and Ling, Z. 2022. Deep Learning-Based Speech Analysis for Alzheimer’s Disease Detection: A Literature Review. Alzheimer’s Research & Therapy , 14(1): 186. Ying, Y.; Yang, T.; and Zhou, H. 2023. Multimodal Fusion for Alzheimer’s Disease Recognition. Applied Intelligence ,53(12): 16029–16040. Yuan, J.; Cai, X.; Bian, Y.; Ye, Z.; and Church, K. 2021. Pauses for Detection of Alzheimer’s Disease. Frontiers in Computer Science , 2: 624488. Zheng, T.; Xie, X.; Peng, X.; Chen, H.; and Tian, F. 2025. Alzheimer’s Disease Detection Based on Large Language Model Prompt Engineering. In Social Robotics , Lecture Notes in Computer Science, 207–216. Springer Nature Sin-gapore. Zolnoori, M.; Zolnour, A.; and Topaz, M. 2023. ADscreen: A Speech Processing-Based Screening System for Automatic Identification of Patients with Alzheimer’s Disease and Re-lated Dementia. Artificial Intelligence in Medicine , 143: 102624.
