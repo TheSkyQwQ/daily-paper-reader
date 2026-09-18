@@ -1,0 +1,234 @@
+Title: Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition
+
+URL Source: https://arxiv.org/pdf/2609.20081v1
+
+Published Time: Fri, 18 Sep 2026 01:04:22 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition 
+
+Hasindri Watawana 1,2 , Sergio Burdisso 1, Esa´ u Villatoro-Tello 1, Manjunath K E 3,Kadri Hacioglu 3, Petr Motlicek 1,4 , Andreas Stolcke 3
+
+> 1
+
+Idiap Research Institute , Switzerland 
+
+> 2
+
+EPFL , Switzerland 
+
+> 3
+
+Uniphore , USA & India 
+
+> 4
+
+Brno University of Technology , Czech Republic 
+
+hasindri.watawana@idiap.ch 
+
+Abstract —SpeechLLMs have shown strong potential for emo-tion recognition, yet they read the predicted emotion off agenerative decoder not suited for classification: it can emit labels outside the target set and favors frequent classes. We propose a discriminative adaptation that reads the final prompt token’s hidden state through a classification head, producing a label in one forward pass without modifying the backbone. Because this readout starts from the hidden state the model would otherwise decode, it gives a controlled comparison of generative and discriminative inference in an otherwise identical speechLLM. We keep the head a single linear layer, trading little accuracy for interpretability: each emotion becomes one direction in the LLM output token space, revealing associated tokens. On IEMOCAP, across two speechLLM architectures, it improves Macro F1 and removes hallucinations, with largest gains on realistic ASR transcripts. Our analysis reveals that these emotion directions encode indirect associations mirroring biases in web-scale text. 
+
+Index Terms —Speech Emotion Recognition, SpeechLLM, Dis-criminative Adaptation, Interpretability 
+
+I. I NTRODUCTION 
+
+Speech Emotion Recognition (SER) enables intelligent sys-tems to perceive and respond to human affective states, un-derpinning applications in human-computer interaction, con-versational analytics, dialogue systems, and mental health monitoring, where automatic detection of emotional cues offers a promising avenue for non-intrusive assessment and early intervention [1]–[5]. Despite substantial progress [6]– [8], SER remains challenging due to the complex, context-dependent nature of emotional expression, conveyed through complementary acoustic, visual, and linguistic modalities. This has motivated a growing shift toward Multimodal Emotion Recognition (MER) [9]–[11], which integrates heterogeneous signals for more robust affect modeling. Speech Large Language Models (speechLLMs) have re-cently emerged as a promising paradigm for MER, leveraging large-scale generative pretraining for strong contextual mod-eling and rich linguistic priors. Recent adaptations include paralinguistic modeling via Conformer CTC representations [12], cross-attention acoustic-semantic fusion [13], chain-of-thought distillation with emotion-aware objectives [14], and emotion-specific encoder pipelines [15]. While effective, such approaches add modules, specialized losses, or multi-stage training, increasing complexity. More fundamentally, they rely on generative decoders not optimized for discriminative ob-jectives such as emotion classification, creating a mismatch between pretraining and the recognition task. In this work, we propose a simple and computationally effi-cient adaptation strategy that directly addresses this mismatch while remaining fully complementary to existing speechLLM architectures. Specifically, we introduce a lightweight clas-sification head on top of the LLM hidden representations, enabling direct discriminative optimization for emotion recog-nition without modifying the generative backbone. Our key design choice is that this head is linear: each emotion class is parameterized as a single vector in the LLM hidden space, which lets us recover the tokens most associated with that emotion. This makes the classifier an interpretability handle — one a non-linear head would forfeit — exposing which words each emotion is most associated with, in the LLM’s own output token space. We conduct an extensive evaluation on the widely used IEMOCAP emotion recognition benchmark, under multimodal settings using speech and text data. Our main contributions are as follows: (1) Interpretability through linearity: We show that parameterizing the classifier as a single linear layer turns it into an interpretability handle: because each emotion is one direction in the LLM hidden space, its class vector can be projected through the model’s own unembedding matrix to recover the tokens it is associated with. This exposes that the learned emotion directions encode culturally grounded associations that mirror biases present in large-scale web text. (2) A controlled comparison of generative vs. discriminative readout: Because the generated label and the discriminative prediction are read from the same 
+
+final-token hidden state, we obtain a controlled comparison of the two readout mechanisms on an otherwise identical, frozen speechLLM. Discriminative supervision removes the risk of arXiv:2609.20081v1 [cs.CL] 17 Sep 2026 hallucinated (invalid) label tokens and rebalances predictions toward minority emotions—improving Macro F1—where gen-erative decoding favors the majority class. (3) Robustness under realistic transcripts: Evaluating with automatically generated (ASR) transcripts rather than the oracle transcripts assumed by most MER studies, we find the advantage of discriminative readout is largest when input quality is de-graded, indicating concrete benefit for deployment. (4) Cross-architecture validation: We confirm these effects across two speechLLM pipelines (single- and dual-encoder), showing they are not specific to a single architecture. II. R ELATED WORK 
+
+Large spoken language models vary widely in how the speech modality is integrated with the LLM: how speech representations are learned and aligned with a (text-based) LLM. Our method follows the connector paradigm, in which representations from a pretrained speech encoder are bridged to the LLM through a lightweight adapter trained for the target task, while the backbone remains frozen. This preserves the LLM’s pretrained knowledge and instruction-following ability, confining adaptation to a small set of trainable parameters. Closer to our setting is a line of work that adapts a frozen 
+
+LLM as a speech emotion classifier through a lightweight connector. Bellver-Soler et al. [16] condense speech to a single acoustic token via attentive pooling, project it into a frozen LLM alongside a text instruction, and obtain the prediction by applying a softmax over the next-token logits of the emotion-label tokens; they report that the frozen LLM outperforms an MLP head on several corpora including IEMO-CAP. Both this approach and the discrete-token method of Calbucura et al. [17] thus derive the label from the model’s own (constrained) generative machinery, leaving the backbone essentially unchanged. In contrast, we append a discriminative linear head to the final hidden state, trained with a classi-fication objective, and directly contrast this readout against generative label decoding on the same frozen speechLLM. Both restricting the label-token logits [16] and our head elim-inate hallucinated labels, but by different means; we further adapt the backbone with LoRA and condition on speech, transcript, and dialogue context, rather than a single transcript-free acoustic token. A related and still-open question is what these adapted representations encode. Bellver-Soler et al. [16] observe that the projected acoustic token does not lie near emotion words yet still supports accurate classification, and leave a characteri-zation of this embedding geometry to future work; analyses of spoken LLMs similarly note that connectors make utterance-level semantics linearly accessible without a one-to-one lexical correspondence [18]. We address this from the output side: as our head is linear, projecting each class vector through the LLM unembedding recovers the associated tokens per each emotion, revealing that the learned emotion directions align not with literal affect words but with indirect, culturally loaded associations that mirror biases in large-scale web text [19], [20]. Where prior work asks whether the input token sits near emotion words, we expose what the class directions 
+
+themselves point to. III. M ETHODOLOGY 
+
+A. SpeechLLMs for MER 
+
+We employ speechLLMs for emotion understanding as they combine broad world knowledge and reasoning ability from pretrained LLMs with speech–text alignment, which grounds these linguistic priors in acoustic evidence. We explore two speechLLM architectures for MER. 
+
+1) Single-Encoder Pipeline : The architecture of our single-encoder pipeline is inspired by the SLAM-ASR frame-work [15], [21], originally proposed for automatic speech recognition (ASR). This architecture connects a frozen pre-trained speech encoder to a frozen pre-trained LLM via a lightweight projector network (Refer Figure 1). Given a speech input, the encoder produces a sequence of frame embeddings 
+
+X = ( x1, . . . , xT ) ∈ RT ×ds , where T is the sequence length and ds the encoder hidden dimension. To reduce the sequence length, k consecutive frames are concatenated, yielding a downsampled sequence Z ∈ R⌊T /k ⌋× kd s . This sequence is then passed through a two-layer MLP projector that maps the speech representations into the LLM input space, 
+
+E = ReLU (Z W 1) W2 (1) where W1 ∈ Rkd s×dh and W2 ∈ Rdh×dl , with dh the projector hidden dimension and dl the LLM model dimension (shared by the input embedding, hidden state, and unem-bedding in the decoder-only LLMs we use). The resulting sequence E ∈ R⌊T /k ⌋× dl serves as the speech prompt to the LLM, replacing the {speech } token in the input prompt prior to the forward pass. To adapt this architecture for MER, we replace the original ASR prompt with a multimodal instruction template introducing two additional placeholders, 
+
+{transcript } and {context }, alongside {speech }:                                          
+
+> <s>USER: You are aclassifier. Predict the emotion of the CURRENT utterance using dialogue context, transcript, and speech. Valid labels (output EXACTLY one): Angry, Happy, Sad, Neutral. Output format: (LABEL). Do NOT output any other words, punctuation, explanations, or multiple labels. Context (previous utterance): {context }.Current transcript: {transcript }.Speech: {speech }.Answer: ASSISTANT: {label }</s>
+
+This allows the LLM to perform multimodal classi-fication over both acoustic ({speech }) and linguistic ({transcript }) inputs, conditioned on dialogue history ({context }). ( {label }) is the target emotion label, which is provided during training and predicted by the model at inference. While including both speech and its transcript as in-put may seem redundant, each modality captures complemen-tary information, and as shown in Table II, combining them consistently improves performance. We conduct experiments with and without each placeholder to assess their individual Fig. 1. General view of the proposed framework. (a) Architecture: a frozen speech encoder, a trainable speech projector, and a LoRA-adapted LLM generate a single hidden state, h1 (hidden state of the final prompt token). (b) Discriminative head: emotion classification is performed directly from h1 by learning one vector per emotion (green, blue, gray, and red circles with flame icons) in the token embedding space. These vectors act as learnable centroids that represent emotion-specific clusters of token hidden states. At inference time, the predicted emotion corresponds to the centroid with the highest dot-product similarity to h1. In this illustrated example, h1 is closest to the red centroid, resulting in the prediction angry .
+
+contributions to emotion classification. In this work, text refers to the transcription of the input speech utterance, while context 
+
+consists of a single preceding utterance. In the generative formulation, the predicted emotion label is obtained by reading the tokens generated by the LLM conditioned on the full prompt, 
+
+ˆc = LLM (E, P) (2) where P is the textual prompt encoding the text and context 
+
+fields, E are the speech prompt embeddings, and ˆc the gener-ated emotion label. 
+
+2) Dual-Encoder Pipeline : We follow the architecture proposed in [13] to implement the dual-encoder pipeline. This design replaces the single speech encoder with two compo-nents: a semantic encoder and an acoustic encoder. We replace their HuBERT semantic encoder [22] with Whisper encoder [23], as it achieves stronger performance in our unimodal baselines (Table I). As acoustic encoder, we employ BEATs [24], a speech encoder pretrained on acoustically aligned objectives. In this dual-encoder pipeline, the speech projector from the single-encoder pipeline (Equation 1) is replaced by a dual cross-attention module, enabling richer fusion of semantic and acoustic representations to produce improved speech embeddings. Unlike the single-encoder pipeline, here we have two sequences of downsampled audio frames, Zs ∈
+
+R⌊T /k ⌋× kd s and Za ∈ R⌊T /k ⌋× kd a , from the semantic and acoustic encoders, respectively. These two sequences are then transformed into the speech prompt embeddings E via dual cross-attention as follows, 
+
+E = Concat 
+
+˜Zs, ˜Za, Asa , Aas 
+
+
+
+W2 (3) where 
+
+˜Zs = LayerNorm (ZsW1s) , (4) 
+
+˜Za = LayerNorm (ZaW1a) , (5) 
+
+Asa = CrossAttn 
+
+˜Zs, ˜Za, ˜Za
+
+
+
+, (6) 
+
+Aas = CrossAttn 
+
+˜Za, ˜Zs, ˜Zs
+
+
+
+(7) where W1s ∈ Rkd s×d and W1a ∈ Rkd a×d project the downsampled sequences to a shared d-dimensional space, and 
+
+W2 ∈ R4d×dl projects the four concatenated d-dimensional vectors to the LLM input dimensionality dl. The prompt structure and classification scheme follow the single-encoder pipeline, with E now produced by the dual cross-attention module (Equation 3). 
+
+B. From Generative to Discriminative 
+
+In the generative formulation, both pipelines read the pre-dicted emotion off the LLM by decoding: conditioned on the full prompt, the model decodes tokens autoregressively until an end-of-sequence token, and the output string is parsed into one of the labels (Equation 2). Concretely, at decoding step i, the hidden state hi ∈ Rdl is projected through the unembedding matrix Wlm ∈ Rdl×|V| , whose v-th column wlm v ∈ Rdl is the output embedding of token v, and the highest-scoring token ti is emitted, 
+
+ti = arg max 
+
+> v∈V
+
+hi wlm v . (8) This generative readout is a poor fit for classification: it can emit tokens outside the label set ( e.g., hallucinations) and, deciding in a space optimized for next-token prediction, may inherit the language-modeling objective’s bias toward frequent labels. A standard remedy is to treat the decoder as an encoder: pool the hidden state of the last input token, which under causal masking has attended to the entire sequence, and attach a classification head [25]. Prior adaptations of this kind typically use a higher-capacity, non-linear head [26], which favors accuracy but spreads each class across many entangled parameters, leaving what the head learns about an emotion opaque. We instead constrain the head to a single linear layer , trading a little capacity for interpretability: a linear head represents each emotion by one vector in the LLM hidden space that can later be examined directly. Concretely, we read the final prompt token’s last hidden state h1 (the position from which the first answer token would be generated) through this head over the emotion classes C rather than through the unembedding (Figure 1), 
+
+ˆc = arg max 
+
+> c∈C
+
+h1 wCLS  
+
+> c
+
+, (9) with WCLS ∈ Rdl×|C| , whose c-th column wCLS  
+
+> c
+
+∈ Rdl is the direction associated with emotion c (mirroring wlm v above). The decision requires a single forward pass, eliminates invalid labels by construction, and, as shown in Section V, rebalances predictions toward minority emotions. The head is trained exactly as the token layer: a softmax over the class scores followed by cross-entropy against the ground-truth emotion, the same objective the LLM uses over its vocabulary, only with the labels drawn from C instead of V.This parallelism is deliberate. Keeping the head linear casts Equation 9 in the same form as the unembedding step of Equation 8, a matrix applied to h followed by an arg max ,so the two differ only in their output space: one column per token in Wlm , one per emotion in WCLS . Because both act on the same hidden state, their columns are comparable: each is trained to align with the hidden states that select it, placing emotion vectors and token embeddings in one shared space. Discriminative training then aligns each emotion column with the hidden states diagnostic of its emotion and, through them, with the token embeddings those states would decode, so the column settles as a learned centroid among the associated tokens (Figure 2). This is what makes the head interpretable: comparing an emotion column against the token embeddings in Wlm recovers the most similar tokens, exposing the associations the model has tied to each emotion (Section VI). IV. E XPERIMENTAL SETUP 
+
+A. Dataset and Evaluation Protocol 
+
+We use the IEMOCAP database [27] for all experiments, a widely adopted multimodal benchmark comprising audio,                                                           
+
+> TABLE I UNIMODAL BASELINES WITH SPEECH FOUNDATION MODELS (SFM), LLM S AND MULTIMODAL LLM S(MLLM). B EST RESULT IN EACH BLOCK IS HIGHLIGHTED IN BOLD .†BEST ENTRY ON THE STANDARD
+> EMO BOX LEADERBOARD ,SHOWN FOR REFERENCE AND DIRECTLY COMPARABLE TO OUR WHISPER -LARGE RESULT BELOW .
+> SFM Input WA UA Macro F1
+> Whisper-large †
+> speech
+> 72.86 73.54 73.11
+> Whisper-large 70.28 70.63 70.45 WavLM-large 68.33 68.24 68.38 HuBERT-base 64.98 67.16 66.03
+> LLM Input WA UA Macro F1
+> Gemma3-27b text 55.39 53.81 54.16 Gemma3-27b + context 55.58 56.15 55.71 Gemma3-27b + context label 56.59 57.80 56.97 MLLM Input WA UA Macro F1
+> Audio Flamingo 3 speech
+> 76.48 76.15 76.69
+> Qwen2.5-Omni-7B 70.46 70.38 70.98 Qwen3-Omni-30B 67.33 66.46 67.54 MiniCPM-o-4.5 48.47 43.96 43.48 Phi4-Multimodal 47.30 48.44 46.83
+
+transcripts, video, and motion capture recordings of dyadic interactions across five sessions, each involving a distinct pair of actors. We follow the standard Leave-One-Session-Out cross-validation protocol for speaker-independent evaluation. Although IEMOCAP contains ten emotion categories, we adopt the common 4-class formulation [28], merging Excited into Happy, yielding Angry, Happy, Sad, and Neutral across 5,531 utterances (1,103 / 1,636 / 1,084 / 1,708 respectively). 
+
+B. Unimodal Baselines 
+
+• Speech Baselines with Speech Foundation Models. Speech foundation models (SFMs) are large-scale neural networks pretrained on diverse audio data to learn general-purpose representations of speech. These representations are commonly used for downstream audio tasks. While many SFMs provide variants fine-tuned for tasks such as ASR, models explic-itly tailored for emotion understanding are limited. Adapting SFMs to speech emotion classification therefore requires task-specific fine-tuning. For speech baselines, we replicate the MLP probing setup of the EmoBox benchmark [28] for SER. 1
+
+• Text Baselines with Zero-Shot LLM. We evaluate the emotion understanding ability of state-of-the-art LLMs using ground truth text , context and context label (emotion label of the previous utterance) as inputs. The experiment with context label is an oracle-style analysis performed to estimate an upper bound and to assess whether accurate history labels could improve performance. 
+
+• Speech Baselines with Multimodal LLMs. Multimodal LLMs (MLLMs) are models that reason across multiple data modalities, integrating audio and visual understanding into a text-pretrained LLM backbone. We evaluate several state-of-
+
+> 1https://github.com/emo-box/EmoBox
+
+the-art MLLMs on emotion recognition using speech input only, out of the box, without any task-specific fine-tuning. 
+
+C. SpeechLLM Implementation 
+
+IEMOCAP audio recordings are mono-channel and sampled at 16 kHz, which we use directly as input. The single-encoder pipeline employs Whisper-medium encoder 2 as the speech encoder, and LLaMA-3.2-3B-Instruct as the LLM [29]. The dual-encoder pipeline further incorporates BEATs-iter3+ (AS2M) 3 as the acoustic encoder. To enable parameter-efficient adaptation of the LLM, we adopt LoRA, updating only a limited subset of parameters. We set the LoRA rank to 16, the LoRA scaling factor ( α) to 32, and apply a dropout rate of 0.05. The base LLM and speech encoder are frozen during training, while the speech projector, CLS head, and LoRA parameters are optimized simultaneously, referred to as our 
+
+Joint training strategy (Section V-A). Model is trained for 10 epochs with a batch size of 6 using AdamW optimizer with an initial learning rate of 1 × 10 −4, zero weight decay, and 1000 warm-up steps. Training is conducted using mixed precision (bf16) on a single NVIDIA H100 GPU for each experiment. 
+
+D. Evaluation Metrics 
+
+We report three standard evaluation metrics commonly used in emotion recognition benchmarks. Weighted Accuracy (WA) is the ratio of correct predictions to total samples, and is therefore influenced by majority classes. Unweighted Accuracy (UA) is the macro-averaged recall computed as the mean of per-class recall scores. Macro F1 is the unweighted average of per-class F1 scores. Macro F1 is our primary metric of interest, as it weights all emotion categories equally regardless of their frequency and accounts for both precision and recall. V. R ESULTS 
+
+Table I reports our unimodal baseline results, alongside the current 1st place entry of the official EmoBox leaderboard 4
+
+for reference ( †). Our reproduced Whisper-large run closely matches this leaderboard entry, and is the strongest among our speech foundation models. Text-only baselines confirm that linguistic context provides useful emotional cues; however, their performance remains well below speech-based models, underscoring the critical role of prosodic and acoustic infor-mation in emotion expression. Among off-the-shelf MLLMs with speech input, Audio Flamingo 3 stands out as the strongest, surpassing both our speech foundation models and the leaderboard leader. Table II summarizes the main results of our proposed speechLLM-based MER framework. For each configuration, we evaluate two variants: with (✓) and without ( ×) the CLS head. Several consistent trends emerge across settings. First, multimodal speech–text inputs yield clear gains over unimodal baselines (with the exception of Audio Flamingo 3),                                                                                                                     
+
+> 2https://huggingface.co/openai/whisper-medium
+> 3https://github.com/microsoft/unilm/tree/master/beats
+> 4https://emo-box.github.io/leaderboard1.html TABLE II MAIN RESULTS WITH SPEECH LLM S. T HE FIRST BLOCK REPORTS STATE -OF -THE -ART RESULTS FROM THE LITERATURE ;THE SECOND AND THIRD REPORT OUR SINGLE -AND DUAL -ENCODER PIPELINES . E ACH INPUT SETTING INCLUDES SPEECH BY DEFAULT ;text IS THE CURRENT UTTERANCE ’S TRANSCRIPT AND context IS A SINGLE PRECEDING UTTERANCE . W E REPORT RESULTS WITH (✓)AND WITHOUT (×)THE
+> CLS HEAD ,AND BOLD THE BEST RESULT IN EACH CONFIGURATION .
+> Pipeline Input CLS WA UA Macro F1
+> emotion2vec [30] speech -71.79 --ENT [31] speech -72.43 73.88 -EMOQ [32] + text -74.40 74.50 -Li et al. [33] + text †-74.66 --Single Encoder speech ×69.82 65.62 65.47 + text ×76.04 71.68 71.32
+> ✓71.13 71.68 71.11 + context ×78.32 76.67 75.63
+> ✓77.68 78.30 78.04
+> Dual Encoder speech ×71.40 71.74 71.52 + text ×75.99 68.75 68.12
+> ✓72.24 72.50 72.24
+> + context ×78.14 78.80 78.13
+> ✓77.97 78.17 78.14
+> TABLE III SPEECH LLM RESULTS UNDER THE REALISTIC ASR SETTING ,WHERE text
+> AND context ARE ASR-TRANSCRIBED (SPEECH +TEXT +CONTEXT INPUT ). WE REPORT RESULTS WITH (✓)AND WITHOUT (×)THE CLS HEAD ;
+> BOLD MARKS BEST RESULT PER PIPELINE .
+> Pipeline Input CLS WA UA Macro F1
+> Single Encoder + context ×74.49 74.34 74.47
+> ✓76.32 77.33 76.50
+> Dual Encoder + context ×76.54 74.31 73.46
+> ✓74.81 76.04 75.19
+
+confirming that acoustic and linguistic modalities carry com-plementary emotional information. Second, adding conversa-tional context (+ context) further improves performance across all configurations, with Macro F1 reaching 78.14, suggesting that discourse-level cues are beneficial for emotion inference. Most importantly, the CLS head consistently improves or matches performance on UA and Macro F1 (which weight all classes equally) across all input settings and both encoder configurations, while the variant without CLS head tends to favor WA, indicating a bias toward majority classes at the expense of minority emotion recognition. Table III reports results in the realistic ASR transcript setting, where the CLS head yields the most substantial gains (Macro F1 improves from 74.47 to 76.50 for the single en-coder), suggesting that discriminative supervision is especially beneficial when input quality is degraded. Furthermore, by bypassing the token generation process entirely, the CLS head eliminates the risk of hallucinated emotion label predictions. Here transcripts are generated using a fine-tuned Whisper-medium model (WER: 8.06%). The CLS head variant demon-TABLE IV ABLATION 1. J OINT VS . STAGED TRAINING RECIPES . R ESULTS ARE REPORTED FOR THE SINGLE -ENCODER PIPELINE WITH GROUND TRUTH TEXT AND CONTEXT INPUTS . CLS REFERS TO THE APPENDED CLASSIFICATION HEAD . B EST PERFORMANCE IS MARKED IN BOLD .                           
+
+> Training Recipe Stage CLS WA UA Macro F1
+> Staged 1×71.46 72.34 72.06
+> ✓74.72 74.84 74.87 2×73.34 74.04 73.79
+> ✓75.18 75.60 75.32 Joint NA ×78.32 76.67 75.63
+> ✓77.68 78.30 78.04
+
+strates robustness to noisy text inputs. This is practically sig-nificant, as most prior MER studies assume oracle transcripts, a condition rarely met in deployment. 
+
+A. Ablation: Joint vs. Staged Training 
+
+We compare two optimization strategies for adapting the speechLLM. Joint training optimizes all trainable modules simultaneously (i.e., the projector, CLS head, and LLM LoRA adapters) in a single pass. Staged training first trains the speech projector and CLS head in isolation (Stage-1) , then fine-tunes the LLM via LoRA after loading the Stage-1 checkpoint (Stage-2) . As shown in Table IV, joint training consistently outperforms staged training for both variants across all metrics. 5 Notably, even at Stage-1, before any LLM fine-tuning, the CLS head already yields clear improvements, suggesting that the proposed discriminative adaptation is ben-eficial even in compute-constrained scenarios. VI. I NTERPRETABILITY : W HAT THE LLM E NCODES 
+
+As described in Section III-B, because the CLS head is linear, each emotion’s class vector lives in the same space as the LLM’s output token embeddings and is directly compa-rable to them. We use this to ask what it has learned each emotion to be, internally, in the token space. With our best-performing model (Table II, Macro F1), we compute the dot-product similarity between each class vector and every token embedding and read off the top-k most similar tokens. Figure 2 makes this concrete: projected to two dimensions with t-SNE, each emotion vector is surrounded by its own cloud of associated tokens, so the head anchors a distinct lexical neighborhood per emotion. Strikingly, the recovered tokens are almost never literal af-fect words ( angry , sad , happy ); instead each emotion resolves to a coherent but indirect semantic field. Sad is dominated by necessity- and deficit-related language ( necessary , needed ,
+
+assumed ) together with decline cues such as elder , consistent with representations centered on lack and reduced agency. 
+
+Angry aligns most strongly with migration and confronta-tion vocabulary ( migration , migrants , migrations , interrupt ,
+
+ejected , withdraw ) and argumentative framing ( arg ). Happy   
+
+> 5A similar trend was observed consistently across other settings reported in Table II
+> Fig. 2. Two-dimensional t-SNE projection of the LLM token-embedding space. Each colored circle marks one learned emotion class vector (a column of WCLS ); surrounding grey labels are token embeddings, with the top-k
+> tokens recovered for each emotion shown near its vector. Every emotion vector sits at the center of its own token cloud (not literal affect words, but indirect, culturally grounded associations), illustrating that the linear head groups tokens by emotion.
+
+maps onto reward- and social-media-oriented language: the token dop is consistent with continuations such as dopamine ,while likes and Vine evoke platform-mediated positive affect, and dawn and dew add positive imagery. Neutral , by con-trast, clusters around transactional, low-valence vocabulary (commercial , commercially , units , pricing ) and plain object or technical descriptors ( automobile , photograph , fireplace ), consistent with the near-absence of emotional loading. Taken together, these patterns indicate that the model grounds emotion recognition less in explicit affect words than in broader, culturally loaded semantic priors acquired during large-scale pretraining, including associations in socially sen-sitive domains, such as the migration–anger link, that mirror documented biases in web-scale text [19], [20]. The linear CLS head is what surfaces them: by tying each emotion to a single direction in the token space, it lets us read the model’s learned associations directly off the class vectors rather than inferring them from downstream behavior. VII. C ONCLUSIONS 
+
+We showed that a single linear classification head is enough to adapt a frozen speechLLM for emotion recognition, im-proving class-balanced performance and robustness to ASR noise. Beyond accuracy, the head’s linearity turns it into a lens on the backbone: reading each emotion as one direction in the output token space reveals associations with indirect, culturally loaded tokens, surfacing biases inherited from pre-training. More broadly, our findings highlight the value of interpretability for uncovering the hidden patterns LLMs learn. ACKNOWLEDGMENTS 
+
+This work was supported by Idiap Research Institute and Uniphore collaboration project. It was also partially funded by the SNSF through the SPIRIT project ORIENTER : tOwards undeRstanding and modelIng the language of mENTal health disordERs (grant no. IZSTZ0 223488). REFERENCES [1] J. J. Gross and R. F. Mu˜ noz, “Emotion regulation and mental health.” 
+
+Clinical psychology: Science and practice , vol. 2, no. 2, p. 151, 1995. [2] J. J. Gross, H. Uusberg, and A. Uusberg, “Mental illness and well-being: an affect regulation perspective,” World Psychiatry , vol. 18, no. 2, pp. 130–139, 2019. [3] N. Elsayed, Z. ElSayed, N. Asadizanjani, M. Ozer, A. Abdelgawad, and M. Bayoumi, “Speech emotion recognition using supervised deep recurrent system for mental health monitoring,” in 2022 IEEE 8th World Forum on Internet of Things (WF-IoT) . IEEE, 2022, pp. 1–6. [4] Y. Feng and L. Devillers, “End-to-end continuous speech emotion recog-nition in real-life customer service call center conversations,” in 2023 11th International Conference on Affective Computing and Intelligent Interaction Workshops and Demos (ACIIW) . IEEE, 2023, pp. 1–8. [5] C. Singla, S. Singh, P. Sharma, N. Mittal, and F. Gared, “Emotion recognition for human–computer interaction using high-level descrip-tors,” Scientific reports , vol. 14, no. 1, p. 12122, 2024. [6] M. J. Al-Dujaili and A. Ebrahimi-Moghadam, “Speech emotion recogni-tion: a comprehensive survey,” Wireless Personal Communications , vol. 129, no. 4, pp. 2525–2561, 2023. [7] H. Wang, J. Deng, F. Meng, and R. Zheng, “Enhancing Speech Emotion Recognition with Multi-Task Learning and Dynamic Feature Fusion,” in 
+
+Interspeech 2025 , 2025, pp. 4713–4717. [8] A. Chaves-Villota, A. Jimenez-Mart´ ın, M. Jojoa-Acosta, A. Bahillo, and J. J. Garc´ ıa-Dom´ ınguez, “Deep feature representations and fusion strategies for speech emotion recognition from acoustic and linguis-tic modalities: A systematic review,” Computer Speech & Language ,vol. 96, p. 101873, 2026. [9] H. Ma, J. Wang, H. Lin, B. Zhang, Y. Zhang, and B. Xu, “A transformer-based model with self-distillation for multimodal emotion recognition in conversations,” IEEE Transactions on Multimedia , vol. 26, pp. 776–788, 2024. [10] C. T. Van, T. V. T. Tran, V. Nguyen, and T. S. Hy, “Effective context modeling framework for emotion recognition in conversations,” in Proc. ICASSP 2025 , 2025, pp. 1–5. [11] S. Dutta and S. Ganapathy, “Llm supervised pre-training for multimodal emotion recognition in conversations,” in Proc. ICASSP 2025 , 2025, pp. 1–5. [12] E. Morais, H. Aronowitz, A. Satt, R. Hoory, A. Dekel, B. Kingsbury, and G. Saon, “Exploring the Limits of Conformer CTC-Encoder for Speech Emotion Recognition using Large Language Models,” in Interspeech 2025 , 2025, pp. 5443–5447. [13] H. Du, S. Lu, G. Zhou, and Y. Gao, “EAA: Emotion-Aware Audio Large Language Models with Dual Cross-Attention and Context-Aware Instruction Tuning,” in Interspeech 2025 , 2025, pp. 5433–5437. [14] J. Mai, X. Xing, Y. Li, and X. Xu, “Chain-of-Thought Distillation with Fine-Grained Acoustic Cues for Speech Emotion Recognition,” in 
+
+Interspeech 2025 , 2025, pp. 5438–5442. [15] X-LANCE, “SLAM-LLM: Speech Language Model Repository,” https: //github.com/X-LANCE/SLAM-LLM, 2024, accessed: 2026-03-04. [16] J. Bellver-Soler, A. Guragain, S. Ramos-Varela, R. C´ ordoba, and L. F. D’Haro, “Speech emotion recognition using multimodal llms and quality-controlled tts-based data augmentation for iberian languages,” Computer Speech & Language , vol. 99, p. 101927, 2026. [Online]. Available: https://www.sciencedirect.com/science/article/pii/ S0885230825001524 [17] N. Calbucura, J. Guillen, and V. Barriere, “A simple method to enhance pre-trained language models with speech tokens for classification,” 2026. [Online]. Available: https://arxiv.org/abs/2512.07571 [18] T. ` Og´ unrem´ ı, C. D. Manning, D. Jurafsky, and K. Livescu, “Transcribe, translate, or transliterate: An investigation of intermediate representa-tions in spoken language models,” in 2025 IEEE Automatic Speech Recognition and Understanding Workshop (ASRU) , 2025, pp. 1–7. [19] F. M. Plaza-del Arco, A. C. Curry, S. Paoli, A. Cercas Curry, and D. Hovy, “Divine LLaMAs: Bias, stereotypes, stigmatization, and emotion representation of religion in large language models,” in Findings of the Association for Computational Linguistics: EMNLP 2024 , Nov. 2024, pp. 4346–4366. [Online]. Available: https://aclanthology.org/2024.findings-emnlp.251/ [20] F. M. Plaza-del Arco, A. Cercas Curry, A. Curry, G. Abercrombie, and D. Hovy, “Angry men, sad women: Large language models reflect gendered stereotypes in emotion attribution,” in Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics , Aug. 2024, pp. 7682–7696. [Online]. Available: https: //aclanthology.org/2024.acl-long.415/ [21] Z. Ma, G. Yang, Y. Yang, Z. Gao, J. Wang, Z. Du, F. Yu, Q. Chen, S. Zheng, S. Zhang et al. , “An embarrassingly simple approach for llm with strong asr capacity,” arXiv preprint arXiv:2402.08846 , 2024. [22] W.-N. Hsu, B. Bolte, Y.-H. H. Tsai, K. Lakhotia, R. Salakhutdinov, and A. Mohamed, “Hubert: Self-supervised speech representation learning by masked prediction of hidden units,” IEEE/ACM transactions on audio, speech, and language processing , vol. 29, pp. 3451–3460, 2021. [23] A. Radford, J. W. Kim, T. Xu, G. Brockman, C. McLeavey, and I. Sutskever, “Robust speech recognition via large-scale weak supervi-sion,” in International conference on machine learning . PMLR, 2023, pp. 28 492–28 518. [24] S. Chen, Y. Wu, C. Wang, S. Liu, D. Tompkins, Z. Chen, W. Che, X. Yu, and F. Wei, “Beats: audio pre-training with acoustic tokenizers,” in 
+
+Proceedings of the 40th International Conference on Machine Learning ,2023, pp. 5178–5193. [25] Z. Li, X. Li, Y. Liu, H. Xie, J. Li, F. lee Wang, Q. Li, and X. Zhong, “Label supervised llama finetuning,” 2023. [Online]. Available: https://arxiv.org/abs/2310.01208 [26] B. Wen and T.-P. Tan, “Beyond generative decoding: Discriminative hidden-state readout from a native omni-modal llm for multimodal sentiment analysis,” 2026. [Online]. Available: https://arxiv.org/abs/ 2606.05713 [27] C. Busso, M. Bulut, C.-C. Lee, A. Kazemzadeh, E. Mower, S. Kim, J. N. Chang, S. Lee, and S. S. Narayanan, “IEMOCAP: Interactive emotional dyadic motion capture database,” Language resources and evaluation ,vol. 42, no. 4, pp. 335–359, 2008. [28] Z. Ma, M. Chen, H. Zhang, Z. Zheng, W. Chen, X. Li, J. Ye, X. Chen, and T. Hain, “Emobox: Multilingual multi-corpus speech emotion recog-nition toolkit and benchmark,” in Interspeech 2024 , 2024, pp. 1580– 1584. [29] A. Dubey, A. Jauhri, A. Pandey, A. Kadian, A. Al-Dahle, A. Letman, A. Mathur, A. Schelten, A. Yang, A. Fan et al. , “The Llama 3 herd of models,” CoRR , vol. abs/2407.21783, 2024. [30] Z. Ma, Z. Zheng, J. Ye, J. Li, Z. Gao, S. Zhang, and X. Chen, “emotion2vec: Self-supervised pre-training for speech emotion representation,” in Findings of ACL , L.-W. Ku, A. Martins, and V. Srikumar, Eds. Bangkok, Thailand: Association for Computational Linguistics, Aug. 2024, pp. 15 747–15 760. [Online]. Available: https://aclanthology.org/2024.findings-acl.931/ [31] S. Shen, Y. Gao, F. Liu, H. Wang, and A. Zhou, “Emotion neural trans-ducer for fine-grained speech emotion recognition,” in Proc. ICASSP 2024 . IEEE, 2024, pp. 10 111–10 115. [32] Y. Yang and M.-W. Mak, “Emoq: Speech emotion recognition via speech-aware q-former and large language model,” arXiv preprint arXiv:2509.15775 , 2025. [33] Y. Li, P. Bell, and C. Lai, “Speech emotion recognition with asr transcripts: A comprehensive study on word error rate and fusion techniques,” in 2024 IEEE Spoken Language Technology Workshop (SLT) . IEEE, 2024, pp. 518–525.

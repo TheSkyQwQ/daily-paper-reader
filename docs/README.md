@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-17</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-18</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-17 22:20:17 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-18 22:06:17 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-17 日报共收录 3 篇，均为速读（各 6.0 分），无精读，主题集中在语音与大模型交叉领域。</p>
-<p>最值得关注两个方向：一是用 LLM 增强副语言特征来检测阿尔茨海默病，二是用反事实审计检验语音讽刺识别究竟依赖词汇还是韵律。</p>
-<p>普通读者可先看这两篇的摘要与方法示意，理解&quot;语音信号＋大模型&quot;如何互补，再决定是否深入。</p>
+<p>2026-09-18 日报精选 4 篇语音情感识别论文，含 1 篇 8.0 分精读与 3 篇速读。最值得关注的是 SpeechLLM 在 token 空间做判别式情感适配（8.0 分），以及用情感原型引导多模态不完整数据融合、共享-特异三视图学习提升语音情感识别。建议普通读者优先从情感识别如何借力大模型这一角度切入，再按兴趣浏览多模态融合与对齐方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -80,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition">Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -96,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LLM-Anchored Paralinguistic Enrichment for Alzheimer&#x27;s Disease Detection">LLM-Anchored Paralinguistic Enrichment for Alzheimer&#x27;s Disease Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="CLASH: Counterfactual Auditing of Lexical and Prosodic Reliance in Spoken Sarcasm Detection">CLASH: Counterfactual Auditing of Lexical and Prosodic Reliance in Spoken Sarcasm Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Encoder Awakening via Adapters: Effective Domain-Adaptive Fine-tuning of Speech-LLMs">Encoder Awakening via Adapters: Effective Domain-Adaptive Fine-tuning of Speech-LLMs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition">Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition">Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs">Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
 </section>

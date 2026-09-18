@@ -1,0 +1,69 @@
+{
+  "label": "2026-09-18",
+  "date": "2026-09-18",
+  "generated_at": "2026-09-18T22:06:19",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/18/2609.20081v1-reading-emotions-in-the-token-space-discriminative-adaptation-of-speechllms-for-emotion-recognition",
+      "section": "deep",
+      "title_en": "Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition",
+      "authors": "Hasindri Watawana, Sergio Burdisso, Esaú Villatoro-Tello, Manjunath K E, Kadri Hacioglu, Petr Motlicek, Andreas Stolcke",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.20081v1",
+      "score": "8.0",
+      "evidence": "语音大模型的判别式适配用于情感识别",
+      "tldr": "SpeechLLM在情感识别上潜力大，但其生成式解码器不适合分类：会输出目标集外标签且偏向高频类。本文提出判别式适配，用单层线性分类头读取最终提示词token的隐藏状态，一次前向即可输出标签，且不修改主干，从而在相同模型下受控比较生成与判别推理。在IEMOCAP上跨两种SpeechLLM架构，该方法提升Macro F1并消除幻觉，在真实ASR转写上增益最大。分析还表明情感方向编码了反映网络文本偏差的间接关联，为可解释分类提供新视角。",
+      "tags": "query:ser-da",
+      "abstract_en": "SpeechLLMs have shown strong potential for emotion recognition, yet they read the predicted emotion off a generative decoder not suited for classification: it can emit labels outside the target set and favors frequent classes. We propose a discriminative adaptation that reads the final prompt token's hidden state through a classification head, producing a label in one forward pass without modifying the backbone. Because this readout starts from the hidden state the model would otherwise decode, it gives a controlled comparison of generative and discriminative inference in an otherwise identical speechLLM. We keep the head a single linear layer, trading little accuracy for interpretability: each emotion becomes one direction in the LLM output token space, revealing associated tokens. On IEMOCAP, across two speechLLM architectures, it improves Macro F1 and removes hallucinations, with largest gains on realistic ASR transcripts. Our analysis reveals that these emotion directions encode indirect associations mirroring biases in web-scale text.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/18/2609.16962v1-affect-prototype-guided-fusion-for-open-vocabulary-incomplete-multi-modal-emotion-recognition",
+      "section": "quick",
+      "title_en": "Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition",
+      "authors": "Yichi Zhang, Shenyue Wang, Jing Luo, Chunyang Yu, Xinyu Yang",
+      "date": "2026-09-15",
+      "pdf": "https://arxiv.org/pdf/2609.16962v1",
+      "score": "7.0",
+      "evidence": "情感原型引导的情感识别融合",
+      "tldr": "开放词汇多模态情感识别常因设备与隐私导致模态缺失，现有方法难在缺失条件下融合，也难以适配任意情感语义。本文提出 Affect-Prototype-Conditioned Fusion（APCF）框架，构建情感原型库显式建模不同情感下的模态贡献，为缺失模态融合提供动态约束，并通过条件检索与特征聚合生成融合表征，送入 LLM 解码器输出开放词汇情感标签。在 OV-MERD+ 与 MER-FG 上，APCF 显著优于现有最优基线，为不完整开放词汇情感识别提供了候选无关的生成式融合方案。",
+      "tags": "query:ser-da",
+      "abstract_en": "Open-vocabulary multimodal emotion recognition (OV-MER) aims to generate open natural-language emotion labels from multimodal affective cues. In real-world scenarios, however, complete and synchronized modal data are difficult to obtain due to limitations of acquisition devices and user privacy constraints. Existing OV-MER methods are largely designed for full-modal inputs, and fail to perform effective feature fusion under modal missing conditions. Meanwhile, current fusion approaches designed for incomplete modalities mainly focus on fixed-label recognition context, and cannot satisfy the demand for fuse emotional cues guided with arbitrary emotion semantics in OV-MER context. To tackle these challenges, this paper proposes an Affect-Prototype-Conditioned Fusion (APCF) framework for incomplete open-vocabulary emotion recognition. As a candidate-free generative framework, APCF extends modal contribution learning to scenarios guided by arbitrary emotional semantics. Specifically, we construct an affect-prototype library to explicitly model multimodal contribution characteristics corresponding to diverse emotions, which provides dynamic constraints for modal fusion under different emotional semantic perspectives. Conditional retrieval and feature aggregation are conducted based on available modal features. The refined fused affective representations are then fed into an LLM decoder to produce open-vocabulary emotion labels. Experiments on the OV-MERD+ and MER-FG datasets demonstrate that APCF substantially outperforms state-of-the-art baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/18/2609.19826v1-consensus-guided-shared-specific-tri-view-learning-for-speech-emotion-recognition",
+      "section": "quick",
+      "title_en": "Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition",
+      "authors": "Bing Huang, Yujian Ma, Xikun Lu, Xianquan Jiang, Jinqiu Sang",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19826v1",
+      "score": "7.0",
+      "evidence": "面向语音情感表征的共享-特定三视图学习",
+      "tldr": "语音情感识别可受益于频谱图、MFCC与HuBERT等异构声学表示，但同一话语的不同视图包含重叠证据与视图特有线索，直接融合易传播冗余、掩盖互补信息。本文提出TriCGF：先将各视图拆为公共与特有分量，用跨视图共识学习聚合公共分量成全局参考，再以视图门控整合自适应融合特有分量，并用软差异正则抑制过度重叠。在说话人无关评估下，IEMOCAP达74.19% WA与75.17% UA，EmoDB达94.36% WA与94.28% UA，均优于代表性方法。该工作证明共识引导的共享-特有三视图学习能更充分利用异构声学信息并提升SER性能。",
+      "tags": "query:ser-da",
+      "abstract_en": "Speech emotion recognition (SER) benefits from heterogeneous acoustic representations, but views derived from the same utterance contain both overlapping emotional evidence and representation-dependent cues. Direct fusion may therefore propagate redundant information or obscure complementary details. To address this issue, we propose Tri-view Consensus-Guided Fusion (TriCGF) for jointly modeling spectrogram, Mel-frequency cepstral coefficients, and HuBERT representations. TriCGF organizes each view into common and view-specific components before fusion. Cross-view Consensus Learning aggregates the common components into a global reference, while View-wise Gated Integration adaptively combines this reference with each view-specific component. A soft difference regularizer further discourages excessive information overlap. Under speaker-independent evaluation, TriCGF achieves 74.19% weighted accuracy (WA) and 75.17% unweighted accuracy (UA) on IEMOCAP, and 94.36% WA and 94.28% UA on EmoDB, outperforming representative SER methods on both datasets.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/18/2609.18516v1-align-integrate-and-fire-efficient-token-level-alignment-for-zero-shot-speechllms",
+      "section": "quick",
+      "title_en": "Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs",
+      "authors": "Abderrahmane Issam, Yusuf Can Semerci, Jan Scholtes, Gerasimos Spanakis",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.18516v1",
+      "score": "6.0",
+      "evidence": "语音大模型零样本语音处理框架",
+      "tldr": "SpeechLLM 扩展至语音输入常依赖全模型微调或参数高效投影器，但存在 token 序列冗长与全模型监督开销大的问题。本文提出 Aligned Continuous Integrate-and-Fire 框架，利用显式 DTW 对齐将连续声学帧动态压缩到目标文本的离散 token 长度，并用轻量距离度量绕过 LLM 前向完成声学到语义桥接。微调阶段采用仅针对单层 LLM 的记忆高效知识蒸馏目标，以远低计算成本取得与全模型交叉熵训练相当的效果。在 ASR 与语音翻译任务上，该方法优于现有参数高效基线，为零样本语音处理提供高效方案。",
+      "tags": "query:ser-da",
+      "abstract_en": "While Large Language Models excel in natural language processing, efficiently extending their capabilities to spoken input remains a significant challenge. Existing methods for building SpeechLLMs often rely on computationally expensive full-model fine-tuning, or employ parameter-efficient projectors that suffer from inefficient token sequence lengths and costly full-model supervision. In this paper, we introduce Aligned Continuous Integrate-and-Fire, a highly efficient framework for zero-shot speech processing. Our method dynamically compresses continuous acoustic frames into the exact discrete token length of the target text utilizing explicit Dynamic Time Warping alignments. This allows our initial training stage to establish a robust acoustic-to-semantic bridge using lightweight distance metrics, entirely bypassing the computationally expensive LLM forward pass. For subsequent fine-tuning, we propose a memory-efficient knowledge distillation objective that targets a single LLM layer, performing competitively with full-model cross-entropy training at a fraction of the computational cost. Through extensive evaluations on Automatic Speech Recognition and Speech Translation, we demonstrate that our method achieves superior performance compared to prior parameter-efficient baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

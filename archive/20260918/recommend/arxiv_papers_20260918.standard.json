@@ -1,0 +1,177 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-18T22:03:35.653350+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2609.20081v1",
+      "source": "arxiv",
+      "title": "Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition",
+      "abstract": "SpeechLLMs have shown strong potential for emotion recognition, yet they read the predicted emotion off a generative decoder not suited for classification: it can emit labels outside the target set and favors frequent classes. We propose a discriminative adaptation that reads the final prompt token's hidden state through a classification head, producing a label in one forward pass without modifying the backbone. Because this readout starts from the hidden state the model would otherwise decode, it gives a controlled comparison of generative and discriminative inference in an otherwise identical speechLLM. We keep the head a single linear layer, trading little accuracy for interpretability: each emotion becomes one direction in the LLM output token space, revealing associated tokens. On IEMOCAP, across two speechLLM architectures, it improves Macro F1 and removes hallucinations, with largest gains on realistic ASR transcripts. Our analysis reveals that these emotion directions encode indirect associations mirroring biases in web-scale text.",
+      "authors": [
+        "Hasindri Watawana",
+        "Sergio Burdisso",
+        "Esaú Villatoro-Tello",
+        "Manjunath K E",
+        "Kadri Hacioglu",
+        "Petr Motlicek",
+        "Andreas Stolcke"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.SD",
+        "eess.AS"
+      ],
+      "published": "2026-09-17T11:38:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.20081v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "discriminative adaptation of SpeechLLM for emotion recognition",
+      "llm_evidence_cn": "语音大模型的判别式适配用于情感识别",
+      "llm_evidence": "语音大模型的判别式适配用于情感识别",
+      "canonical_evidence": "语音大模型的判别式适配用于情感识别",
+      "llm_tldr_en": "Proposes reading the final prompt token hidden state through a linear head to turn a generative SpeechLLM into a reliable discriminative emotion classifier without altering the backbone.",
+      "llm_tldr_cn": "语音大模型在情感识别上潜力显著，但其从生成式解码器读出情感标签并不适合分类，可能输出目标集合外的标签并偏向高频类别。本文提出判别式适配，将最后提示词元的隐藏状态经线性分类头读出，一次前向即得标签且不修改主干。由于读数起点正是模型原本要解码的隐藏状态，该方法在完全相同条件下对生成式与判别式推理做了受控比较。结果显示以极小的精度代价换取可解释性，每种情感对应一个方向，为情感识别提供了更可靠的读出方式。",
+      "llm_tldr": "语音大模型在情感识别上潜力显著，但其从生成式解码器读出情感标签并不适合分类，可能输出目标集合外的标签并偏向高频类别。本文提出判别式适配，将最后提示词元的隐藏状态经线性分类头读出，一次前向即得标签且不修改主干。由于读数起点正是模型原本要解码的隐藏状态，该方法在完全相同条件下对生成式与判别式推理做了受控比较。结果显示以极小的精度代价换取可解释性，每种情感对应一个方向，为情感识别提供了更可靠的读出方式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.16962v1",
+      "source": "arxiv",
+      "title": "Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition",
+      "abstract": "Open-vocabulary multimodal emotion recognition (OV-MER) aims to generate open natural-language emotion labels from multimodal affective cues. In real-world scenarios, however, complete and synchronized modal data are difficult to obtain due to limitations of acquisition devices and user privacy constraints. Existing OV-MER methods are largely designed for full-modal inputs, and fail to perform effective feature fusion under modal missing conditions. Meanwhile, current fusion approaches designed for incomplete modalities mainly focus on fixed-label recognition context, and cannot satisfy the demand for fuse emotional cues guided with arbitrary emotion semantics in OV-MER context. To tackle these challenges, this paper proposes an Affect-Prototype-Conditioned Fusion (APCF) framework for incomplete open-vocabulary emotion recognition. As a candidate-free generative framework, APCF extends modal contribution learning to scenarios guided by arbitrary emotional semantics. Specifically, we construct an affect-prototype library to explicitly model multimodal contribution characteristics corresponding to diverse emotions, which provides dynamic constraints for modal fusion under different emotional semantic perspectives. Conditional retrieval and feature aggregation are conducted based on available modal features. The refined fused affective representations are then fed into an LLM decoder to produce open-vocabulary emotion labels. Experiments on the OV-MERD+ and MER-FG datasets demonstrate that APCF substantially outperforms state-of-the-art baselines.",
+      "authors": [
+        "Yichi Zhang",
+        "Shenyue Wang",
+        "Jing Luo",
+        "Chunyang Yu",
+        "Xinyu Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-15T10:37:26+00:00",
+      "link": "https://arxiv.org/pdf/2609.16962v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "affect prototype guided fusion for emotion recognition",
+      "llm_evidence_cn": "情感原型引导的情感识别融合",
+      "llm_evidence": "情感原型引导的情感识别融合",
+      "canonical_evidence": "情感原型引导的情感识别融合",
+      "llm_tldr_en": "The paper tackles open-vocabulary multimodal emotion recognition with missing modalities, proposing an affect-prototype guided fusion approach that aligns emotional cues with arbitrary semantics, connecting to prototype alignment for emotion representation.",
+      "llm_tldr_cn": "本文针对开放词汇多模态情感识别中模态缺失与不同步导致融合失效的问题，研究如何在不完整模态下融合任意情感语义的情感线索。作者提出情感原型引导的融合方法，利用情感原型对齐多模态情感表征，使其适应任意开放词汇情感标签。该工作将原型对齐思想引入情感识别，缓解了模态缺失下的融合困难。其原型引导的情感表征学习思路与跨语料语音情感识别中的原型对齐方向相通，但研究对象为多模态而非纯语音跨域场景。",
+      "llm_tldr": "本文针对开放词汇多模态情感识别中模态缺失与不同步导致融合失效的问题，研究如何在不完整模态下融合任意情感语义的情感线索。作者提出情感原型引导的融合方法，利用情感原型对齐多模态情感表征，使其适应任意开放词汇情感标签。该工作将原型对齐思想引入情感识别，缓解了模态缺失下的融合困难。其原型引导的情感表征学习思路与跨语料语音情感识别中的原型对齐方向相通，但研究对象为多模态而非纯语音跨域场景。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.18516v1",
+      "source": "arxiv",
+      "title": "Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs",
+      "abstract": "While Large Language Models excel in natural language processing, efficiently extending their capabilities to spoken input remains a significant challenge. Existing methods for building SpeechLLMs often rely on computationally expensive full-model fine-tuning, or employ parameter-efficient projectors that suffer from inefficient token sequence lengths and costly full-model supervision. In this paper, we introduce Aligned Continuous Integrate-and-Fire, a highly efficient framework for zero-shot speech processing. Our method dynamically compresses continuous acoustic frames into the exact discrete token length of the target text utilizing explicit Dynamic Time Warping alignments. This allows our initial training stage to establish a robust acoustic-to-semantic bridge using lightweight distance metrics, entirely bypassing the computationally expensive LLM forward pass. For subsequent fine-tuning, we propose a memory-efficient knowledge distillation objective that targets a single LLM layer, performing competitively with full-model cross-entropy training at a fraction of the computational cost. Through extensive evaluations on Automatic Speech Recognition and Speech Translation, we demonstrate that our method achieves superior performance compared to prior parameter-efficient baselines.",
+      "authors": [
+        "Abderrahmane Issam",
+        "Yusuf Can Semerci",
+        "Jan Scholtes",
+        "Gerasimos Spanakis"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-16T11:47:50+00:00",
+      "link": "https://arxiv.org/pdf/2609.18516v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "SpeechLLM zero-shot speech processing framework",
+      "llm_evidence_cn": "语音大模型零样本语音处理框架",
+      "llm_evidence": "语音大模型零样本语音处理框架",
+      "canonical_evidence": "语音大模型零样本语音处理框架",
+      "llm_tldr_en": "Extending LLMs to spoken input is costly due to full-model tuning or inefficient projectors. The paper proposes Aligned Continuous Integrate-and-Fire, compressing acoustic frames into exact text token lengths via DTW for zero-shot SpeechLLMs.",
+      "llm_tldr_cn": "针对将大语言模型扩展到语音输入时全模型微调代价高昂、投影器词元序列冗长且监督昂贵的问题，本文提出对齐连续整合激发框架。方法利用显式动态时间规整对齐，将连续声学帧动态压缩到与目标文本完全一致的离散词元长度，从而在初始训练阶段建立稳健的语音-文本对齐。该工作面向零样本语音处理，属于语音大模型方向，但其任务目标为识别而非情感，与情感识别主题仅部分相关。",
+      "llm_tldr": "针对将大语言模型扩展到语音输入时全模型微调代价高昂、投影器词元序列冗长且监督昂贵的问题，本文提出对齐连续整合激发框架。方法利用显式动态时间规整对齐，将连续声学帧动态压缩到与目标文本完全一致的离散词元长度，从而在初始训练阶段建立稳健的语音-文本对齐。该工作面向零样本语音处理，属于语音大模型方向，但其任务目标为识别而非情感，与情感识别主题仅部分相关。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.19826v1",
+      "source": "arxiv",
+      "title": "Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition",
+      "abstract": "Speech emotion recognition (SER) benefits from heterogeneous acoustic representations, but views derived from the same utterance contain both overlapping emotional evidence and representation-dependent cues. Direct fusion may therefore propagate redundant information or obscure complementary details. To address this issue, we propose Tri-view Consensus-Guided Fusion (TriCGF) for jointly modeling spectrogram, Mel-frequency cepstral coefficients, and HuBERT representations. TriCGF organizes each view into common and view-specific components before fusion. Cross-view Consensus Learning aggregates the common components into a global reference, while View-wise Gated Integration adaptively combines this reference with each view-specific component. A soft difference regularizer further discourages excessive information overlap. Under speaker-independent evaluation, TriCGF achieves 74.19% weighted accuracy (WA) and 75.17% unweighted accuracy (UA) on IEMOCAP, and 94.36% WA and 94.28% UA on EmoDB, outperforming representative SER methods on both datasets.",
+      "authors": [
+        "Bing Huang",
+        "Yujian Ma",
+        "Xikun Lu",
+        "Xianquan Jiang",
+        "Jinqiu Sang"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-09-17T07:32:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.19826v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "shared-specific tri-view learning for speech emotion representation",
+      "llm_evidence_cn": "面向语音情感表征的共享-特定三视图学习",
+      "llm_evidence": "面向语音情感表征的共享-特定三视图学习",
+      "canonical_evidence": "面向语音情感表征的共享-特定三视图学习",
+      "llm_tldr_en": "Speech emotion recognition benefits from heterogeneous acoustic representations, but views from the same utterance overlap and direct fusion propagates redundancy; TriCGF jointly models spectrogram, MFCC and HuBERT views, splitting common and specific components with consensus learning.",
+      "llm_tldr_cn": "语音情感识别可从多种声学表征中获益，但同一话语的不同视图既含重叠情感证据也含表征相关线索，直接融合会传播冗余或掩盖互补信息。本文提出TriCGF，联合建模频谱图、MFCC与HuBERT三种表征，将每个视图分解为共性与特有分量，通过跨视图共识学习聚合共性并借助视图门控整合自适应融合。该框架提升了情感表征学习的鲁棒性与互补性。",
+      "llm_tldr": "语音情感识别可从多种声学表征中获益，但同一话语的不同视图既含重叠情感证据也含表征相关线索，直接融合会传播冗余或掩盖互补信息。本文提出TriCGF，联合建模频谱图、MFCC与HuBERT三种表征，将每个视图分解为共性与特有分量，通过跨视图共识学习聚合共性并借助视图门控整合自适应融合。该框架提升了情感表征学习的鲁棒性与互补性。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

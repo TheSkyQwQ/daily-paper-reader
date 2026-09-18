@@ -1,0 +1,73 @@
+{
+  "date": "20260918",
+  "date_label": "",
+  "generated_at": "2026-09-18 22:06:17 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.20081v1",
+      "route": "202609/18/2609.20081v1-reading-emotions-in-the-token-space-discriminative-adaptation-of-speechllms-for-emotion-recognition",
+      "title": "Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "语音大模型的判别式适配用于情感识别",
+      "first_seen_at": "2026-09-18 22:06:17 UTC",
+      "updated_at": "2026-09-18 22:06:17 UTC"
+    },
+    {
+      "paper_id": "2609.16962v1",
+      "route": "202609/18/2609.16962v1-affect-prototype-guided-fusion-for-open-vocabulary-incomplete-multi-modal-emotion-recognition",
+      "title": "Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "情感原型引导的情感识别融合",
+      "first_seen_at": "2026-09-18 22:06:17 UTC",
+      "updated_at": "2026-09-18 22:06:17 UTC"
+    },
+    {
+      "paper_id": "2609.19826v1",
+      "route": "202609/18/2609.19826v1-consensus-guided-shared-specific-tri-view-learning-for-speech-emotion-recognition",
+      "title": "Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向语音情感表征的共享-特定三视图学习",
+      "first_seen_at": "2026-09-18 22:06:17 UTC",
+      "updated_at": "2026-09-18 22:06:17 UTC"
+    },
+    {
+      "paper_id": "2609.18516v1",
+      "route": "202609/18/2609.18516v1-align-integrate-and-fire-efficient-token-level-alignment-for-zero-shot-speechllms",
+      "title": "Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语音大模型零样本语音处理框架",
+      "first_seen_at": "2026-09-18 22:06:17 UTC",
+      "updated_at": "2026-09-18 22:06:17 UTC"
+    }
+  ]
+}
