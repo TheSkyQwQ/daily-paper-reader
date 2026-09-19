@@ -1,0 +1,25 @@
+{
+  "date": "20260919",
+  "date_label": "",
+  "generated_at": "2026-09-19 21:00:34 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.15055v2",
+      "route": "202609/19/2609.15055v2-bridging-the-gap-in-ecg-based-emotion-recognition-a-unified-evaluation-of-deep-learning-models",
+      "title": "Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "情绪识别模型的跨数据集泛化评测",
+      "first_seen_at": "2026-09-19 21:00:34 UTC",
+      "updated_at": "2026-09-19 21:00:34 UTC"
+    }
+  ]
+}

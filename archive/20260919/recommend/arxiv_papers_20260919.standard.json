@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-19T20:59:57.480207+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.15055v2",
+      "source": "arxiv",
+      "title": "Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models",
+      "abstract": "Deep learning has led to numerous proposed architectures for Automated Emotion Recognition (AER) from electrocardiogram (ECG) data, but inconsistencies in preprocessing, training, and evaluation make direct comparisons difficult. Most studies train and validate models on individual datasets collected under homogeneous conditions, limiting variability and raising concerns about generalizability. Cross-dataset validation is sometimes used but primarily assesses model adaptability rather than true generalization. This study presents a comparative analysis of prominent deep learning architectures in AER, emphasizing model generalization over dataset adaptability. To enable this benchmark, we introduce two open-source frameworks: Affective Research on Representations and Classifications (ARRC), a standardized benchmarking toolkit, and Affective Research Dataset Toolkit (ARDT), a framework for inter-dataset training and validation. Using ARDT, we consolidate three publicly available AER datasets, CUADS, ASCERTAIN, and DREAMER, into a single dataset, increasing variability in sensor types, recording conditions, and participant demographics. We then use ARRC to evaluate three widely studied deep learning models and two CNN baselines through hyperparameter optimization and 10-fold cross-validation. Our findings provide insights into the trade-offs between classification accuracy and model complexity, establishing a reproducible benchmark for AER research. All source code for ARRC, ARDT, and model evaluation is publicly available to ensure transparency and facilitate further research.",
+      "authors": [
+        "Timothy C Sweeney-Fanelli",
+        "Ajan Ahmed",
+        "Masudul Imtiaz"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.LG"
+      ],
+      "published": "2026-09-14T05:21:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.15055v2",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "cross-dataset generalization evaluation of emotion recognition models",
+      "llm_evidence_cn": "情绪识别模型的跨数据集泛化评测",
+      "llm_evidence": "情绪识别模型的跨数据集泛化评测",
+      "canonical_evidence": "情绪识别模型的跨数据集泛化评测",
+      "llm_tldr_en": "ECG emotion recognition studies are hard to compare due to inconsistent preprocessing and evaluation; the paper benchmarks architectures emphasizing cross-dataset generalization and releases two open-source frameworks.",
+      "llm_tldr_cn": "基于心电图的自动情绪识别研究众多，但预处理、训练与评测不一致导致难以直接比较，多数模型仅在单一同质数据集上验证，泛化性存疑。本文对主流深度学习架构进行统一比较，强调跨数据集泛化而非仅适配性，并开源两个框架。该基准揭示了模型泛化能力的差异，为跨语料、跨域情绪识别的评测协议提供借鉴。",
+      "llm_tldr": "基于心电图的自动情绪识别研究众多，但预处理、训练与评测不一致导致难以直接比较，多数模型仅在单一同质数据集上验证，泛化性存疑。本文对主流深度学习架构进行统一比较，强调跨数据集泛化而非仅适配性，并开源两个框架。该基准揭示了模型泛化能力的差异，为跨语料、跨域情绪识别的评测协议提供借鉴。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "emotion recognition trained and evaluated on different independent speech emotion corpora",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

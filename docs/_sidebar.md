@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-19 <!--dpr-date:20260919-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/19/2609.15055v2-bridging-the-gap-in-ecg-based-emotion-recognition-a-unified-evaluation-of-deep-learning-models" data-sidebar-item="{&quot;title&quot;: &quot;Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.15055v2-bridging-the-gap-in-ecg-based-emotion-recognition-a-unified-evaluation-of-deep-learning-models&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ser-da&quot;}], &quot;evidence&quot;: &quot;情绪识别模型的跨数据集泛化评测&quot;}">Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models</a>
   * 2026-09-18 <!--dpr-date:20260918-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/18/2609.20081v1-reading-emotions-in-the-token-space-discriminative-adaptation-of-speechllms-for-emotion-recognition" data-sidebar-item="{&quot;title&quot;: &quot;Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.20081v1-reading-emotions-in-the-token-space-discriminative-adaptation-of-speechllms-for-emotion-recognition&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ser-da&quot;}], &quot;evidence&quot;: &quot;语音大模型的判别式适配用于情感识别&quot;}">Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition</a>

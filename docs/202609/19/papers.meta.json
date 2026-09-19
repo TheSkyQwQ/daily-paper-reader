@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-19",
+  "date": "2026-09-19",
+  "generated_at": "2026-09-19T21:00:36",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/19/2609.15055v2-bridging-the-gap-in-ecg-based-emotion-recognition-a-unified-evaluation-of-deep-learning-models",
+      "section": "quick",
+      "title_en": "Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models",
+      "authors": "Timothy C Sweeney-Fanelli, Ajan Ahmed, Masudul Imtiaz",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15055v2",
+      "score": "6.0",
+      "evidence": "情绪识别模型的跨数据集泛化评测",
+      "tldr": "基于心电图的情感识别虽提出大量深度学习模型，但预处理、训练与评估不一致，且多在单一同质数据集上验证，跨数据集评估又偏向适应性而非泛化性，导致模型可比性与泛化结论存疑。为此，本文提出开源工具 ARRC 与 ARDT，将 CUADS、ASCERTAIN、DREAMER 三个公开数据集整合为统一基准，以提升传感器、记录条件与被试人口学差异。随后用 ARRC 对三种主流深度模型和两个 CNN 基线进行超参优化与 10 折交叉验证，比较精度与复杂度权衡。该工作建立了可复现基准，并公开代码，推动 ECG 情感识别公平评测与泛化研究。",
+      "tags": "query:ser-da",
+      "abstract_en": "Deep learning has led to numerous proposed architectures for Automated Emotion Recognition (AER) from electrocardiogram (ECG) data, but inconsistencies in preprocessing, training, and evaluation make direct comparisons difficult. Most studies train and validate models on individual datasets collected under homogeneous conditions, limiting variability and raising concerns about generalizability. Cross-dataset validation is sometimes used but primarily assesses model adaptability rather than true generalization. This study presents a comparative analysis of prominent deep learning architectures in AER, emphasizing model generalization over dataset adaptability. To enable this benchmark, we introduce two open-source frameworks: Affective Research on Representations and Classifications (ARRC), a standardized benchmarking toolkit, and Affective Research Dataset Toolkit (ARDT), a framework for inter-dataset training and validation. Using ARDT, we consolidate three publicly available AER datasets, CUADS, ASCERTAIN, and DREAMER, into a single dataset, increasing variability in sensor types, recording conditions, and participant demographics. We then use ARRC to evaluate three widely studied deep learning models and two CNN baselines through hyperparameter optimization and 10-fold cross-validation. Our findings provide insights into the trade-offs between classification accuracy and model complexity, establishing a reproducible benchmark for AER research. All source code for ARRC, ARDT, and model evaluation is publicly available to ensure transparency and facilitate further research.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

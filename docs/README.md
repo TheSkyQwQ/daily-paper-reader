@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-18</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-19</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 1 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-18 22:06:17 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-19 21:00:34 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-18 日报精选 4 篇语音情感识别论文，含 1 篇 8.0 分精读与 3 篇速读。最值得关注的是 SpeechLLM 在 token 空间做判别式情感适配（8.0 分），以及用情感原型引导多模态不完整数据融合、共享-特异三视图学习提升语音情感识别。建议普通读者优先从情感识别如何借力大模型这一角度切入，再按兴趣浏览多模态融合与对齐方向。</p>
+<p>今日速读1篇，聚焦ECG情绪识别中深度学习模型的统一评估。该研究（6.0/10）值得关注的是它对不同模型做了横向对比，有助于看清当前方法的真实差距。普通读者可留意ECG情绪识别从&quot;单模型刷分&quot;走向&quot;统一评测&quot;这一趋势。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition">Reading Emotions in the Token Space: Discriminative Adaptation of SpeechLLMs for Emotion Recognition</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -91,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition">Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition">Consensus-Guided Shared-Specific Tri-View Learning for Speech Emotion Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs">Align, Integrate, and Fire: Efficient Token-Level Alignment for Zero-Shot SpeechLLMs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models">Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
 </section>
 </div>
 
