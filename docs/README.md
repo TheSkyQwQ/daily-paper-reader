@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-19</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-20</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 1 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-19 21:00:34 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 21:35:06 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读1篇，聚焦ECG情绪识别中深度学习模型的统一评估。该研究（6.0/10）值得关注的是它对不同模型做了横向对比，有助于看清当前方法的真实差距。普通读者可留意ECG情绪识别从&quot;单模型刷分&quot;走向&quot;统一评测&quot;这一趋势。</p>
+<p>今天仅筛出1篇速读、0篇精读，唯一入选的是实时音频技术报告《StepAudio 3 Realtime Technical Report》。</p>
+<p>最值得关注的是“实时音频”方向，这篇报告获7.0分，可作为了解 StepAudio 3 实时方案的入口。</p>
+<p>普通读者建议先花几分钟速读该报告，判断是否契合你的实时音频应用场景，再决定是否深挖。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -94,7 +96,7 @@
     <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models">Bridging the Gap in ECG-Based Emotion Recognition: A Unified Evaluation of Deep Learning Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="StepAudio 3 Realtime Technical Report">StepAudio 3 Realtime Technical Report</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
 </section>

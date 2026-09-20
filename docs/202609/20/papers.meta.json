@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-20",
+  "date": "2026-09-20",
+  "generated_at": "2026-09-20T21:35:10",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/20/2609.14005v1-stepaudio-3-realtime-technical-report",
+      "section": "quick",
+      "title_en": "StepAudio 3 Realtime Technical Report",
+      "authors": "Bin Lin, Bo Zhao, Boyang Zhang, Boyong Wu, Chao Yan, Chen Geng, Chen Wu, Cheng Yi, Chengli Feng, Chenglin Zhu, Chengting Feng, Chengyuan Yao, Daijiao Liu, DanNi Wan, Daxin Jiang, Dongjian Li, Dongqing Pang, Fei Tian, Feng Tian, Future Li, Gang Yu, Guanglong Yang, Haoyang Zhang, Hongyuan Wang, Jia Peng, Jiahao Song, Jialong Xue, Jiamin Fan, Jiangjie Zhen, Jianzheng Gao, Jincheng Wen, Jinghua Liang, Jinglan Gong, Jun Chen, Li Xie, Liang Zhao, Lifang Zhang, Lingli Ji, Lun Cai, Min Xu, Peilin Li, Peng Yang, Pengfei Tan, Qingjian Lin, Qinxin Du, Ruijie Xiong, Runze Li, Shenghua Hu, Shengqian Qin, Shi Qiu, Siqi Tu, Siyi Zhou, Tianjiao Deng, Wanying Lu, Weiming Niu, Wen Sun, WenWen Qu, Xiangyu Zhang, Xianwei Zhang, Xiaosu Su, Xing Chen, Xinyu Liu, Xuerui Yang, Yan Wu, Yang Li, Yang Yang, Yechang Huang, Yibo Zhu, Yifan Zhang, Yinuo Yan, Youjun Chen, Yu Fu, Yu Luo, Yu Zhou, Yujie Chen, Yumang Wang, Yunzhou Ju, Yuxiang Yang, Yuxin Li, Yuxin Zhang, Zekai Liu, Zengwei Yao, Zhaoxin Yuan, Zhenwei Mou, Zhiquan Zhang, Zhiyue Wu, Zichao Li, Zichao Zhou, Ziqi Ren, Zixuan Wang",
+      "date": "2026-09-12",
+      "pdf": "https://arxiv.org/pdf/2609.14005v1",
+      "score": "7.0",
+      "evidence": "具备深度声学感知的音频语言基础模型",
+      "tldr": "实时语音交互要求模型具备深度推理、快速响应与自然轮次切换能力，但深度思考往往带来高延迟，影响对话流畅性。StepAudio 3 Realtime 以连续“听—说—想—做”循环构建音频语言基础模型，借助深度感知、无缝双工和边说边想并行推理，缓解深思与实时响应之间的矛盾。推理模式下其在 StepAudioChat 达 73.0 宏平均，并在 MMSU 获 90.6、全双工基准 Overall 98.9、τ-Voice 任务成功率 56.0%。该工作推动实时语音代理兼顾推理、对话与工具执行，为低延迟全双工交互提供统一方案。",
+      "tags": "query:ser-da",
+      "abstract_en": "Realtime spoken interaction demands deep reasoning, prompt responses, and fluid turn-taking. We present StepAudio 3 Realtime, an audio-language foundation model organized around a continuous listen-converse-think-act loop. Deep Perception captures rich acoustic cues to interpret user intent, while Seamless Duplex models synchronized audio streams to handle pauses, backchannels, and interruptions naturally. Crucially, we resolve the tension between deep deliberation and latency via Think-While-Speaking, executing private reasoning in parallel with spoken delivery. In reasoning mode, StepAudio 3 reaches a 73.0 macro average on StepAudioChat. With Think-While-Speaking, it achieves dialogue and reasoning performance comparable to dedicated reasoning models while speaking in real time. Furthermore, an integrated Voice Agent handles asynchronous tool execution without disrupting the dialogue flow. StepAudio 3 Realtime achieves top-tier performance across key dimensions: an exceptional 90.6 on the MMSU benchmark, 98.9 Overall on the Artificial Analysis Full-Duplex Bench, and a 56.0% macro task-success rate on $τ$-Voice.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
