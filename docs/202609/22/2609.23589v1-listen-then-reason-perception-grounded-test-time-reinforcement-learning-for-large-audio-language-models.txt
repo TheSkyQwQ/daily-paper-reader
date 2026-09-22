@@ -1,0 +1,456 @@
+Title: Listen Then Reason: Perception-Grounded Test-Time Reinforcement Learning for Large Audio-Language Models
+
+URL Source: https://arxiv.org/pdf/2609.23589v1
+
+Published Time: Tue, 22 Sep 2026 01:31:21 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+## Listen Then Reason: Perception-Grounded Test-Time Reinforcement Learning for Large Audio-Language Models 
+
+Jiaheng Dong 1∗, Xiaofeng Yu 2∗, Jean Honorio 1,4 , Abhirup Ghosh 3, Hong Jia 2, Ting Dang 1
+
+> 1
+
+The University of Melbourne, Australia 
+
+> 2
+
+University of Auckland, New Zealand 
+
+> 3
+
+University of Birmingham, United Kingdom 
+
+> 4
+
+ARC OPTIMA, Australia jiahengd@student.unimelb.edu.au, xyu724@aucklanduni.ac.nz 
+
+Abstract 
+
+Large audio-language models (LALMs) are increasingly used for a broader range of audio reasoning tasks. These models typically incorporate audio representations into a large lan-guage model (LLM) backbone to enable multimodal reason-ing. Recent test-time reinforcement learning (TTRL) methods further improve LLM reasoning capability by leveraging unla-belled test data after pre-training. However, the importance of the perceptual capability of LALMs remains underexplored, particularly how much acoustic evidence is integrated and re-lied upon during reasoning, and how this contributes to final task performance. This gap limits the development of effec-tive post-training methods like TTRL for audio reasoning. In this work, we first analyse how audio information is integrated and utilised during reasoning process. We quantify layer-wise perceptual reliance and show that stronger acoustic reliance is associated with higher accuracy and a larger performance gain attributable to the audio input. Building on this, we propose Perception-Grounded TTRL (PG-TTRL), which aligns label-free test-time optimisation with perceptually grounded rea-soning, encouraging the model to structure its reasoning more strongly on the audio input. Experiments across LALMs and benchmarks show that PG-TTRL consistently improves rea-soning performance over both the base models and standard TTRL, showing the value of perceptual-grounding optimisa-tion for test-time audio reasoning. 
+
+Introduction 
+
+Large Audio–Language Models (LALMs) have demon-strated strong reasoning performance across a diverse range of tasks, from spoken question answering to audio-grounded inference (Ma et al. 2026; Kumar et al. 2026; Sakshi et al. 2025). These models typically couple a dedicated audio en-coder for acoustic perception with a large language model (LLM) backbone for reasoning, enabling end-to-end mul-timodal understanding. Building on this foundation, post-training techniques, most notably reinforcement learning (RL), have further validated that reasoning capabilities can be meaningfully enhanced beyond pre-training (Guo et al. 2025; Shao et al. 2024; Wen et al. 2025; Diao et al. 2025). More re-cently, test-time reinforcement learning (TTRL), which oper-ates without ground-truth labels, has emerged as a promising 
+
+> ∗
+
+These authors contributed equally. 
+
+direction for leveraging unlabeled data at inference and has shown encouraging gains in model performance (Zuo et al. 2026; Liu et al. 2025; Wu et al. 2026). Despite this rapid progress, a growing body of work has be-gun to scrutinize the internal mechanics of multi-modal large language models. Studies on large vision–language models (LVLMs) in particular have revealed that these models dis-proportionately rely on their text-based LLM backbone, with the multi-modal perception component specifically visual understanding, contributing far less than expected to final task performance (Asadi et al. 2026; Lee et al. 2025). This imbalance may stem from the cross-modal alignment train-ing, which is typically optimized for response correctness rather than perceptual fidelity, allowing the model to exploit linguistic shortcuts (Chen and Li 2026). LALMs inherit this same architectural blueprint and training recipe, with a frozen or lightly fine-tuned audio encoder aligned to a pre-trained LLM, and are therefore likely subject to the same perceptual under-utilization. Yet whether, and to what degree, acoustic perception genuinely drives reasoning in LALMs remains an open and largely unexamined question. This gap carries significant practical consequences, par-ticularly for post-training and test-time updating. Existing RL-based post-training methods for multimodal LLMs are designed around outcome-level reward signals derived from final answer correctness (Ding et al. 2025; Huang et al. 2026). Such rewards are agnostic to how the model arrived at its answer: a correct response driven by language priors is re-warded identically to one grounded in genuine acoustic per-ception. As a result, RL fine-tuning may reinforce language-side shortcuts rather than improving perceptual grounding, yielding models that appear stronger on benchmarks yet re-main brittle when acoustic understanding is genuinely re-quired. This problem is further compounded in TTRL set-tings, where the absence of ground-truth labels removes even the weak corrective signal that supervised objectives provide, leaving the optimization entirely susceptible to modality-agnostic reward hacking. Without an explicit mechanism to assess and reward perceptual contribution, test-time updating risk optimizing the wrong component of the model, a funda-mental misalignment between the learning objective and the true multi-modal bottleneck. To address these limitations, we first analyze the perceptual arXiv:2609.23589v1 [cs.SD] 20 Sep 2026 contribution of acoustic inputs in LALM reasoning, quanti-fying how perception quality affects reasoning outcomes. Building on these insights, we propose a PG-TTRL, which augment GRPO (Group Relative Policy Optimization) with audio-perception reliability for test-time updating. Our ex-periments demonstrate that PG-TTRL improves reasoning accuracy by up to 4.6 points on MMAR and 4.9 points on MMAU, while achieving the strongest Pass@ k performance across nearly all sampling budgets. Our contributions are summarised below: 
+
+• We quantify perceptual reliance in LALMs, revealing the perception evolving pattern in reasoning and establishing its relationship with task performance. 
+
+• We propose PG-TTRL, the first TTRL that incorporates the reliability of audio perceptual grounding into label-free policy optimisation for audio reasoning. 
+
+• We demonstrate across two LALMs and two audio rea-soning benchmarks that PG-TTRL consistently improves reasoning accuracy and achieves stronger performance especially under limited sampling budgets. 
+
+Related Work 
+
+Large Audio–Language Models 
+
+LALMs extend text-based LLMs with the ability to pro-cess speech, environmental sounds, and music. Representa-tive systems include Qwen-Audio and Qwen2-Audio, Kimi-Audio, and the Audio Flamingo series (Chu et al. 2023, 2024; Ding et al. 2025; Goel et al. 2025). Despite differences in scale, most LALMs follow a similar architecture: one or more specialised audio encoders extract acoustic represen-tations, a projection or adaptor module maps them into the LLM embedding space, and a pretrained decoder-only LLM performs instruction following, reasoning, and response gen-eration. Training typically combines audio–text alignment or pretraining with multimodal instruction tuning, enabling a shared model to address tasks such as speech recogni-tion, spoken question answering, audio captioning, emotion understanding, and general audio-based inference. Recent benchmarks such as MMAU and MMAR have further ex-panded evaluation from conventional audio understanding to real-world and multi-step reasoning across speech, sound, and music (Sakshi et al. 2025; Ma et al. 2026). However, their results also show that current LALMs continue to struggle on tasks requiring both accurate acoustic perception and com-plex downstream reasoning. 
+
+Reasoning in LALMs 
+
+Recent studies strengthen LALM reasoning through chain-of-thought (CoT) supervision and reinforcement-learning-based post-training. Audio-Reasoner constructs the large-scale CoT corpus and fine-tunes Qwen2-Audio on struc-tured, long-form reasoning traces, demonstrating substan-tial gains across audio understanding and reasoning bench-marks (Zhifei et al. 2025). Reinforcement learning has subse-quently been introduced to further improve audio reasoning. SARI combines structured CoT supervision with curriculum-guided GRPO, progressively exposing the model to more difficult audio questions and optimising answer accuracy and output structure (Wen et al. 2025). SoundMind-RL ap-plies rule-based RL to audio logical reasoning, using re-wards for factual correctness, response format, and reasoning completeness across audio-to-text and audio-to-audio set-tings (Diao et al. 2025). Collectively, these methods demon-strate the effectiveness of RL and explicit reasoning super-vision for enhancing LALM performance. However, their reliance on ground-truth supervision makes them inapplica-ble to label-free test-time settings.Moreover, their rewards are primarily outcome-oriented: correctness determines whether the final answer is reinforced, while format or reasoning-length constraints regulate how the response is expressed. Consequently, models may be optimised blindly toward de-sirable outputs without acquiring the intended reasoning ca-pability, as these rewards do not assess whether a correct trajectory genuinely uses acoustic evidence or instead relies on language priors and textual shortcuts. 
+
+Test-Time Reinforcement Learning 
+
+Test-time reinforcement learning (TTRL) updates models directly on unlabelled test instances. TTRL derives pseudo-labels through majority voting over sampled trajectories and optimises the resulting self-generated rewards using GRPO (Zuo et al. 2026). Subsequent GRPO-based methods improve the reliability and diversity of this process through entropy-aware exploration, fine-grained pseudo-reward es-timation, and minority-preserving mechanisms (Liu et al. 2025; Wu et al. 2026). More recently, TTRV (Singh et al. 2025) extends this paradigm to VLMs by constructing frequency- and diversity-based GRPO rewards from repeated multimodal predictions. Despite these developments, exist-ing TTRL methods determine update direction primarily from agreement among model outputs. This is particularly problematic for LALMs because, without ground-truth la-bels, majority agreement may reflect shared language-side biases and shortcuts across trajectories. A correctness-based reward will reinforce these shortcuts, driving the policy further from acoustic grounding and amplifying perceptual under-utilisation. 
+
+Perception Grounding in Audio Reasoning 
+
+A LALM processes an audio-grounded query by first encod-ing the audio input into acoustic representations, which are then projected into the LLM’s token space and processed jointly with text tokens. As the joint sequence propagates through the LLM backbone, the model reasons over both modalities, progressively integrating acoustic and linguistic evidence before drawing on this integrated representation for high-level reasoning and answer formation. However, it remains unclear how acoustic evidence evolves from cross-modal integration to downstream reasoning, whether the de-gree of perceptual integration meaningfully predicts task per-formance, and whether acoustic evidence makes a functional contribution to that performance rather than being bypassed by language-side reasoning. Therefore, we structure our analysis around three research questions. RQ1 : How does acoustic evidence evolve across Layer      
+
+> Layer
+> Layer
+> . . .
+> . . .
+> Decoding
+> Mask
+> Layer
+> Layer
+> Layer
+> . . .
+> . . .
+> Decoding
+> Full
+> . . .
+> . . .
+> Question, Choices
+> Causal Contribution Relation to Task Performance
+> Polity
+> Model .
+> .
+> .
+> full
+> mask
+> full
+> mask
+> full
+> mask
+> .
+> .
+> .
+> .
+> .
+> .
+> .
+> .
+> .
+> policy optimization
+> PG-TTRL
+> Audio token Text token Allowed attention edge Masked attention edge
+> Reward
+> calculation
+> Original
+> Majority
+> Vote
+> Perturbed Perceptual Reliance
+
+Figure 1: Framework Overview. We compare the original and perturbed conditions to compute the instance-level layerwise perceptual reliance. We then obtain the task-level reliance, and examine its relationship with task accuracy and the causal contribution of acoustic evidence. PG-TTRL computes a trajectory-level grounding score gi , derives the acoustic grounding margin s, and uses it to calibrate the advantage for test-time policy optimisation. the LALM backbone for reasoning? RQ2 : Does stronger perceptual grounding predict better performance across au-dio reasoning tasks? RQ3 : Does the integrated acoustic evi-dence directly contribute to task performance, or can models achieve strong results through language-side reasoning that largely bypasses the audio input? 
+
+Audio Perception in Reasoning 
+
+To address RQ1 , we conduct a layer-wise representational analysis of the LALM backbone, tracing how the influence of acoustic evidence evolves across layers and identifying where cross-modal integration is most pronounced and where reasoning over the integrated evidence begins to dominate, as shown in Figure 1 left. 
+
+Layer-wise Perceptual Reliance. For each layer, we com-pare the hidden representations under two conditions: (1) the original audio input and (2) a perturbed condition where tex-tual tokens cannot attend to audio tokens. Specifically, given audio tokens A and text tokens T , we block cross-modal attention by setting Mij = −∞ for i ∈ T and j ∈ A before the softmax operation. This removes the direct influence of audio, leaving the reasoning dependent on text tokens only. Let h(l) 
+
+> i, full
+
+and h(l) 
+
+> i, mask
+
+∈ Rd denote the hidden repre-sentation of text token i at layer l under the original and masked conditions, respectively. We compute representa-tions only for the question and answer-option tokens, denoted by S ⊆ T , as these capture the task-relevant reasoning pro-cess. The layer representation is obtained by mean pooling: 
+
+¯h(l) 
+
+> c
+
+= 1
+
+|S| 
+
+X
+
+> i∈S
+
+h(l)
+
+> i,c
+
+, c ∈ { full , mask }. (1) We define the perceptual reliance r(l) 
+
+> k,n
+
+for an instance n
+
+in task Dk as the cosine distance between the two pooled representations ¯h(l) 
+
+> k,n, full
+
+and ¯h(l)
+
+> k,n, mask
+
+, where larger values indicate the layer is more strongly influenced by the audio input. Averaging over all instances in task Dk gives the task-level perceptual reliance: 
+
+R(l) 
+
+> k
+
+= 1
+
+NkNkX
+
+> n=1
+
+r(l)
+
+> k,n
+
+, (2) where Nk is the number of evaluation instances. 
+
+Findings. Figure 2 shows a consistent pattern across tasks and model scales. Perceptual reliance increases in the early layers, reaches a maximum at an intermediate layer, and then gradually decreases toward the output layers across all dif-ferent tasks, model backbones, and datasets. This suggests that early layers progressively emphasise integrating acous-tic information, whereas later layers rely increasingly on the integrated representation to emphasise reasoning and answer formation. This pattern is an intrinsic property of current LALMs rather than a model- or data-specific phenomenon. We therefore define the perception–reasoning emphasis boundary as the layer with maximum perceptual reliance, 
+
+l∗ = arg max  
+
+> l
+
+R(l) 
+
+> k
+
+. (3) which represents the transition from perception-dominated processing to reasoning-dominated computation. We use the peak perceptual reliance, R(l∗) 
+
+> k
+
+, as the task-level measure of acoustic dependence in the remainder of the paper. 
+
+Perceptual Reliance and Task Performance 
+
+To answer RQ2 , we investigate whether capturing stronger acoustic information leads to improved performance. Specif-ically, we examine the relationship between perceptual re-liance and task performance at the task-level. For each task Dk, we measure the task-level perceptual reliance R(l∗) 
+
+> k
+
+at the perception-reasoning emphasize bound-ary and the corresponding task accuracy Acc k under the 0 10 20 30 Layer 0.00 0.02 0.04 0.06 Perceptual reliance 3B · MMAR 
+
+23 
+
+0 10 20 30 Layer 3B · MMAU 
+
+23 
+
+0 10 20 Layer 7B · MMAR 
+
+18 
+
+0 10 20 Layer 7B · MMAU 
+
+18 
+
+Acoustic Quality Analysis Audio Difference Analysis Professional Knowledge and Reasoning Environmental Perception and Reasoning Anomaly Detection Culture of Speaker Aesthetic Evaluation Correlation Analysis Emotion and Intention Counting and Statistics Imagination Music Theory Content Analysis Spatial Analysis Speaker Analysis Temporal Analysis Tasks (MMAR) Event Based Knowledge Retrieval Dissonant Emotion Interpretation Melodic Structure Interpretation Phonemic Stress Pattern Analysis Harmony And Chord Progressions Musical Texture Interpretation Phonological Sequence Decoding Rhythm And Tempo Understanding Counting Conversational Fact Retrieval Emotional Tone Interpretation Socio Cultural Interpretation Sound Based Event Recognition Temporal Reasoning Multi Speaker Role Mapping Emotion State Summarisation Event Based Sound Reasoning Ambient Sound Interpretation Musical Genre Reasoning Acoustic Scene Reasoning Key Highlight Extraction Temporal Event Reasoning Acoustic Source Inference Instrumentation Lyrical Reasoning Eco Acoustic Knowledge Emotion Flip Detection Tasks (MMAU) Figure 2: Layer-wise perceptual reliance across MMAR and MMAU for Qwen2.5-Omni-3B and Qwen2.5-Omni-7B. 0.03 0.04 0.05 0.06 Perceptual reliance 30 40 50 60 70 Accuracy 
+
+> Acoustic Quality Analysis Anomaly Detection Content Analysis Correlation Analysis Counting and Statistics Culture of Speaker Emotion and Intention Environmental Perception and Reasoning Music Theory Professional Knowledge and Reasoning Spatial Analysis Speaker Analysis Temporal Analysis
+
+Qwen-Omni-2.5-3B  
+
+> r = 0.524, p = 0.066
+
+0.06 0.08 Perceptual reliance 30 40 50 60 70 
+
+> Acoustic Quality Analysis Anomaly Detection Content Analysis Correlation Analysis Counting and Statistics Culture of Speaker Emotion and Intention Environmental Perception and Reasoning Music Theory Professional Knowledge and Reasoning Spatial Analysis Speaker Analysis Temporal Analysis
+
+Qwen-Omni-2.5-7B  
+
+> r = 0.505, p = 0.078
+
+Figure 3: Relationship between perceptual reliance and ac-curacy at task-level on MMAR for Qwen2.5-Omni-3B and Qwen2.5-Omni-7B. standard full-audio setting. We compute Pearson’s correla-tion coefficient r between {R(l∗)
+
+k } and {Acc k} across all tasks 1. Figure 3 plots task accuracy against perceptual re-liance. Both model scales exhibit positive correlations with moderate significance, with r = 0 .524 for Omni-3B and 
+
+r = 0 .505 (p < 0.1) for Omni-7B ( p < 0.1). Tasks for which the model integrates more acoustic evidence also tend to achieve higher overall performance. Although this result establishes a clear association be-tween perceptual reliance and task performance, it does not reveal whether stronger performance is driven by richer acoustic representations or by greater utilisation of that evi-dence during subsequent reasoning (RQ3). 
+
+Causal Contribution of Acoustic Perception 
+
+To answer RQ3 , we ask whether acoustic perception is 
+
+causally necessary for successful task performance. We es-timate the causal contribution of acoustic perception by ap-plying the same attention-masking intervention. For each task, we compare the standard full-audio condition with a perturbed condition: 
+
+∆k = Acc full 
+
+k − Acc mask 
+
+k , (4) 
+
+1We exclude three tasks with extremely small sample sizes (e.g., 15) to avoid unstable correlation estimates: Imagination , Aesthetic Evaluation , and Audio Difference Analysis .0.03 0.04 0.05 0.06 Perceptual reliance 010 20 30 40 50 Accuracy Drop 
+
+> Acoustic Quality Analysis Anomaly Detection Content Analysis Correlation Analysis Counting and Statistics Culture of Speaker Emotion and Intention Environmental Perception and Reasoning Music Theory Professional Knowledge and Reasoning Spatial Analysis Speaker Analysis Temporal Analysis
+
+Qwen-Omni-2.5-3B  
+
+> r = 0.458, p = 0.115
+
+0.06 0.08 Perceptual reliance 20 40 60 
+
+> Acoustic Quality Analysis Anomaly Detection Content Analysis Correlation Analysis Counting and Statistics Culture of Speaker Emotion and Intention Environmental Perception and Reasoning Music Theory Professional Knowledge and Reasoning Spatial Analysis Speaker Analysis Temporal Analysis
+
+Qwen-Omni-2.5-7B  
+
+> r = 0.588, p = 0.035
+
+Figure 4: Relationship between perceptual reliance and the absolute accuracy drop at task-level on MMAR for Qwen2.5-Omni-3B and Qwen2.5-Omni-7B. A larger ∆k indicates that the model relies on acoustic per-ception, whereas a small ∆k suggests that the task can largely be solved through language-side reasoning alone. As shown in Figure 4, tasks with higher perceptual reliance generally experience larger performance degradation when acoustic evidence is removed. Omni-7B exhibits a moderate positive correlation of r = 0 .588 , while Omni-3B shows the same directional pattern with r = 0 .458 between the percep-tion reliance and performance drops. This pattern suggests that stronger perceptual reliance is associated with down-stream utilization of acoustic evidence in reasoning, which in turn contributes to better task performance. 
+
+Implications for Post-training. These findings suggest that perceptual grounding is a desirable optimization target. If successful reasoning depends on effective acoustic ground-ing, then post-training should explicitly encourage models to strengthen this grounding rather than optimizing only the final prediction. Existing RL-based post-training, however, optimizes answer correctness alone. Such rewards evaluate only the final outcome and are agnostic to whether the predic-tion was grounded in acoustic evidence or obtained through language-side shortcut reasoning. Consequently, RL has no explicit incentive to improve the perceptual capability that our analysis identifies as critical for many tasks. Perception-Grounded TTRL 
+
+We propose PG-TTRL, a perception-grounded TTRL frame-work that aligns the optimization signal with the acoustic perception, encouraging the model to incorporate acoustic evidence when solving audio tasks. 
+
+Problem Setup and Overview 
+
+As shown in Figure 1, let πθ denote the policy model and πref a frozen copy of the base model. A prompt 
+
+x = (a, q, {o1, . . . , o J }) consists of an audio clip a, a natural language question q, and J candidate answer op-tions. Given x, the model samples N reasoning trajecto-ries y1, . . . , y N ∼ πθ (· | x), where yi = ( yi, 1, . . . , y i,T i )
+
+is the i-th generated token sequence of length Ti, and 
+
+ˆoi ∈ { o1, . . . , o J , ∅} denotes the final answer parsed from trajectory yi, with ∅ marking a parse failure. In the ab-sence of ground-truth labels, we use the majority answer 
+
+m = mode i: ˆ oi̸ =∅ ˆoi as a pseudo-label to provide a correct-ness signal. Our goal is to update πθ to improve audio reasoning with-out ground-truth supervision, while ensuring that the opti-misation signal is aligned with the causal role of acoustic perception. PG-TTRL achieves this through three steps: ( i)computing a trajectory-level perceptual grounding score that quantifies how much each trajectory relies on acoustic ev-idence; ( ii ) deriving a reliability weight that reflects how strongly acoustic grounding distinguishes the majority an-swer from alternatives; and ( iii ) incorporating this reliability weight into a tempered advantage for policy optimization. 
+
+Trajectory-level Perceptual Grounding Score 
+
+We first quantify how much each trajectory yi relies on acous-tic evidence, aiming to assign a higher score for greater re-liance. We evaluate its generated tokens under two teacher-forcing passes: the original condition and the masked con-dition, in which textual tokens are prevented from attending to audio tokens.For each predicted token yi,t , we compute the per-token audio dependence as the log-probability gap between the two conditions: 
+
+∆i,t = log πθ, full (yi,t | a, y i,<t )−log πθ, mask (yi,t | a, y i,<t ) .
+
+(5) A large positive ∆i,t indicates that the token is informed by the acoustic content rather than language priors alone. Aggregating over all tokens in the trajectory, we define the 
+
+perceptual grounding score of trajectory yi as the mean log-probability gap: 
+
+gi = 1
+
+TiTiX
+
+> t=1
+
+∆i,t . (6) A larger gi indicates that the reasoning trajectory relies more heavily on acoustic evidence. 
+
+Reliability Weight 
+
+The grounding score gi alone is insufficient to shape the update, as it reflects only the degree of acoustic reliance and not the correctness of the resulting reasoning. A trajectory may exhibit high gi while arriving at an incorrect answer, and naively incorporating gi into the advantage would risk reinforcing well-grounded but incorrect trajectories. To address this, we condition the perceptual signal on the pseudo-label m by measuring whether trajectories that sup-port the majority answer are more acoustically grounded than those that dissent. Formally, we define the acoustic ground-ing margin as: 
+
+s = mean i: ˆ oi=m gi
+
+| {z }
+
+> majority
+
+− mean i: ˆ oi /∈{ m, ∅} gi
+
+| {z }
+
+> dissent
+
+. (7) A large positive s indicates that trajectories supporting the majority answer rely more strongly on acoustic evidence than dissenting trajectories, lending perceptual credibility to the pseudo-label. When s ≈ 0, acoustic grounding does not distinguish between the two groups, and the pseudo-label receives little perceptual support. We therefore interpret 
+
+s as a direct measure of how strongly acoustic evidence corroborates the majority vote. To obtain a bounded reliability weight, we normalize s
+
+within each minibatch and map it monotonically to r ∈
+
+[rmin , r max ], such that a larger acoustic grounding margin yields a larger reliability weight r.
+
+Policy Optimization 
+
+The proposed PG-TTRL replaces the standard GRPO advan-tage with a reliability-weighted vote margin, ensuring that the optimisation signal is amplified when acoustic evidence supports the majority vote and attenuated when it does not. 
+
+Perception-Grounded Advantage. Standard GRPO opti-mizes a clipped surrogate objective over a group of rollouts, regularized by a KL penalty to a frozen reference model, where the advantage of each rollout reflects its relative quality within the group. In PG-TTRL, we define the group-relative advantage with a perception-grounded one that scales the vote margin by the acoustic reliability of the pseudo-label. Let v(ˆ oi) denote the fraction of trajectories supporting an-swer ˆoi, and let 1/J denote the uniform vote share across the J candidate answers. We refer to v(ˆ oi) − 1/J as the 
+
+vote margin , which measures how strongly the sampled tra-jectories favour ˆoi relative to a uniform distribution. The perception-grounded advantage is: 
+
+Ai = r ·
+
+
+
+v(ˆ oi) − 1
+
+J
+
+
+
+, (8) When s is largely and r → rmax , the vote margin drives the update most strongly; when s is small and r → rmin , the vote margin is down-weighted to the floor rmin without being fully discarded, since rmin > 0. The fixed baseline 1/J ,rather than the group mean, ensures that a prompt on which all rollouts agree still carries a positive training signal r ×
+
+(1 −1/J ). The full procedure is summarized in Algorithm 1. 
+
+Objective. Substituting Ai into the GRPO objective, the full perception-grounded loss is: 
+
+L = − E[min( ρi,t Ai, clip( ρi,t , 1−ϵc, 1+ ϵc) Ai)] + β KL k3(πθ ∥ πref ) , (9) Algorithm 1: PG-TTRL for one minibatch 
+
+Require: prompts {xb}, policy πθ , running scale state  
+
+> 1:
+
+for each prompt xb do  
+
+> 2:
+
+sample N rollouts; parse letters ˆoi; form vote v, ma-jority m 
+
+> 3:
+
+two forward passes (original audio input / perturbed condition) ⇒ ∆i,t ⇒ gi 
+
+> 4:
+
+sb ← mean i:ˆ oi=m gi − mean i:ˆ oi /∈{ m, ∅} gi 
+
+> 5:
+
+end for  
+
+> 6:
+
+standardize defined {sb} by minibatch mean and cumu-lative scale ⇒ rb (clip to [rmin , r max ]) 
+
+> 7:
+
+for each prompt, each rollout i do  
+
+> 8:
+
+if ˆoi = ∅: Ai ← 0; else Ai ← rb (v(ˆ oi) − 1/J ),then if Ai < 0: Ai ← γA i 
+
+> 9:
+
+end for  
+
+> 10:
+
+drop groups with max i |Ai| ≤ ϵ; return {Ai} for the GRPO update where ρi,t = πθ (yi,t | · )/π old (yi,t | · ) is the importance sampling ratio. The perception-grounded signal enters en-tirely through Ai, no additional loss term or reward scalar is introduced, keeping the framework minimal and directly compatible with standard GRPO implementations. 
+
+Experimental Setup 
+
+Datasets. We evaluate on the test sets of two widely used multiple-choice audio reasoning benchmarks. MMAR (Ma et al. 2026) contains 1,000 examples across speech, general audio, music, and mixed-audio settings, organized into 16 
+
+sub-categories and four reasoning levels: Signal, Perception, Semantic, and Cultural. MMAU (Sakshi et al. 2025) con-tains 1,000 examples from its test-mini split across speech, sound, and music, organized into 27 sub-categories. For both benchmarks, the prompts are used for TTRL without access-ing the ground-truth answers, which are reserved exclusively for evaluation. 
+
+Models and Baselines. We apply PG-TTRL to two LALMs: Qwen2.5-Omni-3B and Qwen2.5-Omni-7B (Xu et al. 2025). For all models, we freeze the original parame-ters and optimise only Low-Rank Adaptation (LoRA) mod-ules (Hu et al. 2022). We optimise rank r = 8 and scaling factor α = 16 , with no dropout, and insert the adapters into the linear projection layers of the model, run on one H100 and one A100 GPU. We compare PG-TTRL against two baselines. Base de-notes the original model without any test-time parameter up-dates. TTRL (Zuo et al. 2026) shares the same GRPO optimi-sation as PG-TTRL, but uses the binary majority-vote reward 
+
+1[ˆ oi = m], with no grounding-aware reliability weighting. 
+
+Training Configuration. For each prompt we draw N = 8 
+
+rollouts at sampling temperature T = 1.0 and nucleus top-p = 0 .99 ; optimizer steps use a prompt batch of B = 8 
+
+(B×N = 64 trajectories per step). We train for a single epoch over the prompt pool. The learning rate is 3×10 −6 with a con-stant schedule; the KL penalty uses coefficient β = 0 .05 with the low-variance (k3) estimator. PG-TTRL’s own settings are as follows: reliability bounds [rmin , r max ] = [0 .2, 0.8] ,negative-advantage damping γ = 0 .4, the running scale taken as the cumulative average of the per-minibatch support spread, and the per-minibatch standard deviation computed with the unbiased ( n−1) estimator. Three additional design choices ensure stable training. Groups whose advantages are all within ϵ of zero, indicating either near-uniform vote distributions or an absence of any parseable answer are dropped from the update, as they carry no reliable learning signal. Negative advantages are damped by γ, slowing the suppression of minority answers and re-ducing the risk of premature collapse to a single answer. Trajectories that fail to parse are assigned Ai = 0 . Evalu-ation seeds are derived by hashing the global seed 42 with each prompt ID, while training uses the global seed directly. 
+
+Evaluation Protocol. We report four complementary met-rics. Greedy evaluates the model’s deterministic prediction using a single completion. For sampling-based evaluation, we draw 8 trajectories, and evaluate Maj@8 which measures whether the majority answer among these eight samples is correct, and Avg@8 that reports the mean accuracy across the eight individual samples. Pass@ k estimates the probability that at least one correct solution is found among k sampled outputs, reflecting the model’s ability to produce a correct answer under different sampling budgets. 
+
+Results 
+
+Effectiveness of PG–TTRL 
+
+Table 1 summarises the main results on MMAR and MMAU. Across both benchmarks and both model scales, PG-TTRL achieves the strongest Greedy and Avg@8 results, with the largest gains reaching 4.6 points on MMAR and 4.9 points on MMAU. This demonstrates that perception-grounded op-timisation consistently improves both deterministic and ex-pected reasoning performance. The gains are particularly pronounced on MMAR, which contains tasks that are more complex and auditory in nature and therefore benefit more directly from stronger acoustic grounding. The improvement in Avg@8 consistently exceeds that in Greedy across both models, most strikingly for the 7B model on MMAR, where Avg@8 improves by +4 .6 points against a Greedy gain of +2 .8 points. This suggests that PG-TTRL broadens the set of trajectories capable of reaching the cor-rect answer rather than simply sharpening the single most likely prediction, consistent with the perception-grounded advantage discouraging over-commitment to a single answer pathway and preserving diverse but acoustically supported reasoning trajectories. 
+
+While PG-TTRL improves Greedy and Avg@8 consis-tently, Maj@8 gains are smaller and in some cases compara-ble to Base or TTRL. This suggests that PG-TTRL raises per-trajectory accuracy without necessarily concentrating prob-ability mass on a single dominant answer. In the label-free setting, the model is not explicitly trained to maximise major-ity agreement, but rather to ground each trajectory in acous-tic evidence, which may distribute probability more evenly across correct and near-correct answers. Model Method MMAR MMAU Greedy ↑ Avg@8 ↑ Maj@8 ↑ Greedy ↑ Avg@8 ↑ Maj@8 ↑
+
+Qwen2.5-Omni-3B Base 53.1 52.2 56.7 69.9 67.9 74.0 TTRL 53.4 52.4 56.5 70.7 68.7 74.4 
+
+PG-TTRL 55.7 53.8 58.2 70.5 69.3 74.1 Qwen2.5-Omni-7B Base 53.2 47.3 61.6 69.8 62.3 75.1 TTRL 55.9 48.0 61.4 70.7 64.2 75.4 
+
+PG-TTRL 56.0 51.9 61.4 71.3 67.2 74.6 
+
+Table 1: Results (Greedy, Avg@8, Maj@8) on MMAR and MMAU. The best result within each model group is shown in bold .1 2 3 4 5 6 7 8k50 60 70 80 Accuracy (%) MMAR Base TTRL PG-TTRL 1 2 3 4 5 6 7 8k70 80 90 Accuracy (%) MMAU Base TTRL PG-TTRL 
+
+Figure 5: Pass@k (k = 1. . . 8) comparison on MMAR and MMAU for the Qwen-Omni-2.5-7B model. Both the 3B and 7B models benefit from PG-TTRL, indi-cating that perception-grounded optimisation is not specific to a particular model capacity. The 7B model shows a no-tably larger Avg@8 improvement on MMAU ( +4 .9 over Base), suggesting that larger models may have greater latent perceptual capacity that PG-TTRL is better able to unlock. 
+
+Performance under different sampling budgets 
+
+We further evaluate Pass@ k to assess performance under different test-time sampling budgets. PG-TTRL achieves the highest Pass@ k across nearly all values of k, with the largest gains at small k, particularly significant in practice, where limited inference budgets make early correct solutions most valuable. Unlike TTRL, whose Pass@ k falls below the base model at larger k, PG-TTRL remains consistently stronger across the full range. For difficult instances, the base model may reach the correct answer only through low-probability trajec-tories, leading to an incorrect majority pseudo-label. TTRL then concentrates probability mass on the wrong answer and suppresses these rare correct paths, a self-reinforcing failure that worsens with more sampling. In contrast, PG-TTRL’s perception-grounded advantage discounts updates lacking acoustic support, preventing over-commitment to an incorrect majority vote and preserving low-probability cor-rect trajectories across all sampling budgets. 
+
+What Does Post-Training Actually Improve? 
+
+Figure 6 compares the layer-wise changes in perceptual re-liance produced by PG-TTRL and TTRL relative to the base model on MMAR for Qwen2.5-Omni-7B. TTRL introduces a modest positive shift from relatively early layers, where cross-modal transfer is largely completed. In contrast, PG-TTRL produces substantially larger gains in the later back-bone layers, indicating that it primarily reinforces acoustic 0 10 20 Layer 0.00025                 
+
+> 0.00000 0.00025 0.00050 0.00075 perceptual reliance  PG-TTRL Base
+> 010 20 Layer TTRL Base
+> Imagination Temporal Analysis Correlation Analysis Prof. Knowledge & Reasoning Content Analysis Speaker Analysis Aesthetic Evaluation Env. Perception & Reasoning Music Theory Anomaly Detection Emotion and Intention Audio Difference Analysis Spatial Analysis Culture of Speaker Counting and Statistics Acoustic Quality Analysis
+
+Figure 6: Layer-wise changes in perceptual reliance relative to the base Qwen2.5-Omni-7B model on MMAR. utilisation during late-stage reasoning rather than reshaping earlier perceptual integration. This pattern is consistent with PG-TTRL design. Its reward signal reinforces trajectories that draw on acoustic evidence, and gradient signals prop-agating from the output naturally have the strongest effect on layers closest to the output, with increasing attenuation toward earlier layers. More importantly, early-layer audio representations are largely determined by the audio encoder, projection layer, and pretraining, leaving limited room for post-training reward signals to reshape how audio informa-tion is initially captured and transferred across modalities. Overall, these results suggest that PG-TTRL successfully im-proves audio utilization during late-stage reasoning. Future RL-based post-training may benefit from co-training with a more capable audio encoder or stronger multimodal align-ment to address the perception bottleneck in earlier layers. 
+
+Conclusion 
+
+We investigated how audio information is integrated and utilised throughout LALM reasoning, and showed that stronger perceptual reliance is associated with better task per-formance and a greater causal contribution from the audio input. Building on these findings, we proposed PG-TTRL, which optimizes the model to reason based on perception at test time without ground-truth labels. Experiments across multiple models and benchmarks demonstrate consistent im-provements in audio reasoning. A current limitation is that the perceptual grounding score is computed only from gen-erated CoT tokens. Future work could incorporate hidden representations to provide a richer and more direct signal of acoustic grounding for optimisation. References 
+
+Asadi, M.; O’Sullivan, J. W.; Cao, F.; Nedaee, T.; Rajabal-ifardi, K.; Li, F.-F.; Adeli, E.; and Ashley, E. 2026. Mi-rage: The illusion of visual understanding. arXiv preprint arXiv:2603.21687 .Chen, Y.; and Li, J. 2026. Language Bias in LVLMs: From In-Depth Analysis to Simple and Effective Mitigation. In 
+
+Forty-third International Conference on Machine Learning .Chu, Y.; Xu, J.; Yang, Q.; Wei, H.; Wei, X.; Guo, Z.; Leng, Y.; Lv, Y.; He, J.; Lin, J.; et al. 2024. Qwen2-audio technical report. arXiv preprint arXiv:2407.10759 .Chu, Y.; Xu, J.; Zhou, X.; Yang, Q.; Zhang, S.; Yan, Z.; Zhou, C.; and Zhou, J. 2023. Qwen-audio: Advancing universal audio understanding via unified large-scale audio-language models. arXiv preprint arXiv:2311.07919 .Diao, X.; Zhang, C.; Kong, K.; Wu, W.; Ma, C.; Ouyang, Z.; Qing, P.; Vosoughi, S.; and Gui, J. 2025. Soundmind: Rl-incentivized logic reasoning for audio-language models. In 
+
+Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing , 528–540. Ding, D.; Ju, Z.; Leng, Y.; Liu, S.; Liu, T.; Shang, Z.; Shen, K.; Song, W.; Tan, X.; Tang, H.; et al. 2025. Kimi-audio technical report. arXiv preprint arXiv:2504.18425 .Goel, A.; Ghosh, S.; Kim, J.; Kumar, S.; Kong, Z.; Lee, S.-g.; Yang, C.-H. H.; Duraiswami, R.; Manocha, D.; Valle, R.; et al. 2025. Audio flamingo 3: Advancing audio intelligence with fully open large audio language models. arXiv preprint arXiv:2507.08128 .Guo, D.; Yang, D.; Zhang, H.; Song, J.; Wang, P.; Zhu, Q.; Xu, R.; Zhang, R.; Ma, S.; Bi, X.; et al. 2025. DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning. Nature , 645(8081): 633–638. Hu, E. J.; Shen, Y.; Wallis, P.; Allen-Zhu, Z.; Li, Y.; Wang, S.; Wang, L.; Chen, W.; et al. 2022. Lora: Low-rank adaptation of large language models. Iclr , 1(2): 3. Huang, W.; Jia, B.; Zhai, Z.; Cao, S.; Ye, Z.; Zhao, F.; Xu, Z.; Tang, X.; Hu, Y.; and Lin, S. 2026. Vision-r1: Incentivizing reasoning capability in multimodal large language models. 
+
+Iclr .Kumar, S.; Sedláček, Š.; Lokegaonkar, V.; López, F.; Yu, W.; Anand, N.; Ryu, H.; Chen, L.; Plička, M.; Hlaváček, M.; et al. 2026. Mmau-pro: A challenging and comprehensive benchmark for holistic evaluation of audio general intelli-gence. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 40, 22688–22697. Lee, K.-i.; Kim, M.; Yoon, S.; Kim, M.; Lee, D.; Koh, H.; and Jung, K. 2025. Vlind-bench: Measuring language priors in large vision-language models. In Findings of the Association for Computational Linguistics: NAACL 2025 , 4129–4144. Liu, J.; He, C.; Lin, Y.; Yang, M.; Shen, F.; and Liu, S. 2025. Ettrl: Balancing exploration and exploitation in llm test-time reinforcement learning via entropy mechanism. arXiv preprint arXiv:2508.11356 .Ma, Z.; Ma, Y.; Zhu, Y.; Yang, C.; Chao, Y.-W.; Xu, R.; Chen, W.; Chen, Y.; Chen, Z.; Cong, J.; et al. 2026. Mmar: A challenging benchmark for deep reasoning in speech, au-dio, music, and their mix. Advances in Neural Information Processing Systems , 38. Sakshi, S.; Tyagi, U.; Kumar, S.; Seth, A.; Selvakumar, R.; Nieto, O.; Duraiswami, R.; Ghosh, S.; and Manocha, D. 2025. Mmau: A massive multi-task audio understanding and reasoning benchmark. In International Conference on Learning Representations , volume 2025, 84929–84964. Shao, Z.; Wang, P.; Zhu, Q.; Xu, R.; Song, J.; Bi, X.; Zhang, H.; Zhang, M.; Li, Y.; Wu, Y.; et al. 2024. Deepseekmath: Pushing the limits of mathematical reasoning in open lan-guage models. arXiv preprint arXiv:2402.03300 .Singh, A.; Marjit, S.; Lin, W.; Gavrikov, P.; Yeung-Levy, S.; Kuehne, H.; Feris, R.; Doveh, S.; Glass, J.; and Mirza, M. J. 2025. TTRV: Test-Time Reinforcement Learning for Vision Language Models. arXiv preprint arXiv:2510.06783 .Wen, C.; Guo, T.; Zhao, S.; Zou, W.; and Li, X. 2025. Sari: Structured audio reasoning via curriculum-guided reinforce-ment learning. arXiv preprint arXiv:2504.15900 .Wu, S.; Tan, H.; Zhang, X.; Xia, B.; Zhang, S.; Qi, X.; Yu, B.; and Jia, J. 2026. Beyond Majority Voting: Self-Reflective Test-Time Reinforcement Learning for LLM Reasoning. In 
+
+Forty-third International Conference on Machine Learning .Xu, J.; Guo, Z.; He, J.; Hu, H.; He, T.; Bai, S.; Chen, K.; Wang, J.; Fan, Y.; Dang, K.; Zhang, B.; Wang, X.; Chu, Y.; and Lin, J. 2025. Qwen2.5-Omni Technical Report. arXiv preprint arXiv:2503.20215 .Zhifei, X.; Lin, M.; Liu, Z.; Wu, P.; Yan, S.; and Miao, C. 2025. Audio-reasoner: Improving reasoning capability in large audio language models. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Pro-cessing , 23829–23851. Zuo, Y.; Zhang, K.; Sheng, L.; Qu, S.; Cui, G.; Zhu, X.; Li, H.; Long, X.; Hua, E.; Qi, B.; et al. 2026. Ttrl: Test-time reinforcement learning. Advances in Neural Information Processing Systems , 38: 131459–131483.

@@ -1,0 +1,73 @@
+{
+  "date": "20260922",
+  "date_label": "",
+  "generated_at": "2026-09-22 22:19:39 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.22771v1",
+      "route": "202609/22/2609.22771v1-para-llm-a-unified-approach-to-paralinguistic-and-acoustic-speech-understanding",
+      "title": "ParA-LLM: A Unified Approach to Paralinguistic and Acoustic Speech Understanding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "音频大模型的副语言与声学语音理解",
+      "first_seen_at": "2026-09-22 22:19:39 UTC",
+      "updated_at": "2026-09-22 22:19:39 UTC"
+    },
+    {
+      "paper_id": "2609.18041v1",
+      "route": "202609/22/2609.18041v1-correlation-guided-encoder-selection-for-multi-encoder-large-audio-language-models",
+      "title": "Correlation-Guided Encoder Selection for Multi-Encoder Large Audio-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "多编码器大音频语言模型的编码器选择",
+      "first_seen_at": "2026-09-22 22:19:39 UTC",
+      "updated_at": "2026-09-22 22:19:39 UTC"
+    },
+    {
+      "paper_id": "2609.23248v1",
+      "route": "202609/22/2609.23248v1-space-semantic-projection-and-alignment-of-clip-embeddings-for-domain-adaptation",
+      "title": "SPACE: Semantic Projection and Alignment of CLIP Embeddings for Domain Adaptation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "利用视觉语言结构进行域适应的语义对齐",
+      "first_seen_at": "2026-09-22 22:19:39 UTC",
+      "updated_at": "2026-09-22 22:19:39 UTC"
+    },
+    {
+      "paper_id": "2609.23589v1",
+      "route": "202609/22/2609.23589v1-listen-then-reason-perception-grounded-test-time-reinforcement-learning-for-large-audio-language-models",
+      "title": "Listen Then Reason: Perception-Grounded Test-Time Reinforcement Learning for Large Audio-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "大型音频语言模型与推理中的声学证据",
+      "first_seen_at": "2026-09-22 22:19:39 UTC",
+      "updated_at": "2026-09-22 22:19:39 UTC"
+    }
+  ]
+}

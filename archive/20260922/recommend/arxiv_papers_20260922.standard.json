@@ -1,0 +1,186 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-22T22:18:19.987208+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.22771v1",
+      "source": "arxiv",
+      "title": "ParA-LLM: A Unified Approach to Paralinguistic and Acoustic Speech Understanding",
+      "abstract": "Recent advances in Audio LLMs have achieved human-level speech recognition, yet existing systems struggle to capture paralinguistic aspects such as speaker traits, expressive variations, and environmental acoustic conditions. To address this, we design a framework of 22 paralinguistic characteristics and create a dataset of over 1.2M Audio-QA pairs. We develop ParA-LLM, trained with a two-stage curriculum: first on single-attribute questions to build foundational knowledge, then on multi-attribute questions for joint reasoning over speaker and acoustic characteristics. We also release ParA-Bench, a benchmark of 6,000 multiple-choice questions across speaker-speech, acoustic, and mixed categories, where frontier models like GPT-4o-Audio achieve only 36% accuracy. ParA-LLM surpasses state-of-the-art Audio LLMs like GPT-4o-Audio by 7.5% on ParA-Bench, with additional gains of 1.13% on MMAU-Pro Speech and 7.49% on MMAR Speech.",
+      "authors": [
+        "Nishit Anand",
+        "Jiaqi Su",
+        "Ke Chen",
+        "Yunyun Wang",
+        "Dinesh Manocha",
+        "Ramani Duraiswami",
+        "Rithesh Kumar",
+        "Zeyu Jin"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "cs.LG",
+        "eess.AS",
+        "eess.SP"
+      ],
+      "published": "2026-09-19T05:08:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.22771v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "paralinguistic and acoustic speech understanding with audio LLMs",
+      "llm_evidence_cn": "音频大模型的副语言与声学语音理解",
+      "llm_evidence": "音频大模型的副语言与声学语音理解",
+      "canonical_evidence": "音频大模型的副语言与声学语音理解",
+      "llm_tldr_en": "Audio LLMs still struggle with paralinguistic aspects like speaker traits and expressive variation. ParA-LLM defines 22 paralinguistic characteristics, builds 1.2M Audio-QA pairs, trains a two-stage curriculum, and releases ParA-Bench where frontier models like GPT-4o-Audio underperform.",
+      "llm_tldr_cn": "音频大模型虽在语音识别上接近人类水平，却难以捕捉说话人特质、表达变化与环境声学等副语言信息。本文构建22项副语言特征的框架与超过120万条音频问答数据，提出两阶段课程学习的ParA-LLM，先学单属性再学多属性联合推理，并发布含6000道多选题的ParA-Bench。实验显示GPT-4o-Audio等前沿模型在该基准上表现不佳，凸显副语言理解的挑战。",
+      "llm_tldr": "音频大模型虽在语音识别上接近人类水平，却难以捕捉说话人特质、表达变化与环境声学等副语言信息。本文构建22项副语言特征的框架与超过120万条音频问答数据，提出两阶段课程学习的ParA-LLM，先学单属性再学多属性联合推理，并发布含6000道多选题的ParA-Bench。实验显示GPT-4o-Audio等前沿模型在该基准上表现不佳，凸显副语言理解的挑战。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.18041v1",
+      "source": "arxiv",
+      "title": "Correlation-Guided Encoder Selection for Multi-Encoder Large Audio-Language Models",
+      "abstract": "Multi-encoder fusion extends Large Audio-Language Models (LALMs) beyond speech-centric recognition, but selecting encoders via intuition or exhaustive search often introduces redundant representations and inflates an already constrained compute budget. We propose CUES (Correlation-gUided Encoder Selection), a lightweight heuristic that estimates complementarity through task- and category-level Pearson correlations between encoders' performance profiles, scoring a candidate set from single-encoder evaluations alone--without fusion training during selection. Evaluated on the XARES-LLM benchmark with a frozen SmolLM2-135M backbone (LoRA-adapted) via five-fold cross-validation, CUES consistently identifies the same configuration per track from held-out development splits alone, without using test data for selection. For the broad Track~A suite, CUES selects a cross-family trio (Whisper-medium, mHuBERT-147, and Dasheng-base), achieving a 4.3% relative gain over Whisper-medium (0.771 vs. 0.739). For Track~B text generation, it re-anchors on a focused, speech-only pair (mHuBERT-147 and WavLM-base-plus) and actively abstains from adding a divergent encoder, outperforming mHuBERT-147 by 6.3% (0.589 vs. 0.554). Rather than a failure to scale, this divergence is consistent with a diversity--interference trade-off that CUES navigates per track from correlation signals alone: across the evaluated pool, added cross-family diversity tends toward an inverted-U on broad audio tasks but toward steady degradation on text generation, which favors a focused, speech-anchored set.",
+      "authors": [
+        "Pei-Jun Liao",
+        "Hung-Shin Lee",
+        "Wenze Ren",
+        "Kuo-Hsuan Hung",
+        "Hung-yi Lee",
+        "Hsin-Min Wang"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-09-16T02:41:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.18041v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "encoder selection for multi-encoder large audio-language models",
+      "llm_evidence_cn": "多编码器大音频语言模型的编码器选择",
+      "llm_evidence": "多编码器大音频语言模型的编码器选择",
+      "canonical_evidence": "多编码器大音频语言模型的编码器选择",
+      "llm_tldr_en": "Multi-encoder fusion in Large Audio-Language Models often adds redundant representations. CUES uses task- and category-level Pearson correlations between encoders' performance profiles to pick complementary encoders without fusion training, consistently finding the same configuration on XARES-LLM.",
+      "llm_tldr_cn": "多编码器融合能扩展大音频语言模型的能力，但凭直觉或穷举选择编码器会引入冗余表征并增加算力负担。本文提出CUES，用编码器性能画像之间的任务级与类别级皮尔逊相关性估计互补性，无需融合训练即可评分候选集合。在XARES-LLM基准上，该方法能稳定选出同一配置，为音频语言模型的编码器组合提供了轻量高效的启发式方案。",
+      "llm_tldr": "多编码器融合能扩展大音频语言模型的能力，但凭直觉或穷举选择编码器会引入冗余表征并增加算力负担。本文提出CUES，用编码器性能画像之间的任务级与类别级皮尔逊相关性估计互补性，无需融合训练即可评分候选集合。在XARES-LLM基准上，该方法能稳定选出同一配置，为音频语言模型的编码器组合提供了轻量高效的启发式方案。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.23248v1",
+      "source": "arxiv",
+      "title": "SPACE: Semantic Projection and Alignment of CLIP Embeddings for Domain Adaptation",
+      "abstract": "A fundamental challenge in deploying vision models is domain shift, which arises when training and test data follow different distributions, leading to degraded performance. This challenge is amplified when the same semantic concept appears under distinct visual forms, such as photographs and sketches, where visual similarity is weak despite semantic correspondence. Existing unsupervised domain-adaptation methods aim to align distributions across domains but often ignore semantic relationships among samples of the same class. To address this issue, this paper introduces SPACE, a method that exploits the semantic structure of CLIP's vision-language space for domain adaptation. The key idea is to use text descriptions as semantic anchors by applying Singular Value Decomposition to CLIP embeddings of class descriptions, yielding an orthogonal basis that captures semantic relationships among categories. Visual features from both domains are projected into this semantic subspace, aligning images based on meaning rather than appearance.",
+      "authors": [
+        "João Renato Ribeiro Manesco",
+        "Danilo Samuel Jodas",
+        "Douglas Rodrigues",
+        "Leandro Aparecido Passos",
+        "João Paulo Papa"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-19T23:20:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.23248v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic alignment for domain adaptation exploiting vision-language structure",
+      "llm_evidence_cn": "利用视觉语言结构进行域适应的语义对齐",
+      "llm_evidence": "利用视觉语言结构进行域适应的语义对齐",
+      "canonical_evidence": "利用视觉语言结构进行域适应的语义对齐",
+      "llm_tldr_en": "Domain shift degrades vision models, and existing unsupervised domain adaptation often ignores semantic relations among same-class samples. SPACE exploits CLIP's vision-language space, using text descriptions as semantic anchors to align distributions across domains, improving adaptation under large visual gaps.",
+      "llm_tldr_cn": "域偏移会使训练与测试分布不一致，从而显著降低视觉模型性能，而现有无监督域适应方法往往忽略同类样本间的语义关系。本文提出SPACE，利用CLIP视觉语言空间中的语义结构，以文本描述作为语义锚点来对齐跨域分布，从而在视觉差异大但语义对应的情况下实现更稳健的域适应。该方法为跨域表征对齐与原型式语义约束提供了可迁移的思路。",
+      "llm_tldr": "域偏移会使训练与测试分布不一致，从而显著降低视觉模型性能，而现有无监督域适应方法往往忽略同类样本间的语义关系。本文提出SPACE，利用CLIP视觉语言空间中的语义结构，以文本描述作为语义锚点来对齐跨域分布，从而在视觉差异大但语义对应的情况下实现更稳健的域适应。该方法为跨域表征对齐与原型式语义约束提供了可迁移的思路。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.23589v1",
+      "source": "arxiv",
+      "title": "Listen Then Reason: Perception-Grounded Test-Time Reinforcement Learning for Large Audio-Language Models",
+      "abstract": "Large audio-language models (LALMs) are increasingly used for a broader range of audio reasoning tasks. These models typically incorporate audio representations into a large language model (LLM) backbone to enable multimodal reasoning. Recent test-time reinforcement learning (TTRL) methods further improve LLM reasoning capability by leveraging unlabelled test data after pre-training. However, the importance of the perceptual capability of LALMs remains underexplored, particularly how much acoustic evidence is integrated and relied upon during reasoning, and how this contributes to final task performance. This gap limits the development of effective post-training methods like TTRL for audio reasoning. In this work, we first analyse how audio information is integrated and utilised during reasoning process. We quantify layer-wise perceptual reliance and show that stronger acoustic reliance is associated with higher accuracy and a larger performance gain attributable to the audio input. Building on this, we propose Perception-Grounded TTRL (PG-TTRL), which aligns label-free test-time optimisation with perceptually grounded reasoning, encouraging the model to structure its reasoning more strongly on the audio input. Experiments across LALMs and benchmarks show that PG-TTRL consistently improves reasoning performance over both the base models and standard TTRL, showing the value of perceptual-grounding optimisation for test-time audio reasoning.",
+      "authors": [
+        "Jiaheng Dong",
+        "Xiaofeng Yu",
+        "Jean Honorio",
+        "Abhirup Ghosh",
+        "Hong Jia",
+        "Ting Dang"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "eess.AS"
+      ],
+      "published": "2026-09-20T12:12:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.23589v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "large audio-language models and acoustic evidence in reasoning",
+      "llm_evidence_cn": "大型音频语言模型与推理中的声学证据",
+      "llm_evidence": "大型音频语言模型与推理中的声学证据",
+      "canonical_evidence": "大型音频语言模型与推理中的声学证据",
+      "llm_tldr_en": "The perceptual grounding of large audio-language models is underexplored; this work proposes perception-grounded test-time reinforcement learning that leverages unlabelled test data and quantifies how much acoustic evidence reasoning relies on.",
+      "llm_tldr_cn": "针对大型音频语言模型感知能力被忽视、不清楚推理时整合并依赖多少声学证据的问题，本文提出感知锚定的测试时强化学习方法，在预训练后利用无标注测试数据提升音频推理，并量化声学证据的贡献。实验表明感知锚定有助于提升音频推理任务表现。该工作为音频语言模型的后训练与声学线索利用提供了新方向，可启发跨域情感推断。",
+      "llm_tldr": "针对大型音频语言模型感知能力被忽视、不清楚推理时整合并依赖多少声学证据的问题，本文提出感知锚定的测试时强化学习方法，在预训练后利用无标注测试数据提升音频推理，并量化声学证据的贡献。实验表明感知锚定有助于提升音频推理任务表现。该工作为音频语言模型的后训练与声学线索利用提供了新方向，可启发跨域情感推断。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
