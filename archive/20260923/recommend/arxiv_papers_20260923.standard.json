@@ -1,0 +1,213 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-23T22:11:56.911013+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.26422v1",
+      "source": "arxiv",
+      "title": "Enriching Speech Emotion Representations with Conversational Context",
+      "abstract": "Detecting emotions is necessary for building systems that can accurately and adaptively interact with humans. Speech Emotion Recognition (SER) has become an important research focus to develop intelligent spoken interfaces. However, most studies predict emotions at the utterance level, ignoring the conversational context, along with the emotional flow and speaker interactions it carries. In this paper, we introduce ACERT (Averaged Contextual Emotion Representation through Time), a module that integrates a flexible-length window of conversational context to better capture emotional evolution in spoken interactions. To evaluate the robustness of this method, we conducted experiments on datasets spanning diverse emotionally expressive styles and contexts. ACERT outperforms current state-of-the-art (SOTA) approaches on IEMOCAP, establishes the first context-aware benchmark on SAFE, and obtains strong results on MELD for unweighted, class-balanced metrics. Ablation studies show that ACERT's gains come from emotional and conversational continuity, rather than from speaker identity or acoustic conditions.",
+      "authors": [
+        "Arthur Peuvot",
+        "Romaric Besançon",
+        "Gaël de Chalendar",
+        "Bianca Vieru",
+        "Ioana Vasilescu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "eess.AS"
+      ],
+      "published": "2026-09-22T13:50:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.26422v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "SER with conversational context evaluated on diverse emotion datasets",
+      "llm_evidence_cn": "在多样情感数据集上评估带对话上下文的情感识别",
+      "llm_evidence": "在多样情感数据集上评估带对话上下文的情感识别",
+      "canonical_evidence": "在多样情感数据集上评估带对话上下文的情感识别",
+      "llm_tldr_en": "Most SER studies predict emotion at the utterance level, ignoring conversational context and emotional flow. ACERT integrates a flexible-length window of conversational context into emotion representations and is evaluated across datasets with diverse expressive styles.",
+      "llm_tldr_cn": "现有语音情感识别多在话语级别预测情感，忽略对话上下文所承载的情感流动与说话人交互，限制了交互系统的适应性。本文提出ACERT模块，将可变长度窗口的对话上下文融入情感表征，以更好刻画口语交互中的情感演化。为验证鲁棒性，作者在情感表达风格与语境差异较大的多个数据集上开展实验。该工作说明引入对话上下文有助于提升跨数据集情感表征的稳定性与泛化能力。",
+      "llm_tldr": "现有语音情感识别多在话语级别预测情感，忽略对话上下文所承载的情感流动与说话人交互，限制了交互系统的适应性。本文提出ACERT模块，将可变长度窗口的对话上下文融入情感表征，以更好刻画口语交互中的情感演化。为验证鲁棒性，作者在情感表达风格与语境差异较大的多个数据集上开展实验。该工作说明引入对话上下文有助于提升跨数据集情感表征的稳定性与泛化能力。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "emotion recognition trained and evaluated on different independent speech emotion corpora",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21666v1",
+      "source": "arxiv",
+      "title": "Samsone: A Family of Open Small Audio Language Models for On-Device Inference",
+      "abstract": "The success of Large Audio Language Models has driven the development of massive multimodal networks exceeding billions of parameters. However, the demand for privacy-preserving, low-latency processing has shifted focus toward Small Audio Language Models (SALMs) capable of on-device execution. In this paper, we introduce Samsone, a family of SALMs designed for edge computing. Our core model, Samsone-134M, establishes a new state-of-the-art for its size class across multiple benchmarks. We further explore the scaling laws of SALMs by introducing Samsone-99M and Samsone-356M. Despite their compact footprint, the Samsone family delivers performance competitive with models orders of magnitude larger. To foster open research and reproducibility, we train Samsone on publicly available data. We release the training code, model weights, mobile-optimized checkpoints and provide an open-source Android application to demonstrate real-time on-device inference of Samsone.",
+      "authors": [
+        "Piotr Masztalski",
+        "Michał K. Grzeszczyk",
+        "Olaf Sikorski"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.AI"
+      ],
+      "published": "2026-09-18T12:03:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.21666v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "family of small audio language models for on-device speech understanding",
+      "llm_evidence_cn": "面向端侧推理的小型音频语言模型系列",
+      "llm_evidence": "面向端侧推理的小型音频语言模型系列",
+      "canonical_evidence": "面向端侧推理的小型音频语言模型系列",
+      "llm_tldr_en": "Large audio-language models exceed billions of parameters, hindering private low-latency on-device use. The Samsone family introduces 99M to 356M small audio language models, with the 134M core model reaching state-of-the-art for its size class and matching far larger models.",
+      "llm_tldr_cn": "大型音频语言模型参数量动辄数十亿，难以在注重隐私与低延迟的端侧设备上运行。本文提出 Samsone 系列小型音频语言模型，涵盖 99M、134M 与 356M 三个规模，并系统探索小模型的缩放规律。其中 134M 核心模型在同规模类别的多个基准上取得最优，性能可与参数量高数个数量级的模型竞争。作者同时开源模型以促进可复现研究，为轻量化语音大模型提供了可行路径。",
+      "llm_tldr": "大型音频语言模型参数量动辄数十亿，难以在注重隐私与低延迟的端侧设备上运行。本文提出 Samsone 系列小型音频语言模型，涵盖 99M、134M 与 356M 三个规模，并系统探索小模型的缩放规律。其中 134M 核心模型在同规模类别的多个基准上取得最优，性能可与参数量高数个数量级的模型竞争。作者同时开源模型以促进可复现研究，为轻量化语音大模型提供了可行路径。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.22586v1",
+      "source": "arxiv",
+      "title": "SEABED: SouthEast Asian Benchmark for Evaluating Audio Reasoning",
+      "abstract": "Modern audio-language models are no longer judged only on what words they can transcribe, but on whether they can reason over what they hear: recovering meaning that lives in tone and prosody, telling dialects and regional languages apart, and resolving ambiguity that the written form leaves open. This capability is now measured by a growing family of audio-reasoning benchmarks, but almost entirely in English and on general-domain audio. Southeast Asia (SEA) is served instead by benchmarks that inherit an English task taxonomy of recognition, translation, and paralinguistic classification, and therefore test whether a model hears SEA speech rather than whether it can reason from it. We introduce SEABED, an audio-first question answering dataset designed to benchmark language and audio reasoning models on SEA speech. SEABED comprises a suite of six audio-reasoning tasks built entirely from real, openly available SEA speech corpora, yielding 5,404 question-answer pairs. We evaluate six frontier and region-specific audio LLMs: even the state-of-the-art model Gemini 3.5 Flash achieves only 50.3% weighted average accuracy. SEABED evaluates not only answer accuracy, but also whether models' stated reasoning is grounded in the audio evidence. A sample of the benchmark data is available here: https://huggingface.co/datasets/CentificAIResearch/SEABED.",
+      "authors": [
+        "Harshit Rajgarhia",
+        "Asif Shaik",
+        "Rachuri Lokesh",
+        "Sushanta Kumar Pani",
+        "Abhishek Mukherji"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-09-18T21:11:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.22586v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "audio reasoning over tone, prosody and paralinguistic classification",
+      "llm_evidence_cn": "基于声调、韵律与副语言分类的音频推理评测",
+      "llm_evidence": "基于声调、韵律与副语言分类的音频推理评测",
+      "canonical_evidence": "基于声调、韵律与副语言分类的音频推理评测",
+      "llm_tldr_en": "Audio-language reasoning benchmarks are almost entirely English and general-domain. SEABED is an audio-first question-answering benchmark for Southeast Asian speech, testing reasoning over tone, prosody, dialects and regional languages rather than mere recognition.",
+      "llm_tldr_cn": "现有音频推理基准几乎全部面向英语与通用音频，东南亚语言仅被套用识别、翻译与副语言分类的英语任务体系，无法考察模型是否真正从语音中推理。本文提出 SEABED，一个音频优先的东南亚语音问答数据集，要求模型从语调、韵律、方言与区域语言中恢复语义。该基准以问答形式评测音频语言模型，强调副语言与声学线索的推理能力，为多语言音频理解提供了更贴近推理本质的评测视角。",
+      "llm_tldr": "现有音频推理基准几乎全部面向英语与通用音频，东南亚语言仅被套用识别、翻译与副语言分类的英语任务体系，无法考察模型是否真正从语音中推理。本文提出 SEABED，一个音频优先的东南亚语音问答数据集，要求模型从语调、韵律、方言与区域语言中恢复语义。该基准以问答形式评测音频语言模型，强调副语言与声学线索的推理能力，为多语言音频理解提供了更贴近推理本质的评测视角。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.22851v2",
+      "source": "arxiv",
+      "title": "Discrete vs. Continuous: A Comprehensive Study of Unified Audio Understanding in LALMs",
+      "abstract": "Large Audio Language Models (LALMs) utilize either continuous features or discrete tokens, yet the optimal representation paradigm for general audio understanding remains debated. Existing benchmarks often focus on narrow domains or evaluate encoders outside LALM contexts. To address these gaps, we systematically evaluate continuous and discrete representations across speech, sound and music. Utilizing our UniARC framework with dual evaluation strategies across model scales from SmolLM2-135M to Llama-3-8B, we analyze the dynamic relationships of data volume, model capacity, and computational efficiency. Our results reveal the pivotal role of semantic constraints in tokenization for audio understanding and demonstrate that scaling backbones fail to compensate for information loss in audio representation, especially in data-limited tasks. These findings offer practical guidance for balancing semantic density, fidelity, and efficiency in future LALMs.",
+      "authors": [
+        "Jing Peng",
+        "Zichao Nie",
+        "Zhisheng Zhang",
+        "Jingran Xie",
+        "Zhiyong Wu"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-09-19T07:46:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.22851v2",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "systematic study of discrete vs continuous audio representations in LALMs",
+      "llm_evidence_cn": "对大音频语言模型中离散与连续表示的系統研究",
+      "llm_evidence": "对大音频语言模型中离散与连续表示的系統研究",
+      "canonical_evidence": "对大音频语言模型中离散与连续表示的系統研究",
+      "llm_tldr_en": "Large Audio Language Models use either continuous features or discrete tokens, but the best paradigm for general audio understanding is debated. Using the UniARC framework, this work systematically evaluates both representations across speech, sound and music and multiple model scales.",
+      "llm_tldr_cn": "大音频语言模型可采用连续特征或离散token，但哪种表示范式更适合通用音频理解仍有争议，且现有基准多局限于窄领域或脱离LALM语境评估编码器。本文提出UniARC框架与双重评测策略，在语音、声音与音乐任务上系统比较两类表示，并覆盖从SmolLM2-135M到Llama-3-8B的模型规模。结果揭示语义约束在音频token化中的关键作用，并刻画数据量、模型容量与计算效率的动态关系。",
+      "llm_tldr": "大音频语言模型可采用连续特征或离散token，但哪种表示范式更适合通用音频理解仍有争议，且现有基准多局限于窄领域或脱离LALM语境评估编码器。本文提出UniARC框架与双重评测策略，在语音、声音与音乐任务上系统比较两类表示，并覆盖从SmolLM2-135M到Llama-3-8B的模型规模。结果揭示语义约束在音频token化中的关键作用，并刻画数据量、模型容量与计算效率的动态关系。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.24688v1",
+      "source": "arxiv",
+      "title": "Understanding Hyperspherical Geometry of ECAPA-TDNN Embedding and Its Impact on Zero-Shot Voice Conversion",
+      "abstract": "Angular-margin speaker encoders are widely used in voice conversion, yet the geometry of their classifier prototypes remains poorly understood. We analyze ECAPA-TDNN classifier prototypes as points on the unit hypersphere and characterize their organization using rotation-invariant angular statistics together with global and local effective dimensionality measures. Our analysis shows that standard training can induce angular concentration and a substantial reduction in effective dimensionality. To address this, we investigate two geometric regularization strategies (hinged Riesz log-energy and effective-dimension maximization) applied to classifier prototypes to encourage more uniform hyperspherical coverage. The resulting prototype sets exhibit higher effective dimensionality and improved isotropy, with configuration-dependent effects on speaker-recognition performance. When the corresponding ECAPA-TDNN models are used as speaker encoders for Fast-VGAN, the regularized systems also exhibit improved robustness in zero-shot voice conversion, particularly for previously unseen speakers.",
+      "authors": [
+        "Mathilde Abrassart",
+        "Nicolas Obin",
+        "Axel Roebel"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-09-21T14:42:46+00:00",
+      "link": "https://arxiv.org/pdf/2609.24688v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hyperspherical classifier prototype geometry and regularization",
+      "llm_evidence_cn": "超球面分类器原型几何与正则化",
+      "llm_evidence": "超球面分类器原型几何与正则化",
+      "canonical_evidence": "超球面分类器原型几何与正则化",
+      "llm_tldr_en": "This paper analyzes ECAPA-TDNN classifier prototypes as points on a unit hypersphere, revealing angular concentration and dimensionality collapse, and proposes geometric regularization to encourage uniform hyperspherical coverage.",
+      "llm_tldr_cn": "角间隔说话人编码器广泛用于语音转换，但其分类器原型的几何结构尚不清楚。该文将ECAPA-TDNN分类器原型视为单位超球面上的点，用旋转不变角统计与有效维度度量其组织，发现标准训练会导致角度聚集和有效维度下降。为此提出两种几何正则化策略，促使原型在超球面上更均匀覆盖，为原型对齐与表征几何分析提供参考。",
+      "llm_tldr": "角间隔说话人编码器广泛用于语音转换，但其分类器原型的几何结构尚不清楚。该文将ECAPA-TDNN分类器原型视为单位超球面上的点，用旋转不变角统计与有效维度度量其组织，发现标准训练会导致角度聚集和有效维度下降。为此提出两种几何正则化策略，促使原型在超球面上更均匀覆盖，为原型对齐与表征几何分析提供参考。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

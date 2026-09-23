@@ -1,0 +1,89 @@
+{
+  "date": "20260923",
+  "date_label": "",
+  "generated_at": "2026-09-23 22:14:04 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.26422v1",
+      "route": "202609/23/2609.26422v1-enriching-speech-emotion-representations-with-conversational-context",
+      "title": "Enriching Speech Emotion Representations with Conversational Context",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "在多样情感数据集上评估带对话上下文的情感识别",
+      "first_seen_at": "2026-09-23 22:14:04 UTC",
+      "updated_at": "2026-09-23 22:14:04 UTC"
+    },
+    {
+      "paper_id": "2609.21666v1",
+      "route": "202609/23/2609.21666v1-samsone-a-family-of-open-small-audio-language-models-for-on-device-inference",
+      "title": "Samsone: A Family of Open Small Audio Language Models for On-Device Inference",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向端侧推理的小型音频语言模型系列",
+      "first_seen_at": "2026-09-23 22:14:04 UTC",
+      "updated_at": "2026-09-23 22:14:04 UTC"
+    },
+    {
+      "paper_id": "2609.22586v1",
+      "route": "202609/23/2609.22586v1-seabed-southeast-asian-benchmark-for-evaluating-audio-reasoning",
+      "title": "SEABED: SouthEast Asian Benchmark for Evaluating Audio Reasoning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于声调、韵律与副语言分类的音频推理评测",
+      "first_seen_at": "2026-09-23 22:14:04 UTC",
+      "updated_at": "2026-09-23 22:14:04 UTC"
+    },
+    {
+      "paper_id": "2609.22851v2",
+      "route": "202609/23/2609.22851v2-discrete-vs-continuous-a-comprehensive-study-of-unified-audio-understanding-in-lalms",
+      "title": "Discrete vs. Continuous: A Comprehensive Study of Unified Audio Understanding in LALMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "对大音频语言模型中离散与连续表示的系統研究",
+      "first_seen_at": "2026-09-23 22:14:04 UTC",
+      "updated_at": "2026-09-23 22:14:04 UTC"
+    },
+    {
+      "paper_id": "2609.24688v1",
+      "route": "202609/23/2609.24688v1-understanding-hyperspherical-geometry-of-ecapa-tdnn-embedding-and-its-impact-on-zero-shot-voice-conversion",
+      "title": "Understanding Hyperspherical Geometry of ECAPA-TDNN Embedding and Its Impact on Zero-Shot Voice Conversion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "超球面分类器原型几何与正则化",
+      "first_seen_at": "2026-09-23 22:14:04 UTC",
+      "updated_at": "2026-09-23 22:14:04 UTC"
+    }
+  ]
+}
