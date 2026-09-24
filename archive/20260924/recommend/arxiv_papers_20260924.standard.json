@@ -1,0 +1,130 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-24T22:30:22.895841+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.27195v1",
+      "source": "arxiv",
+      "title": "Quieter Than the Room: Representation Drift and Task Robustness in Speech Encoders",
+      "abstract": "Non-speech interference can change a speech representation without causing comparable task loss. We test eight frozen encoders on four tasks, adding non-speech sounds throughout recordings, during speech, or in pauses. Under whole-recording interference, embedding drift tracks task loss across seven sounds, with mean Spearman correlations of 0.81-0.88. Moving the same sound between speech and pauses changes this pattern. At quiet to moderate levels, pause interference produces larger drift, while speech interference usually causes greater loss on intent recognition, speaker verification and speech recognition. Emotion recognition shows a weaker placement effect. Pause interference also changes speech-frame representations beyond the injected region. Even below the estimated recording background, interference can change embeddings as much as repeated speech takes do. Drift helps rank the effects of different sounds, but larger drift does not consistently indicate greater task loss.",
+      "authors": [
+        "Vsevolod Kovalev",
+        "Pranay Manocha"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CL"
+      ],
+      "published": "2026-09-23T00:58:15+00:00",
+      "link": "https://arxiv.org/pdf/2609.27195v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "representation drift and emotion recognition robustness under non-speech recording interference",
+      "llm_evidence_cn": "非语音录音干扰下的表示漂移与情感识别鲁棒性",
+      "llm_evidence": "非语音录音干扰下的表示漂移与情感识别鲁棒性",
+      "canonical_evidence": "非语音录音干扰下的表示漂移与情感识别鲁棒性",
+      "llm_tldr_en": "Non-speech interference can shift speech representations without matching task loss. Testing eight frozen encoders on four tasks shows drift-loss correlation and weaker placement effects for emotion recognition.",
+      "llm_tldr_cn": "非语音干扰能在不引起相应任务损失的情况下改变语音表示，但漂移与任务鲁棒性的关系尚不明确。本文在四个任务上测试八个冻结语音编码器，把七种非语音声音分别注入整段录音、语音段与停顿处。结果显示整段干扰下嵌入漂移与任务损失高度相关，而把同一声音在语音与停顿间移动会改变该模式，情感识别对位置效应较弱。该分析揭示了干扰位置对表示稳定性的影响。",
+      "llm_tldr": "非语音干扰能在不引起相应任务损失的情况下改变语音表示，但漂移与任务鲁棒性的关系尚不明确。本文在四个任务上测试八个冻结语音编码器，把七种非语音声音分别注入整段录音、语音段与停顿处。结果显示整段干扰下嵌入漂移与任务损失高度相关，而把同一声音在语音与停顿间移动会改变该模式，情感识别对位置效应较弱。该分析揭示了干扰位置对表示稳定性的影响。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition under domain shift across different speech datasets and recording conditions",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.27260v1",
+      "source": "arxiv",
+      "title": "JASPER: Joint Audio and Speech Pre-trained Encoder Representations",
+      "abstract": "Self-supervised learning (SSL) for speech and audio has largely progressed along separate tracks: speech models emphasise time-domain prediction, whereas audio representation learning has focused on time-frequency patterns. This separation creates a compatibility gap, limiting cross-domain generalization. In this work, we introduce JASPER, Joint Audio and Speech Pre-trained Encoder Representations, a framework that augments speech-pretrained models with time-frequency objectives. Specifically, JASPER performs masked prediction of temporal and spectral targets over long audio segments, enabling spectro-temporal representation learning of speech and audio signals. The proposed method consistently outperforms multiple baselines and existing speech/audio encoders on diverse speech, audio, and music tasks, demonstrating the effectiveness of unified spectro-temporal modeling.",
+      "authors": [
+        "Geeth George",
+        "Ameenudeen P E",
+        "Hrishikesh H Pillai",
+        "Sriram Ganapathy"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-09-23T02:44:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.27260v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "joint audio-speech representation learning to improve cross-domain generalization",
+      "llm_evidence_cn": "联合音频语音表示学习以提升跨域泛化",
+      "llm_evidence": "联合音频语音表示学习以提升跨域泛化",
+      "canonical_evidence": "联合音频语音表示学习以提升跨域泛化",
+      "llm_tldr_en": "Speech and audio SSL diverge, limiting cross-domain generalization. JASPER adds time-frequency masked prediction to speech encoders for joint spectro-temporal learning and beats baselines.",
+      "llm_tldr_cn": "语音与音频自监督学习长期沿不同轨道发展，语音模型偏时域预测、音频模型偏时频模式，造成兼容性缺口并限制跨域泛化。本文提出JASPER框架，在语音预训练模型上引入时频目标，对长音频段同时进行时域与频域掩码预测，从而学习谱-时联合表示。实验表明该方法在多个基线上稳定优于现有语音与音频编码器，说明统一表示有助于跨域迁移。",
+      "llm_tldr": "语音与音频自监督学习长期沿不同轨道发展，语音模型偏时域预测、音频模型偏时频模式，造成兼容性缺口并限制跨域泛化。本文提出JASPER框架，在语音预训练模型上引入时频目标，对长音频段同时进行时域与频域掩码预测，从而学习谱-时联合表示。实验表明该方法在多个基线上稳定优于现有语音与音频编码器，说明统一表示有助于跨域迁移。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.27615v1",
+      "source": "arxiv",
+      "title": "BiCFlow-MER: Orchestrating Discriminative and Generative Multimodal Emotion Recognition via Conditional Transport",
+      "abstract": "In multimodal emotion recognition (MER), human affective states are inferred by integrating complementary cues from multiple modalities. In audio-text MER, affective cues are often entangled with speaker style and lexical content, while cross-modal disagreement further complicates how the evidence should be integrated. Under conventional discriminative fusion, multimodal evidence is compressed into a terminal prediction, with modality-specific cues and conflict information insufficiently preserved. In large generative affective models, by contrast, affective reasoning is typically embedded in language decoding, leaving emotion evidence implicit and difficult to verify in a structured space. To address these limitations, BiCFlow-MER (Bidirectional Conditional Flow for Multimodal Emotion Recognition) is proposed as a conditional-flow framework in which audio-text MER is formulated as generative evidence transport within a structured emotion space. Within BiCFlow-MER, emotion-oriented evidence is disentangled from speaker-style and lexical-content factors to construct a conflict-aware affective condition. Guided by this condition, each utterance is transported to an explicit emotion-space endpoint through a bidirectional rectified flow. Candidate emotions are jointly verified through adaptive prototype-cloud scoring of the transported endpoint and backward class-to-condition consistency with the original multimodal condition, enabling conflict-aware recognition. BiCFlow-MER is shown to outperform all compared methods across IEMOCAP, MELD, and the zero-shot CASE benchmark. By orchestrating discriminative recognition and generative evidence modeling through conditional transport, BiCFlow-MER defines a new MER paradigm.",
+      "authors": [
+        "Yanbing Wang",
+        "Shenyue Wang",
+        "Chunyang Yu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.SD"
+      ],
+      "published": "2026-09-23T09:36:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.27615v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal emotion recognition with audio-text fusion",
+      "llm_evidence_cn": "音频-文本多模态情感识别与融合",
+      "llm_evidence": "音频-文本多模态情感识别与融合",
+      "canonical_evidence": "音频-文本多模态情感识别与融合",
+      "llm_tldr_en": "Multimodal emotion recognition suffers from entangled affective cues and cross-modal disagreement. BiCFlow-MER orchestrates discriminative and generative modeling via conditional transport, preserving modality-specific evidence and conflict in a structured space.",
+      "llm_tldr_cn": "多模态情感识别中，情感线索常与说话人风格、词汇内容纠缠，且跨模态分歧使证据融合变得困难；传统判别式融合压缩证据，生成式模型又使情感证据隐式难验证。本文提出BiCFlow-MER，通过条件传输协调判别式与生成式框架，在结构化空间中保留模态特定线索与冲突信息。实验表明该方法能兼顾可验证的情感证据与准确预测。该工作为音频-文本情感识别提供了可解释、鲁棒的融合范式。",
+      "llm_tldr": "多模态情感识别中，情感线索常与说话人风格、词汇内容纠缠，且跨模态分歧使证据融合变得困难；传统判别式融合压缩证据，生成式模型又使情感证据隐式难验证。本文提出BiCFlow-MER，通过条件传输协调判别式与生成式框架，在结构化空间中保留模态特定线索与冲突信息。实验表明该方法能兼顾可验证的情感证据与准确预测。该工作为音频-文本情感识别提供了可解释、鲁棒的融合范式。",
+      "llm_tags": [
+        "query:ser-da:composite"
+      ],
+      "matched_query_tag": "query:ser-da:composite",
+      "matched_query_text": "Papers central to 检索跨语料/跨域语音情感识别研究，关注域适应、交叉语料泛化、情感表征学习、原型对齐、超球面表征、声学线索与音频语言模型，并比较不同研究的数据集、域偏移、方法设计、评测协议、结果与局限。, especially work that connects or combines: speech emotion recognition under domain shift across different speech datasets and recording conditions; speech emotion recognition from paralinguistic speech and prosody; emotion recognition trained and evaluated on different independent speech emotion corpora; Speech Large Language Model; domain adaptation techniques to reduce distribution mismatch in speech emotion classification; audio language model features applied to emotional speech understanding and cross-domain inference; What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?; How are audio language models and acoustic cues used for transferable speech emotion representation learning?.",
+      "matched_requirement_id": "req-composite-ser-da",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

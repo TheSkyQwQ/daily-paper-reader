@@ -1,0 +1,146 @@
+Title: Quieter Than the Room: Representation Drift and Task Robustness in Speech Encoders
+
+URL Source: https://arxiv.org/pdf/2609.27195v1
+
+Published Time: Thu, 24 Sep 2026 00:24:02 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# QUIETER THAN THE ROOM: REPRESENTATION DRIFT AND TASK ROBUSTNESS IN SPEECH ENCODERS 
+
+# Vsevolod Kovalev 
+
+# Boston University, Boston, MA, USA vsevolod.kovalev@outlook.com 
+
+# Pranay Manocha 
+
+# Princeton University, Princeton, NJ, USA pranay@symbal.ai 
+
+ABSTRACT 
+
+Non-speech interference can change a speech representation with-out causing comparable task loss. We test eight frozen encoders on four tasks, adding non-speech sounds throughout recordings, during speech, or in pauses. Under whole-recording interference, embed-ding drift tracks task loss across seven sounds, with mean Spear-man correlations of 0.81–0.88. Moving the same sound between speech and pauses changes this pattern. At quiet to moderate levels, pause interference produces larger drift, while speech interference usually causes greater loss on intent recognition, speaker verifica-tion and speech recognition. Emotion recognition shows a weaker placement effect. Pause interference also changes speech-frame rep-resentations beyond the injected region. Even below the estimated recording background, interference can change embeddings as much as repeated speech takes do. Drift helps rank the effects of different sounds, but larger drift does not consistently indicate greater task loss. 
+
+Index Terms — speech representations, self-supervised learn-ing, robustness, environmental noise, representation drift 
+
+1. INTRODUCTION 
+
+Speech encoders support recognition, speaker and paralinguistic tasks [1, 2]. Their inputs often include non-speech sound in homes and distant-microphone settings [3, 4, 5]. We call this added non-speech sound interference and study how it changes both encoder representations and task performance. Robustness evaluations com-monly report downstream scores [6, 7, 8], which can remain stable even when the underlying representation changes substantially. Speech Robust Bench evaluates ASR under environmental noise [6]; distorted SUPERB uses 3, 6 or 9 dB [7]. We extend the com-parison to quieter interference, including levels below a recording’s estimated background. The experiments vary both sound type and placement. Time-averaged embeddings combine speech and non-speech frames, and contextual encoders carry information across time [9]. Non-speech audio can affect ASR [10]; non-speech augmentation has also im-proved transfer to interview audio for scripted-versus-spontaneous speech detection [11]. We first compare sounds added throughout recordings, then move the same sounds between speech and pauses to test whether larger embedding changes accompany larger drops in task performance. Controlled speech variation provides a reference for noise-induced drift. Speech quality metrics based on representations [12, 13] and distances learned from perceptual judgments [14] mo-tivate this use of a reference. Repeated takes and delivery changes in RAVDESS, with speaker and words fixed, provide an encoder-specific scale. Task loss is measured separately: an embedding can change in ways that have little effect on a task decision. We find that drift tracks task loss across sounds under whole-recording interference, but often gives the opposite ordering when placement changes. Quiet pause interference can produce drift com-parable to repeated takes, and its effects extend into speech-frame representations. 
+
+2. EVALUATION 2.1. Encoders and representation drift 
+
+We evaluate eight frozen encoders: HuBERT Base and Large, WavLM Base, Base+ and Large, wav2vec 2.0 Large Robust, Whis-per Medium and Whisper Large-v2 [15, 16, 17, 18, 19]. Audio is processed at its original length with batch size one; perturbations do not extend the recordings. For layer ℓ, the average over T frames is eℓ = T −1 P 
+
+> t
+
+hℓ[t]. With e, e ′ denoting clean and perturbed embeddings, drift is their cosine distance: 
+
+d(e, e ′) = 1 − ⟨e, e ′⟩∥e∥2∥e′∥2
+
+. (1) We report the last layer. SpeechBERTScore, a frame-matching met-ric, agrees with cosine on the reference speech pairs (Spearman ρ =0.86 –0.92 ). We also measure drift after each task head’s learned layer sum. Last-layer distances for wav2vec 2.0 Large Robust are about 10 3
+
+smaller than those of the other encoders, making reference crossings numerically unstable in our pipeline. We include it in task evalua-tion, but exclude it from drift summaries and the paired placement comparison. 
+
+2.2. Speech variation as a reference 
+
+RAVDESS contains scripted speech from 24 actors, with repeated takes and controlled changes in emotion and intensity [20]. We com-pare recordings of the same speaker saying the same sentence. For each encoder and layer, the repeat-take reference L is the smallest mean distance between repeated takes within a delivery condition. The delivery-variation reference U is the largest mean distance be-tween delivery conditions. Neutral takes give the smallest repeat distance; the pair that defines U always includes strongly fearful speech. The interval from L to U forms a corridor. After division by 
+
+L, its floor is 1 and its ceiling is U/L (6.5–8.2 across encoders). A crossing SNR is the level at which drift reaches either reference as interference becomes louder. Last-layer and layer-averaged ceiling crossings differ by a median 6 dB, so we report last-layer cosine as 
+
+> This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. arXiv:2609.27195v1 [cs.SD] 23 Sep 2026
+
+80 60 40 20 010 −4 
+
+10 −3 
+
+10 −2 
+
+10 −1 
+
+110 last-layer cosine ( → more drift) 
+
+white noise hand saw chord clock tick glass breaking white ticks ceiling floor RAVDESS background 24 dB SNR (dB) (→ perturbation louder) Fig. 1. Drift under whole-recording interference on neutral RAVDESS, normalized by each encoder’s repeat-take reference (seven-encoder median). The shaded corridor spans repeat-take and delivery variation. Solid/dashed curves denote generated/recorded sounds; filled markers mark floor crossings. The dotted line is the estimated background. the main distance metric. The corridor floor and ceiling are reference cosine distances. They set the scale for normalization and crossing SNRs; we compute drift and task scores without these anchors. We assess sensitivity to actor selection with 1,000 random 12/12-actor splits and 2,000 actor bootstraps, reselecting reference conditions and reweighting drift curves in each resample. We rank fourteen recorded sounds and white noise under whole-recording interference on calm-normal clips, using the seven-encoder median ceiling-crossing SNR. Split-half Spearman agreement has median 0.975 and minimum 0.906; the male/female split gives 0.968. For sounds crossing in the full sample, bootstrap crossing SD averages 1.99 dB over draws that cross. 
+
+2.3. Sounds, levels and placement 
+
+We compare nine generated sounds with fourteen recorded ESC-50 classes [21], and combine white, pink and tonal signals with contin-uous, gated and tick-like timing, at duty cycles δ ∈ { 1, 0.10 , 0.006 }.The recorded set includes nine classes from a 3 × 3 grid of spectral flatness and waveform kurtosis, plus five classes for comparisons at similar duty. Flatness describes how evenly spectral energy is dis-tributed; kurtosis describes waveform impulsiveness. Recorded duty is the fraction of 10 ms frames within 30 dB of peak energy. Selected class medians range from 0.23 to 1.00. Since no ESC-50 class has median duty below 0.13, we use generated sounds to test sparser interference. The SNR sweep covers eleven levels from 80 to −5 dB. Let s
+
+be the original waveform, p the added sound, V the speech samples marked by Silero VAD [22], and G the samples where p is active. Using root-mean-square amplitude (RMS) over these samples, 
+
+SNR tag = 20 log 10 
+
+RMS( s, V)RMS( p, G) . (2) Higher SNR means quieter interference. We add sounds throughout the recording, only in speech ( G ⊆ V ), or only in pauses ( G∩V = ∅). Pauses are VAD-defined non-speech regions and may contain other sounds. Active RMS matches the level while each sound is present; sparse sounds inject less total energy. On RAVDESS, speech and pauses occupy 0.47 and 0.53 of a clip, respectively, so the two place-ments inject nearly equal energy. Whole-clip RMS includes inactive samples, making sparse sounds louder at the same nominal SNR. For generated gated sounds, the two conventions differ by 10–22 dB. With whole-clip RMS, kurtosis-matched generated and recorded sounds still cross the floor at least 12 dB apart. For clip i, we estimate background level bi from the median RMS of 20 ms non-speech frames, in dB relative to speech RMS. RAVDESS’s corpus estimate is −37 .9 dB, equivalent to a tagged SNR of 37.9 dB. To account for the quieter background in pauses, we also express each injection relative to the region it occupies: 
+
+SNR rel ,i =
+
+(
+
+SNR tag , speech placement ,
+
+SNR tag + bi, pause placement . (3) For bi = −38 dB, pause interference at 60 dB tagged SNR is 22 dB below background. This conversion applies to existing observations per clip; elsewhere, SNR refers to Eq. 2. We use neutral RAVDESS clips for placement and Fig. 1, and calm deliveries for generated–recorded comparisons. Encoders receive identical perturbed audio; four perturbation seeds give between-draw variation of 5–6% of drift. To measure changes beyond the injection, we pool only frames whose local input spans contain no injected samples. Per-frame co-sine drift is also measured against distance from the nearest injec-tion. 
+
+2.4. Downstream evaluation 
+
+We select four SUPERB tasks covering semantics, paralinguistics, speaker identity and content: intent classification (IC) on Fluent Speech Commands (FSC), emotion recognition (ER) on IEMOCAP, speaker verification (ASV) on VoxCeleb1, and automatic speech recognition (ASR) on LibriSpeech [23, 24, 25, 26]. Encoders re-main frozen, and task heads are trained on clean audio. Clean scores differ from published SUPERB results by at most 0.3 accuracy points for IC, 1.6 for ER, about 1 equal-error-rate (EER) point for ASV, and 1.1–2.1 word-error-rate (WER) points for ASR. ASV and ASR heads use fixed training budgets and remain undertrained by our design. Changes from each head’s own clean score quantify its response to interference. Task loss is an accuracy decrease for IC/ER or an EER/WER increase for ASV/ASR, in percentage points. The downstream tests cover white noise and six recorded sounds under all three placements: church bells, hand saw, sheep, insects, clock tick and glass breaking. The first four recordings are dense (δ > 0.6); the last two are sparse. For speech–pause comparisons, we select clips with similar pause-to-speech duration ratios across corpora (0.44–0.52). Figure 3 uses the same seven encoders for drift and task loss. 
+
+3. RESULTS 3.1. Quiet interference can match speech variation 
+
+White noise, pink noise and a chord added continuously in pauses reach the repeat-take reference 24–34 dB below the estimated 020 40 60 80 100 IC accuracy (%) 
+
+IC FSC background 48 dB clean 98.49 white 97.25 chance 3.20 20 30 40 50 60 70 ER accuracy (%) 
+
+ER IEMOCAP background 19 dB clean 66.74 white 49.18 chance 25.00 010 20 30 40 50 ASV EER (%) 
+
+ASV VoxCeleb1 background 22 dB clean 4.77 white 12.59 chance 50.00 020 40 60 80 100 ASR WER (%) 
+
+ASR LibriSpeech background 34 dB clean 6.52 white 7.51 80 60 40 20 096.0 97.5 
+
+80 60 40 20 050 60 
+
+80 60 40 20 04812 
+
+80 60 40 20 06.6 7.2 7.8 
+
+SNR (dB) (→ perturbation louder) white noise clock tick hand saw glass breaking sheep clean church bells chance insects corpus background Fig. 2 . Task performance under whole-recording interference from seven sounds (eight-encoder means). Dense recordings generally cause greater losses than sparse recordings as interference grows louder. Dotted lines mark estimated corpus backgrounds; horizontal solid/dashed lines denote clean/chance performance. Lower panels magnify the region near clean performance. Squares denote white noise, circles dense recordings and triangles sparse recordings. Above each panel, the readouts give the background SNR, clean score and white-noise score at that SNR. RAVDESS background on the five self-supervised encoders. Whis-per crossings are closer to the background, at 4–18 dB below it. Replacing the neutral repeat-take reference with the calm reference leaves these margins almost unchanged. Temporal coverage strongly affects drift under whole-recording interference (Fig. 1). All fourteen recorded classes cross the floor on all seven encoders; the sparsest generated signals usually remain below it. Across 20 sounds that cross, duty correlates with cross-ing SNR at ρ = 0 .85 : sounds active for longer reach the reference at quieter levels. Generated and recorded sounds matched on duty cross in similar SNR ranges; matching on kurtosis leaves larger gaps. Greater duty also means more injected energy at a fixed active SNR, so these effects are coupled. Pause interference has greater contrast against its local back-ground. Using region-relative SNR (Eq. 3) reduces the speech–pause gap. The most tonal sounds still reach the floor at levels 8–12 dB qui-eter in pauses than in speech. Both Whisper encoders, however, are more sensitive to speech interference on this scale. 
+
+3.2. Drift tracks damage across sounds 
+
+Under whole-recording interference, dense sounds generally cause larger task losses than sparse sounds (Fig. 2). Effects near the es-timated background vary by task. At IEMOCAP’s background, the most damaging dense recording reduces emotion accuracy by 9–13 
+
+Table 1 . Mean Spearman correlation with task loss across four tasks. Each correlation ranks seven sounds under whole-recording interfer-ence at the stated SNR. RAVDESS crossings are reused across tasks and levels. Measure 20 dB 10 dB 0 dB Duty 0.70 0.66 0.65 Drift, task corpus 0.81 0.86 0.88 Drift, RAVDESS 0.77 0.77 0.84 Repeat-take crossing 0.47 0.53 0.60 Delivery-variation crossing 0.82 0.88 0.88 points on every encoder. Changes on the other tasks are smaller near their respective backgrounds. As interference grows louder, the separation between dense and sparse recordings becomes more clear across all four tasks. Representation drift captures more of this ordering than duty alone (Table 1). Drift measured on each task corpus reaches mean Spearman correlations of 0.81–0.88 with task loss, compared with 0.65–0.70 for duty. Delivery-reference (ceiling) crossings measured on RAVDESS perform similarly on these seven sounds, suggest-ing that some of the ordering transfers across corpora. Repeat-take (floor) crossings correlate less well. 80 40 030x 10x 3x ≈3x 10x 30x larger effect from perturbing the pause larger effect from perturbing the speech FSC 
+
+80 40 0IEMOCAP 
+
+80 40 0VoxCeleb1 
+
+80 40 0LibriSpeech 
+
+10 >400 2% 10% 40% per-frame cosine drift (perturbed frame = 100%) 200 perturbing the pause moves speech frames 
+
+SNR (dB) (→ perturbation louder) ms from the injection representation drift ratio task damage ratio dense sparse Fig. 3 . Left: seven sounds placed in speech or pauses, with similar pause proportions across corpora. The mirrored scale shows how many times larger the effect is in pauses (above equality) or speech (below). Drift uses a seven-encoder median and task loss a seven-encoder mean, pooled within sound groups. The equality line also serves as a plotting baseline where task losses are too small for a stable ratio. Dotted lines mark corpus backgrounds. Right: a separate RAVDESS experiment shows speech-frame drift beyond pause injections, relative to drift in perturbed frames (six dense sounds at 60 dB SNR; median and range). 
+
+3.3. Placement separates drift from task damage 
+
+We next move the same sounds between speech and pauses (Fig. 3). At 30 dB SNR, pause placement produces larger drift in nearly every sound–encoder combination on each corpus. IC, ASV and ASR usu-ally suffer greater losses when the sound overlaps speech. For exam-ple, at 20 dB dense sounds increase ASR WER by 5.6 points during speech, compared with 0.5 in pauses: about 11 times as much loss during speech (Fig. 3). Here, pause placement causes larger drift but smaller task loss. At 40 dB SNR and quieter, average losses remain below one point on each task under both placements, while drift already dis-tinguishes them. As interference becomes louder, the drift gap nar-rows; at some levels, speech placement produces both larger drift and greater task loss. The mismatch therefore depends on level as well as placement. Emotion recognition, however, shows a weaker placement ef-fect. On IEMOCAP, speech is more damaging in only 28 of 49 sound–encoder combinations at 20 dB, and the pause-to-speech drift ratio is smaller than on the other corpora. We also measure drift at the task head’s input, after its learned layer sum. In the white-noise FSC experiment at 20 dB SNR, the pause-to-speech drift ratio falls from 2.4 to 1.7, while speech re-mains more damaging. Layer weighting reduces the drift gap but preserves its direction. A task head may respond weakly to an embedding change even when cosine drift is large. For a linear score g(e) = w⊤e + b, the weights w determine which directions in the embedding affect the score. An embedding change e′ −e changes the score by w⊤(e′ −e).If the change is orthogonal to w, the score remains unchanged. Co-sine drift compares e and e′ without considering the task weights, so its magnitude alone cannot determine the score change. Measuring how embedding changes align with these weights could help explain the observed mismatch. We leave this test for future work. 
+
+3.4. Pause effects extend into speech frames 
+
+Pause interference changes speech-frame representations even when their local input spans contain no injected samples. We compare cosine drift after averaging only these speech-frame representations with drift after averaging all frames. The median ratio of speech-only drift to all-frame drift is 0.28. The effect of pause interference therefore persists in the pooled speech representation, even after the directly perturbed frames are excluded from the average. Per-frame drift falls with distance from the injection before lev-eling off at about 200 ms (Fig. 3, right), consistent with contextual propagation [9]. Excluding directly perturbed frames from pooling therefore leaves altered speech representations. 
+
+4. CONCLUSION 
+
+Embedding drift tracks task loss across the tested sounds under whole-recording interference. At quiet to moderate levels, pause interference often produces greater drift, while speech interference causes larger losses in intent recognition, speaker verification and ASR. Emotion recognition shows a weaker placement effect. At louder levels, speech interference can produce both greater drift and greater task loss. On RAVDESS, interference below the esti-mated background can produce drift comparable to repeated speech takes. Pause interference also alters speech-frame representations outside the injected region, with changes remaining when pooling is restricted to speech. 
+
+5. ACKNOWLEDGMENTS 
+
+The authors received no funding and declare no conflicts of interest. Large language models assisted with presentation of author-provided results. All experiments are the authors’ own. 6. COMPLIANCE WITH ETHICAL STANDARDS 
+
+This study is a secondary analysis of existing RAVDESS, ESC-50, FSC, IEMOCAP, VoxCeleb1 and LibriSpeech data. No new partic-ipants were recruited or human-subject data collected. Institutional ethics review was not sought. 
+
+7. REFERENCES 
+
+[1] Shu-wen Yang et al., “SUPERB: Speech processing univer-sal PERformance benchmark,” in Proc. Interspeech , 2021, pp. 1194–1198. [2] J. Turian et al., “HEAR: Holistic evaluation of audio represen-tations,” in Proc. NeurIPS 2021 Competitions and Demonstra-tions Track . 2022, vol. 176 of Proceedings of Machine Learn-ing Research , pp. 125–145, PMLR. [3] E. Bastianelli, A. Vanzo, P. Swietojanski, and V. Rieser, “SLURP: A spoken language understanding resource pack-age,” in Proc. Conf. Empirical Methods in Natural Language Processing (EMNLP) , 2020, pp. 7252–7262. [4] S. Watanabe et al., “CHiME-6 challenge: Tackling multi-speaker speech recognition for unsegmented recordings,” in 
+
+Proc. 6th Int. Workshop on Speech Processing in Everyday En-vironments (CHiME) , 2020, pp. 1–7. [5] M. K. Nandwana et al., “The VOiCES from a distance chal-lenge 2019: Analysis of speaker verification results and re-maining challenges,” in Proc. Speaker and Language Recog-nition Workshop (Odyssey) , 2020, pp. 165–170. [6] M. A. Shah, D. Solans Noguero, M. A. Heikkilä, B. Raj, and N. Kourtellis, “Speech robust bench: A robustness bench-mark for speech recognition,” in Proc. ICLR , 2025, pp. 27465– 27491. [7] Shu-wen Yang et al., “A large-scale evaluation of speech foun-dation models,” IEEE/ACM Trans. Audio, Speech, Lang. Pro-cess. , vol. 32, pp. 2884–2899, 2024. [8] S. Arcos-Holzinger, S. M. Erfani, J. Bailey, and S. Khudanpur, “GRIDS: Dimensionality-aware anomaly detection in learned representations of self-supervised speech models,” in Proc. Interspeech [Long Track] , 2026, pp. 357–366. [9] Y. Meng, S. Goldwater, and H. Tang, “Effective context in neural speech models,” in Proc. Interspeech , 2025, pp. 246– 250. [10] M. Bara´ nski, J. Jasi´ nski, J. Bartolewska, S. Kacprzak, M. Witkowski, and K. Kowalczyk, “Investigation of Whisper ASR hallucinations induced by non-speech audio,” in Proc. IEEE ICASSP , 2025, pp. 1–5. [11] V. Kovalev and P. Manocha, “SEAM: Shortcut-aware real-time detection of scripted vs. spontaneous speech for interview guardrails,” in Proc. Interspeech , 2026, pp. 1391–1395. [12] M. Ogg, C. A. Bishop, H. G. Yi, and S. R. Robinson, “Self-supervised speech quality assessment (S3QA): Leveraging speech foundation models for a scalable speech quality met-ric,” J. Acoust. Soc. Amer. , vol. 159, no. 4, pp. 3662–3673, 2026. [13] T. Saeki, S. Maiti, S. Takamichi, S. Watanabe, and H. Saruwatari, “SpeechBERTScore: Reference-aware auto-matic evaluation of speech generation leveraging NLP evalua-tion metrics,” in Proc. Interspeech , 2024, pp. 4943–4947. [14] P. Manocha, A. Finkelstein, R. Zhang, N. J. Bryan, G. J. Mysore, and Z. Jin, “A differentiable perceptual audio metric learned from just noticeable differences,” in Proc. Interspeech ,2020, pp. 2852–2856. [15] W.-N. Hsu, B. Bolte, Y.-H. H. Tsai, K. Lakhotia, R. Salakhut-dinov, and A. Mohamed, “HuBERT: Self-supervised speech representation learning by masked prediction of hidden units,” 
+
+IEEE/ACM Trans. Audio, Speech, Lang. Process. , vol. 29, pp. 3451–3460, 2021. [16] S. Chen et al., “WavLM: Large-scale self-supervised pre-training for full stack speech processing,” IEEE J. Sel. Topics Signal Process. , vol. 16, no. 6, pp. 1505–1518, 2022. [17] A. Baevski, Y. Zhou, A. Mohamed, and M. Auli, “wav2vec 2.0: A framework for self-supervised learning of speech rep-resentations,” in Advances in Neural Information Processing Systems (NeurIPS) , 2020, vol. 33, pp. 12449–12460. [18] W.-N. Hsu et al., “Robust wav2vec 2.0: Analyzing domain shift in self-supervised pre-training,” in Proc. Interspeech ,2021, pp. 721–725. [19] A. Radford, J. W. Kim, T. Xu, G. Brockman, C. Mcleavey, and I. Sutskever, “Robust speech recognition via large-scale weak supervision,” in Proc. Int. Conf. Machine Learning (ICML) ,2023, vol. 202 of Proceedings of Machine Learning Research ,pp. 28492–28518. [20] S. R. Livingstone and F. A. Russo, “The Ryerson audio-visual database of emotional speech and song (RAVDESS): A dy-namic, multimodal set of facial and vocal expressions in North American English,” PLoS ONE , vol. 13, no. 5, pp. e0196391, 2018. [21] K. J. Piczak, “ESC: Dataset for environmental sound classifi-cation,” in Proc. 23rd ACM Int. Conf. Multimedia (MM) , 2015, pp. 1015–1018. [22] Silero Team, “Silero VAD: Pre-trained enterprise-grade voice activity detector (VAD), number detector and lan-guage classifier,” GitHub repository, https://github. com/snakers4/silero-vad , 2024. [23] L. Lugosch, M. Ravanelli, P. Ignoto, V. S. Tomar, and Y. Ben-gio, “Speech model pre-training for end-to-end spoken lan-guage understanding,” in Proc. Interspeech , 2019, pp. 814– 818. [24] C. Busso et al., “IEMOCAP: Interactive emotional dyadic mo-tion capture database,” Lang. Resour. Eval. , vol. 42, no. 4, pp. 335–359, 2008. [25] A. Nagrani, J. S. Chung, and A. Zisserman, “VoxCeleb: A large-scale speaker identification dataset,” in Proc. Inter-speech , 2017, pp. 2616–2620. [26] V. Panayotov, G. Chen, D. Povey, and S. Khudanpur, “Libri-speech: An ASR corpus based on public domain audio books,” in Proc. IEEE ICASSP , 2015, pp. 5206–5210.

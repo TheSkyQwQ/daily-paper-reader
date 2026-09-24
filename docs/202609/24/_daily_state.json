@@ -1,0 +1,57 @@
+{
+  "date": "20260924",
+  "date_label": "",
+  "generated_at": "2026-09-24 22:31:12 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.27195v1",
+      "route": "202609/24/2609.27195v1-quieter-than-the-room-representation-drift-and-task-robustness-in-speech-encoders",
+      "title": "Quieter Than the Room: Representation Drift and Task Robustness in Speech Encoders",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "非语音录音干扰下的表示漂移与情感识别鲁棒性",
+      "first_seen_at": "2026-09-24 22:31:12 UTC",
+      "updated_at": "2026-09-24 22:31:12 UTC"
+    },
+    {
+      "paper_id": "2609.27260v1",
+      "route": "202609/24/2609.27260v1-jasper-joint-audio-and-speech-pre-trained-encoder-representations",
+      "title": "JASPER: Joint Audio and Speech Pre-trained Encoder Representations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "联合音频语音表示学习以提升跨域泛化",
+      "first_seen_at": "2026-09-24 22:31:12 UTC",
+      "updated_at": "2026-09-24 22:31:12 UTC"
+    },
+    {
+      "paper_id": "2609.27615v1",
+      "route": "202609/24/2609.27615v1-bicflow-mer-orchestrating-discriminative-and-generative-multimodal-emotion-recognition-via-conditional-transport",
+      "title": "BiCFlow-MER: Orchestrating Discriminative and Generative Multimodal Emotion Recognition via Conditional Transport",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "音频-文本多模态情感识别与融合",
+      "first_seen_at": "2026-09-24 22:31:12 UTC",
+      "updated_at": "2026-09-24 22:31:12 UTC"
+    }
+  ]
+}

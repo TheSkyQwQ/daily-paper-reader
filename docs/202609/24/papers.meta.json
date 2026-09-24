@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-24",
+  "date": "2026-09-24",
+  "generated_at": "2026-09-24T22:31:13",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/24/2609.27195v1-quieter-than-the-room-representation-drift-and-task-robustness-in-speech-encoders",
+      "section": "quick",
+      "title_en": "Quieter Than the Room: Representation Drift and Task Robustness in Speech Encoders",
+      "authors": "Vsevolod Kovalev, Pranay Manocha",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27195v1",
+      "score": "6.0",
+      "evidence": "非语音录音干扰下的表示漂移与情感识别鲁棒性",
+      "tldr": "非语音干扰可能改变语音表征却未必造成可比任务损失。本文在四个任务上测试八个冻结语音编码器，将非语音声音分别加入整段、语音段或停顿段，比较嵌入漂移与任务损失。整段干扰下，漂移与损失平均Spearman相关0.81–0.88；但同一声音置于停顿时漂移更大，置于语音时常导致更大损失。即使低于背景噪声，干扰也能改变嵌入。漂移可排序声音影响，但更大漂移不总对应更大任务损失。",
+      "tags": "query:ser-da",
+      "abstract_en": "Non-speech interference can change a speech representation without causing comparable task loss. We test eight frozen encoders on four tasks, adding non-speech sounds throughout recordings, during speech, or in pauses. Under whole-recording interference, embedding drift tracks task loss across seven sounds, with mean Spearman correlations of 0.81-0.88. Moving the same sound between speech and pauses changes this pattern. At quiet to moderate levels, pause interference produces larger drift, while speech interference usually causes greater loss on intent recognition, speaker verification and speech recognition. Emotion recognition shows a weaker placement effect. Pause interference also changes speech-frame representations beyond the injected region. Even below the estimated recording background, interference can change embeddings as much as repeated speech takes do. Drift helps rank the effects of different sounds, but larger drift does not consistently indicate greater task loss.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/24/2609.27260v1-jasper-joint-audio-and-speech-pre-trained-encoder-representations",
+      "section": "quick",
+      "title_en": "JASPER: Joint Audio and Speech Pre-trained Encoder Representations",
+      "authors": "Geeth George, Ameenudeen P E, Hrishikesh H Pillai, Sriram Ganapathy",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27260v1",
+      "score": "6.0",
+      "evidence": "联合音频语音表示学习以提升跨域泛化",
+      "tldr": "语音与音频自监督学习长期沿两条独立路线发展，语音模型侧重时域预测，音频模型关注时频模式，导致跨域兼容性差、泛化受限。JASPER通过为语音预训练模型引入时频目标，在长音频片段上对时间与频谱目标进行掩码预测，实现语音与音频的谱时表示学习。该方法在多种语音、音频和音乐任务上持续优于多个基线及现有语音/音频编码器。这证明了统一谱时建模的有效性，并为跨域音频表示学习提供了新框架。",
+      "tags": "query:ser-da",
+      "abstract_en": "Self-supervised learning (SSL) for speech and audio has largely progressed along separate tracks: speech models emphasise time-domain prediction, whereas audio representation learning has focused on time-frequency patterns. This separation creates a compatibility gap, limiting cross-domain generalization. In this work, we introduce JASPER, Joint Audio and Speech Pre-trained Encoder Representations, a framework that augments speech-pretrained models with time-frequency objectives. Specifically, JASPER performs masked prediction of temporal and spectral targets over long audio segments, enabling spectro-temporal representation learning of speech and audio signals. The proposed method consistently outperforms multiple baselines and existing speech/audio encoders on diverse speech, audio, and music tasks, demonstrating the effectiveness of unified spectro-temporal modeling.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/24/2609.27615v1-bicflow-mer-orchestrating-discriminative-and-generative-multimodal-emotion-recognition-via-conditional-transport",
+      "section": "quick",
+      "title_en": "BiCFlow-MER: Orchestrating Discriminative and Generative Multimodal Emotion Recognition via Conditional Transport",
+      "authors": "Yanbing Wang, Shenyue Wang, Chunyang Yu",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27615v1",
+      "score": "6.0",
+      "evidence": "音频-文本多模态情感识别与融合",
+      "tldr": "多模态情感识别中，情感线索常与说话人风格和词汇内容纠缠，跨模态冲突也使证据融合困难。BiCFlow-MER 将音文情感识别建模为结构化情感空间中的条件流生成式证据传输，解耦风格与内容并构建冲突感知条件。该方法通过双向整流流将话语输运至显式情感端点，并结合自适应原型云评分与反向类别到条件一致性验证。在 IEMOCAP、MELD 与零样本 CASE 上优于所有对比方法，提出判别与生成协同的新范式。",
+      "tags": "query:ser-da",
+      "abstract_en": "In multimodal emotion recognition (MER), human affective states are inferred by integrating complementary cues from multiple modalities. In audio-text MER, affective cues are often entangled with speaker style and lexical content, while cross-modal disagreement further complicates how the evidence should be integrated. Under conventional discriminative fusion, multimodal evidence is compressed into a terminal prediction, with modality-specific cues and conflict information insufficiently preserved. In large generative affective models, by contrast, affective reasoning is typically embedded in language decoding, leaving emotion evidence implicit and difficult to verify in a structured space. To address these limitations, BiCFlow-MER (Bidirectional Conditional Flow for Multimodal Emotion Recognition) is proposed as a conditional-flow framework in which audio-text MER is formulated as generative evidence transport within a structured emotion space. Within BiCFlow-MER, emotion-oriented evidence is disentangled from speaker-style and lexical-content factors to construct a conflict-aware affective condition. Guided by this condition, each utterance is transported to an explicit emotion-space endpoint through a bidirectional rectified flow. Candidate emotions are jointly verified through adaptive prototype-cloud scoring of the transported endpoint and backward class-to-condition consistency with the original multimodal condition, enabling conflict-aware recognition. BiCFlow-MER is shown to outperform all compared methods across IEMOCAP, MELD, and the zero-shot CASE benchmark. By orchestrating discriminative recognition and generative evidence modeling through conditional transport, BiCFlow-MER defines a new MER paradigm.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
