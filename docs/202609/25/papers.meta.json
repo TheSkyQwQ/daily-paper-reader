@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-25",
+  "date": "2026-09-25",
+  "generated_at": "2026-09-25T22:10:11",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/25/2609.27615v1-bicflow-mer-orchestrating-discriminative-and-generative-multimodal-emotion-recognition-via-conditional-transport",
+      "section": "quick",
+      "title_en": "BiCFlow-MER: Orchestrating Discriminative and Generative Multimodal Emotion Recognition via Conditional Transport",
+      "authors": "Yanbing Wang, Shenyue Wang, Chunyang Yu",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27615v1",
+      "score": "6.0",
+      "evidence": "融合音频与文本线索的多模态情感识别",
+      "tldr": "音文多模态情感识别中，情感线索常与说话人风格和词汇内容纠缠，跨模态分歧也增加融合难度。BiCFlow-MER 将音文 MER 建模为结构化情感空间中的生成式证据传输：先解耦情感证据并构建冲突感知条件，再以双向矫正流把话语传输到显式情感端点。候选情感通过自适应原型云评分与反向类到条件一致性联合验证，实现冲突感知识别。该方法在 IEMOCAP、MELD 和零样本 CASE 上超越所有对比方法，融合判别式识别与生成式证据建模，提出新范式。",
+      "tags": "query:ser-da",
+      "abstract_en": "In multimodal emotion recognition (MER), human affective states are inferred by integrating complementary cues from multiple modalities. In audio-text MER, affective cues are often entangled with speaker style and lexical content, while cross-modal disagreement further complicates how the evidence should be integrated. Under conventional discriminative fusion, multimodal evidence is compressed into a terminal prediction, with modality-specific cues and conflict information insufficiently preserved. In large generative affective models, by contrast, affective reasoning is typically embedded in language decoding, leaving emotion evidence implicit and difficult to verify in a structured space. To address these limitations, BiCFlow-MER (Bidirectional Conditional Flow for Multimodal Emotion Recognition) is proposed as a conditional-flow framework in which audio-text MER is formulated as generative evidence transport within a structured emotion space. Within BiCFlow-MER, emotion-oriented evidence is disentangled from speaker-style and lexical-content factors to construct a conflict-aware affective condition. Guided by this condition, each utterance is transported to an explicit emotion-space endpoint through a bidirectional rectified flow. Candidate emotions are jointly verified through adaptive prototype-cloud scoring of the transported endpoint and backward class-to-condition consistency with the original multimodal condition, enabling conflict-aware recognition. BiCFlow-MER is shown to outperform all compared methods across IEMOCAP, MELD, and the zero-shot CASE benchmark. By orchestrating discriminative recognition and generative evidence modeling through conditional transport, BiCFlow-MER defines a new MER paradigm.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
