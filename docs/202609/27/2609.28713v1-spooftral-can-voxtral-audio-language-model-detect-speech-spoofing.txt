@@ -1,0 +1,267 @@
+Title: Spooftral: Can Voxtral Audio-Language Model Detect Speech Spoofing?
+
+URL Source: https://arxiv.org/pdf/2609.28713v1
+
+Published Time: Fri, 25 Sep 2026 00:18:40 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Spooftral: Can Voxtral Audio-Language Model Detect Speech Spoofing? 
+
+Avishai Weizman 1 Yehuda Ben-Shimol 1 Itshak Lapidot 2,3 
+
+> 1
+
+School of Electrical and Computer Engineering, Ben-Gurion University of the Negev, Israel 
+
+> 2
+
+Department of Electrical Engineering, Afeka the Academic College of Engineering, Israel 
+
+> 3
+
+Avignon University, LIA, France 
+
+© 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. 
+
+Abstract —Self-supervised learning (SSL) countermeasures 
+
+(CMs) have shown strong performance in recent years. However, they often show degraded performance while facing unseen spoofing attacks and mismatched conditions. This study exam-ines the Voxtral audio-language model (ALM) framework for spoofing detection, as a step toward combining CM capabilities within the ALM framework. We analyze how Voxtral captures spoofing cues through audio-text processing and propose an instruction-guided approach that uses label-sequence likelihoods to evaluate bonafide and spoofed speech. Experiments on the ASVspoof databases show that without task-specific adaptation, the LLM layers emphasize semantic representations, reducing the separability of spoof-discriminative acoustic cues compared to the Whisper-based audio encoder. Consequently, spoofing-related information becomes less separable after language-model processing. We also applied lightweight adaptation using weight-
+
+decomposed low-rank adaptation (DoRA) to the Voxtral model and propose the Spooftral model, achieving an equal error rate 
+
+(EER) of 4.25% on the ASVspoof5 evaluation set. 
+
+Index Terms —Countermeasure (CM), Spoofing detection, Anti-spoofing, Spoofing-robust automatic speaker verification (SASV), Audio-language model (ALM). 
+
+I. I NTRODUCTION 
+
+Automatic speaker verification (ASV) systems are widely used in modern biometric applications, including access con-trol, financial authentication, and voice interfaces [1], [2]. Despite their rapid adoption, ASV systems remain vulnerable to spoofing attacks, such as replay, text-to-speech (TTS), and voice conversion (VC), which can compromise system reliability. As a result, developing effective countermeasures 
+
+(CMs) for spoofing detection is a crucial research direction in recent years [3], [4]. Several databases have been released to support research on spoofing detection, including the ASVspoof databases [5]–[9]. These databases introduce a variety of attack types, acous-tic conditions, and recording environments, providing bench-marks for evaluating CM robustness. Despite these advances, CM systems still suffer from the generalization problem to unseen spoofing attacks [10]–[15]. Recent findings [16] further indicate that the ASVspoof5 database [9] introduces not only more challenging attacks, but also a notable shift in the distribution of bonafide speech across its sets compared to the ASVspoof2019 database [7], highlighting the growing need for improved spoofing detection approaches. 
+
+> GitHub repository: https://github.com/avishai111/Spooftral
+
+Today, self-supervised learning (SSL) approaches dominate the spoofing detection landscape [17]–[20]. Models such as Wav2Vec2 [21], HuBERT [22], and WavLM [23] leverage large-scale pre-training on unlabeled audio to learn speech representations and have achieved strong results in recent ASVspoof challenges [24]. In parallel, weakly supervised learning models, such as Whisper [25], trained on massive audio-text corpora, have demonstrated strong transferability across a wide range of speech tasks [26]–[28]. However, despite its strong performance, Whisper has shown limited per-formance for spoofing detection tasks. In existing studies [26], [29], Whisper-based representations improve detection perfor-mance but degrade under challenging conditions such as the ASVspoof2021 deepfake (DF) challenge. This raises an open question about how well these representations are suited for the spoofing detection tasks that rely on fine-grained acoustic cues (e.g., spectral and temporal details). More recently, audio-language models (ALMs) have emerged as an alternative to acoustic formulations by jointly modeling speech signals and textual information within a unified framework. These models are characterized by larger parameter counts and are trained on massive, multi-modal databases pairing audio and text. Such pre-training provides a strong initialization for fine-tuning across downstream speech semantic tasks (i.e., tasks requiring an understanding of spoken content), including automatic speech recognition (ASR) and 
+
+speech-to-speech translation , and in some cases, improves interpretability through text-based reasoning [30]. This work represents a step toward incorporating spoofing detection into unified ALM frameworks that can perform multiple speech tasks within a single model [31]–[34], with the long-term goal of enabling both speech understanding and spoofing detection within a common audio-language frame-work, without any use of an external CM system. The main contribution is an analysis of how spoof-discriminative cues propagate within the Voxtral ALM, showing that spoofing de-tection requires task-specific training. To enable this analysis, we formulate spoofing detection as an instruction-guided ALM task [32], [34], rather than a conventional acoustic classifica-tion problem, and adapt Voxtral [35] to the spoofing detec-tion task using a lightweight training method (e.g., weight-
+
+decomposed low-rank adaptation (DoRA) [36]). In addition, we provide, to the best of our knowledge, one of the first evaluations of the Whisper-based audio encoder in the Voxtral arXiv:2609.28713v1 [eess.AS] 23 Sep 2026 model on the ASVspoof databases and compare embeddings extracted before and after the frozen large-language model 
+
+(LLM) layers in the Voxtral ALM framework. The remainder of this paper is organized as follows. sec-tion II reviews related work on ALMs for the spoofing detection task and the Voxtral architecture; section III presents the proposed generative label-likelihood classification method; section IV describes the databases and evaluation metrics, and the experimental results are shown in section V. Finally, section VI concludes the paper and outlines the directions for future research. II. R ELATED WORK 
+
+Research on ALMs has grown with the emergence of large multi-modal architectures capable of processing speech and text within a shared representation space [37]–[39]. Mod-ern systems employ dedicated audio and language encoders, sometimes augmented with alignment modules or pre-trained language models to enhance cross-modal integration. In many ALMs, the Whisper encoder models [25] have become a common choice for the audio encoder due to their strong robustness [33], [34], [40]–[42]. Following [37], ALMs can be categorized into four main groups. Two-Tower models use separate encoders whose outputs are mapped into a common embedding space, such as the Contrastive Language-Audio pre-training (CLAP) model [43]. Two-Head architectures rely on a single encoder with modality-specific projectors and a language model operating on top, as in SpeechGPT [31], Pengi [39], SALMONN [32], Audio Flamingo [33], and Qwen-Audio [34]. One-Head designs construct a unified multi-modal input and use a single encoder to jointly process both modalities [37], [44]. The fourth category includes cooperative frameworks that employ an LLM as planning agent to en-able flexible multi-modal interaction [45]. These architectural choices influence how acoustic and linguistic information is fused and represented within the model. The Voxtral ALM model in [35] belongs to the Two-Head category and is illustrated in Figure 1. Voxtral employs a dedicated audio encoder based on the Whisper Large-v3 model [25], followed by a temporal downsampling stage (audio adapter layers) composed of linear layers and an activa-tion function, reducing the sequence length before projection into the embedding space of a pre-trained LLM. Voxtral is trained in three stages: pre-training, supervised fine-tuning, and preference alignment (e.g., Direct Preference Optimization 
+
+(DPO) [46], [47]), which cover a wide range of speech under-standing and reasoning tasks, and enable strong performance across diverse audio processing tasks [35], [48]. Recent studies on ALM-based CM systems highlight both the promise and limitations of this method. The work in [49] reports that ALM-based CM systems are sensitive to quanti-zation, with performance degradation when moving to lower-precision formats. In parallel, the study in [50] presents an evaluation of ALMs for spoofing detection using Qwen-Audio [34], showing strong performance across databases, in-cluding ASVspoof2019 [7] and the In-the-Wild database [10]. 
+
+Fig. 1: Overview of the Spooftral model based on Voxtral architecture, where audio and text inputs are jointly processed and spoofing decisions are obtained with likelihood scoring. However, existing ALM-based CM studies mainly focus on end-to-end detection performance, with limited investigation of how spoof-discriminative information propagates across model stages. This motivates an evaluation of Voxtral-based representations, comparing spoof-discriminative information at the audio-adapter output, after the frozen LLM layers, and after task-specific adaptation. III. G ENERATIVE LABEL -L IKELIHOOD CLASSIFICATION FOR SPOOFING DETECTION 
+
+This section reformulates spoofing detection as a generative label-likelihood classification framework, enabling instruction-guided modeling while evaluating the system using the equal error rate (EER), a common metric for assessing CM systems, which allows comparison with other CM approaches. This formulation is compatible with unified ALM frameworks in which spoofing detection can be used together with other speech tasks that may require free-form generation, such as speech question answering. However, unlike these generative tasks, spoofing detection requires a controlled and reproducible decision. Therefore, for this task, we use a fixed inference prompt together with a fixed set of label tokens. Given an audio input a and a prompt p, Voxtral defines a conditional distribution P (· | a, p ; θ) over the token se-quences, where θ denotes the model parameters. Although this distribution is defined over the entire vocabulary V, no sampling is performed for the spoofing decision. Instead, the scores are computed from the raw model logits over the predefined label sequences and without applying temperature scaling in the spoofing-detection path. The final decision is obtained by computing length-normalized label log-likelihoods for “ bonafide ” and “ spoof ” and using the difference in their scores as the detection score. We define a target vocabulary Vtar ⊂ V containing the tokens used to form the class label strings. Each class label is represented by a sequence of target tokens Y = ( t1, . . . , t |Y |),where ti ∈ V tar and |Y | denotes the length of the sequence. We use two label token sequences, Ybf and Ysp , corresponding to the strings “ bonafide ” and “ spoof ”. We intentionally use mean-ingful label tokens rather than arbitrary symbols (e.g., “0/1”), which may allow the model to leverage its pre-trained semantic representations to associate acoustic cues with semantic labels. However, the likelihood-scoring framework is not restricted to the prompt-label interface used in this work. Other fixed interfaces can be defined by choosing a different but fixed prompt and corresponding fixed label tokens, provided that the same interface is used consistently during training and inference. To avoid potential length bias, we normalize the log-likelihood of each label-sequence by its token length. The label-sequence score is defined as the length-normalized log-likelihood of the token sequence: 
+
+1
+
+|Y | log P (Y | a, p ; θ) = 1
+
+|Y | 
+
+> |Y|
+
+X
+
+> i=1
+
+log P (ti | a, p, t 1: i−1; θ)
+
+(1) where t1: i−1 = ( t1, . . . , t i−1) denotes the generated tokens and |Y | is the number of tokens in sequence Y . To obtain a binary decision ( bonafide vs. spoof ), we evaluate two label to-ken sequences, Ybf and Ysp , corresponding to the bonafide and spoof hypotheses, respectively, i.e., bonafide (tokens bon , af ,
+
+ide ) and spoof (tokens sp , o, of ). Their length-normalized log-likelihoods are denoted by ℓbf = 1  
+
+> |Ybf |
+
+log P (Ybf | a, p ; θ)
+
+and ℓsp = 1 
+
+> |Ysp |
+
+log P (Ysp | a, p ; θ). A detection score is ob-tained from the normalized log-likelihood difference between the spoof and bonafide hypotheses: 
+
+S = ℓsp − ℓbf (2) The score S serves as the detection score used to compute the EER at inference. For training, the model optimizes a class-weighted cross-entropy loss over the two label-sequence scores. 
+
+LCE = −wy log exp( ℓy )exp( ℓbf ) + exp( ℓsp ) (3) where ℓbf and ℓsp denote the normalized log-likelihoods of the 
+
+bonafide and spoof label-sequences, y ∈ { bonafide , spoof }
+
+is the ground-truth class, and wy compensates for class im-balance. To further promote separation between competing hypotheses, we optionally incorporate a margin-based regu-larization term. We define: 
+
+d =
+
+(
+
+ℓsp − ℓbf , y = spoof 
+
+ℓbf − ℓsp , y = bonafide (4) and handle cases where the difference becomes smaller than a predefined margin: 
+
+Lmargin =
+
+(
+
+max(0 , m sp − d), y = spoof max(0 , m bf − d), y = bonafide (5) where msp and mbf are fixed margin hyper-parameters. The final loss is defined as: 
+
+Ltotal = LCE + λmargin Lmargin (6) IV. D ATABASES AND EVALUATION 
+
+This section describes the databases and evaluation metric used in this work. TABLE I: Number of bonafide and spoofed utterances in ASVspoof2019 LA, ASVspoof2021 LA, ASVspoof2021 DF, and ASVspoof5 databases.                      
+
+> Database Set bonafide Spoof
+> ASVspoof2019 LA Train 2,580 22,800 Dev. 2,548 22,296 Eval. 7,355 63,882 ASVspoof2021 LA Eval. 14,816 133,360 ASVspoof2021 DF Eval. 14,869 519,059 ASVspoof5 Train 18,797 163,560 Dev. 31,334 109,616 Eval. 138,688 542,086
+
+A. ASVspoof2019 LA Database 
+
+The ASVspoof2019 logical access (LA) database provides spoofed and bonafide utterances generated under clean record-ing conditions, as summarized in Table I. The training (Train) and development (Dev.) sets of the LA partition include the VC and TTS attacks (A01-A06), while the evaluation (Eval.) set additionally introduces a combination of VC and TTS attacks. The evaluation set includes 11 unseen spoofing attacks (A07-A15, A17, A18), along with two overlapping attacks (A16, A19) produced using algorithms seen in the training set but trained on different databases [7]. 
+
+B. ASVspoof 2021 LA and DF Databases 
+
+The ASVspoof2021 database [8] provides an evaluation-only set and splits to LA and DF partitions (as shown in Table I). Therefore, the participants are required to rely on the training and development partitions of the ASVspoof2019 LA database [7]. In the ASVspoof2021 LA task, speech signals are processed through telephony codecs (e.g., OPUS, G.722), while in the ASVspoof2021 DF task, speech signals are processed through media compression codecs (e.g., MP3, M4A, OGG). 
+
+C. ASVspoof5 Database 
+
+The ASVspoof5 database follows a similar three-part struc-ture, as shown in Table I. The training set includes eight TTS attacks (A01-A08), the development set contains eight different attacks (A09-A16). The evaluation set includes 16 unseen spoofing attacks (A17-A32), including adversarial attacks, while also applying transmission and compression codecs, including neural codecs, to both bonafide and spoofed speech [9], [24]. The performance is assessed using the EER metric, com-puted from the log-likelihood difference for the Spooftral CM system and from the classifier scores for linear probing and the Spooftral-Enc CM system. V. E XPERIMENTS AND RESULTS 
+
+This section presents the experiments and results. All experiments are based on the Voxtral-mini-3B model [35], which is based on the Ministral-3B model [51], and uses 
+
+brain floating point (bfloat16) precision [52]. The confidence intervals (CIs) were computed using 1,000 bootstrap iterations with a significance level of 5% [53]. The embeddings are extracted from the last hidden layers of the Voxtral LLM decoder and audio adapter, as illustrated in Figure 1. Inspired by [17], the transformer output is denoted as Z ∈ RT ×F , where T denotes the number of temporal frames and F denotes the feature dimension. Mean pooling over the temporal dimension produces a fixed-dimensional embedding e ∈ RF , which is then fed into a linear layer for binary spoofing detection, with all preceding layers frozen and only the linear layer is trained (linear probing approach as shown in [54]). Since the pre-trained Voxtral model is not optimized for spoofing detection, it may generate different textual responses corresponding to the same spoofing decision (e.g., spoof, fake, or synthetic), making EER evaluation based on text generation unreliable. Therefore, we use linear probing on frozen repre-sentations to directly assess the spoof-discriminative informa-tion encoded at different stages of the Voxtral model. The results obtained using a fixed prompt “Is this speech spoof or bonafide?” are shown in Table II (each Dev. and Eval. pair uses the same trained linear layer). Based on Table II, performance obtained using embeddings from the LLM decoder is inferior to that obtained using the audio-adapter representations, which are derived from the Whisper-based audio encoder [25]. These results suggest that spoofing detection requires task-specific training, as performance con-sistently degrades after representations are passed through the LLM decoder. A reasonable explanation is that Voxtral is pre-trained primarily for semantic tasks, such as ASR and speech-to-text translation , as shown in [35], rather than for acoustic tasks such as spoofing detection. To visualize embedding structure after the audio adapter and the LLM layers, we project the embeddings into two dimensions using the PaCMAP dimensionality reduction al-gorithm [55], which is trained on the ASVspoof5 training set and then applied to the development and evaluation sets. As shown in Figure 2, embeddings extracted after the audio adapter show clear separation between bonafide and spoofed samples on the ASVspoof5 training set. This is consistent with [35], as Voxtral was not trained for the spoofing detection task, but was pre-trained on an audio-text corpus that includes TTS data, while the ASVspoof5 training set consists exclusively of TTS-based attacks, which may explain the strong separation observed on the ASVspoof5 training set. In contrast, embeddings obtained after the LLM decoder show reduced separation, indicating that the LLM layers, which are optimized for semantic processing, attenuate spoofing-related cues and degrade class separability. A similar behavior is observed for the development and evaluation sets, where the embeddings after the audio adapter show better separability. Next, we trained two variants of the Spooftral model using DoRA [36], which extends low-rank adaptation (LoRA) [56] by decomposing the weights of the adapted layers into magni-tude and direction components. The full ALM model, denoted as Spooftral (Voxtral + DoRA), adapts Voxtral for the spoofing detection task using the architecture shown in Figure 1. In 
+
+Fig. 2: PaCMAP projections of audio adapter (left) and LLM (right) embeddings across ASVspoof5 sets: (a) training set, (b) Dev. set, (c) Eval. set. TABLE II: Linear probing performance after the audio adapter and LLM layers on ASVspoof databases (EER %). CI is shown below each value.          
+
+> Database LLM Audio Adapter Dev. Eval. Dev. Eval.
+> ASVspoof2019 LA 6.60
+> (5.96,7.09)
+> 7.17
+> (6.91,7.55)
+> 2.79
+> (2.37,3.07)
+> 5.48
+> (5.20,5.73)
+> ASVspoof2021 LA 9.26
+> (8.74,9.84)
+> 17.34
+> (16.97,17.70)
+> 2.79
+> (2.37,3.07)
+> 13.57
+> (13.30,13.87)
+> ASVspoof2021 DF 7.02
+> (6.40,7.50)
+> 19.20
+> (18.96,19.52)
+> 2.79
+> (2.37,3.07)
+> 9.64
+> (9.49,9.86)
+> ASVspoof5 20.73
+> (20.49,20.96)
+> 19.09
+> (18.98,19.19)
+> 11.58
+> (11.40,11.74)
+> 9.75
+> (9.68,9.83)
+
+addition, we trained an audio encoder-and-adapter-only model, denoted Spooftral-Enc , which excludes the LLM decoder and consists of a Whisper-based audio encoder with DoRA applied to the attention layers, followed by an audio adapter and a lightweight trainable classification head. The classification head comprises a linear projection from 3072 to 256 dimen-sions, a GELU activation, a dropout layer with probability of 
+
+0.1, and a final linear layer from 256 to 2 output dimensions. In both models, DoRA was applied only to the attention projection layers (query, key, value, and output) with a rank of 16 and α = 32 . For the ASVspoof5 database, the DoRA rank increased to 32 and α to 64; this configuration is denoted as Attention DoRA and is used in Table III. The audio adapter layers remained fully trainable. The training process includes data augmentation with additive noise and codec perturbations (e.g., MP3 and OPUS). To avoid transforming bonafide speech TABLE III: Performance comparison of Spooftral and Spooftral-Enc across the ASVspoof databases (EER %). CI is shown below each value.          
+
+> Database Spooftral Spooftral-Enc Dev. Eval. Dev. Eval.
+> ASVspoof2019 LA 0.02
+> (0.00,0.11)
+> 0.41
+> (0.35,0.47)
+> 0.03
+> (0.00,0.11)
+> 0.40
+> (0.34,0.50)
+> ASVspoof2021 LA 0.02
+> (0.00,0.11)
+> 6.46
+> (6.25,6.69)
+> 0.03
+> (0.00,0.12)
+> 6.70
+> (6.43,6.89)
+> ASVspoof2021 DF 0.05
+> (0.00,0.09)
+> 3.88
+> (3.78,3.97)
+> 0.05
+> (0.00,0.11)
+> 4.76
+> (4.61,4.91)
+> ASVspoof5 4.50
+> (4.41,4.61)
+> 4.25
+> (4.20,4.31)
+> 5.29
+> (5.18,5.41)
+> 5.08
+> (5.03,5.14)
+
+utterances into speech that resembles spoofed utterances, a maximum of three augmentations in parallel were applied to each utterance. We used the AdamW optimizer with a cosine learning-rate scheduler and a learning rate of 10 −4, with gradient accumulation of 8, training for up to 20 epochs with a batch size of 32 (before gradient accumulation). Spooftral-Enc was trained with the cross-entropy loss, whereas Spooftral was trained using the proposed generative label-likelihood classification method. In the Spooftral variant the margin contribution was controlled by λmargin , with mbf = 0.1,
+
+msp = 0 .05 , and λmargin = 0 .05 in all experiments using margin regularization. To address the class imbalance in the training sets, class weights were computed using the square-root inverse fre-quency, wi =
+
+q Nni , where ni is the number of utterances in class i and N is the total number of utterances. The resulting weights were normalized such that their sum equals 2. For all ASVspoof databases, the normalized class weights were approximately (wbf , w sp ) = (1 .5, 0.5) .The results obtained with Spooftral and Spooftral-Enc on the ASVspoof databases are shown in Table III. Spooftral and Spooftral-Enc achieve strong performance across the ASVspoof databases. The observed performance differences across the evaluated databases may be explained by several factors. First, ASVspoof5 provides a larger and more diverse training set, allowing DoRA to better adapt to spoofing-specific artifacts while preserving the pre-trained model weights. Second, the Whisper-based audio encoder in Voxtral is primarily optimized for robust speech transcription and therefore learns representations that are relatively invariant to codec and channel distortions. While this property is beneficial for automatic speech recognition, it may reduce sensitivity to spoofing-related artifacts and consequently limit generalization under the mismatched conditions. Another important difference lies in the database design. In ASVspoof2021, the training and development sets are based on ASVspoof2019 and therefore contain the same attack types, whereas the evaluation set consists of unseen attacks. In contrast, the ASVspoof5 training and development sets contain different attack types, encouraging the model to learn more generalizable spoofing representations and leading to an operating point that transfers better to unseen attacks. Nevertheless, the EERs obtained on the development and evaluation sets in the ASVspoof5 database, despite their TABLE IV: Instruction interface ablation for Spooftral on ASVspoof5 without margin regularization (EER %). CI below each value.         
+
+> Instruction Interface Dev. EER Eval. EER
+> Prompt: “Classify the audio as real or fake.” Labels: real /fake
+> 5.67
+> (5.56,5.82)
+> 4.47
+> (4.42,4.52)
+> Prompt: “Is this speech spoof or bonafide?” Labels: bonafide /spoof
+> 4.77
+> (4.66,4.89)
+> 4.46
+> (4.39,4.53)
+
+TABLE V: Comparison of Spooftral and Spooftral-Enc versus other SSL-based CMs on ASVspoof5 (EER %). CI below each value.                        
+
+> System Dev. Eval.
+> S10 Fusion †[19] –11.24 Fusion of WavLM-ResNet18-SA †∗ [57] 0.64 7.01 SSL-IVSPT ∗[58] 0.76 5.99 SLIM †∗ [59] –5.50 Best open-condition submission †∗ [60] –2.59 Spooftral (LLM Attention DoRA) 7.89
+> (7.75,8.03)
+> 7.01
+> (6.94,7.08)
+> Spooftral (Attention DoRA) 4.77
+> (4.66,4.89)
+> 4.46
+> (4.39,4.53)
+> Spooftral (Attention DoRA + Margin) 4.50
+> (4.41,4.61)
+> 4.25
+> (4.20,4.31)
+> Spooftral-Enc (Attention DoRA) 5.29
+> (5.18,5.41)
+> 5.08
+> (5.03,5.14)
+> ∗uses additional training database
+> †uses fusion
+
+different spoofing attacks, suggest good generalization across different attack types. Furthermore, Spooftral consistently outperforms Spooftral-Enc on most evaluation sets, except on the ASVspoof2019 LA evaluation set, where the performance difference is minor. This result indicates that although the frozen LLM represen-tations alone are not optimal for spoof detection, task-specific adaptation enables the LLM to learn spoof-discriminative representations that complement the acoustic encoder. Finally, both Spooftral variants outperform the Whisper-based spoofing detection approach reported in [29], demonstrating the effec-tiveness of the model for the spoofing detection task. To further analyze the generative label-likelihood classifica-tion method, we trained two Spooftral models using different instruction interfaces. The two interfaces differ only in the prompt and the target label sequences used during training and inference, while the DoRA configuration and all other training settings remain identical. The results are summarized in Table IV. The bonafide/spoof instruction interface achieved lower EERs than the real/fake interface, with a more pronounced improvement on the development set. This observation sug-gests that instruction design may influence performance in generative label-likelihood classification, potentially due to differences in how label sequences interact with the pre-trained ALM representations. However, further studies are required to disentangle the independent effects of the prompt and target label sequences on these representations. Therefore, the bonafide/spoof instruction interface was used in the other experiments. Fig. 3: Per-attack spoof detection rate (%) on the ASVspoof5 development and evaluation sets using the EER threshold of each set. Table V compares different Spooftral training framework configurations on the ASVspoof5 database. The first variant, denoted Spooftral (LLM Attention DoRA) , applies DoRA only to the LLM attention layers while the audio encoder is frozen and the audio adapter is trainable. The second variant, denoted 
+
+Spooftral (Attention DoRA) , applies DoRA to all attention projection layers, including those of the audio encoder. The third variant, denoted Spooftral (Attention DoRA + Margin) ,further incorporates the proposed margin regularization term. The obtained results show that the proposed margin regulariza-tion consistently improves the Attention DoRA configuration, yielding lower EERs on both the development and evaluation sets of the ASVspoof5 database. Among them, SLIM [59], SSL-IVSPT [58], and the USTC-KXDIGIT system (best open-condition ASVspoof5 challenge submission) [60] achieve strong performance, often relying on audio encoder fusion, additional spoofing-detection training data, or both. In contrast, our Spooftral variants, built on the pre-trained Voxtral-mini model [35], achieve competitive performance us-ing lightweight adaptation alone. The Spooftral model (DoRA rank 32, α = 64 ) requires only ∼55.1M trainable parameters, corresponding to just 1.17% of its 4.71B total parameters. Sim-ilarly, Spooftral-Enc uses only ∼37.4M trainable parameters (5.55% of its 674M total parameters). Both models achieve these results without model fusion or additional spoofing-specific training databases. For a deeper analysis of the proposed models, we examine their performance across individual spoofing attacks. As shown in Figure 3, the per-attack spoof detection rate based on the EER threshold of each set shows a consistent pattern across all evaluated Spooftral and Spooftral-Enc models trained on the ASVspoof5 database. On the development set, the A13 (VC-based StarGANv2-VC [61]) and A15 (VAE-GAN [62]) attacks consistently exhibit the lowest spoof detection rate. In contrast, on the evaluation set, the A28 (pre-trained YourTTS [63]) attack consistently yields a lower spoof detection rate than the remaining attacks. This observation is consistent with other analyses [9], [64], [65], which also identified the A28 attack as one of the most challenging attacks for CM systems [64]. To the best of our knowledge, no previous ALM-based CM has been reported on the ASVspoof5 database. Although the linear probing results indicate stronger separability in the audio adapter representations, the superior performance of Spooftral demonstrates that the LLM component can contribute effec-tively to spoof detection after task-specific DoRA adaptation. These findings motivate further task-aware adaptation and architectural modifications for ALM-based spoofing detection systems. VI. D ISCUSSION AND CONCLUSIONS 
+
+This work investigated the Voxtral ALM framework for spoofing detection and examined whether an instruction-guided Voxtral model can contribute to spoofing detection be-yond acoustic classifiers while serving as an initial step toward integrating CM capabilities into a unified ALM framework. We reformulate spoofing detection as an instruction-guided gen-erative label-likelihood classification task, where bonafide and spoof hypotheses are scored using length-normalized label-sequence likelihoods. We analyze how spoof-discriminative information propagates across model stages by comparing representations before and after the LLM decoder. The results show that spoof cues are more separable before the LLM decoder in the frozen setting, consistent with an objective mismatch whereby the decoder, optimized for semantic robust-ness, reduces the separability of fine-grained acoustic artifacts critical for spoof detection. However, the superior performance of Spooftral after DoRA adaptation demonstrates that the LLM decoder component can effectively contribute to spoof detection when adapted to the task. Furthermore, the larger scale and greater diversity of the ASVspoof5 training set may enable the Spooftral architecture to learn more robust spoof-discriminative representations, leading to better generalization and a competitive EER of 4.25% on the ASVspoof5 evalu-ation set compared with the submissions to the ASVspoof5 Challenge [24]. Future work will extend this framework to jointly address spoofing detection and other speech tasks within a unified ALM framework. We plan to investigate audio encoders that are more sensitive to acoustic artifacts and alternative speech representations, as current ALM frameworks are based on the Whisper-based audio encoder [32]–[34], [66]. We also plan to investigate alternative adaptation and training strategies [67]– [69] and incorporate reasoning-based training strategies in the unified ALM framework, which may further improve performance on the spoofing detection task and enhance generalization to previously unseen spoofing attacks. REFERENCES [1] A. Mittal and M. Dua, “Automatic speaker verification systems and spoof detection techniques: review and analysis,” International Journal of Speech Technology , vol. 25, no. 1, pp. 105–134, 2022. [2] R. Naika, “An overview of automatic speaker verification system,” in  
+
+> Intelligent Computing and Information and Communication: Proceed-ings of 2nd International Conference, ICICC 2017 .Springer, 2018, pp. 603–610.
+
+[3] K. Kamel, K. Sood, H. S. Dutta, and S. Aryal, “A survey of threats against voice authentication and anti-spoofing systems,” 2025. [Online]. Available: https://arxiv.org/abs/2508.16843 [4] Z. Almutairi and H. Elgibreen, “A review of modern audio deepfake de-tection methods: challenges and future directions,” Algorithms , vol. 15, no. 5, p. 155, 2022. [5] Z. Wu, T. Kinnunen, N. Evans, J. Yamagishi, C. Hanilc ¸i, M. Sahidullah, and A. Sizov, “ASVspoof 2015: the first automatic speaker verification spoofing and countermeasures challenge,” in Interspeech 2015 , 2015, pp. 2037–2041. [6] T. Kinnunen, M. Sahidullah, H. Delgado, M. Todisco, N. Evans, J. Ya-magishi, and K. A. Lee, “The ASVspoof 2017 challenge: Assessing the limits of replay spoofing attack detection,” in Interspeech 2017 .International Speech Communication Association, 2017, pp. 2–6. [7] X. Wang, J. Yamagishi, M. Todisco, H. Delgado, A. Nautsch, N. Evans, M. Sahidullah, V. Vestman, T. Kinnunen, K. A. Lee et al. , “ASVspoof 2019: A large-scale public database of synthesized, converted and replayed speech,” Computer Speech & Language , vol. 64, p. 101114, 2020. [8] X. Liu, X. Wang, M. Sahidullah, J. Patino, H. Delgado, T. Kinnunen, M. Todisco, J. Yamagishi, N. Evans, A. Nautsch, and K. A. Lee, “ASVspoof 2021: Towards spoofed and deepfake speech detection in the wild,” IEEE/ACM Transactions on Audio, Speech, and Language Processing , vol. 31, pp. 2507–2522, 2023. [9] X. Wang, H. Delgado, H. Tak, J. weon Jung, H. jin Shim, M. Todisco, I. Kukanov, X. Liu, M. Sahidullah, T. Kinnunen, N. Evans, K. A. Lee, J. Yamagishi, M. Jeong, G. Zhu, Y. Zang, Y. Zhang, S. Maiti, F. Lux, N. M¨ uller, W. Zhang, C. Sun, S. Hou, S. Lyu, S. Le Maguer, C. Gong, H. Guo, L. Chen, and V. Singh, “ASVspoof 5: Design, collection and validation of resources for spoofing, deepfake, and adversarial attack detection using crowdsourced speech,” Computer Speech & Language , vol. 95, p. 101825, 2026. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0885230825000506 [10] N. M. M¨ uller, P. Czempin, F. Dieckmann, A. Froghyar, and K. B¨ ottinger, “Does audio deepfake detection generalize?” arXiv preprint arXiv:2203.16263 , 2022. [11] Y. Zhang, Z. Li, J. Lu, H. Hua, W. Wang, and P. Zhang, “The impact of silence on speech anti-spoofing,” IEEE/ACM Transactions on Audio, Speech, and Language Processing , vol. 31, pp. 3374–3389, 2023. [12] O. Pascu, A. Stan, D. Oneata, E. Oneata, and H. Cucu, “Towards gen-eralisable and calibrated audio deepfake detection with self-supervised representations,” in Interspeech 2024 , 2024, pp. 4828–4832. [13] A. Weizman, Y. Ben-Shimol, and I. Lapidot, “Tandem spoofing-robust automatic speaker verification based on time-domain embeddings,” arXiv preprint arXiv:2412.17133 , 2024. [14] ——, “Spoofing-robust speaker verification based on time-domain embedding,” in Cyber Security, Cryptology, and Machine Learning ,S. Dolev, M. Elhadad, M. Kutyłowski, and G. Persiano, Eds. Cham: Springer Nature Switzerland, 2025, pp. 64–78. [15] ——, “Spoofing-robust speaker verification based on time-domain em-bedding,” Cryptography and Communications , pp. 1–23, 2026. [16] ——, “ASVspoof2019 vs. ASVspoof5: Assessment and Comparison,” in Interspeech 2025 , 2025, pp. 4568–4572. [17] P. Serrano, R. Duroselle, F. Angulo, J.-F. Bonastre, and O. Boef-fard, “Improving out-of-domain audio deepfake detection via layer selection and fusion of SSL-based countermeasures,” arXiv preprint arXiv:2509.12003 , 2025. [18] H. Tak, M. Todisco, X. Wang, J.-w. Jung, J. Yamagishi, and N. Evans, “Automatic speaker verification spoofing and deepfake detection using wav2vec 2.0 and data augmentation,” arXiv preprint arXiv:2202.12233 ,2022. [19] A. Kulkarni, H. M. Tran, A. Kulkarni, S. Dowerah, D. Lolive, and M. M. Doss, “Exploring generalization to unseen audio data for spoofing: insights from SSL models,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 86–93. [20] H. M. Tran, D. Lolive, D. Guennec, A. Sini, A. Delhay, and P.-F. Marteau, “Leveraging SSL Speech Features and Mamba for Enhanced DeepFake Detection,” in Interspeech 2025 , 2025, pp. 5323–5327. [21] A. Baevski, Y. Zhou, A. Mohamed, and M. Auli, “Wav2Vec 2.0: A framework for self-supervised learning of speech representations,” Ad-vances in Neural Information Processing Systems , vol. 33, pp. 12 449– 12 460, 2020. [22] W.-N. Hsu, B. Bolte, Y.-H. H. Tsai, K. Lakhotia, R. Salakhutdinov, and A. rahman Mohamed, “HuBERT: Self-supervised speech representation learning by masked prediction of hidden units,” IEEE/ACM Transactions on Audio, Speech, and Language Processing , vol. 29, pp. 3451–3460, 2021. [23] S. Chen, C. Wang, Z. Chen, Y. Wu, S. Liu, Z. Chen, J. Li, N. Kanda, T. Yoshioka, X. Xiao, J. Wu, L. Zhou, S. Ren, Y. Qian, Y. Qian, J. Wu, M. Zeng, X. Yu, and F. Wei, “WavLM: Large-scale self-supervised pre-training for full stack speech processing,” IEEE Journal of Selected Topics in Signal Processing , vol. 16, no. 6, pp. 1505–1518, 2022. [24] X. Wang, H. Delgado, H. Tak, J. weon Jung, H. jin Shim, M. Todisco, I. Kukanov, X. Liu, M. Sahidullah, T. H. Kinnunen, N. Evans, K. A. Lee, and J. Yamagishi, “ASVspoof 5: crowdsourced speech data, deepfakes, and adversarial attacks at scale,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 1–8. [25] A. Radford, J. W. Kim, T. Xu, G. Brockman, C. McLeavey, and I. Sutskever, “Robust speech recognition via large-scale weak supervi-sion,” in International conference on machine learning . PMLR, 2023, pp. 28 492–28 518. [26] P. Kawa, M. Plata, M. Czuba, P. Szyma´ nski, and P. Syga, “Improved deepfake detection using whisper features,” in Interspeech 2023 , 2023, pp. 4009–4013. [27] ¨Omer Tarik ¨ Ozyilmaz, M. Coler, and M. Valdenegro-Toro, “Overcoming Data Scarcity in Multi-Dialectal Arabic ASR via Whisper Fine-Tuning,” in Interspeech 2025 , 2025, pp. 1158–1162. [28] R. Liang, X. Zeng, Z. Liu, Q. Wu, R. Zhang, and L. Ren, “WhisperMSS: A Two-Stage Framework for Mandarin Singing Transcription and Seg-mentation Using Pretrained Models,” in Interspeech 2025 , 2025, pp. 3110–3114. [29] Q. Luo and K. Vinayagam Sivasundari, “Whisper+AASIST for deep-fake audio detection,” in HCI for Cybersecurity, Privacy and Trust ,A. Moallem, Ed. Cham: Springer Nature Switzerland, 2024, pp. 121– 133. [30] Z. Ma, Z. Chen, Y. Wang, E. S. Chng, and X. Chen, “Audio-CoT: Exploring chain-of-thought reasoning in large audio language model,” 
+
+arXiv preprint arXiv:2501.07246 , 2025. [31] D. Zhang, S. Li, X. Zhang, J. Zhan, P. Wang, Y. Zhou, and X. Qiu, “SpeechGPT: Empowering large language models with intrinsic cross-modal conversational abilities,” arXiv preprint arXiv:2305.11000 , 2023. [32] C. Tang, W. Yu, G. Sun, X. Chen, T. Tan, W. Li, L. Lu, Z. Ma, and C. Zhang, “SALMONN: Towards generic hearing abilities for large language models,” arXiv preprint arXiv:2310.13289 , 2023. [33] S. Ghosh, A. Goel, J. Kim, S. Kumar, Z. Kong, S. gil Lee, C.-H. H. Yang, R. Duraiswami, D. Manocha, R. Valle, and B. Catanzaro, “Audio Flamingo 3: Advancing audio intelligence with fully open large audio language models,” in The Thirty-ninth Annual Conference on Neural Information Processing Systems , 2025. [Online]. Available: https://openreview.net/forum?id=FjByDpDVIO [34] Y. Chu, J. Xu, X. Zhou, Q. Yang, S. Zhang, Z. Yan, C. Zhou, and J. Zhou, “Qwen-Audio: Advancing universal audio understanding via unified large-scale audio-language models,” arXiv preprint arXiv:2311.07919 ,2023. [35] A. H. Liu, A. Ehrenberg, A. Lo, C. Denoix, C. Barreau, G. Lample, J.-M. Delignon, K. R. Chandu, P. von Platen, P. R. Muddireddy et al. ,“Voxtral,” arXiv preprint arXiv:2507.13264 , 2025. [36] S.-Y. Liu, C.-Y. Wang, H. Yin, P. Molchanov, Y.-C. F. Wang, K.-T. Cheng, and M.-H. Chen, “DoRA: Weight-decomposed low-rank adaptation,” in Proceedings of the 41st International Conference on Machine Learning , ser. Proceedings of Machine Learning Research, vol. 235. PMLR, 2024, pp. 32 100–32 121. [37] Y. Su, J. Bai, Q. Xu, K. Xu, and Y. Dou, “Audio-language models for audio-centric tasks: A survey,” arXiv preprint arXiv:2501.15177 , 2025. [38] J. Peng, Y. Wang, B. Li, Y. Guo, H. Wang, Y. Fang, Y. Xi, H. Li, X. Li, K. Zhang et al. , “A survey on speech large language models for understanding,” Authorea Preprints , 2025. [39] S. Deshmukh, B. Elizalde, R. Singh, and H. Wang, “Pengi: An audio language model for audio tasks,” Advances in Neural Information Processing Systems , vol. 36, pp. 18 090–18 108, 2023. [40] J. Tian, S. gil Lee, Z. Kong, S. Ghosh, A. Goel, C.-H. H. Yang, W. Dai, Z. Liu, H. Ye, S. Watanabe, M. Shoeybi, B. Catanzaro, R. Valle, and W. Ping, “UALM: Unified audio language model for understanding, generation and reasoning,” ArXiv , vol. abs/2510.12000, 2025. [Online]. Available: https://api.semanticscholar.org/CorpusID:282064171 [41] Y. Shu, S. Dong, G. Chen, W. Huang, R. Zhang, D. Shi, Q. Xiang, and Y. Shi, “LLaSM: Large language and speech model,” 2023. [42] M. Li, C.-T. Do, S. Keizer, Y. Farag, S. Stoyanchev, and R. Doddipatla, “WHISMA: A speech-LLM to perform zero-shot spoken language understanding,” in 2024 IEEE Spoken Language Technology Workshop (SLT) . IEEE, 2024, pp. 1115–1122. [43] Y. Wu, K. Chen, T. Zhang, Y. Hui, T. Berg-Kirkpatrick, and S. Dubnov, “Large-scale contrastive language-audio pretraining with feature fusion and keyword-to-caption augmentation,” in ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2023, pp. 1–5. [44] J. Han, K. Gong, Y. Zhang, J. Wang, K. Zhang, D. Lin, Y. Qiao, P. Gao, and X. Yue, “OneLLM: One framework to align all modalities with language,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2024. [45] X. Li, S. Wang, S. Zeng, Y. Wu, and Y. Yang, “A survey on LLM-based multi-agent systems: workflow, infrastructure, and challenges,” 
+
+Vicinagearth , vol. 1, no. 1, p. 9, 2024. [46] R. Rafailov, A. Sharma, E. Mitchell, C. D. Manning, S. Ermon, and C. Finn, “Direct preference optimization: Your language model is secretly a reward model,” Advances in Neural Information Processing Systems , vol. 36, pp. 53 728–53 741, 2023. [47] S. Guo, B. Zhang, T. Liu, T. Liu, M. Khalman, F. Llinares, A. Rame, T. Mesnard, Y. Zhao, B. Piot et al. , “Direct language model alignment from online AI feedback,” arXiv preprint arXiv:2402.04792 , 2024. [48] A. H. Liu, A. Ehrenberg, A. Lo, C.-Y. Sun, G. Lample et al. , “Voxtral realtime,” 2026. [Online]. Available: https://arxiv.org/abs/2602.11298 [49] B. Dutta, R. Ranjan, S. Sathvik, M. Vatsa, and R. Singh, “Can Quantized Audio Language Models Perform Zero-Shot Spoofing Detection?” in 
+
+Interspeech 2025 , 2025, pp. 4578–4582. [50] H. Gu, J. Yi, C. Wang, J. Tao, Z. Lian, J. He, Y. Ren, Y. Chen, and Z. Wen, “ALLM4ADD: Unlocking the capabilities of audio large language models for audio deepfake detection,” in Proceedings of the 33rd ACM International Conference on Multimedia , 2025, pp. 11 736– 11 745. [51] A. H. Liu, K. Khandelwal, S. Subramanian, V. Jouault, A. Rastogi, A. Sad´ e, A. Jeffares, A. Jiang, A. Cahill, A. Gavaudan et al. , “Ministral 3,” arXiv preprint arXiv:2601.08584 , 2026. [52] D. Kalamkar, D. Mudigere, N. Mellempudi, D. Das, K. Banerjee, S. Avancha, D. T. Vooturi, N. Jammalamadaka, J. Huang, H. Yuen 
+
+et al. , “A study of BFLOAT16 for deep learning training,” arXiv preprint arXiv:1905.12322 , 2019. [53] L. Ferrer and P. Riera, “Confidence intervals for evaluation in machine learning.” [Online]. Available: https://github.com/luferrer/ ConfidenceIntervals [54] S. Zaiem, Y. Kemiche, T. Parcollet, S. Essid, and M. Ravanelli, “Speech Self-Supervised Representation Benchmarking: Are We Doing it Right?” in Interspeech 2023 , 2023, pp. 2873–2877. [55] Y. Wang, H. Huang, C. Rudin, and Y. Shaposhnik, “Understanding how dimension reduction tools work: An empirical approach to deciphering t-SNE, UMAP, TriMap, and PaCMAP for data visualization,” Journal of Machine Learning Research , vol. 22, no. 201, pp. 1–73, 2021. [Online]. Available: http://jmlr.org/papers/v22/20-1061.html [56] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, “LoRA: Low-rank adaptation of large language models,” in International Conference on Learning Representations , 2022. [57] P.-C. Chan, W.-Y. Chen, and J.-C. Wang, “Enhancing spoofing detection in ASVspoof 5 Workshop 2024: fusion of WavLM-ResNet18-SA for optimal performance against speech deepfakes ,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 158–162. [58] J. Guo and X. Fu, “A universal deception speech detection based on an innovative progressive training method with improved virtual softmax and data balance,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 131–137. [59] Y. Zhu, C. Goel, S. Koppisetti, T. Tran, A. Kumar, and G. Bharaj, “Learn from real: reality defender’s submission to ASVspoof5 Challenge,” in 
+
+The Automatic Speaker Verification Spoofing Countermeasures Work-shop (ASVspoof 2024) , 2024, pp. 116–123. [60] Y. Chen, H. Wu, N. Jiang, X. Xia, Q. Gu, Y. Hao, P. Cai, Y. Guan, J. Wang, W.-L. Xie, L. Fang, S. Fang, Y. Song, W. Guo, L. Liu, and M. Xu, “USTC-KXDIGIT system description for ASVspoof5 Chal-lenge,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 109–115. [61] Y. A. Li, A. Zare, and N. Mesgarani, “StarGANv2-VC: A diverse, unsupervised, non-parallel framework for natural-sounding voice con-version,” arXiv preprint arXiv:2107.10394 , 2021. [62] E. A. AlBadawy and S. Lyu, “Voice conversion using speech-to-speech neuro-style transfer.” in Interspeech , 2020, pp. 4726–4730. [63] E. Casanova, J. Weber, C. D. Shulby, A. C. Junior, E. G¨ olge, and M. A. Ponti, “YourTTS: Towards zero-shot multi-speaker TTS and zero-shot voice conversion for everyone,” in International conference on machine learning . PMLR, 2022, pp. 2709–2720. [64] K. Sch¨ afer, J.-E. Choi, and M. Neu, “Robust audio deepfake detection: exploring front-/back-end combinations and data augmentation strategies for the ASVspoof5 Challenge,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 56–63. [65] J. M. Mart´ ın-Do˜ nas, E. Rosello, A. M. Gomez, A. ´ Alvarez, I. L´ opez-Espejo, and A. M. Peinado, “ASASVIcomtech: the Vicomtech-UGR speech deepfake detection and SASV systems for the ASVspoof5 Chal-lenge,” in The Automatic Speaker Verification Spoofing Countermeasures Workshop (ASVspoof 2024) , 2024, pp. 144–151. [66] G. K. Kumar, R. Saraf, L. Lepauloux, A. Muneer, B. Mokeddem, and H. Hacid, “Competitive audio-language models with data-efficient single-stage training on public data,” in Proceedings of the IEEE Automatic Speech Recognition and Understanding Workshop (ASRU) .IEEE, 2025. [67] Y. Refael, J. Svirsky, B. Shustin, W. Huleihel, and O. Lindenbaum, “AdaRankGrad: Adaptive gradient rank and moments for memory-efficient LLMs training and fine-tuning,” in International Conference on Learning Representations , 2025. [68] F. Meng, Z. Wang, and M. Zhang, “PiSSA: Principal singular values and singular vectors adaptation of large language models,” Advances in Neural Information Processing Systems , vol. 37, pp. 121 038–121 072, 2024. [69] S. Hayou, N. Ghosh, and B. Yu, “LoRA+: Efficient low rank adaptation of large models,” in Proceedings of the 41st International Conference on Machine Learning , ser. Proceedings of Machine Learning Research, vol. 235. PMLR, 2024, pp. 17 783–17 806.

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-27 <!--dpr-date:20260927-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/27/2609.28713v1-spooftral-can-voxtral-audio-language-model-detect-speech-spoofing" data-sidebar-item="{&quot;title&quot;: &quot;Spooftral: Can Voxtral Audio-Language Model Detect Speech Spoofing?&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.28713v1-spooftral-can-voxtral-audio-language-model-detect-speech-spoofing&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ser-da&quot;}], &quot;evidence&quot;: &quot;失配条件下音频语言模型用于欺骗检测&quot;}">Spooftral: Can Voxtral Audio-Language Model Detect Speech Spoofing?</a>
   * 2026-09-25 <!--dpr-date:20260925-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/25/2609.27615v1-bicflow-mer-orchestrating-discriminative-and-generative-multimodal-emotion-recognition-via-conditional-transport" data-sidebar-item="{&quot;title&quot;: &quot;BiCFlow-MER: Orchestrating Discriminative and Generative Multimodal Emotion Recognition via Conditional Transport&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.27615v1-bicflow-mer-orchestrating-discriminative-and-generative-multimodal-emotion-recognition-via-conditional-transport&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ser-da&quot;}], &quot;evidence&quot;: &quot;融合音频与文本线索的多模态情感识别&quot;}">BiCFlow-MER: Orchestrating Discriminative and Generative Multimodal Emotion Recognition via Conditional Transport</a>

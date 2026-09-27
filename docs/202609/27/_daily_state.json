@@ -1,0 +1,25 @@
+{
+  "date": "20260927",
+  "date_label": "",
+  "generated_at": "2026-09-27 22:23:47 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.28713v1",
+      "route": "202609/27/2609.28713v1-spooftral-can-voxtral-audio-language-model-detect-speech-spoofing",
+      "title": "Spooftral: Can Voxtral Audio-Language Model Detect Speech Spoofing?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "失配条件下音频语言模型用于欺骗检测",
+      "first_seen_at": "2026-09-27 22:23:47 UTC",
+      "updated_at": "2026-09-27 22:23:47 UTC"
+    }
+  ]
+}
