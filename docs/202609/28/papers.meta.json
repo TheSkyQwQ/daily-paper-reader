@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-28",
+  "date": "2026-09-28",
+  "generated_at": "2026-09-28T23:40:38",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/28/2609.30769v1-query-conditioned-prototype-adaptation-for-cross-domain-few-shot-learning-single-query-inference-controlled-comparisons-and-failure-modes",
+      "section": "quick",
+      "title_en": "Query-Conditioned Prototype Adaptation for Cross-Domain Few-Shot Learning: Single-Query Inference, Controlled Comparisons, and Failure Modes",
+      "authors": "Rushab Rasik Karania, Tomas Maul",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.30769v1",
+      "score": "6.0",
+      "evidence": "面向跨域迁移的查询条件化原型自适应",
+      "tldr": "跨域小样本学习需在无目标域参数更新下适配分类器，但固定全局表征时，查询与支持联合适配对原型构建的贡献尚不清楚。WIPT 通过联合变换单个无标签查询与支持嵌入，构造查询特定类均值，实现单查询测试时原型适配。五个种子复现显示，1-shot 中 CUB 与 EuroSAT 稳定提升，ISIC 略降；5-shot 中 ProtoNet 整体最强，WIPT 仅稳定优于同容量 support-only Transformer。收益集中于不确定决策，多查询联合无可靠精度增益，但可显著降低注意力对与显存。",
+      "tags": "query:ser-da",
+      "abstract_en": "Cross-domain few-shot learning requires adapting a classifier to a new visual domain from very few labelled examples without target-time parameter updates. We isolate one question: under a fixed global representation, what does joint query-support adaptation contribute to prototype construction? The Within-Instance Prototypical Transformer (WIPT) implements single-query test-time prototype adaptation by jointly transforming one unlabelled query and the labelled support embeddings, then forming query-specific class means. Using a shared frozen ViT-S/16 encoder, miniImageNet source training, and CUB, EuroSAT and ISIC targets, we replicate the key comparisons across five independent training seeds. In 1-shot evaluation, WIPT improves frozen ProtoNet in every run on CUB (+0.21 percentage points) and EuroSAT (+2.07), but decreases ISIC (-0.22). In 5-shot evaluation, ProtoNet remains strongest overall, while WIPT consistently improves a capacity-matched support-only Transformer on ISIC (+0.99). Joint processing of up to five queries yields no reliable accuracy gain; in a head-only 5-shot benchmark, g = 5 reduces analytical attention-token pairs by 73% and peak allocated memory by 29% relative to g = 1, although latency is non-monotonic. Across all target/shot conditions, WIPT changes uncertain ProtoNet decisions far more than confident ones, and rescue/break decomposition accounts for the observed gains and losses. Source-shift and scorer controls further show that the benefit is not universal. Overall, WIPT provides a streaming-compatible form of test-time prototype adaptation that can improve difficult low-shot cross-domain decisions without target-time optimization.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/28/2609.31168v1-audio-emotion-recognition-for-atypical-hearing",
+      "section": "quick",
+      "title_en": "Audio emotion recognition for atypical hearing",
+      "authors": "Ulysse Roussel",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.31168v1",
+      "score": "6.0",
+      "evidence": "微调CLAP音频语言模型进行音频情感识别",
+      "tldr": "自闭症人群常伴随听觉过敏，其情感反应难以客观评估且高度个体化，非典型听觉条件下的音频情感识别仍待深入探索。本研究核心思路是从声学特质中理解情感，借助低秩适配LoRA微调大型音频基础模型CLAP，并在神经典型听者的效价-唤醒标注数据上完成首阶段训练。该初步工作验证了基于少量标注数据泛化情感反应的可行路径，并为后续面向自闭症个体的个性化音频情感识别与听觉过敏评估奠定基础。",
+      "tags": "query:ser-da",
+      "abstract_en": "My doctoral work aims to explore Audio Emotion Recognition (AER) in the context of atypical listening. This research focuses on auditory hypersensitivity in people with autism, a phenomenon that is often difficult to evaluate and unique to each individual. Our core idea is to leverage our understanding of affect from acoustic traits, relying on the possibility of generalizing affective responses from a small amount of annotated data. As a first step, we fine-tune a large foundation model, Contrastive Language-Audio Pretraining (CLAP) using low-rank adaptation (LoRA), trained on a valence and arousal dataset of neurotypical listeners.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

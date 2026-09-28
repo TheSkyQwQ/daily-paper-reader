@@ -1,0 +1,41 @@
+{
+  "date": "20260928",
+  "date_label": "",
+  "generated_at": "2026-09-28 23:40:37 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.30769v1",
+      "route": "202609/28/2609.30769v1-query-conditioned-prototype-adaptation-for-cross-domain-few-shot-learning-single-query-inference-controlled-comparisons-and-failure-modes",
+      "title": "Query-Conditioned Prototype Adaptation for Cross-Domain Few-Shot Learning: Single-Query Inference, Controlled Comparisons, and Failure Modes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向跨域迁移的查询条件化原型自适应",
+      "first_seen_at": "2026-09-28 23:40:37 UTC",
+      "updated_at": "2026-09-28 23:40:37 UTC"
+    },
+    {
+      "paper_id": "2609.31168v1",
+      "route": "202609/28/2609.31168v1-audio-emotion-recognition-for-atypical-hearing",
+      "title": "Audio emotion recognition for atypical hearing",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "微调CLAP音频语言模型进行音频情感识别",
+      "first_seen_at": "2026-09-28 23:40:37 UTC",
+      "updated_at": "2026-09-28 23:40:37 UTC"
+    }
+  ]
+}

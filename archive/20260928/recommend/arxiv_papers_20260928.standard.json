@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-28T23:38:32.327609+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.30769v1",
+      "source": "arxiv",
+      "title": "Query-Conditioned Prototype Adaptation for Cross-Domain Few-Shot Learning: Single-Query Inference, Controlled Comparisons, and Failure Modes",
+      "abstract": "Cross-domain few-shot learning requires adapting a classifier to a new visual domain from very few labelled examples without target-time parameter updates. We isolate one question: under a fixed global representation, what does joint query-support adaptation contribute to prototype construction? The Within-Instance Prototypical Transformer (WIPT) implements single-query test-time prototype adaptation by jointly transforming one unlabelled query and the labelled support embeddings, then forming query-specific class means. Using a shared frozen ViT-S/16 encoder, miniImageNet source training, and CUB, EuroSAT and ISIC targets, we replicate the key comparisons across five independent training seeds. In 1-shot evaluation, WIPT improves frozen ProtoNet in every run on CUB (+0.21 percentage points) and EuroSAT (+2.07), but decreases ISIC (-0.22). In 5-shot evaluation, ProtoNet remains strongest overall, while WIPT consistently improves a capacity-matched support-only Transformer on ISIC (+0.99). Joint processing of up to five queries yields no reliable accuracy gain; in a head-only 5-shot benchmark, g = 5 reduces analytical attention-token pairs by 73% and peak allocated memory by 29% relative to g = 1, although latency is non-monotonic. Across all target/shot conditions, WIPT changes uncertain ProtoNet decisions far more than confident ones, and rescue/break decomposition accounts for the observed gains and losses. Source-shift and scorer controls further show that the benefit is not universal. Overall, WIPT provides a streaming-compatible form of test-time prototype adaptation that can improve difficult low-shot cross-domain decisions without target-time optimization.",
+      "authors": [
+        "Rushab Rasik Karania",
+        "Tomas Maul"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-25T03:49:42+00:00",
+      "link": "https://arxiv.org/pdf/2609.30769v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "query-conditioned prototype adaptation for cross-domain transfer",
+      "llm_evidence_cn": "面向跨域迁移的查询条件化原型自适应",
+      "llm_evidence": "面向跨域迁移的查询条件化原型自适应",
+      "canonical_evidence": "面向跨域迁移的查询条件化原型自适应",
+      "llm_tldr_en": "Cross-domain few-shot learning needs adaptation without target-time updates. This paper studies joint query-support prototype construction via the Within-Instance Prototypical Transformer, forming query-specific class means and analyzing controlled comparisons and failure modes.",
+      "llm_tldr_cn": "针对跨域小样本学习需在极少标注下适配新域、且不进行目标端参数更新的问题，本文聚焦固定全局表示下查询-支持联合自适应对原型构建的贡献。方法提出 Within-Instance Prototypical Transformer（WIPT），联合变换无标注查询与标注支持嵌入，形成查询特定的类别原型。实验在共享冻结 ViT 编码器与多个目标域上重复受控对比，并分析失败模式。其原型对齐与跨域自适应机制对跨语料情感识别具有方法迁移价值。",
+      "llm_tldr": "针对跨域小样本学习需在极少标注下适配新域、且不进行目标端参数更新的问题，本文聚焦固定全局表示下查询-支持联合自适应对原型构建的贡献。方法提出 Within-Instance Prototypical Transformer（WIPT），联合变换无标注查询与标注支持嵌入，形成查询特定的类别原型。实验在共享冻结 ViT 编码器与多个目标域上重复受控对比，并分析失败模式。其原型对齐与跨域自适应机制对跨语料情感识别具有方法迁移价值。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.31168v1",
+      "source": "arxiv",
+      "title": "Audio emotion recognition for atypical hearing",
+      "abstract": "My doctoral work aims to explore Audio Emotion Recognition (AER) in the context of atypical listening. This research focuses on auditory hypersensitivity in people with autism, a phenomenon that is often difficult to evaluate and unique to each individual. Our core idea is to leverage our understanding of affect from acoustic traits, relying on the possibility of generalizing affective responses from a small amount of annotated data. As a first step, we fine-tune a large foundation model, Contrastive Language-Audio Pretraining (CLAP) using low-rank adaptation (LoRA), trained on a valence and arousal dataset of neurotypical listeners.",
+      "authors": [
+        "Ulysse Roussel"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-25T11:59:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.31168v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fine-tuning the CLAP audio-language model for audio emotion recognition",
+      "llm_evidence_cn": "微调CLAP音频语言模型进行音频情感识别",
+      "llm_evidence": "微调CLAP音频语言模型进行音频情感识别",
+      "canonical_evidence": "微调CLAP音频语言模型进行音频情感识别",
+      "llm_tldr_en": "This doctoral work studies audio emotion recognition for atypical hearing in autism, fine-tuning the CLAP foundation model with LoRA on valence-arousal data to generalize affect from small annotated sets.",
+      "llm_tldr_cn": "针对自闭症人群听觉超敏难以评估的问题，本文探索非典型听力情境下的音频情感识别。研究以声学线索推断情感，用LoRA微调CLAP大型音频语言模型，在神经典型听者的效价-唤醒度数据上训练。目标是借助少量标注数据泛化情感响应，为个体化听觉情感评估提供可行路径。",
+      "llm_tldr": "针对自闭症人群听觉超敏难以评估的问题，本文探索非典型听力情境下的音频情感识别。研究以声学线索推断情感，用LoRA微调CLAP大型音频语言模型，在神经典型听者的效价-唤醒度数据上训练。目标是借助少量标注数据泛化情感响应，为个体化听觉情感评估提供可行路径。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

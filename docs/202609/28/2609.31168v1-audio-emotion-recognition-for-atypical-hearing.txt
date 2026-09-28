@@ -1,0 +1,154 @@
+Title: Audio emotion recognition for atypical hearing
+
+URL Source: https://arxiv.org/pdf/2609.31168v1
+
+Published Time: Mon, 28 Sep 2026 00:59:34 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# Audio emotion recognition for atypical hearing 
+
+Ulysse Roussel 
+
+EAC Team, STMS Lab (Sorbonne Universit´ e - Ircam - CNRS) , Paris, France roussel@ircam.fr 
+
+Abstract —My doctoral work aims to explore Audio Emotion Recognition (AER) in the context of atypical listening. This research focuses on auditory hypersensitivity in people with autism, a phenomenon that is often difficult to evaluate and unique to each individual. Our core idea is to leverage our understanding of affect from acoustic traits, relying on the possi-bility of generalizing affective responses from a small amount of annotated data. As a first step, we fine-tune a large foundation model, Contrastive Language-Audio Pretraining (CLAP) using low-rank adaptation (LoRA), trained on a valence and arousal dataset of neurotypical listeners. 
+
+Index Terms —affective computing, arousal-valence, bimodal, Contrastive Language-Audio Pretraining, hypersensitivity. 
+
+I. I NTRODUCTION (KEY RESEARCH QUESTIONS )Every day, we navigate soundscapes without paying them much notice. When a sound strikes us, we can usually name, describe, and quantify what we feel, then ignore it. For some people this filtering breaks down entirely. Sounds that others barely register flood the senses, consume available energy, and make soundscapes difficult to interact with. This broader increased sensory reactivity is called hypersensitivity and is now explicitly included in the diagnostic criteria of autism spectrum disorder (ASD) (Diagnostic and Statistical Manual of Mental Disorders DSM-5). In particular, some sounds can create intense emotional reactions in individuals with ASD. However, despite the quantity of research in this field [1]– [3], much effort is still needed to understand the characteristics of auditory processing in individuals with ASD [4], [5]. Our goal is to bridge this gap, understand what may be disturbing, and characterize atypical perception through acoustic metrics. Our research is organized around three key questions: 1) How can affective responses to auditory stimuli be generalized from a small number of evaluated examples? 2) How to design ecological data collection protocols adapted to hypersensitive individuals? Protocols should reflect active listening and objectively assess emotional reaction in real-world conditions. 3) How to use a model generalizing the listening experience of a hypersensitive individual? It is important to examine how acoustic features influence affective evaluations. We focus primarily on the first research question, while keeping the constraints imposed by the other two in mind. II. R ELATED WORK 
+
+A. Context 
+
+Behavioral studies report marked heterogeneity in auditory and sensory processing in ASD [1], motivating a personalized VALENCE + VALENCE 
+
+> AROUSAL + AROUSAL
+
+Fig. 1. Russell’s circumplex model of affect. The 36 emotional anchors used as prediction targets are distributed along the two dimensions: Valence (pleasure–displeasure) and Arousal (activated–sleepy) 
+
+approach that adapts to each listener’s subjective perception from few labeled examples [6]. To represent affective re-sponses, we rely on Russell’s circumplex model [7] (Fig. 1), on which 36 subjective feelings are described along two continuous dimensions: Valence (pleasure–displeasure) and Arousal (activated–sleepy) (V, A ). This space is psycholog-ically meaningful and consistent with physiological measures. These dimensions are also well-suited to machine learning approaches for predicting affective states from audio. However, no affective audio dataset annotated by atypical listeners is currently available, and collecting such a dataset is itself a central objective of this thesis. As a first step, we validate a methodology on existing neurotypical datasets: the goal is not to model atypical listening directly, but to verify that affective responses can be generalized from limited data. 
+
+B. Advantages and limitation of existing datasets 
+
+TABLE I COMPARISON OF SELECTED EMOTIONAL AUDIO DATASETS 
+
+Dataset Sounds % Non-mus. n-Ratings Annotation 
+
+EmoSoundsc. 1,213 ∼100% a n/a Ranking IADS-E 935 74% 22 Rating IADS-2 167 69% 100 Rating AAD 780 100% 40 Rating 
+
+> a
+
+Estimated; not reported in the original dataset 
+
+> © 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. arXiv:2609.31168v1 [cs.LG] 25 Sep 2026
+
+1) EmoSoundscapes [8] contains 1,213 soundscapes from Freesound.org: 600 original recordings and 613 mixes of those sources. It is annotated via pairwise ranking, which encodes relative preference. Without loudness normalization, arousal prediction may be driven by raw amplitude. The mixed sources complicate affective labeling of individual stimuli, and splits must prevent leakage across train, validation and test sets. 2) IADS-E [9] expands the original International Affective Digitized Sounds (IADS) to 935 sounds, not loudness-normalized and 74% non-musical, rated on the Self-Assessment Manikin (SAM), a discrete 1–5 scale. Each sound is rated by at least 22 participants, reducing label reliability and reproducibility. 3) IADS-2 [10] comprises 167 non-normalized sounds rated by participants using SAM-based ratings. Despite its high annotator density (100 participants per sound), the dataset is small and contains a mix of musical, anthropomorphic and non-musical content (69% non-musical), which limits its suitability for affective mod-eling of soundscapes. 4) AAD [11] The Affective Audio Dataset (AAD) con-sists of 780 stimuli, exclusively non-musical, non-anthropomorphic mono sounds, normalized to −23 
+
+LUFS, sourced from the BBC Sound Effects library and fixed to 6 seconds. Ratings were collected via Amazon Mechanical Turk and validated with university participants (867 raters total) using a continuous slider for fine-grained annotation. Each sound was rated by a subset of 40 participants, making AAD one of the most densely annotated non-musical affective audio datasets. We thus have several relevant databases to work on, how-ever, they differ significantly on the sound durations, loud-nesses normalization, categories, evaluations, etc. 
+
+C. Machine learning-based prediction methodology 
+
+A central obstacle shared by all predictive approaches is the scarcity of viable data augmentation strategies. Modifying the spectral or temporal properties of an audio signal can alter its perceived valence and arousal. A study [12] evaluated the effect of reverberation and amplitude on affective judg-ments across three sound sources. The result suggests that the perceptual impact of acoustic transformations could inform augmentation pipelines, though a more systematic mapping of transformation-to-affect relationships would be needed before any augmentation strategy could be applied reliably. Prior work on affective audio prediction also points to recurring limitations in generalization. Classical approaches such as Support Vector Regression (SVR) [13] or feature-selection methods [14] rely on hand-crafted acoustic features that tend to transfer poorly across datasets. Deep learning approaches reduce this dependency: convolutional and re-current architectures trained directly on spectrograms have been applied to dimensional soundscape and audio emotion recognition [15], [16], but such models typically require large amounts of labeled data, a condition often unmet in affective audio corpora. To compensate, prior work segments each 6-second EmoSoundscapes clip into 1-second chunks. When these chunks overlap, [16] shows that the test data are contaminated and reported scores become overly optimistic. Even without overlap, assigning labels to 1-second segments rests on an assumption of affective uniformity within each clip which was validated only at the 6-second scale [8] and which we do not expect to hold given our objectives. We did not re-evaluate these models, but we suspect these chunk-level scores overfit the dataset rather than reflecting robust generalization. Our approach must generalize from a small number of evaluated examples. Furthermore, evaluation metrics should reflect the structure of the affective space, yet it is not clear that ( R2, RMSE) are well suited to capturing it. The following section presents our approach, which adapts a pre-trained audio–text foundation model to Russell’s cir-cumplex model of affect using low-rank fine-tuning, and introduces evaluation metrics that assess the structure of the valence–arousal space of stimuli. The model is trained on the AAD dataset, while EmoSoundscapes is reserved as a held-out cross-domain test set. III. M ETHODOLOGY AND PROPOSED SOLUTION 
+
+A. Bimodal text-audio foundation model 
+
+Affective computing aims to endow machines with the ability to recognize and represent emotion [17]; we approach this through a bimodal audio–text model. Foundation models pre-trained on audio–text data encode broad acoustic and semantic structure, a critical advantage when labeled affective data are scarce. A bimodal architecture is motivated by estab-lished links between language and affective perception. Sound identification has been shown to directly modulate perceived pleasantness [18], showing that semantic categorization and affective judgement interact. Moreover, language functions primarily as a medium for transmitting internal states [19], and the emotional lexicon constitutes a structured, socially shared representation of affective space [20]. Contrastive text– audio training leverages this property by constraining audio embeddings to align with the semantics and syntax encoded in language, a mechanism that has been shown to improve generalization over unimodal approaches [20]–[22] and en-ables zero-shot classification of unseen data [23]. Preliminary work by [24] shows that such embeddings can even recover the topological structure of Russell’s circumplex. We build on CLAP [25], a bimodal foundation model trained on 4,325 hours of audio–text pairs via contrastive learning [22]. A central design choice is to avoid a regression head mapping CLAP embeddings directly to (V, A ) coordi-nates. Instead, we represent Russell’s circumplex using 36 text anchors — eight axis labels and 28 affective descriptors [7] — within the embedding space, and score audio (V, A ) by cosine similarity to these textual anchors. All trainable parameters are adapted via LoRA ( r=64 ) [26], [27], reducing overfitting on the small AAD training set. Fine-tuning proceeds in two phases: Phase 1 aligns the text encoder using the 36 subjective-feeling anchors of Fig. 1, and Phase 2 1.00 0.75 0.50 0.25 0.00 0.25 0.50 0.75 1.00     
+
+> Valence
+> 1.00
+> 0.75
+> 0.50
+> 0.25
+> 0.00 0.25 0.50 0.75 1.00
+> Arousal
+> Happy / Excited Anxious / Stressed Calm / Relaxed Sad / Depressed
+> Train n=624 Val n=78 Test n=78 Median V -0.205 Fig. 2. Distribution of AAD sounds in the (V, A )space (train / val / test splits) stratified by valence median.
+
+fine-tunes the audio encoder to project audio embeddings towards their nearest text anchors. 
+
+B. Dataset and split strategy 
+
+The proposed AAD split (624/78/78 train/val/test) was stratified by median valence ( V =−0.205 , seed = 42), with validation and test samples drawn proportionally from each stratum (Fig. 2). Although AAD draws on the BBC sound-effect library, which is part of CLAP’s training set, CLAP never saw the segmented, normalized, and affect-labeled ver-sions used here. EmoSoundscapes [8] ( n=1 ,213 ) was used as a held-out external test set. 
+
+C. Anchor lexicon construction 
+
+Since prediction relies on the cosine similarity between audio embeddings and each anchor’s text prompt, the choice of prompt determines the anchor’s placement in the embedding space. For each anchor, a reference audio embedding ( n=36 )was selected from the AAD training set by identifying the sound whose valence–arousal labels were closest to the corre-sponding position in Russell’s circumplex model. This reference embedding was then used to select the most suitable text prompt from a pool of 728 templates and words (filtered from 1,005 entries by removing non-relevant terms [28], [29]): each prompt was scored by its cosine similarity to the audio anchor’s embedding, and the closest prompt was retained. Axis anchors were assigned first, and a global duplication constraint prevented two anchors from receiving the same prompt. To verify that each selected prompt occupied the correct region of the affective plane, its position in ( V, A )space was estimated by comparing its text embedding to audio recordings that ground the two Russell axes. The audio-driven cosine text selection yielded a Voronoi accuracy of 94 .4% 
+
+on the Russell circumplex, defined as the fraction of anchors assigned to their correct Voronoi region. 
+
+D. Fine-tuning strategy 
+
+Phase 1 — Text Compass. The text encoder was fine-tuned while the audio encoder was frozen. We used the Manifold Kernel Alignment loss (MKA, [30]), a manifold-aware variant of kernel alignment [31]. It aligned the 36 anchor embeddings with their target positions in Russell’s circumplex, without using audio waveforms or annotated audio–text pairs in the training objective. A lightweight TextMLP (Linear (512 ,512) →Dropout (0 .1) →ReLU →Linear (512 ,512) )further improved anchor placement (Fig. 3). 
+
+Phase 2 — Audio Alignment. To fine-tune the audio encoder, the Phase 1 text encoder was frozen, and a lightweight AudioMLP of the same architecture was appended to the audio encoder output. We explored three loss components: 
+
+Lanc Anchor loss : MSE between predicted (V, A ) and true labels local; per-sample supervision. 
+
+LKL Symmetric Kullback–Leibler divergence : supervision is distributed across all 36 anchors as a soft target weighted by proximity to the true (V, A ) label, following the use of a KL objective to fine-tune CLAP for affective prediction in [32]. 
+
+LMKA MKA audio loss [30]: aligns the global geometry of the audio embedding space with the (V, A ) label structure, without per-sample supervision. The total loss combines up to three components: 
+
+L = λ1 Lanc + λ2 LKL + λ3 LMKA (1) Ablation studies allowed us to test various weighting (λ1, λ 2, λ 3 ∈ { 0, 0.25 , 0.5, 1}) and key architectural choices. All models were trained with batch size n=32 . Four config-urations isolated the contribution of each stage: Audio-only 
+
+fine-tuned only the audio encoder ( Lanc +LKL ×0.5); Audio-Text added Phase 1 text pre-alignment ( Lanc +LKL ×0.25 ); Full-Pipeline re-tuned the text encoder after Phase 2 ( Lanc +LMKA ); 
+
+Full-Pipeline + KL added a KL term ( +LKL ×0.25 ). 
+
+E. Evaluation 
+
+Beyond standard metrics ( R2, RMSE), and given variabil-ity in labeling protocols across datasets, we assessed model robustness using additional evaluations. We selected metrics designed to capture the topology of the embedding space, as well as the relative ordering of sound ratings along each axis (arousal and valence). Sp ↑ Spearman rank correlation [33] : measures whether the predicted ordering of sounds along each affec-tive axis matches the true ordering, regardless of absolute scale. Used as primary selection criterion on EmoSoundscapes (out-of-distribution test). RSA ↑ Representational Similarity Analysis [34] : measures whether the pairwise distance structure of the 512-dimensional audio embedding space reflects the 2D 
+
+(V, A ) label space, via Spearman correlation of the two distance matrices. Trust ↑ Trustworthiness [35] : checks whether neighbors in the embedding are also neighbors in the (V, A ) space. 1.0 0.5 0.0 0.5 1.0 
+
+Valence   
+
+> 1.0
+> 0.5
+> 0.0 0.5 1.0
+> Arousal
+> Excited / Happy Tense / Angry Sad / Gloomy Content / Calm
+> pleasure excitement arousal distress displeasure depression sleepiness relaxation satisfied happy glad pleased content delighted excited astonished aroused alarmed afraid tense angry annoyed frustrated distressed depressed gloomy sad miserable tired drowsy bored sleepy calm tranquil relaxed at ease
+> Russell targets No fine-tune encoder Finetuned encoder
+
+Fig. 3. PCA of text anchor embeddings before and after text encoder fine-tuning. Voronoi accuracy improves from 94 .4% to 97 .2% .
+
+θ-Sp ↑ Angular Spearman : measures whether the circular order of emotions on Russell’s circle is preserved: 
+
+θ = arctan 2( ˆA, ˆV ).Proc ↓ Procrustes disparity [36] : aligns the predicted (V, A )
+
+point cloud to the true labels via optimal rotation, scaling, and translation, then measures the residual distance; it captures global shape preservation inde-pendently of per-axis calibration, complementing R2.
+
+F. Results Audio-only already yielded a large gain (Sp (V ): −0.09 →
+
+0.71 on AAD), showing that fine-tuning only the audio encoder generalized (Table II). Adding Phase 1 Audio-Text 
+
+brought a consistent but modest further improvement across datasets (Fig. 3). Re-tuning the text encoder after Phase 2 
+
+Full-Pipeline produced the largest cross-domain gain on EmoSoundscapes (Sp (V )=0 .705 ) and achieved the best Pro-crustes disparity ( 0.514 ), indicating that the affective geometry is better preserved. Including the LKL loss Full-Pipeline + KL 
+
+instead maximized representation: it reached the highest RSA ( 0.353 ), Trustworthiness ( 0.674 ), and Sp(A) across both datasets. Across all fine-tuned models, RSA significance was confirmed by a Mantel permutation test ( p< 0.001 ) [37]. IV. F UTURE WORK AND EXPECTED CONTRIBUTIONS TO 
+
+AFFECTIVE COMPUTING 
+
+A. Open Issues/discussion 
+
+The methodology presented above shows promising gen-eralization performance, but several directions remain open. On the modeling side, only a limited portion of the fine-tuning space has been explored; alternative contrastive losses and adaptation strategies are still to be evaluated. Beyond the encoder outputs considered here, we have begun investigating the fine-tuning of other components of the audio encoder, in particular the attention layers of its Swin-Transformer back-bone (hierarchical token-semantic audio transformer HTS-AT [38]), which controls how the model attends to regions of the input spectrogram. Adapting this attention mechanism could allow the model to place greater emphasis on acoustic regions that are more relevant to affective perception. A more fundamental question concerns transferability to atypical listening conditions. Because CLAP already encodes a strong prior over affective organization, evident even in zero-shot evaluations, it remains unclear whether the model can faithfully reorganize its representation around labels produced by listeners whose affective responses differ from the neu-rotypical norm, or whether this prior will dominate and mask individual-specific structure. This tension between a useful pretrained prior and the need for genuine personalization is a central open problem for the remainder of this thesis. We also note two scope restrictions: spatialization is ex-cluded, as we focus on monophonic signals. Finally, AAD provides only aggregated labels and no measure of inter-rater variability, disparity between individual evaluations may itself constitute an informative signal. Modeling this variability could help characterize the heterogeneity reported in atypical auditory processing [1]. 
+
+B. Probing the models 
+
+A final direction concerns probing the trained models to identify which acoustic features drive affective predictions. Reverse-correlation and bubble-based methods have been used to expose the spectro-temporal cues underlying machine-learning classifiers [39] and could be applied here to reveal which components of a sound influence predicted valence and arousal. The complementary question – how controlled acoustic transformations affect perceived emotion [12] – would inform label-aware data augmentation strategies, directly ad-dressing the augmentation problem raised in Section II. 
+
+TABLE II ABLATION ON EMO SOUNDSCAPES (n=1 ,213 ) AND AAD TEST (n=78 ). 
+
+EmoSoundscapes ( n = 1 ,213 ) AAD test ( n = 78 )Model Sp(V) ↑ Sp(A) ↑ RSA ↑ Trust ↑ Proc ↓ θ-Sp ↑ Sp(V) ↑ Sp(A) ↑ R2(V) ↑ R2(A) ↑ Trust ↑ Proc ↓
+
+Zero-shot CLAP 0.622 0.226 0.278 0.645 0.697 0.338 −0.094 0.234 −2.762 −1.111 0.588 0.955 Audio-only 0.647 0.684 0.322 0.665 0.586 0.501 0.714 0.857 0.605 0.680 0.631 0.327 Audio-Text 0.657 0.681 0.327 0.666 0.569 0.517 0.724 0.854 0.616 0.684 0.630 0.315 Full-Pipeline 0.705 0.687 0.347 0.671 0.514 0.506 0.731 0.829 0.608 0.696 0.637 0.327 
+
+Full-Pipeline + KL 0.663 0.705 0.353 0.674 0.546 0.486 0.722 0.853 0.625 0.690 0.640 0.314 ETHICAL IMPACT STATEMENT 
+
+This work seeks a framework that learns affective repre-sentations in a resource-efficient way: by generalizing from a small number of labeled examples, it reduces the annotation workload and enables lightweight, low-footprint models. The present study relies exclusively on publicly available datasets collected from neurotypical participants; no human data were collected here. Our longer-term objective is to model affective responses for autistic listeners with auditory hypersensitivity, a vulnerable population, and we have begun a collaboration with a specialized autism resource center (CRAIF) toward this goal. No data collection involving human participants will be conducted without approval by a French ethic committee. REFERENCES [1] R. Poulsen, Z. Williams, P. Dwyer, E. Pellicano, P. F. Sowman, and D. McAlpine, “How auditory processing influences the autistic profile: A review,” Autism Res. , vol. 17, no. 12, pp. 2452–2470, Dec. 2024. [2] S. M. Kanakri, M. Shepley, J. W. Varni, and L. G. Tassinary, “Noise and autism spectrum disorder in children: An exploratory survey,” Res. Dev. Disabil. , vol. 63, pp. 85–94, 2017. [3] A. Landowska, A. Karpus, T. Zawadzka, B. Robins et al. , “Automatic emotion recognition in children with autism: A systematic literature review,” Sensors , vol. 22, no. 4, p. 1649, 2022. [4] K. O’Connor, “Auditory processing in autism spectrum disorder: A review,” Neurosci. Biobehav. Rev. , vol. 36, no. 2, pp. 836–854, 2012. [5] T. C. Kwong, H.-L. Yuan, S. W. Y. Mung, H. K. Chu et al. , “Intervention technology of aural perception controllable headset for children with autism spectrum disorder,” Sci. Rep. , vol. 15, no. 1, p. 5356, 2025. [6] S.-X. Fang, L.-Y. Shen, Y.-C. Lin, H.-C. Chou, and H.-y. Lee, “Meta-PerSER: Few-shot listener personalized speech emotion recognition via meta-learning,” in Proc. Interspeech , 2025, pp. 1–5. [7] J. A. Russell, “A circumplex model of affect,” J. Pers. Soc. Psychol. ,vol. 39, no. 6, pp. 1161–1178, 1980. [8] J. Fan, M. Thorogood, and P. Pasquier, “Emo-Soundscapes: A dataset for soundscape emotion recognition,” in Proc. 7th Int. Conf. Affective Comput. Intell. Interaction (ACII) , 2017, pp. 196–201. [9] W. Yang, K. Makita, T. Nakao, N. Kanayama et al. , “Affective auditory stimulus database: An expanded version of the international affective digitized sounds (IADS-E),” Behav. Res. Methods , vol. 50, no. 4, pp. 1415–1429, 2018. [10] M. M. Bradley and P. J. Lang, “The International Affective Digitized Sounds (IADS-2): Affective ratings of sounds and instruction manual,” University of Florida, Gainesville, FL, USA, Tech. Rep. B-3, 2007. [11] H. Ridley, S. Cunningham, J. Darby, J. Henry, and R. Stocker, “The affective audio dataset (AAD) for non-musical, non-vocalized, audio emotion research,” IEEE Trans. Affect. Comput. , vol. 16, no. 1, pp. 394– 404, Jan. 2025. [12] S. Wilkie and T. Stockman, “The effect of audio cues and sound source stimuli on the perception of approaching objects,” Appl. Acoust. , vol. 167, p. 107388, Oct. 2020. [13] F. Abri, L. F. Guti´ errez, A. S. Namin, D. R. W. Sears, and K. S. Jones, “Predicting emotions perceived from sounds,” in Proc. IEEE Int. Conf. Big Data , Atlanta, GA, USA, 2020, pp. 2057–2064. [14] S. Rey, L. Martino, R. S. Mill´ an, and E. Morgado, “Feature selection via graph topology inference for soundscape emotion recognition,” arXiv preprint arXiv:2509.16760 , 2025. [15] S. Ntalampiras, “Soundscape emotion recognition via deep learning,” in 
+
+Proc. Int. Conf. Affective Comput. Intell. Interaction (ACII) , 2018. [16] F. Serradilla, ´ A. San Juan, and D. Mart´ ınez-I˜ nigo, “Emotional parameter estimation from Emo-Soundscapes dataset using deep convolutional autoencoders,” Multimedia Tools Appl. , vol. 84, no. 24, pp. 28 693– 28 707, 2025. [17] R. W. Picard, Affective Computing . Cambridge, MA, USA: MIT Press, 1997. [18] L. M. Heller and J. M. Smith, “Identification of everyday sounds affects their pleasantness,” Front. Psychol. , vol. 13, Jul. 2022. [19] E. Fedorenko, S. T. Piantadosi, and E. A. F. Gibson, “Language is primarily a tool for communication rather than thought,” Nature , vol. 630, no. 8017, pp. 575–586, 2024. [20] S. Poria, E. Cambria, R. Bajpai, and A. Hussain, “A review of affective computing: From unimodal analysis to multimodal fusion,” Inf. Fusion ,vol. 37, pp. 98–125, 2017. [21] B. Elizalde, S. Deshmukh, M. A. Ismail, and H. Wang, “CLAP: Learning audio concepts from natural language supervision,” arXiv preprint arXiv:2206.04769 , 2022. [22] T. Chen, S. Kornblith, M. Norouzi, and G. Hinton, “A simple framework for contrastive learning of visual representations,” in Proc. 37th Int. Conf. Mach. Learn. (ICML) , 2020, pp. 1597–1607. [23] H. Xie and T. Virtanen, “Zero-shot audio classification via semantic embeddings,” IEEE/ACM Trans. Audio, Speech, Lang. Process. , vol. 29, pp. 1233–1242, 2021. [24] A. Belaref, S. Sadok, Z. Noumir, and R. S´ eguier, “Data-driven decoding of Russell’s circumplex model of affect,” arXiv preprint arXiv:2606.16843 , 2026. [25] Y. Wu, K. Chen, T. Zhang, Y. Hui, T. Berg-Kirkpatrick, and S. Dubnov, “Large-scale contrastive language-audio pretraining with feature fusion and keyword-to-caption augmentation,” in Proc. IEEE Int. Conf. Acoust., Speech, Signal Process. (ICASSP) , 2023, pp. 1–5. [26] N. Houlsby, A. Giurgiu, S. Jastrzebski, B. Morrone et al. , “Parameter-efficient transfer learning for NLP,” in Proc. 36th Int. Conf. Mach. Learn. (ICML) , vol. 97, 2019, pp. 2790–2799. [27] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, “LoRA: Low-rank adaptation of large language models,” in Proc. Int. Conf. Learn. Represent. (ICLR) , 2022. [28] D. Demszky, D. Movshovitz-Attias, J. Ko, A. Cowen, G. Nemade, and S. Ravi, “GoEmotions: A dataset of fine-grained emotions,” in Proc. 58th Annu. Meeting Assoc. Comput. Linguistics , Online, 2020, pp. 4040– 4054. [29] L. A. Cavanaugh, D. J. MacInnis, and A. M. Weiss, “Perceptual dimensions differentiate emotions,” Cogn. Emot. , vol. 30, no. 8, pp. 1430–1445, Dec. 2016. [30] M. T. Islam, D. Liu, and D. Sarkar, “Manifold approximation leads to robust kernel alignment,” arXiv preprint arXiv:2510.22953 , 2025. [31] T. Wang, D. Zhao, and S. Tian, “An overview of kernel alignment and its applications,” Artif. Intell. Rev. , vol. 43, no. 2, pp. 179–192, 2015. [32] Y. Pan, Y. Hu, Y. Yang, W. Fei, J. Yao, H. Lu, L. Ma, and J. Zhao, “GEmo-CLAP: Gender-attribute-enhanced contrastive language-audio pretraining for accurate speech emotion recognition,” arXiv preprint arXiv:2306.07848 , 2023. [33] C. Spearman, “The proof and measurement of association between two things,” Amer. J. Psychol. , vol. 15, no. 1, pp. 72–101, 1904. [34] N. Kriegeskorte, M. Mur, and P. A. Bandettini, “Representational similarity analysis — connecting the branches of systems neuroscience,” 
+
+Front. Syst. Neurosci. , vol. 2, p. 4, 2008. [35] J. Venna and S. Kaski, “Neighborhood preservation in nonlinear projec-tion methods: An experimental study,” in Proc. Int. Conf. Artif. Neural Netw. (ICANN) . Springer, 2001, pp. 485–491. [36] J. C. Gower, “Generalized Procrustes analysis,” Psychometrika , vol. 40, no. 1, pp. 33–51, 1975. [37] N. Mantel, “The detection of disease clustering and a generalized regression approach,” Cancer Res. , vol. 27, no. 2, pp. 209–220, 1967. [38] K. Chen, X. Du, B. Zhu, Z. Ma, T. Berg-Kirkpatrick, and S. Dubnov, “HTS-AT: A hierarchical token-semantic audio transformer for sound classification and detection,” in Proc. IEEE Int. Conf. Acoust., Speech, Signal Process. (ICASSP) , 2022, pp. 646–650. [39] E. Thoret, T. Andrillon, D. L´ eger, and D. Pressnitzer, “Probing machine-learning classifiers using noise, bubbles, and reverse correlation,” J. Neurosci. Methods , vol. 362, p. 109297, Oct. 2021.
