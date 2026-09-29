@@ -1,0 +1,73 @@
+{
+  "date": "20260929",
+  "date_label": "",
+  "generated_at": "2026-09-29 23:25:29 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.32804v1",
+      "route": "202609/29/2609.32804v1-finding-emotions-where-they-belong-rethinking-audio-emotion-recognition-through-masked-temporal-affective-grounding",
+      "title": "Finding Emotions Where They Belong: Rethinking Audio Emotion Recognition through Masked Temporal Affective Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "音频情感识别，含声调描述与时间标注情感数据集",
+      "first_seen_at": "2026-09-29 23:25:29 UTC",
+      "updated_at": "2026-09-29 23:25:29 UTC"
+    },
+    {
+      "paper_id": "2609.32016v1",
+      "route": "202609/29/2609.32016v1-voicenet-fine-grained-voice-understanding-beyond-emotion-at-scale",
+      "title": "VoiceNet: Fine-Grained Voice Understanding Beyond Emotion at Scale",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "细粒度情感分类与语速、气声等副语言说话风格属性",
+      "first_seen_at": "2026-09-29 23:25:29 UTC",
+      "updated_at": "2026-09-29 23:25:29 UTC"
+    },
+    {
+      "paper_id": "2609.33204v1",
+      "route": "202609/29/2609.33204v1-turning-speech-language-models-into-multilingual-listeners",
+      "title": "Turning Speech Language Models into Multilingual Listeners",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨多语言理解口语问题的语音语言模型",
+      "first_seen_at": "2026-09-29 23:25:29 UTC",
+      "updated_at": "2026-09-29 23:25:29 UTC"
+    },
+    {
+      "paper_id": "2609.34901v1",
+      "route": "202609/29/2609.34901v1-domain-incremental-learning-for-generative-speech-enhancement",
+      "title": "Domain-Incremental Learning for Generative Speech Enhancement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨声学失配数据集的域增量学习",
+      "first_seen_at": "2026-09-29 23:25:29 UTC",
+      "updated_at": "2026-09-29 23:25:29 UTC"
+    }
+  ]
+}

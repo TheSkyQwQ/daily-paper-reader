@@ -1,0 +1,180 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-29T23:22:21.884342+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.32804v1",
+      "source": "arxiv",
+      "title": "Finding Emotions Where They Belong: Rethinking Audio Emotion Recognition through Masked Temporal Affective Grounding",
+      "abstract": "Audio emotion recognition (AER) typically assigns a single label to an entire recording, leaving the temporal scope of that label ambiguous when multiple speakers and affective events are present. We address this limitation by reformulating AER as a Temporal Affective Grounding (TAG) task that associates emotions with temporally bounded speech spans and vocal tone descriptions. To support this formulation, we curate temporally annotated versions of existing emotion recognition datasets and construct recordings containing two to four affective speech spans, including overlapping speech. Training in this longer format with a standard language-modeling objective can degrade both emotion recognition and temporal grounding performance, while tone descriptions can provide shortcuts for emotion prediction. To address these challenges, we introduce Masked Temporal Affective Grounding (M-TAG), a supervised training objective that combines full-sequence language modeling with emotion and timestamp cross-entropy losses under attention masking. The masking varies the context visible to emotion-label tokens to reduce reliance on shortcuts and improve generalization, while the timestamp loss incorporates a distance-aware weight to penalize larger temporal errors. We evaluate EMO-TAG, a model fine-tuned using our dataset and objective, on emotion recognition and affective temporal-grounding against three AER and audio-language baselines: Flamingo-Next, Audio-Reasoner, and AffectGPT. Our results show that existing models achieve limited affective temporal-grounding despite competitive emotion recognition performance.",
+      "authors": [
+        "Abdelrahman Mohamed",
+        "Lars Kai Hansen",
+        "Zheng-Hua Tan"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "eess.AS"
+      ],
+      "published": "2026-09-26T17:27:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.32804v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "audio emotion recognition with vocal tone descriptions and temporally annotated emotion datasets",
+      "llm_evidence_cn": "音频情感识别，含声调描述与时间标注情感数据集",
+      "llm_evidence": "音频情感识别，含声调描述与时间标注情感数据集",
+      "canonical_evidence": "音频情感识别，含声调描述与时间标注情感数据集",
+      "llm_tldr_en": "The paper reformulates audio emotion recognition as Temporal Affective Grounding, linking emotions to temporally bounded speech spans and vocal tone descriptions, and curates temporally annotated versions of existing emotion datasets.",
+      "llm_tldr_cn": "论文指出音频情感识别通常为整段录音赋单一标签，在多说话人、多情感事件场景下标签时间范围模糊。作者将其重构为时间情感定位任务，把情感与有时间边界的语音片段及声调描述关联，并整理出带时间标注的情感数据集与含重叠语音的录音。实验表明以标准语言建模目标在更长格式上训练可能损害情感识别与时间定位，该工作为细粒度可定位的音频情感识别提供了新任务与数据基础。",
+      "llm_tldr": "论文指出音频情感识别通常为整段录音赋单一标签，在多说话人、多情感事件场景下标签时间范围模糊。作者将其重构为时间情感定位任务，把情感与有时间边界的语音片段及声调描述关联，并整理出带时间标注的情感数据集与含重叠语音的录音。实验表明以标准语言建模目标在更长格式上训练可能损害情感识别与时间定位，该工作为细粒度可定位的音频情感识别提供了新任务与数据基础。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.32016v1",
+      "source": "arxiv",
+      "title": "VoiceNet: Fine-Grained Voice Understanding Beyond Emotion at Scale",
+      "abstract": "Expressive speech synthesis has outpaced expressive speech perception: systems now render fine-grained vocal performances that no public benchmark can score. Most benchmarks for this inverse problem stop at six to nine basic emotion categories, largely on acted speech. This paper introduces VoiceNet, a human-annotated representation-level benchmark for voice performance understanding on permissively-licensed in-the-wild speech. VoiceNet has two subsets: VoiceNet-Emo applies a 40-emotion taxonomy with three expert ratings per item, and VoiceNet-Ext, a preliminary subset, scores 57 talking-style attributes including speaking rate, vocal tension, breathiness, and register. The paper also releases Emolia, an emotion-annotated version of the Emilia corpus, with a curated rebalanced subset enriched by dense MOSS-Audio Thinking annotations. Two voice-text contrastive baselines train on this data: a 110M-parameter VoiceCLAP-Small for fast large-scale data filtering and a 7B VoiceCLAP-Large for state-of-the-art performance. Both outperform existing CLAP baselines, which sit near chance on VoiceNet-Emo. On VoiceNet-Emo, VoiceCLAP-Large aligns more closely with the aggregate expert consensus than individual experts agree with one another: a comparison against the majority label rather than evidence of surpassing human emotion perception. All systems evaluated here are voice-text embedding models: VoiceNet scores representation-level attribute recognition and retrieval, not end-to-end spoken-dialogue behaviour. Clustering and filtering uncurated speech corpora into subsets that span diverse talking styles and emotions remains an open challenge; VoiceCLAP embeddings offer a promising tool for this task. VoiceNet, Emolia, and VoiceCLAP are publicly available for research use.",
+      "authors": [
+        "Christoph Schuhmann",
+        "Robert Kaczmarczyk",
+        "Gollam Rabby",
+        "Felix Friedrich",
+        "Maurice Kraus",
+        "Gijs Wijngaard",
+        "Kourosh Nadi",
+        "Huu Nguyen",
+        "Kristian Kersting",
+        "Sören Auer"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "eess.AS"
+      ],
+      "published": "2026-09-25T21:28:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.32016v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fine-grained emotion taxonomy plus paralinguistic talking-style attributes like rate and breathiness",
+      "llm_evidence_cn": "细粒度情感分类与语速、气声等副语言说话风格属性",
+      "llm_evidence": "细粒度情感分类与语速、气声等副语言说话风格属性",
+      "canonical_evidence": "细粒度情感分类与语速、气声等副语言说话风格属性",
+      "llm_tldr_en": "The paper introduces VoiceNet, a human-annotated benchmark for fine-grained voice performance understanding on in-the-wild speech, with a 40-emotion subset and a 57 talking-style attribute subset, plus the Emolia annotated corpus.",
+      "llm_tldr_cn": "论文指出富有表现力的语音合成已超越语音感知，而现有基准多局限于六到九类基本情感且多为表演语音。为此提出VoiceNet人工标注的表现级基准，包含采用40类情感体系的VoiceNet-Emo与评测57种说话风格属性（如语速、声带紧张、气声、音区）的VoiceNet-Ext，并发布情感标注的Emolia语料。该基准为超越基本情感类别、涵盖副语言与韵律属性的语音情感理解提供了大规模评测基础。",
+      "llm_tldr": "论文指出富有表现力的语音合成已超越语音感知，而现有基准多局限于六到九类基本情感且多为表演语音。为此提出VoiceNet人工标注的表现级基准，包含采用40类情感体系的VoiceNet-Emo与评测57种说话风格属性（如语速、声带紧张、气声、音区）的VoiceNet-Ext，并发布情感标注的Emolia语料。该基准为超越基本情感类别、涵盖副语言与韵律属性的语音情感理解提供了大规模评测基础。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.33204v1",
+      "source": "arxiv",
+      "title": "Turning Speech Language Models into Multilingual Listeners",
+      "abstract": "Speech Language Models (SLMs) that understand spoken language questions support only a few high-resource languages, limiting access to millions of people worldwide. This gap stems from the scarcity of multilingual speech instruction-tuning datasets. We present MULTISPEECHQA, a large-scale, synthetically generated and human-verified dataset comprising 9200 hours of 10.8 million spoken question-answer pairs in 23 typologically diverse languages. Using MULTISPEECHQA, we also introduce MULTISPEECH-BENCH, a multi-task benchmark for evaluating SLM performance on 23 languages. We compare the performance of a cascading system to open-weight and closed SLMs on MULTISPEECH-BENCH and find that the cascading system outperforms open-weight SLMs but not all closed SLMs. We use MULTISPEECHQA to finetune Qwen 2.5-Omni, which improves its performance on our benchmark. Our findings show that high-quality synthetic datasets offer a cheap solution to improving the multilingual capabilities of SLMs.",
+      "authors": [
+        "Tolúlopé Ògúnrèmí",
+        "Dan Jurafsky",
+        "Chris Manning",
+        "Ahmet Üstün",
+        "Martijn Bartelds"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-27T04:43:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.33204v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech language models understanding spoken questions across many languages",
+      "llm_evidence_cn": "跨多语言理解口语问题的语音语言模型",
+      "llm_evidence": "跨多语言理解口语问题的语音语言模型",
+      "canonical_evidence": "跨多语言理解口语问题的语音语言模型",
+      "llm_tldr_en": "To broaden speech language model coverage, this paper releases MULTISPEECHQA with 9200 hours of spoken QA in 23 languages and MULTISPEECH-BENCH, finding cascading systems beat open-weight SLMs.",
+      "llm_tldr_cn": "语音语言模型仅支持少数高资源语言，限制其全球可用性，根源是多语言语音指令数据稀缺。本文发布MULTISPEECHQA，含23种语言、9200小时、1080万条口语问答，并推出多任务基准MULTISPEECH-BENCH。评测显示级联系统优于开源权重SLM但不及部分闭源模型。该工作为多语言语音语言模型训练与评测提供了大规模资源与基准。",
+      "llm_tldr": "语音语言模型仅支持少数高资源语言，限制其全球可用性，根源是多语言语音指令数据稀缺。本文发布MULTISPEECHQA，含23种语言、9200小时、1080万条口语问答，并推出多任务基准MULTISPEECH-BENCH。评测显示级联系统优于开源权重SLM但不及部分闭源模型。该工作为多语言语音语言模型训练与评测提供了大规模资源与基准。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34901v1",
+      "source": "arxiv",
+      "title": "Domain-Incremental Learning for Generative Speech Enhancement",
+      "abstract": "We propose a domain-incremental learning framework for generative speech enhancement (SE) that learns from a sequence of datasets or domains recorded under diverse acoustic conditions. Fine-tuning a pretrained model on continuously evolving domains leads to catastrophic forgetting of previously acquired knowledge, while zero-shot generalization often fails to adequately adapt to unseen domains. To address these challenges, we first develop a novel language model-based generative SE model that we then use as a pretrained backbone and incrementally adapt it to acoustically mismatched domains using lightweight domain-specific Low-Rank Adaptation. The proposed framework enables the model to acquire enhancement capabilities for new domains while preserving performance on previously learned domains. Evaluated on four heterogeneous speech datasets, our approach effectively adapts to new domains without forgetting previously learned domains.",
+      "authors": [
+        "Manjunath Mulimani",
+        "Annamaria Mesaros",
+        "Minje Kim",
+        "Jesper Rindom Jensen"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-28T11:06:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.34901v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "domain-incremental learning across acoustically mismatched datasets",
+      "llm_evidence_cn": "跨声学失配数据集的域增量学习",
+      "llm_evidence": "跨声学失配数据集的域增量学习",
+      "canonical_evidence": "跨声学失配数据集的域增量学习",
+      "llm_tldr_en": "A domain-incremental framework for generative speech enhancement adapts a pretrained LM-based model to new acoustic domains with LoRA, mitigating catastrophic forgetting.",
+      "llm_tldr_cn": "生成式语音增强常需在声学条件各异的数据序列上学习，微调会造成对旧域的灾难性遗忘，零样本泛化又难以适配新域。该文提出域增量学习框架，先构建基于语言模型的生成式语音增强模型作为预训练主干，再用轻量域特定LoRA增量适配声学失配域。该框架使模型获取新域增强能力的同时保留旧域性能，为跨域语音任务提供了可借鉴的持续适应思路。",
+      "llm_tldr": "生成式语音增强常需在声学条件各异的数据序列上学习，微调会造成对旧域的灾难性遗忘，零样本泛化又难以适配新域。该文提出域增量学习框架，先构建基于语言模型的生成式语音增强模型作为预训练主干，再用轻量域特定LoRA增量适配声学失配域。该框架使模型获取新域增强能力的同时保留旧域性能，为跨域语音任务提供了可借鉴的持续适应思路。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
