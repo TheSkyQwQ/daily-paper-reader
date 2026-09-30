@@ -1,0 +1,121 @@
+{
+  "date": "20260930",
+  "date_label": "",
+  "generated_at": "2026-09-30 22:45:12 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.30784v1",
+      "route": "202609/30/2609.30784v1-symbiotic-architecture-for-post-hoc-audio-extension-of-frozen-language-models",
+      "title": "Symbiotic Architecture for Post-Hoc Audio Extension of Frozen Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "为冻结大模型扩展音频理解能力",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    },
+    {
+      "paper_id": "2609.31399v1",
+      "route": "202609/30/2609.31399v1-differential-attention-unlocks-complementary-eeg-and-speech-fusion-for-emotion-recognition",
+      "title": "Differential Attention Unlocks Complementary EEG and Speech Fusion for Emotion Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语音与脑电融合的情感识别及模态对齐",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    },
+    {
+      "paper_id": "2609.31759v1",
+      "route": "202609/30/2609.31759v1-acoustic-domain-shift-in-spoken-language-identification-from-systematic-domain-generalization-evaluation-to-real-world-application",
+      "title": "Acoustic domain shift in spoken language identification from systematic domain generalization evaluation to real-world application",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语音声学域偏移评估协议",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    },
+    {
+      "paper_id": "2609.32504v1",
+      "route": "202609/30/2609.32504v1-toward-human-aligned-judgement-of-speech-emotion-similarity",
+      "title": "Toward Human-Aligned Judgement of Speech Emotion Similarity",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向情感表征的语音情感相似度基准与评判模型",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    },
+    {
+      "paper_id": "2609.33709v1",
+      "route": "202609/30/2609.33709v1-domain-adaptive-dual-gating-mixture-of-experts-for-generalizable-speech-deepfake-detection",
+      "title": "Domain-Adaptive Dual-Gating Mixture of Experts for Generalizable Speech Deepfake Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "域自适应专家混合与域原型及声学线索",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    },
+    {
+      "paper_id": "2609.34147v1",
+      "route": "202609/30/2609.34147v1-spear-gen-generation-aware-pre-training-for-unified-speech-representations",
+      "title": "SPEAR-Gen: Generation-Aware Pre-training for Unified Speech Representations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "融合副语言信息的统一语音表征",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    },
+    {
+      "paper_id": "2609.34742v1",
+      "route": "202609/30/2609.34742v1-do-emotion-concepts-generalize-across-sources-modalities-and-architectures-in-vision-language-models",
+      "title": "Do Emotion Concepts Generalize Across Sources, Modalities, and Architectures in Vision-Language Models?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "情感概念跨来源、模态与架构的泛化",
+      "first_seen_at": "2026-09-30 22:45:12 UTC",
+      "updated_at": "2026-09-30 22:45:12 UTC"
+    }
+  ]
+}

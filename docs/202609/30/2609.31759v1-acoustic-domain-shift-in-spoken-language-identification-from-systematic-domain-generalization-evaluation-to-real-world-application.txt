@@ -1,0 +1,197 @@
+Title: Acoustic domain shift in spoken language identification from systematic domain generalization evaluation to real-world application
+
+URL Source: https://arxiv.org/pdf/2609.31759v1
+
+Published Time: Tue, 29 Sep 2026 00:05:30 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# ACOUSTIC DOMAIN SHIFT IN SPOKEN LANGUAGE IDENTIFICATION FROM SYSTEMATIC DOMAIN GENERALIZATION EVALUATION TO REAL-WORLD APPLICATION 
+
+Franc ¸ois Derrida ∗† Rapha¨ el Duroselle † Thomas Courtat ∗ Jean-Franc ¸ois Bonastre †
+
+> ∗
+
+THALES, CortAIx-Labs 
+
+> †
+
+AMIAD Pˆ ole Recherche - Institut Polytechnique de Paris Palaiseau, France francois.derrida@thalesgroup.com 
+
+Abstract —Domain Generalization (DG) aims to develop mod-els that remain robust to conditions unseen during training. While DG has been systematically studied in computer vision through controlled benchmarks and diverse distribution shifts, its evaluation in spoken language recognition remains less struc-tured. Existing speech datasets provide valuable benchmarks for robustness to real-world acoustic conditions, but are primarily designed around specific scenarios and large scale rather than as general-purpose tools for systematically constructing and evaluating domain shifts. In this work, we introduce a small-scale speech dataset and evaluation protocol for controlled studies of acoustic domain shifts. It enables the evaluation of spoken language recognition models under a variety of acousitc domain shifts. We introduce the speech modality into the DomainBed Domain Generalization framework and evaluate three domain generalization algorithms. We show that in-domain performance is not a reliable predictor of cross-domain robustness and verify that explicit domain invariant algorithms such as MMD or DANN algorithms do not outperform ERM. We further validate the generality of these findings on MMS-LID-126, a state-of-the-art spoken language identification system. We release the code 1.
+
+Index Terms —Domain Generalization, Language Identification (LID), Corruption Shift, Domain Alignment Algorithms 
+
+I. I NTRODUCTION 
+
+Deploying machine learning models in real-world set-tings requires robust Out-of-Distribution (OOD) generalization across domains (i.e., a specific environment, conditions or data distribution), enabling models to transfer from a training 
+
+source domain to an unseen deployment target domain [1]. Yet, most models struggle under substantial distribution shifts [2, 3] because standard transfer relies on the fragile assumption that source and target distributions remain close. Domain generalization is a common challenge for various modalities such as finance [4], self-driving cars [5], health-care and medicine [6]. While several datasets address noise robustness in speech [7, 8], they are typically large-scale and involve multiple confounding factors (e.g., speaker, channel, and environment variability), making them less suitable for controlled studies of noise-induced domain shift. This moti-vates the design of a compact and controlled speech dataset. 
+
+> This project was provided with computing HPC and storage resources by GENCI at IDRIS thanks to the grant 2025-AD011017021 on the supercom-puter Jean Zay’s A100/ H100 partitions.
+> 1https://github.com/AMIAD-Research/DomainBed extension audio adaptation
+
+Several studies investigate domain mismatch in Language Identification (LID) and propose domain adaptation strategies, addressing corpus shifts with DANN [9], transmission-channel shifts with MMD [10], and corruption shifts through flow en-hancement [11]. Beyond its practical relevance, LID provides a controlled classification setting to study how acoustic do-main shifts affect out-of-domain generalization. Notably, [12] addresses cross-corpora generalization while [13] considers generalization to an unknown channel. Nonetheless each of these studies is limited to specific target domain generalization, and less attention has been given to systematically evaluate Domain Generalization under controlled and diverse acoustic domain shifts and across multiple target conditions. This raises the broader question of how to systematically characterize domain shifts, assess their impact on language identification systems, and select appropriate DG strategies accordingly. Different studies propose to evaluate domain generalization methods [14, 15], notably with DomainBed [16], which pro-vides a unified benchmark for evaluating algorithms across image datasets, improving reproducibility and comparability. Despite efforts in the speech enhancement literature to cross-validate domains in the multi/mono source settings [17], existing domain generalization benchmarks do not include small speech related datasets. This approach provides a first assessment of robustness under practical deployment condi-tions. We further evaluate the generalizability of these findings beyond the small-scale benchmark setting using MMS-LID-126, a state-of-the-art spoken language identification system. In this work, we extend this perspective to speech by inves-tigating domain generalization algorithms under application-relevant acoustic conditions. Here are the main contributions:  
+
+> •
+
+We show how to build small speech datasets suited to the systematic study of corruption shifts in clas-sification tasks such as Language Identification (Section II).  
+
+> •
+
+We systematically evaluate three Domain Generaliza-tion algorithms and characterize domain generalization under acoustic corruption shifts using the DomainBed experimental protocol (Section III).  
+
+> •
+
+We validate the generality of our results at large scale 
+
+on a state-of-the-art LID system covering 126 languages (Section IV). arXiv:2609.31759v1 [eess.AS] 23 Sep 2026 II. S PEECH CORRUPTION SHIFT DATASET GENERATION 
+
+This section presents the proposed methodology to generate a speech dataset named CWWS (Clean, Wham, Wind, Satura-tion) tailored for a domain generalization classification study in Language Identification (LID). 
+
+A. Corruption shift domains 
+
+Following [18], a domain D is a probability distribution over X × Y , where X is the space of data (speech utterances) and Y the set of labels (languages). Domain generalization is the scenario when the training algorithm has access to data from N source domains DS1 , . . . , DSN , with the goal of generalizing to an unknown and unseen target domain DT .We focus on the special case where domains differ solely through corruption shifts. This setting allows us to isolate the impact of acoustic corruptions on out-of-domain generaliza-tion. More precisely, we assume there is an underlying original distribution of speech D. All other domains D(f ) are assumed to be defined as D(f ) = {(f (x), y )|(x, y ) ∼ D} , where f is a potentially stochastic transformation of the speech utterance. This is a simplifying assumption as it is well known that a perturbation of the acoustic conditions impact the production of speech. For instance, speakers systematically modify their vocal production when speaking in noisy environments, a phenomenon known as the Lombard effect [19]. We study the following domains, defined by the corruption shift:  
+
+> •
+
+clean : the original speech data;  
+
+> •
+
+wham : additive noise with real-world ”babble” noise (background conversational speech) taken from the WHAM! dataset [20];  
+
+> •
+
+wind : additive noise generated using the wind simulator presented in [21];  
+
+> •
+
+saturation : a nonlinear amplitude transformation that induces signal clipping and distortion, with a distortion gain sampled uniformly in [0.5, 4.5];  
+
+> •
+
+demand : additive noise from DEMAND dataset [22];  
+
+> •
+
+lpc10 : application of the LPC10 speech codec [23] to the clean audio files; We deal with clean , wham , wind , and saturation corruptions in the DomainBed study (Section III) and extend the analysis to the full set of corruptions in the large scale application (Section IV). For additive noises ( wham , wind and demand )we consider a range of possible SNRS (uniform distribution over [-10, 10] dB). 
+
+B. Source speech data 
+
+The corruption-shift dataset is built from an original speech corpus under controlled corruption conditions (see Section II-A). We impose four constraints on the design of the dataset. Firstly, to facilitate comparison with existing works, we respect the train/validation/test splits of the original corpus. Secondly, to evaluate uniquely the corruption shift, the test set of each domain correspond to an augmented version of the exact same list of speech utterances. Third, to compare methods we train all methods with exactly the same number of speech utterances. Finally, to ensure independent sampling across domains, each speaker is assigned to only one domain. III. S YSTEMATIC ANALYSIS OF CORRUPTION DOMAINS AND ADAPTATION ALGORITHMS USING LID TASK 
+
+As demonstrated by [16], evaluating domain generalization algorithms requires a controlled design where each algorithm is evaluated with several pairs of source and target domains and with the same budget of hyperparameter search. This section presents how we use the CWWS dataset to perform the speech corruption-shift evaluation. 
+
+A. Evaluation with DomainBed 
+
+The evaluation is performed with the DomainBed frame-work [16] which embeds numerous domain generalization algorithms. Assuming cross-domain invariance objective, we treat the multiple source domains as a single aggregated source, thereby reducing the multi-source setting to a binary source–target adaptation problem. In this paper we focus on the following three algorithms, that have been successfully applied to LID [9, 10]:  
+
+> •
+
+Empirical Risk Minimization (ERM) [24] seeks to min-imize the overall prediction error by optimizing the cumulative loss across all domains and data points  
+
+> •
+
+Maximum Mean Discrepancy (MMD) [25, 26] minimizes the discrepancy between the means of two distributions in a high-dimensional feature space induced by a kernel. Regularization is achieved by aligning all pairs of source domains  
+
+> •
+
+Domain-Adversarial Neural Network (DANN) [27] em-ploys an adversarial objective to align feature distribu-tions across domains. Regularization is performed for all source domains at once. 
+
+Keep-one-out evaluation: Each algorithm is evaluated on four target domains: clean , wham , wind and saturation . For each experiment we keep one domain out (target domain) and use the remaining ones as source domains. We report results in the four possible configurations. We compare these DG configurations with mono-source (MS) experiments for which only one domain is seen during training. 
+
+Model selection methods: One important aspect of domain generalization evaluation is the fair selection of hyperparam-eters for each algorithm and set of domains. We perform a grid search with 20 experiments for each configuration. It results in 80 runs per considered algorithm. From this set of experiments, we report performance of models selected using the source-domain validation set and also those selected using target-domain validation set (Oracle). 
+
+Uncertainties: Contrary to the original framework [16], we do not report uncertainties due to the random seed. Instead, we measure the statistical uncertainty due to the size of the test set with 95% bootstrap confidence intervals. 
+
+B. Data and model architecture 
+
+The number of classes and utterances follows canonical DG benchmarks such as VLCS [28]. To ensure a comparable training budget, all configurations use 4,500 training utterances in total. The DG setting distributes these utterances equally across three domains (1,500 utterances per domain), whereas the mono-source setting uses all 4,500 utterances from a single domain. Table II synthesizes the corresponding statistics.                            
+
+> TABLE II DATASET CHARACTERISTICS . DG AND MS TRAINING RUNS USE 4,500
+> SAMPLES . ”T OTAL UTTERANCES ”DENOTES THE TOTAL NUMBER OF UTTERANCES IN THE DATASET ,AND UTTERANCES /DOMAIN ”THEIR DISTRIBUTION ACROSS DOMAINS . A LL SETS ARE LANGUAGE -BALANCED .
+> Train Validation Test Split used in DG MS DG & MS DG & MS Total utterances 6,000 18,000 6,000 18,000 Utterances/domain 1,500 4,500 1500 4,500 ̸
+> =Speakers 2,389 2,389 1,500 870
+
+Inspired by URGENT Challenge [7] LID downstream task, we use the original speech corpus CommonVoice [29] (v22) with the four following languages: French, Spanish, German, and Mandarin Chinese. The architecture of the model is similar to [30]. It is a pretrained wav2vec2 speech encoder [31], followed by mean pooling and a classification head. We use a backbone 2
+
+implemented in the transformer library [32] and pretrained on VoxPopuli [33], a large-scale multilingual corpus with diverse speakers and recording conditions, disjoint from Com-monVoice to reduce the risk of potential information leakage [34]. Experiments show that backbone-only pretraining yields near-random classification, making fine-tuning essential for the considered shifts; results are omitted for brevity. 
+
+C. Results 
+
+The first part of Table I reports the Mono-Source (MS) experiments. Diagonal entries correspond to in-domain evalu-
+
+> 2https://huggingface.co/facebook/wav2vec2-large-100k-voxpopuli
+
+ations (highlighted in red), while off-diagonal entries measure the impact of domain shifts. As expected, we illustrate the domain-shift problem since in-domain performance outper-form out-of-domain performance and sometimes by a large margin ( wind domain). Also, in-domain results show that domains are not equally difficult with a relatively easy clean 
+
+domain, wind much more harder and wham somewhere in between. Interestingly, domain ”difficulty” and domain ”use-fulness” for generalization are different concepts: wind is difficult in-domain but is useful as a source. OOD performance show that generalization is asymmetric. For instance wham 
+
+leads to quite poor performance on wind (61.1%) when wind 
+
+is relatively good as a source domain to perform on wham 
+
+(82.6%) despite they are both additive corruptions. The second part of Table I shows that multi-source Domain Generalization (DG) outperforms average Out-of-Domain per-formance obtained in mono-source settings and for some domains the In-domain performance ( saturation ). Surprisingly, the best OOD performance from MS-clean on wham domain outperforms DG performance. As concluded by [16] for image datasets, the simple ERM algorithm does not seem to be outperformed by MMD or DANN algorithms. It shows that explicit invariance objectives do not consistently improve gen-eralization abilities. Two model selection methods are reported and we observe that Oracle selection adds little. Target-domain information provides only marginal model-selection gains. These observations motivate the question of whether the same behavior persists in a realistic large-scale LID setting. IV. L ARGE -S CALE ROBUST LANGUAGE IDENTIFICATION 
+
+Although comparable in terms of number of languages to recent domain adaptation studies [10, 11], this controlled experimental setting does not reflect the scale of modern language identification systems that can handle hundreds to             
+
+> TABLE I DG AND MONO -S OURCE (MS) RESULTS . U NDERLINE VALUES REFER TO BEST PERFORMANCE ACROSS A GIVEN REGIME AND BOLD VALUES TO OVERALL BEST PERFORMANCE ON TARGET DOMAIN . V ALUES ARE ACCURACIES WITH 95% BOOTSTRAP CONFIDENCE INTERVALS (2.5 TH –97.5 TH PERCENTILES ). W E HIGHLIGHT IN-D OMAIN PERFORMANCE IN RED . AVG REFERS TO THE MEAN ACROSS DOMAINS .
+
+Train Domains clean wham wind saturation AVG 
+
+MS clean 95.3 [94.6, 95.9] 84.8 [83.8, 85.9] 73.6 [72.3, 74.8] 92.1 [91.4, 92.9] 86.5 MS wham 90.3 [89.4, 91.2] 87.4 [86.4, 88.4] 61.1 [59.5, 62.5] 85.4 [84.4, 86.4] 81.1 MS wind 93.4 [92.6, 94.0] 82.6 [81.5, 83.7] 81.2 [80.1, 82.4] 91.9 [91.1, 92.7] 87.3 
+
+MS saturation 94.8 [94.1, 95.4] 81.3 [80.1, 82.4] 70.8 [69.4, 72.1] 92.9 [92.1, 93.7] 84.9 MS-In 95.3 87.4 81.2 92.9 Avg MS-OOD 92.8 82.9 68.5 89.8 
+
+Algorithms clean wham wind saturation AVG Domain Generalization - model selection via source domains validation 
+
+ERM-DG 93.7 [93.0, 94.4] 81.8 [80.7, 82.9] 75.2 [73.9, 76.5] 92.3 [91.6, 93.0] 85.8 MMD-DG 95.1 [94.2, 95.7] 81.9 [80.8, 83.0] 71.7 [70.3, 73.1] 94.6 [94.0, 95.3] 85.8 DANN-DG 94.8 [94.0, 95.4] 83.1 [82.0, 84.2] 74.3 [73.0, 75.6] 93.6 [92.8, 94.2] 86.4 
+
+Domain Generalization - model selection via target domain validation (Oracle) 
+
+ERM-DG 95.0 [94.4, 95.6] 82.5 [81.3, 83.5] 74.8 [73.5, 76.0] 94.2 [93.5, 94.9] 86.6 MMD-DG 95.3 [94.7, 96.0] 82.6 [81.5, 83.7] 71.9 [70.6, 73.3] 94.0 [93.3, 94.7] 85.9 DANN-DG 94.3 [93.6, 94.9] 82.3 [80.1, 82.4] 74.6 [73.4, 75.8] 93.4 [92.6, 94.0] 86.2 TABLE III TEST ACCURACY OF MMS-LID-126 SYSTEMS (%) ON FLEURS (FL) AN VOX LINGUA 107 (VL) CORPUS . U NDERLINE VALUES REFER TO BEST PERFORMANCE ACROSS A GIVEN REGIME AND BOLD VALUES TO OVERALL BEST PERFORMANCE ON TARGET DOMAIN . W E HIGHLIGHT IN-D OMAIN PERFORMANCE IN RED .
+
+Trainings Domains clean wham saturation wind lpc10 demand 
+
+Corpus FL VL FL VL FL VL FL VL FL VL FL VL mms-lid-126 96.4 94.0 79.1 80.7 90.1 84.9 96.1 93.7 71.4 69.7 84.2 83.8 MS-clean 95.6 93.5 76.9 79.1 86.0 83.7 95.2 93.0 61.8 66.9 82.5 83.0 MS-wham 93.7 93.8 87.6 87.1 85.6 82.8 93.5 93.7 68.1 70.5 88.2 87.5 MS-saturation 95.4 92.9 71.2 73.5 94.2 92.6 94.3 91.7 63.8 62.5 78.9 78.7 MS-wind 95.6 93.8 77.3 78.7 86.1 81.4 95.7 93.6 62.3 67.1 83.3 82.2 MS-lpc10 93.9 93.7 68.0 71.3 79.0 75.8 93.3 92.9 92.2 89.7 75.5 76.3 MS-demand 94.7 94.1 85.7 84.7 87.4 83.6 94.9 94.4 71.1 71.8 89.4 88.9 
+
+MS-In 96.4 94.0 87.6 87.1 94.2 92.6 95.7 93.6 92.2 89.7 89.4 88.9 
+
+Avg MS-OOD 94.7 93.7 76.4 78. 85.7 82.0 94.6 92.2 66.4 68.1 82.1 81.9 
+
+Domain Generalization experiments Algorithms In-Domain Out-of-Domain 
+
+ERM-DG 95.1 94.4 87.4 86.8 93.7 92.3 95.2 94.0 68.7 68.1 88.9 88.1 MMD-DG 94.8 93.9 87.5 86.2 93.8 92.4 94.9 93.7 70.1 69.2 88.9 87.3 DANN-DG 95.2 93.4 87.5 85.2 93.9 92.2 95.2 93.3 68.6 66.3 89.0 87.1 
+
+thousands languages [30, 35]. We extend our analysis to a reference language identification system: mms-lid-126 3 [30]. This set of experiments aims both at validating the results of the previous section on a large scale system, and at producing a robust language recognition system. The hyperparameters of the LID training recipe are taken from [30] whereas the hyperparameters of the domain generalization algorithms are selected from the previous section. 
+
+A. Domain generalization with mms-lid-126 
+
+The architecture of the mms-lid-126 model [30] is identical to Section III-B, replacing the pretrained wav2vec2 encoder with the mms-1b model 4. MMS stands for Massively Multi-Lingual Speech and corresponds to pretraing on a very diverse corpus with more than 44.7K hours and 126 languages. Following [30], the models are trained on the union of FLEURS [36] and VoxLingua107 [37], resulting into 126 languages. FLEURS (audio books) and VoxLingua107 (more noisy recordings from Youtube) correspond to different speech styles and acoustic conditions. Performance is evaluated on the six domains defined in sec-tion II-A. Domain generalization experiments are performed with the three following source domains: clean , wind and 
+
+saturation . The three remaining ( wind , lpc10 and demand )corruptions are considered as unseen during finetuning. 
+
+B. Results 
+
+First we observe an important performance drop of the pretrained mms-lid-126 system for all corruption shifts. Our MS-clean system achieves a similar performance on the clean domain but is less robust to corruption shifts. We hypothesize that the mms-lid-126 system is more ro-bust because it has been trained on more data (MMS-lab-U+unlab+FLEURS+VoxLingua107 in [30]). 
+
+> 3https://huggingface.co/facebook/mms-lid-126
+> 4https://huggingface.co/facebook/mms-1b
+
+The qualitative observations from previous analysis (Sec-tion III-C) persist with a much larger language inventory. The same relationship between source-domain performance and transferability is observed. Wham domain remains a rela-tively transferable source particularly for close domains such as demand . This further demonstrates that our conclusions generalize across corpora. The relative behavior of ERM, MMD, and DANN is broadly consistent across FLEURS and VoxLingua107, despite differences in absolute performance. Finally, results on LPC10 corruption show that domains di-versity help but is not always sufficient to guarantee robustness to arbitrary unseen corruptions. V. C ONCLUSION 
+
+In this work, we introduced a method for building speech datasets to systematically evaluate Domain Generalization un-der corruption shifts. By addressing the lack of systematic DG evaluation in speech, we extend the DomainBed framework to the speech modality, providing the community with a simple and reproducible way to benchmark and compare DG methods. Our experiments suggest that robustness to acoustic domain shifts in language identification is driven primarily by exposure to diverse acoustic conditions rather than by enforcing explicit domain invariance. However, this robustness is strongly de-pendent on the source-target relationship: corruption transfer is asymmetric, and difficult unseen distortions can remain challenging even after multi-domain training. We expect this protocol to facilitate further research on speech domain gener-alization. Beyond corruption shifts, speech domains also vary in accents, emotions, and speaking styles, often intertwined with acoustic conditions and transmission channels. A natural next step is to extend this framework from zero-shot domain generalization to few-shot domain adaptation. REFERENCES 
+
+[1] Martin Arjovsky. Out of distribution generalization in machine learning . PhD thesis, New York University, 2020. [2] Kate Saenko, Brian Kulis, Mario Fritz, and Trevor Darrell. Adapting visual category models to new domains. In European conference on computer vision , pages 213–226. Springer, 2010. [3] Jose G Moreno-Torres, Troy Raeder, Roc´ ıo Alaiz-Rodr´ ıguez, Nitesh V Chawla, and Francisco Herrera. A unifying view on dataset shift in classification. Pattern recognition , 45(1):521– 530, 2012. [4] Akib Mashrur, Wei Luo, Nayyar A Zaidi, and Antonio Robles-Kelly. Machine learning for financial risk management: a survey. Ieee Access , 8:203203–203223, 2020. [5] Hong Yang, Qi Yu, and Travis Desell. Can we ignore labels in out of distribution detection? arXiv preprint arXiv:2504.14704 ,2025. [6] Bradley J Erickson, Panagiotis Korfiatis, Zeynettin Akkus, and Timothy L Kline. Machine learning for medical imaging. 
+
+radiographics , 37(2):505–515, 2017. [7] Wangyou Zhang, Robin Scheibler, Kohei Saijo, Samuele Cor-nell, Chenda Li, Zhaoheng Ni, Jan Pirklbauer, Marvin Sach, Shinji Watanabe, Tim Fingscheidt, and Yanmin Qian. Ur-gent challenge: Universality, robustness, and generalizability for speech enhancement. In Interspeech 2024 , pages 4868–4872. ISCA, September 2024. [8] Simon Leglaive, L´ eonie Borne, Efthymios Tzinis, Mostafa Sadeghi, Matthieu Fraticelli, Scott Wisdom, Manuel Pariente, Daniel Pressnitzer, and John Hershey. The chime-7 udase task: Unsupervised domain adaptation for conversational speech enhancement. In 7th International Workshop on Speech Pro-cessing in Everyday Environments (CHiME 2023) , pages 7–12. ISCA, August 2023. [9] Badr M Abdullah, Tania Avgustinova, Bernd M¨ obius, and Dietrich Klakow. Cross-domain adaptation of spoken language identification for related languages: The curious case of slavic languages. arXiv preprint arXiv:2008.00545 , 2020. [10] Rapha¨ el Duroselle, Denis Jouvet, and Irina Illina. Unsupervised regularization of the embedding extractor for robust language identification. In Odyssey 2020-The Speaker and Language Recognition Workshop , 2020. [11] Tianyu Cao, Laureano Moro Velazquez, Jesus Villalba, Thomas Thebaud, and Najim Dehak. Flow-enhanced language embed-dings for robust language recognition. In Proc. Odyssey 2026 ,pages 328–335, 2026. [12] Spandan Dey, Md Sahidullah, and Goutam Saha. Towards cross-corpora generalization for low-resource spoken language identification. IEEE/ACM TASLP , 32:5040–5050, 2024. [13] H Muralikrishna, Shantanu Kapoor, Dileep Aroor Dinesh, and Padmanabhan Rajan. Spoken language identification in unseen target domain using within-sample similarity loss. In ICASSP 2021 , pages 7223–7227. IEEE, 2021. [14] Tigran Galstyan, Hrayr Harutyunyan, Hrant Khachatrian, Greg Ver Steeg, and Aram Galstyan. Failure modes of domain generalization algorithms, 2021. [15] Junbum Cha, Sanghyuk Chun, Kyungjae Lee, Han-Cheol Cho, Seunghyun Park, Yunsung Lee, and Sungrae Park. Swad: Domain generalization by seeking flat minima, 2021. [16] Ishaan Gulrajani and David Lopez-Paz. In search of lost domain generalization. In ICLR , 2021. [17] Philippe Gonzalez, Tommy Sonne Alstrøm, and Tobias May. Assessing the generalization gap of learning-based speech enhancement systems in noisy and reverberant environments. 
+
+IEEE/ACM TASLP , 31:3390–3403, 2023. [18] Shai Ben-David, John Blitzer, Koby Crammer, and Fernando Pereira. Analysis of representations for domain adaptation. 
+
+NeurIPS , 19, 2006. [19] Jean-Claude Junqua. The lombard reflex and its role on human listeners and automatic speech recognizers. The Journal of the Acoustical Society of America , 93(1):510–524, 1993. [20] Gordon Wichern, Joe Antognini, Michael Flynn, Licheng Richard Zhu, Emmett McQuinn, Dwight Crow, Ethan Manilow, and Jonathan Le Roux. Wham!: Extending speech separation to noisy environments. In Proc. Interspeech ,September 2019. [21] Daniele Mirabilii, Alexander Lodermeyer, Felix Czwielong, Stefan Becker, and Emanu¨ el A.P. Habets. Simulating wind noise with airflow speed-dependent characteristics. In 2022 IWAENC ,pages 1–5, 2022. [22] Joachim Thiemann, Nobutaka Ito, and Emmanuel Vincent. Demand: a collection of multi-channel recordings of acoustic noise in diverse environments. (No Title) , 2013. [23] Rachel Bittner, Eric Humphrey, and Juan Bello. Pysox: Lever-aging the audio signal processing power of sox in python. In 
+
+Proceedings of the international society for music information retrieval conference late breaking and demo papers , 2016. [24] Vladimir N Vapnik. An overview of statistical learning theory. 
+
+IEEE transactions on neural networks , 10(5):988–999, 1999. [25] Baochen Sun and Kate Saenko. Deep coral: Correlation align-ment for deep domain adaptation. In ECCV , pages 443–450. Springer, 2016. [26] Arthur Gretton, Karsten M Borgwardt, Malte J Rasch, Bernhard Sch¨ olkopf, and Alexander Smola. A kernel two-sample test. The JMLR , 13(1):723–773, 2012. [27] Yaroslav Ganin, Evgeniya Ustinova, Hana Ajakan, Pascal Ger-main, Hugo Larochelle, Franc ¸ois Laviolette, Mario March, and Victor Lempitsky. Domain-adversarial training of neural networks. JMLR , 17(59):1–35, 2016. [28] Chen Fang, Ye Xu, and Daniel N. Rockmore. Unbiased metric learning: On the utilization of multiple datasets and web images for softening bias. In Proceedings ICCV , December 2013. [29] Rosana Ardila, Megan Branson, Kelly Davis, Michael Kohler, Josh Meyer, Michael Henretty, Reuben Morais, Lindsay Saun-ders, Francis Tyers, and Gregor Weber. Common voice: A massively-multilingual speech corpus. In Proceedings of the twelfth language resources and evaluation conference , pages 4218–4222, 2020. [30] Vineel Pratap, Andros Tjandra, Bowen Shi, Paden Tomasello, Arun Babu, Sayani Kundu, Ali Elkahky, Zhaoheng Ni, Apoorv Vyas, Maryam Fazel-Zarandi, et al. Scaling speech technology to 1,000+ languages. JMLR , 25(97):1–52, 2024. [31] Alexei Baevski, Henry Zhou, Abdelrahman Mohamed, and Michael Auli. wav2vec 2.0: A framework for self-supervised learning of speech representations. In NeurIPS , 2020. [32] Thomas Wolf et al. Transformers: State-of-the-art natural language processing. In EMNLP: System Demonstrations , 2020. [33] Changhan Wang et al. Voxpopuli: A large-scale multilingual speech corpus for representation learning. In ACL , 2021. [34] Han Yu, Xingxuan Zhang, Renzhe Xu, Jiashuo Liu, Yue He, and Peng Cui. Rethinking the evaluation protocol of domain generalization. In Proceedings of the IEEE/CVF CVPR , pages 21897–21908, 2024. [35] Fei Jia, Nithin Rao Koluguri, Jagadeesh Balam, and Boris Ginsburg. A compact end-to-end model with local and global context for spoken language identification. Proc. Interspeech ,2023. [36] Alexis Conneau, Min Ma, Simran Khanuja, Yu Zhang, Vera Axelrod, Siddharth Dalmia, Jason Riesa, Clara Rivera, and Ankur Bapna. Fleurs: Few-shot learning evaluation of universal representations of speech. In 2022 IEEE Spoken Language Technology Workshop (SLT) , pages 798–805. IEEE, 2023. [37] J¨ orgen Valk and Tanel Alum¨ ae. Voxlingua107: a dataset for spoken language recognition. In 2021 IEEE spoken language technology workshop (SLT) , pages 652–658. IEEE, 2021.

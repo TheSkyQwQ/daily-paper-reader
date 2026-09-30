@@ -1,0 +1,302 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-30T22:41:42.140526+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.30784v1",
+      "source": "arxiv",
+      "title": "Symbiotic Architecture for Post-Hoc Audio Extension of Frozen Language Models",
+      "abstract": "This paper proposes an architecture for equipping large language models (LLMs) with audio-understanding capabilities without fine-tuning their weights. The proposed symbiotic architecture employs an injector module that writes audio-conditioned vectors directly into the target LLM's short-term memory, i.e., the key-value (KV) cache, enabling the LLM to behave as an audio language model (ALM). The architectural advantages are twofold. First, it improves the scalability of ALMs: because the proposed method bypasses the LLM during audio injection, the injection cost is governed by the injector width rather than the backbone width, and can therefore scale more slowly than the cost of full-backbone prefilling. Second, since the training scheme does not update the LLM weights, the original capabilities of the LLM are preserved without the risk of degradation from fine-tuning. The effectiveness of the proposed method is evaluated on both audio-understanding tasks (automatic speech recognition, audio question answering, and acoustic scene classification) and text-only tasks. We confirm that, while activating fewer parameters during audio prefilling, our architecture outperforms the conventional method with a frozen LLM and approaches the performance of a fine-tuned ALM, all while preserving the backbone LLM's original text-only task performance by construction.",
+      "authors": [
+        "Yotaro Kubo",
+        "Qi Sun",
+        "Yujin Tang"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CL",
+        "eess.AS"
+      ],
+      "published": "2026-09-25T04:06:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.30784v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "equipping frozen LLMs with audio understanding as audio language model",
+      "llm_evidence_cn": "为冻结大模型扩展音频理解能力",
+      "llm_evidence": "为冻结大模型扩展音频理解能力",
+      "canonical_evidence": "为冻结大模型扩展音频理解能力",
+      "llm_tldr_en": "This paper proposes a symbiotic architecture that equips frozen LLMs with audio understanding by injecting audio-conditioned vectors into the KV cache, turning the LLM into an audio language model without fine-tuning its weights.",
+      "llm_tldr_cn": "现有音频语言模型通常需要微调大模型权重或全骨干预填充，成本高且扩展性差。本文提出共生式架构，通过注入模块将音频条件向量直接写入冻结大模型的KV缓存，使LLM无需微调即可获得音频理解能力，并让注入开销随注入器宽度而非骨干宽度增长。该设计提升了音频语言模型的可扩展性，为构建语音大模型提供了新范式。",
+      "llm_tldr": "现有音频语言模型通常需要微调大模型权重或全骨干预填充，成本高且扩展性差。本文提出共生式架构，通过注入模块将音频条件向量直接写入冻结大模型的KV缓存，使LLM无需微调即可获得音频理解能力，并让注入开销随注入器宽度而非骨干宽度增长。该设计提升了音频语言模型的可扩展性，为构建语音大模型提供了新范式。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.31399v1",
+      "source": "arxiv",
+      "title": "Differential Attention Unlocks Complementary EEG and Speech Fusion for Emotion Recognition",
+      "abstract": "Multimodal emotion recognition (MER) increasingly pairs EEG with speech, treating internal neural signals and external vocal expression as informative views of affect. In practice, naive fusion underperforms the stronger single modality, because EEG artifacts inject noise that corrupts the shared representation. We introduce EmoSpeechBrain, a multimodal framework built on the insight that noise suppression is a precondition for effective fusion. Its EEG encoder uses differential attention, taking the difference between two attention maps to cancel shared noise and isolate discriminative neural activity. An attention-based gating adapter aligns both modalities in a shared space and weights each one's contribution to the prediction. On two datasets - PME4 and EAV, EmoSpeechBrain improves MER accuracy by up to 12.9% over other state-of-the-art (SOTA) EEG encoders, and surpasses unimodal speech and EEG baselines by up to 13.1% and 23.1%. These results show that once EEG noise is suppressed, fusion delivers gains that naive combination cannot.",
+      "authors": [
+        "Philip H. Lee",
+        "Shreeram Suresh Chandra",
+        "John H. L. Hansen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "eess.SP"
+      ],
+      "published": "2026-09-25T15:25:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.31399v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech and EEG fusion for emotion recognition with modality alignment",
+      "llm_evidence_cn": "语音与脑电融合的情感识别及模态对齐",
+      "llm_evidence": "语音与脑电融合的情感识别及模态对齐",
+      "canonical_evidence": "语音与脑电融合的情感识别及模态对齐",
+      "llm_tldr_en": "EmoSpeechBrain fuses EEG and speech for emotion recognition using differential attention to cancel EEG noise and a gating adapter to align modalities, showing noise suppression is a precondition for effective fusion.",
+      "llm_tldr_cn": "在脑电与语音结合的多模态情感识别中，脑电伪迹会污染共享表征，导致朴素融合反而弱于较强的单模态。本文提出EmoSpeechBrain框架，其脑电编码器采用差分注意力，以两张注意力图之差抵消共模噪声，并用基于注意力的门控适配器对齐两模态并加权各自贡献。结果表明噪声抑制是多模态情感融合的前提，为语音情感识别提供了有效的多模态方案。",
+      "llm_tldr": "在脑电与语音结合的多模态情感识别中，脑电伪迹会污染共享表征，导致朴素融合反而弱于较强的单模态。本文提出EmoSpeechBrain框架，其脑电编码器采用差分注意力，以两张注意力图之差抵消共模噪声，并用基于注意力的门控适配器对齐两模态并加权各自贡献。结果表明噪声抑制是多模态情感融合的前提，为语音情感识别提供了有效的多模态方案。",
+      "llm_tags": [
+        "query:ser-da:composite"
+      ],
+      "matched_query_tag": "query:ser-da:composite",
+      "matched_query_text": "Papers central to 检索跨语料/跨域语音情感识别研究，关注域适应、交叉语料泛化、情感表征学习、原型对齐、超球面表征、声学线索与音频语言模型，并比较不同研究的数据集、域偏移、方法设计、评测协议、结果与局限。, especially work that connects or combines: speech emotion recognition under domain shift across different speech datasets and recording conditions; speech emotion recognition from paralinguistic speech and prosody; emotion recognition trained and evaluated on different independent speech emotion corpora; Speech Large Language Model; domain adaptation techniques to reduce distribution mismatch in speech emotion classification; audio language model features applied to emotional speech understanding and cross-domain inference; What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?; How are audio language models and acoustic cues used for transferable speech emotion representation learning?.",
+      "matched_requirement_id": "req-composite-ser-da",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.31759v1",
+      "source": "arxiv",
+      "title": "Acoustic domain shift in spoken language identification from systematic domain generalization evaluation to real-world application",
+      "abstract": "Domain Generalization (DG) aims to develop models that remain robust to conditions unseen during training. While DG has been systematically studied in computer vision through controlled benchmarks and diverse distribution shifts, its evaluation in spoken language recognition remains less structured. Existing speech datasets provide valuable benchmarks for robustness to real-world acoustic conditions, but are primarily designed around specific scenarios and large scale rather than as general-purpose tools for systematically constructing and evaluating domain shifts. In this work, we introduce a smallscale speech dataset and evaluation protocol for controlled studies of acoustic domain shifts. It enables the evaluation of spoken language recognition models under a variety of acousitc domain shifts. We introduce the speech modality into the DomainBed Domain Generalization framework and evaluate three domain generalization algorithms. We show that in-domain performance is not a reliable predictor of cross-domain robustness and verify that explicit domain invariant algorithms such as MMD or DANN algorithms do not outperform ERM. We further validate the generality of these findings on MMS-LID-126, a state-of-the-art spoken language identification system. We release the code.",
+      "authors": [
+        "Francois Derrida",
+        "Raphaël Duroselle",
+        "Thomas Courtat",
+        "Jean-François Bonastre"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.LG",
+        "cs.SD"
+      ],
+      "published": "2026-09-23T13:21:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.31759v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "acoustic domain shift evaluation protocol for speech",
+      "llm_evidence_cn": "语音声学域偏移评估协议",
+      "llm_evidence": "语音声学域偏移评估协议",
+      "canonical_evidence": "语音声学域偏移评估协议",
+      "llm_tldr_en": "Introduces a small speech dataset and evaluation protocol for controlled acoustic domain shift studies in spoken language identification, aiming to structure domain generalization evaluation for speech.",
+      "llm_tldr_cn": "该文针对口语语言识别中域泛化评估缺乏系统化基准的问题，提出了一个小规模语音数据集与可控声学域偏移评估协议。方法上通过构造多种录音条件与分布偏移，系统评估模型在未见域上的鲁棒性。实验展示了该协议能揭示不同域偏移下的性能变化，为语音域适应研究提供了可复用的评测框架。其贡献在于将计算机视觉中成熟的域泛化评测思路引入语音领域，对跨语料或跨域语音任务具有方法借鉴意义。",
+      "llm_tldr": "该文针对口语语言识别中域泛化评估缺乏系统化基准的问题，提出了一个小规模语音数据集与可控声学域偏移评估协议。方法上通过构造多种录音条件与分布偏移，系统评估模型在未见域上的鲁棒性。实验展示了该协议能揭示不同域偏移下的性能变化，为语音域适应研究提供了可复用的评测框架。其贡献在于将计算机视觉中成熟的域泛化评测思路引入语音领域，对跨语料或跨域语音任务具有方法借鉴意义。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition under domain shift across different speech datasets and recording conditions",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.32504v1",
+      "source": "arxiv",
+      "title": "Toward Human-Aligned Judgement of Speech Emotion Similarity",
+      "abstract": "Evaluating emotion preservation in expressive speech generation involves assessing how closely generated speech matches a reference in emotion. Human listening tests assess this similarity, but their cost motivates automatic measures aligned with human judgments. To support the development and evaluation of such measures, we introduce SES-Bench, a speech emotion similarity benchmark built from human comparisons of two candidate utterances against a shared reference. These comparisons record which candidate listeners find emotionally closer to the reference and the strength of their preference. Using these annotations, we train SES-Judge to score emotion similarity between two utterances. SES-Judge significantly outperforms embedding cosine similarity and prompted large audio-language models in preference accuracy and correlation with human ratings that capture both preference direction and strength.",
+      "authors": [
+        "Yun-Shao Tsai",
+        "Yi-Cheng Lin",
+        "Chih-Kai Yang",
+        "Ho-Jung Cheng",
+        "Tsun-Yi Chang",
+        "Sheng-Wei Wu",
+        "Yi-Shan Chen",
+        "Hsiang-Chun Chang",
+        "Liang-Chieh Lee",
+        "Hung-yi Lee"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-26T11:47:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.32504v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech emotion similarity benchmark and judge model for emotion representation",
+      "llm_evidence_cn": "面向情感表征的语音情感相似度基准与评判模型",
+      "llm_evidence": "面向情感表征的语音情感相似度基准与评判模型",
+      "canonical_evidence": "面向情感表征的语音情感相似度基准与评判模型",
+      "llm_tldr_en": "To replace costly human listening tests for emotion preservation, this work introduces SES-Bench, a human-comparison speech emotion similarity benchmark, and trains SES-Judge, which outperforms embedding cosine similarity and prompted baselines.",
+      "llm_tldr_cn": "评估表达性语音生成中的情感保真度通常依赖昂贵的人工听测，亟需与人类判断对齐的自动度量。本文构建了SES-Bench语音情感相似度基准，记录听者比较两段候选语音与参考语音的情感接近程度及偏好强度，并据此训练SES-Judge打分模型。结果表明SES-Judge显著优于嵌入余弦相似度和提示式方法，为情感相似度评测提供了人类对齐的自动判据。",
+      "llm_tldr": "评估表达性语音生成中的情感保真度通常依赖昂贵的人工听测，亟需与人类判断对齐的自动度量。本文构建了SES-Bench语音情感相似度基准，记录听者比较两段候选语音与参考语音的情感接近程度及偏好强度，并据此训练SES-Judge打分模型。结果表明SES-Judge显著优于嵌入余弦相似度和提示式方法，为情感相似度评测提供了人类对齐的自动判据。",
+      "llm_tags": [
+        "query:ser-da:composite"
+      ],
+      "matched_query_tag": "query:ser-da:composite",
+      "matched_query_text": "Papers central to 检索跨语料/跨域语音情感识别研究，关注域适应、交叉语料泛化、情感表征学习、原型对齐、超球面表征、声学线索与音频语言模型，并比较不同研究的数据集、域偏移、方法设计、评测协议、结果与局限。, especially work that connects or combines: speech emotion recognition under domain shift across different speech datasets and recording conditions; speech emotion recognition from paralinguistic speech and prosody; emotion recognition trained and evaluated on different independent speech emotion corpora; Speech Large Language Model; domain adaptation techniques to reduce distribution mismatch in speech emotion classification; audio language model features applied to emotional speech understanding and cross-domain inference; What domain adaptation and prototype alignment methods improve cross corpus speech emotion recognition?; How are audio language models and acoustic cues used for transferable speech emotion representation learning?.",
+      "matched_requirement_id": "req-composite-ser-da",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.33709v1",
+      "source": "arxiv",
+      "title": "Domain-Adaptive Dual-Gating Mixture of Experts for Generalizable Speech Deepfake Detection",
+      "abstract": "Recent advances in speech deepfake detection (SDD) have leveraged the Mixture of Experts (MoE) to enhance generalization capacity. However, existing gating networks often overlook the acoustic and temporal cues of deepfakes. In this work, we propose a novel domain-adaptive dual-gating MoE (DADGMoE) framework for SDD under unseen attack types and acoustic conditions. Our innovative dual-gating mechanism leverages Sinc-layer-based filters to process both low-level acoustic signals (raw waveforms) and high-level speech representations from a large self-supervised learning (SSL) model. It further incorporates domain prototypes to guide expert routing based on implicit deepfake patterns. The lightweight affine experts process the routed inputs. Experiments show that our DADGMoE significantly outperforms the baseline, achieving up to a 40.8% relative EER reduction on challenging out-of-dataset benchmarks. This framework demonstrates superior generalization capabilities and efficient design.",
+      "authors": [
+        "Siqing Qin",
+        "Zhe Li",
+        "Kong Aik Lee",
+        "Man-Wai Mak"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-27T16:13:43+00:00",
+      "link": "https://arxiv.org/pdf/2609.33709v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "domain-adaptive MoE with domain prototypes and acoustic cues",
+      "llm_evidence_cn": "域自适应专家混合与域原型及声学线索",
+      "llm_evidence": "域自适应专家混合与域原型及声学线索",
+      "canonical_evidence": "域自适应专家混合与域原型及声学线索",
+      "llm_tldr_en": "Proposes a domain-adaptive dual-gating Mixture-of-Experts framework using raw-waveform Sinc filters, SSL representations, and domain prototypes to improve generalization of speech deepfake detection under unseen conditions.",
+      "llm_tldr_cn": "语音深度伪造检测虽借助专家混合提升泛化，但现有门控网络常忽视伪造语音的声学与时序线索。本文提出域自适应双门控专家混合框架DADGMoE，用基于Sinc层的滤波器同时处理原始波形等低层声学信号与自监督模型的高层语音表征，并引入域原型依据隐含伪造模式引导专家路由，由轻量仿射专家处理被路由特征。该框架在未见攻击类型与声学条件下增强检测泛化，为跨域语音深度伪造检测提供新方案。",
+      "llm_tldr": "语音深度伪造检测虽借助专家混合提升泛化，但现有门控网络常忽视伪造语音的声学与时序线索。本文提出域自适应双门控专家混合框架DADGMoE，用基于Sinc层的滤波器同时处理原始波形等低层声学信号与自监督模型的高层语音表征，并引入域原型依据隐含伪造模式引导专家路由，由轻量仿射专家处理被路由特征。该框架在未见攻击类型与声学条件下增强检测泛化，为跨域语音深度伪造检测提供新方案。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34147v1",
+      "source": "arxiv",
+      "title": "SPEAR-Gen: Generation-Aware Pre-training for Unified Speech Representations",
+      "abstract": "Speech understanding and generation place different demands on speech representations, and existing models are typically optimised towards one capability or the other. To reduce this gap, we introduce SPEAR-Gen, a speech representation model that learns a single representation for both capabilities. Task-aligned feature aggregation consolidates complementary linguistic and paralinguistic information across a frozen encoder into discrete targets for masked prediction, while a coarse-to-fine objective combines log-Mel reconstruction with residual flow matching to preserve spectral structure and fine-grained acoustic variation. Experiments on SUPERB and speech resynthesis show that SPEAR-Gen maintains strong understanding performance while substantially improving resynthesis quality and speaker preservation. These results demonstrate that a single speech representation can effectively support both understanding and generation.",
+      "authors": [
+        "Xiaoyu Yang",
+        "Arthur Hinsvark",
+        "Antonios Alexos",
+        "Osama Hanna",
+        "Philip C. Woodland",
+        "Yiting Lu"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-28T02:27:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.34147v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified speech representation capturing paralinguistic information",
+      "llm_evidence_cn": "融合副语言信息的统一语音表征",
+      "llm_evidence": "融合副语言信息的统一语音表征",
+      "canonical_evidence": "融合副语言信息的统一语音表征",
+      "llm_tldr_en": "SPEAR-Gen learns a single speech representation for both understanding and generation by aggregating complementary linguistic and paralinguistic information and combining log-Mel reconstruction with residual flow matching.",
+      "llm_tldr_cn": "语音理解与生成对表征的需求不同，现有模型往往只针对其中一种能力优化。本文提出SPEAR-Gen，通过任务对齐特征聚合在冻结编码器上融合互补的语言与副语言信息并生成掩码预测目标，同时用由粗到细的目标结合对数梅尔谱重建与残差流匹配以保留频谱结构与细粒度声学变化。在SUPERB与语音重合成实验中，该方法在保持理解性能的同时显著提升生成能力。",
+      "llm_tldr": "语音理解与生成对表征的需求不同，现有模型往往只针对其中一种能力优化。本文提出SPEAR-Gen，通过任务对齐特征聚合在冻结编码器上融合互补的语言与副语言信息并生成掩码预测目标，同时用由粗到细的目标结合对数梅尔谱重建与残差流匹配以保留频谱结构与细粒度声学变化。在SUPERB与语音重合成实验中，该方法在保持理解性能的同时显著提升生成能力。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34742v1",
+      "source": "arxiv",
+      "title": "Do Emotion Concepts Generalize Across Sources, Modalities, and Architectures in Vision-Language Models?",
+      "abstract": "Recent studies suggest that large language models encode emotion concepts as structured internal representations, but most existing work focuses on text and a single architecture. Therefore, we ask, do emotion concepts generalize across sources, modalities, and architectures in vision--language models (VLMs)? To address this, we construct CMES (Cross-Modal Emotion Stimuli), a multi-source collection of emotion-conditioned stories, real facial expressions, synthetic portraits, and synthetic emotion-evoking scenes. For each stimulus source, we extract a separate set of six Ekman emotion vectors from each of three VLMs. We report four main findings as follows: 1) Image-derived emotion vectors form a low-dimensional geometry similar to that of text-derived vectors. Valence is relatively stable across sources, while arousal varies more. 2) Text- and image-derived emotion vectors have modest cosine similarity but still show held-out cross-modal correspondence. Text-derived vectors can also steer image interpretation. 3) Cross-architecture correspondence remains even when native cosine is near zero. Transformations estimated from generic ImageNet activations recover both correspondence and causal transfer without using the six emotion vectors or their labels. 4) After aligning representations across architectures, we construct a shared emotion subspace that preserves affective geometry and selective steering effects. The corresponding consensus emotion vectors also generalize to a held-out fourth architecture at two model sizes. These results suggest that emotion representations can share relational structure and causal effects across sources, modalities, and architectures, even when individual vector directions differ.",
+      "authors": [
+        "Bohao Xing",
+        "Xin Liu",
+        "Kaishen Yuan",
+        "Deng Li",
+        "Rong Gao",
+        "Guoying Zhao",
+        "Xiaolan Fu",
+        "Heikki Kälviäinen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-28T09:34:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.34742v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "emotion concepts generalize across sources, modalities and architectures",
+      "llm_evidence_cn": "情感概念跨来源、模态与架构的泛化",
+      "llm_evidence": "情感概念跨来源、模态与架构的泛化",
+      "canonical_evidence": "情感概念跨来源、模态与架构的泛化",
+      "llm_tldr_en": "Whether emotion concepts generalize across sources, modalities and architectures is unclear. Building CMES with stories, faces and scenes, the authors extract Ekman emotion vectors from three vision-language models and find image-derived vectors form low-dimensional geometry.",
+      "llm_tldr_cn": "已有研究表明大模型编码结构化情感概念，但多聚焦文本与单一架构，跨来源与模态的泛化性未知。作者构建CMES多源情感刺激集，从三个视觉语言模型中提取六类Ekman情感向量并进行跨源跨模态比较。结果显示图像导出的情感向量呈现低维几何结构，情感概念在不同来源与架构间表现出一定泛化性。该工作与可迁移情感表征学习相关，但模态为视觉语言。",
+      "llm_tldr": "已有研究表明大模型编码结构化情感概念，但多聚焦文本与单一架构，跨来源与模态的泛化性未知。作者构建CMES多源情感刺激集，从三个视觉语言模型中提取六类Ekman情感向量并进行跨源跨模态比较。结果显示图像导出的情感向量呈现低维几何结构，情感概念在不同来源与架构间表现出一定泛化性。该工作与可迁移情感表征学习相关，但模态为视觉语言。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
