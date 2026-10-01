@@ -1,0 +1,149 @@
+Title: Oracle Complementarity Is Not Realizable Complementarity in Frozen-Encoder Audio-Visual Emotion Recognition
+
+URL Source: https://arxiv.org/pdf/2609.31764v1
+
+Published Time: Tue, 29 Sep 2026 00:05:43 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# ORACLE COMPLEMENTARITY IS NOT REALIZABLE COMPLEMENTARITY IN FROZEN-ENCODER AUDIO–VISUAL EMOTION RECOGNITION 
+
+# Benjamin Hurt 
+
+# University of California, Santa Barbara 
+
+ABSTRACT 
+
+Complementarity analyses of multimodal systems commonly report an oracle ceiling (the fraction of examples on which at least one unimodal branch is correct) and interpret the gap between it and realized fusion accuracy as recoverable head-room. We show that this ceiling is not a fusion target. Us-ing frozen self-supervised audio and visual encoders with a trained head, we measure the ceiling and realized gain on CREMA-D under two audio encoders (one whose fine-tuning lineage includes CREMA-D, one clean) and on EAV under the contaminated encoder. Replacing the fine-tuned encoder with a self-supervised one triples the headroom, from +0 .055 
+
+to +0 .186 . A second clean encoder and a controlled degrada-tion of the contaminated one fall on the same curve, so prove-nance moves the headroom by changing audio-branch accu-racy. Concatenation realizes at most about half of the head-room (converted fraction 0.55 ), and on EAV the converted fraction is indistinguishable from zero despite larger head-room. A learned router is beaten by plain concatenation ev-erywhere. Oracle headroom measures branch disagreement, not a fusion budget. 
+
+Index Terms — multimodal fusion, emotion recognition, self-supervised representations, complementarity, dataset contamination 
+
+1. INTRODUCTION 
+
+Frozen self-supervised encoders make multimodal affect sys-tems cheap and lightweight to assemble: a pretrained speech encoder, a pretrained face encoder, and a small trained head reach competitive accuracy without fine-tuning either back-bone. The common rationale for investing in the fusion mech-anism itself is the oracle ceiling, the accuracy of a hypo-thetical selector that always picks a correct branch when one exists. Oracle–fusion gaps of five to fifteen points of accu-racy are commonly read as headroom that could be recovered through a better gate, router, or attention mechanism. A re-lated inclination drives recent in-domain work on modality scheduling, which dynamically prioritizes under-contributing modalities to better realize their contribution [23]. The oracle is attractive because it is cheap. It requires no training, only two sets of predictions. Although alterna-tives exist (taxonomies of fusion strategy [13], information-theoretic decompositions of redundancy, uniqueness, and syn-ergy [14]), the oracle remains a motivating statistic in applied multimodal papers precisely because it is a single number with an operational reading. We argue that this operational reading is unsound, and that the error is structural, not a mat-ter of insufficiently clever fusion. The oracle counts clips on which the branches disagree in the right direction . A deploy-able system must additionally identify and act on those clips from the inputs alone. A complementarity analysis that re-ports large headroom therefore invites exactly the fusion ma-chinery (routers, gates, cross-attention) our results show does not close it. The gap between the oracle and realized selection is long documented in dynamic classifier selection, where the oracle is the standard upper bound and selectors often fail to pick a competent classifier even when one exists [11, 12]. Con-current work outside speech reaches related conclusions by other routes. In language-model routing, the recorded oracle has been decomposed into a reproducible ceiling and a non-recoverable component attributed to single-draw decoding noise [20], and co-failure analyses across pools of models bound what any router can capture [21]; in multimodal re-trieval, per-sample modality relevance has been separated from modality utility [22]. Our double-fault floor (Sec. 3) is the same co-failure ceiling concept applied to modality branches rather than to pools of language models. Our contri-bution is not to introduce it but to show what it implies here. With deterministic predictions and fixed labels, neither the decoding-noise nor the query-relevance mechanism applies, and the unrealized headroom is disagreement that none of the mechanisms we test converts into accuracy at inference. We measure oracle headroom against realized fusion gain on CREMA-D under a contaminated and a clean frozen au-dio encoder, and on EAV under the contaminated one. Re-placing the heavily fine-tuned encoder with a self-supervised one multiplies the headroom by 3.4×, and a controlled degra-dation of the contaminated encoder shows why. Headroom follows audio-branch accuracy, so contamination hides it by inflating the stronger branch. The fraction that concatena-tion converts stays near half at best. It rises from 0.39 to 
+
+0.55 on CREMA-D, and on EAV, whose headroom is 2.5×
+
+CREMA-D’s contaminated one, it is indistinguishable from arXiv:2609.31764v1 [eess.AS] 24 Sep 2026 zero. A learned router underperforms plain concatenation in every corpus and regime tested, including the clean regime where headroom is largest. The contribution is the diagnosis, not a fusion method. Oracle headroom should be read as a property of branch accuracy and disagreement, not a recover-able budget. 
+
+2. EXPERIMENTAL SETUP Corpora. CREMA-D [1] contains 7442 acted studio clips from 91 actors over six emotion categories. EAV [2] contains 4200 clips from 42 subjects over five categories and is elicited in a more naturalistic conversational protocol. 
+
+Encoders. All encoders are frozen feature extractors; only a small MLP head is trained. The audio branch is emo-tion2vec+ base or the self-supervised non-plus emotion2vec, both 768-d utterance embeddings [3, 4]. As a provenance ro-bustness check (Sec. 4) we add XEUS [24], a clean, architec-turally distinct 1024-d encoder. The visual branch is EmoNet (256-d) [6], MAE-DFER (512-d) [7], or their concatenation, which we call the visual ensemble and use for all headline results. Published CREMA-D results for these encoders are obtained by fine-tuning them ( 77 .4 WAR video-only for MAE-DFER, 84 .9 for the audio-visual HiCMAE [8]), and no frozen-encoder audio-visual baseline exists for this corpus, so our absolute accuracies are not comparable to those figures. Fusion is at the embedding rather than the posterior level, chosen by a preliminary pooling and normalization sweep. 
+
+Protocol. We follow the frozen-encoder, lightweight-head convention established for self-supervised speech represen-tations [9]. Evaluation is subject-independent GroupKFold over actor identity, with five folds on CREMA-D and seven on EAV and zero train/test actor overlap verified per fold. Ev-ery reported quantity is computed per seed over all out-of-fold clips and then averaged over seeds {0, 1, 2}, and every clip count is a mean over the three seeds. Confidence intervals are 95% actor-level cluster bootstrap intervals ( 10 ,000 resam-ples); quantities computed from a single seed’s out-of-fold posteriors are marked as such. Head training uses determinis-tic CUDA reductions; Table 1, the routing comparisons, and the degradation sweep are verified reproducible across pro-cesses. Accuracy is weighted average recall (WAR). 
+
+Contamination and the design grid. Benchmark contami-nation, evaluation data appearing in a model’s training or fine-tuning corpus, is a recognized threat to reported gains [18]. The frozen emotion2vec+ base encoder is fine-tuned on a large undisclosed pseudo-labeled pool, initialized from a seed model that was itself fine-tuned on the EmoBox collection [5], whose 32 corpora across 14 languages include CREMA-D. CREMA-D can thus enter the audio branch through this two-hop pathway, so the CREMA-D audio branch is opti-mistic and subject-independent cross-validation at the head level does not remove encoder-level leakage. EAV is not an EmoBox member, and the visual encoders are unaffected in both cases. The visual ensemble scores 0.652 identically under both audio encoders, which we use as a control. We report CREMA-D under both the contaminated (plus) and clean (non-plus) encoders because published complementar-ity numbers resemble the contaminated regime. The clean encoder cannot be evaluated on EAV. EAV’s Speaking condi-tion draws on only about 19 distinct scripted (trial × emotion) sentence templates, so a content-sensitive encoder decodes the script rather than the prosody. Non-plus emotion2vec reaches 0.998 subject-independent accuracy on EAV audio, against a text-only TF-IDF ceiling of 1.000 and a chance rate of 0.200 . The design therefore has three cells, CREMA-D ×{contaminated, clean } plus EAV × { contaminated }.
+
+3. ORACLE, REALIZED GAIN, AND UNREALIZED GAP 
+
+Let ai, v i, f i ∈ { 0, 1} indicate whether the audio branch, the visual branch, and the fusion system respectively classify clip 
+
+i correctly, over N clips. We define 
+
+O = 1
+
+> N
+
+P 
+
+> i
+
+max( ai, v i), D = 1
+
+> N
+
+P
+
+> i
+
+(1 − ai)(1 − vi),
+
+(1) 
+
+H = O − WAR( a), ∆ = WAR( f ) − WAR( a), (2) 
+
+U = O − WAR( f ), ρ = ∆ /H. (3) 
+
+O is the oracle , the accuracy of a selector with perfect knowl-edge of which branch is correct, and hence an upper bound on any late-fusion selector. H is the oracle headroom above the stronger branch, ∆ the realized gain , U the unrealized gap , and ρ the converted fraction . D, the double-fault rate, is the floor on which no branch selector can help [10]; for two branches, D = 1 − O. Embedding-level concatenation is not a selector and is not bounded by O. It can be correct on clips where both branches err (69 to 227 clips per cell here), so U
+
+can in principle be negative. It is positive in every cell we test (Table 1). Throughout, O is the two-way construction over the audio branch and the visual ensemble. We compare three fusion arms. Concat trains one head on the concatenated frozen embeddings. Oracle-route is the infeasible O arm, included as the ceiling. Learned-router 
+
+trains a selector on the concatenated audio and visual embed-dings together with per-branch confidence statistics ( 1539 di-mensions) to predict audio errors and defer those clips to the visual head; it is an instance of learning to defer [16] and of selective prediction [15], with abstention replaced by deferral to a second branch. 
+
+4. RESULTS 4.1. CREMA-D under the contaminated audio encoder 
+
+Concatenation improves on the audio branch from 0.898 to 
+
+0.919 , significant for every visual branch (per-actor paired Table 1 . Oracle headroom against realized fusion gain. All rows use the same configuration (audio branch plus visual ensemble, concatenation head); H, ∆, U , and ρ = ∆ /H (with 95% actor-bootstrap CI) are as defined in Sec. 3. Headroom grows 3.4×
+
+from contaminated to clean audio; the converted fraction stays at or below 0.55 (0.39 , 0.55 , 0.12 ). All quantities are three-seed means (seeds {0, 1, 2}); H, ∆, or ρ recomputed from the rounded cells can differ by one in the last digit.                                  
+
+> Corpus / audio audio video concat OH∆Uρ[95% CI] CREMA-D / contaminated 0.898 0.652 0.919 0.953 +0.055 +0.021 0.033 0.39 [0.29, 0.48] CREMA-D / clean 0.686 0.652 0.787 0.871 +0.186 +0.102 0.084 0.55 [0.47, 0.62] EAV / contaminated 0.648 0.460 0.665 0.785 +0.137 +0.017 0.120 0.12 [ −0.02, 0.25]
+
+Wilcoxon, n = 91 , all p < 10 −5). The oracle ceiling, however, does not move with the visual branch. Swapping EmoNet for MAE-DFER, for prenormalized MAE-DFER, or for their ensemble raises standalone visual accuracy from 
+
+0.574 to 0.652 but leaves the oracle near 0.95 and headroom pinned at approximately +0 .05 for every branch (seed 0 for the three single encoders). Paired two-one-sided-tests on per-actor fusion accuracy ( n = 91 ) confirm all six pairs of the four visual encoders are statistically equivalent at a ±0.01 
+
+margin [19]. 
+
+4.2. CREMA-D under the clean audio encoder 
+
+Replacing emotion2vec+ with the self-supervised non-plus encoder drops audio accuracy by about 0.21 , from 0.898 
+
+to 0.686 , while the visual control is unchanged. This drop bounds the contamination inflation from above but also in-cludes the supervised-versus-self-supervised capability gap, which we cannot net out because the clean encoder cannot be evaluated on EAV (Sec. 2). We therefore frame the effect as encoder replacement, with contamination as one component of the drop. With clean audio the realized fusion gain rises from +0 .021 to +0 .102 (4.8×, CI 3.7–6.7) and the oracle headroom from +0 .055 to +0 .186 (3.4×). The converted fraction ρ rises only from 0.39 to 0.55 (paired difference 
+
++0 .16 , CI +0 .06 to +0 .26 ), so a 3.4× larger headroom buys a 1.4× larger fraction, and nearly half the enlarged head-room goes unconverted. Most of the 3.4× reflects the audio branch’s larger error mass. If the branches erred indepen-dently, headroom would equal (1 − WAR( a)) WAR( v); the observed H is 83 –91% of that prediction in all three cells, and visual accuracy on audio-error clips ( 0.54 –0.59 on CREMA-D) is below its overall 0.652 . The headroom thus carries no complementarity beyond what the branch accuracies imply. The familiar reading of Table 1’s first row, that the visual branch is nearly worthless for fusion, is therefore partly an artifact of an inflated audio branch, a form of modality domi-nance [17]. To separate provenance from branch strength, we hold the contaminated encoder fixed and add isotropic zero-mean Gaussian noise to its frozen audio embeddings for all clips, with a fresh draw per seed and fold and standardization re-fitted afterwards. Five noise levels, chosen to bring audio accuracy from 0.90 down to 0.69 , plus the noise-free base-line are each retrained with the Table 1 protocol. Headroom rises steadily from +0 .055 to +0 .186 as audio accuracy falls (Fig. 1), and at matched audio accuracy the degraded con-taminated encoder reproduces the clean encoder’s headroom. Because isotropic noise makes audio errors close to random, the sweep alone would sit near the independence prediction by construction; the real encoders matter because they land on the same curve. XEUS [24], an architecturally distinct self-supervised encoder (E-Branchformer, HuBERT objec-tive) whose million-hour pretraining includes no CREMA-D by any documented pathway, falls on the same curve (H = +0 .133 at 0.758 WAR ). Headroom therefore follows audio-branch accuracy whichever encoder produces it; con-tamination matters because it inflates that accuracy. Along the sweep, ρ is non-monotone, dipping to 0.36 before rising to 0.53 .The strongest realized fusion we found is a learned com-biner over the frozen penultimate representations of sepa-rately trained audio and visual heads. Under clean audio it reaches about 0.81 against concatenation’s 0.787 , significant per actor ( p < 0.001 ) and in all six of six seeds, and robust to normalization and depth controls [25]. Even this arm converts only about two thirds of the headroom and leaves about 0.06 
+
+absolute accuracy on the table, more than the entire headroom available in the contaminated regime. 
+
+4.3. EAV replication 
+
+EAV is harder and has larger headroom ( +0 .137 , Table 1). Concatenation’s gain over audio is not significant (per-actor Wilcoxon p = 0 .068 , r = +0 .328 , n = 42 ). EAV breaks the link between headroom size and conversion across corpora. Its headroom is 2.5× CREMA-D’s contaminated headroom, yet its converted fraction, 0.12 (CI −0.02 to 0.25 ), is indistin-guishable from zero. A likelier factor than the headroom it-self is EAV’s weak visual branch ( 0.460 against 0.652 ), below the visual accuracy the one converting mechanism requires (Sec. 5); headroom alone does not reveal this. 
+
+4.4. Selection does not realize the ceiling 
+
+Under contaminated CREMA-D audio the learned router reaches 0.883 , below both concatenation ( 0.919 ; per-actor 0.00 0.05 0.10 0.15 0.20 oracle headroom  H    
+
+> emotion2vec+ (contaminated) emotion2vec (clean) XEUS (clean) noise sweep (3-seed, 95% CI) 0.70 0.75 0.80 0.85 0.90 audio branch accuracy (WAR) 0.0 0.2 0.4 0.6 converted fraction  ρ
+> emotion2vec+ (contaminated) emotion2vec (clean) XEUS (clean)
+
+Fig. 1 . Oracle headroom H (top) and converted fraction ρ
+
+(bottom) against audio-branch accuracy on CREMA-D. The line degrades the contaminated encoder with isotropic Gaus-sian noise on its audio embeddings (three-seed means, 95% actor bootstrap CIs); markers are the contaminated, clean, and XEUS audio encoders. All three encoders fall on the degrada-tion curve, so headroom follows audio-branch accuracy rather than encoder identity, while ρ stays at or below 0.55 .Wilcoxon p < 0.001 , r = −0.71 ) and audio alone ( 0.898 ). Against audio it gains 82 clips and loses 192, a net of −110 .Under clean audio the router reaches 0.693 , far below con-catenation at 0.787 . On EAV it reaches 0.632 , below con-catenation ( p = 0 .042 , r = −0.36 ) and a net of −69 clips against audio. Among twelve single- and two-stage fusion mechanisms swept in our companion paper [25], the learned combiner above is the only family that beats concatena-tion, and only under clean audio; the two capacity-matched single-stage alternatives tie or lose in every cell, so it is the combiner’s two-stage structure, not fusion expressivity in general, that is load-bearing. 
+
+5. DISCUSSION AND LIMITATIONS 
+
+The binding constraint is how the disagreement region is ex-ploited, not whether it can be detected. The learned router predicts audio errors only moderately (AUROC 0.773 on CREMA-D, 0.621 on EAV; not directly comparable, as the shipped routers predict different targets). The failure is not one of gate quality. Across every router input variant in the companion ablation [25], richer inputs improve discrimina-tion (AUROC +2 .4 to +15 .5 points) and calibration (ECE 
+
+2.4- to 11 .7-fold lower) in all three cells, yet no variant beats concatenation. This is consistent with the hard-deferral pol-icy, rather than the gate’s inputs, being the bottleneck. We hypothesize that unconditional concatenation does better be-cause it declines the identification problem, letting the head learn a fixed mixture rather than a per-clip decision. Several limitations qualify the result. All encoders are frozen extractors with a trained head and both corpora are acted or elicited studio recordings, so no spontaneous in-the-wild condition is tested. We evaluate three cells because no clean bimodal corpus is available to us. The candidate third corpora, IEMOCAP and MELD, are EmoBox mem-bers and additionally lie in the non-plus encoder’s pretraining set, so neither is clean under either audio encoder; and both have multi-party video without reliable per-utterance speaker-face association, which we verified directly for MELD. The combiner wins on CREMA-D but not EAV for a measur-able reason rather than a corpus quirk. A second controlled sweep [25] fixes audio degradation where the combiner al-ready wins and degrades only the visual branch. The advan-tage needs visual accuracy above roughly 0.54 –0.60 WAR 
+
+and vanishes below it ( p = 0 .15 at 0.46 WAR ). On EAV, even the best visual configuration reaches only 0.48 WAR .The combiner needs both a degraded audio branch and an adequate visual one, and EAV supplies only the first. 
+
+6. CONCLUSION 
+
+Oracle complementarity is not realizable complementarity. Replacing a fine-tuned audio encoder with a self-supervised one triples the oracle headroom on CREMA-D ( +0 .055 to 
+
++0 .186 ), and a controlled degradation shows the increase follows audio-branch accuracy. The converted fraction rises only from 0.39 to 0.55 , and on EAV, whose headroom is larger than the contaminated one, it is indistinguishable from zero. Explicit selection is beaten by plain concatenation in every corpus and regime tested. Oracle ceilings should be reported as diagnostics of branch disagreement rather than as fusion targets, and complementarity claims should report ρ
+
+alongside O, compare H with the independence prediction 
+
+(1 − WAR( a)) WAR( v), and check whether the evaluation corpus appears anywhere in each encoder’s training lineage. 
+
+# Acknowledgments 
+
+The author used Claude (Anthropic) for language editing and revision throughout the paper. All AI-assisted content was reviewed and verified by the author, who takes full responsi-bility for the paper. Compliance with Ethical Standards 
+
+This work is a secondary analysis of the publicly available CREMA-D and EAV corpora, both distributed for research use by their originating institutions. No new human-subject data were collected and no additional ethical approval was required for the analyses reported here. 
+
+7. REFERENCES 
+
+[1] H. Cao, D. G. Cooper, M. K. Keutmann, R. C. Gur, A. Nenkova, and R. Verma, “CREMA-D: Crowd-sourced emotional multimodal actors dataset,” IEEE Trans. Affect. Comput. , vol. 5, no. 4, pp. 377–390, 2014. [2] M.-H. Lee et al., “EAV: EEG-audio-video dataset for emo-tion recognition in conversational contexts,” Scientific Data ,vol. 11, art. 1026, 2024. [3] Z. Ma et al., “emotion2vec: Self-supervised pre-training for speech emotion representation,” in Findings of ACL ,pp. 15747–15760, 2024. [4] Z. Ma et al., “emotion2vec+: Speech emotion recogni-tion foundation model,” model release, 2024. https:// github.com/ddlBoJack/emotion2vec 
+
+[5] Z. Ma et al., “EmoBox: Multilingual multi-corpus speech emotion recognition toolkit and benchmark,” in Proc. Inter-speech , pp. 1580–1584, 2024. [6] A. Toisoul, J. Kossaifi, A. Bulat, G. Tzimiropoulos, and M. Pantic, “Estimation of continuous valence and arousal lev-els from faces in naturalistic conditions,” Nat. Mach. Intell. ,vol. 3, pp. 42–50, 2021. [7] L. Sun, Z. Lian, B. Liu, and J. Tao, “MAE-DFER: Efficient masked autoencoder for self-supervised dynamic facial ex-pression recognition,” in Proc. ACM Multimedia , pp. 6110– 6121, 2023. [8] L. Sun, Z. Lian, B. Liu, and J. Tao, “HiCMAE: Hierarchi-cal contrastive masked autoencoder for self-supervised audio-visual emotion recognition,” Inf. Fusion , vol. 108, art. 102382, 2024. [9] S.-W. Yang et al., “SUPERB: Speech processing universal PERformance benchmark,” in Proc. Interspeech , pp. 1194– 1198, 2021. [10] L. I. Kuncheva and C. J. Whitaker, “Measures of diversity in classifier ensembles and their relationship with the ensemble accuracy,” Machine Learning , vol. 51, no. 2, pp. 181–207, 2003. [11] R. M. O. Cruz, R. Sabourin, and G. D. C. Cavalcanti, “Dy-namic classifier selection: Recent advances and perspectives,” 
+
+Inf. Fusion , vol. 41, pp. 195–216, 2018. [12] M. A. Souza, G. D. C. Cavalcanti, R. M. O. Cruz, and R. Sabourin, “On the characterization of the oracle for dy-namic classifier selection,” in Proc. IJCNN , pp. 332–339, 2017. [13] T. Baltruˇ saitis, C. Ahuja, and L.-P. Morency, “Multimodal ma-chine learning: A survey and taxonomy,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 41, no. 2, pp. 423–443, 2019. [14] P. P. Liang et al., “Quantifying & modeling multimodal inter-actions: An information decomposition framework,” in Proc. NeurIPS , pp. 27351–27393, 2023. [15] Y. Geifman and R. El-Yaniv, “Selective classification for deep neural networks,” in Proc. NeurIPS , pp. 4878–4887, 2017. [16] H. Mozannar and D. Sontag, “Consistent estimators for learn-ing to defer to an expert,” in Proc. ICML , PMLR vol. 119, pp. 7076–7087, 2020. [17] X. Peng, Y. Wei, A. Deng, D. Wang, and D. Hu, “Balanced multimodal learning via on-the-fly gradient modulation,” in 
+
+Proc. IEEE/CVF CVPR , pp. 8238–8247, 2022. [18] O. Sainz, J. A. Campos, I. Garc´ ıa-Ferrero, J. Etxaniz, O. L. de Lacalle, and E. Agirre, “NLP evaluation in trouble: On the need to measure LLM data contamination for each bench-mark,” in Findings of EMNLP , 2023. [19] D. Lakens, “Equivalence tests: A practical primer for t tests, correlations, and meta-analyses,” Soc. Psychol. Personal. Sci. ,vol. 8, no. 4, pp. 355–362, 2017. [20] T.-R. Chen, “How much of the routing gap is real? Decompos-ing the router-to-oracle gap into reproducible specialist advan-tage and single-draw label noise,” arXiv:2607.03436v2, 2026. [21] J. Chen, “When does combining language models help? A co-failure ceiling on routing, voting, and mixture-of-agents across 67 frontier models,” arXiv:2606.27288, 2026. [22] X. Li and Y. Gai, “Modality relevance is not modality utility: Post-hoc selective modality escalation for cost-aware multi-modal RAG,” arXiv:2607.05438, 2026. [23] X. Shi et al., “Modality equilibrium matters: Minor-modality-aware adaptive alternating for cross-modal memory enhance-ment,” IEEE Trans. Pattern Anal. Mach. Intell. , early access, 2026. [24] W. Chen et al., “Towards robust speech representation learn-ing for thousands of languages,” in Proc. EMNLP , pp. 10205– 10224, 2024. [25] B. Hurt, “When does learned audio–visual fusion beat con-catenation in affect recognition? Structure, not capacity,” sub-mitted for publication, 2026.

@@ -1,0 +1,57 @@
+{
+  "date": "20261001",
+  "date_label": "",
+  "generated_at": "2026-10-01 23:17:38 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.34217v1",
+      "route": "202610/01/2609.34217v1-explainable-and-generalisable-llm-based-cognitive-decline-detection-with-spontaneous-speech",
+      "title": "Explainable and Generalisable LLM-based Cognitive Decline Detection with Spontaneous Speech",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "保留韵律线索的双语语音大语言模型用于认知筛查",
+      "first_seen_at": "2026-10-01 23:17:38 UTC",
+      "updated_at": "2026-10-01 23:17:38 UTC"
+    },
+    {
+      "paper_id": "2609.34407v1",
+      "route": "202610/01/2609.34407v1-beyond-textual-chain-of-thought-jepa-conditioned-latent-reasoning-for-large-audio-language-models",
+      "title": "Beyond Textual Chain-of-Thought: JEPA-Conditioned Latent Reasoning for Large Audio Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "大型音频语言模型的声学表征推理",
+      "first_seen_at": "2026-10-01 23:17:38 UTC",
+      "updated_at": "2026-10-01 23:17:38 UTC"
+    },
+    {
+      "paper_id": "2609.31764v1",
+      "route": "202610/01/2609.31764v1-oracle-complementarity-is-not-realizable-complementarity-in-frozen-encoder-audio-visual-emotion-recognition",
+      "title": "Oracle Complementarity Is Not Realizable Complementarity in Frozen-Encoder Audio-Visual Emotion Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "在CREMA-D与EAV上用冻结自监督编码器做情感识别",
+      "first_seen_at": "2026-10-01 23:17:38 UTC",
+      "updated_at": "2026-10-01 23:17:38 UTC"
+    }
+  ]
+}

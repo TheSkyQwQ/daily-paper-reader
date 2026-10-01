@@ -1,0 +1,241 @@
+Title: Beyond Textual Chain-of-Thought: JEPA-Conditioned Latent Reasoning for Large Audio Language Models
+
+URL Source: https://arxiv.org/pdf/2609.34407v1
+
+Published Time: Tue, 29 Sep 2026 03:20:20 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+BEYOND TEXTUAL CHAIN-OF-THOUGHT: JEPA-CONDITIONED LATENT REASONING FOR LARGE AUDIO LANGUAGE MODELS 
+
+Donghang Wu 1,2, Haoyang Zhang 3, Yizhou Peng 1, Shreyas Gopal 1, Yi-Wen Chao 1,Chen Chen 1, Hexin Liu 1, William Tjhi 1,2, Eng-Siong Chng 1,∗ 
+
+> 1
+
+Nanyang Technological University, Singapore  
+
+> 2
+
+AI Singapore, Singapore  
+
+> 3
+
+Peking University, Beijing, China 
+
+ABSTRACT 
+
+Explicit textual Chain-of-Thought (CoT) has improved the reasoning ability of large audio language models (LALMs). However, textual CoTs are often constructed from text cap-tions of audio and provide limited access to the acoustic evidence, which can introduce problems like hallucination. To address this modality-gap issue, we introduce JELAR, a Joint-Embedding Predictive Architecture (JEPA)-based la-tent reasoning framework that conditions latent reasoning supervision on acoustic representations learned from raw waveforms. During training, a frozen WavJEPA model pro-vides representations learned directly from raw waveforms. A non-causal expert first constructs answer-aware queries, which cross-attend to WavJEPA embeddings to produce la-tent reasoning targets. The LALM is trained to predict these targets before generating its response. Experimental results show that JELAR improves the Audio-Reasoner baseline by 2.70 and 9.10 absolute percentage points on MMAU-mini and MMAR, respectively, demonstrating the effectiveness of JEPA-conditioned latent reasoning as an alternative to explicit textual CoT supervision. 
+
+Index Terms — Large Audio Language Model, Latent Reasoning, Chain-of-Thought, WavJEPA, Audio Reasoning 
+
+1. INTRODUCTION 
+
+Large audio language models (LALMs) have recently demon-strated increasingly strong capabilities in speech understand-ing, spoken dialogue, environmental sound analysis, music perception, and audio question answering [1, 2, 3]. Neverthe-less, reasoning over audio remains substantially more chal-lenging than recognizing isolated acoustic events [4, 5]. Com-plex tasks often require a model to identify relevant evidence, integrate information across time, relate sound sources, and combine acoustic perception with semantic inference [6, 7, 8]. Explicit chain-of-thought (CoT) has emerged as a promis-ing approach to improving such capabilities [7, 8]. Audio- 
+
+> *Corresponding author: aseschng@ntu.edu.sg
+
+Reasoner [8], for example, constructs structured textual rea-soning traces and trains an LALM to generate a CoT before its final response. However, recent studies have highlighted a fundamental modality-gap concern in audio reasoning: as such CoTs are often synthesized from textual captions or other text-based descriptions rather than directly from the acoustic signal, their alignment with the underlying audio evidence is not explicitly ensured [5, 6]. This mismatch may contribute to hallucinations. This concern is particularly rel-evant to audio, where task-critical information may reside in prosody, timbre, overlapping events, temporal structure, background acoustics, and cross-source relationships that cannot always be faithfully reduced to a textual description. Latent reasoning provides an alternative to this text-centric paradigm by allowing reasoning to take place in a continuous representation space [9, 10]. Yet latent reasoning alone does not address the modality-gap issue: without an appropriate acoustic target space, the learned latent reasoning trajectory may still encode predominantly linguistic or short-cut information. Therefore, the key challenge is not simply to move reasoning from text into a continuous space, but to construct latent supervision that incorporates representations derived directly from the acoustic signal, rather than relying solely on textual reasoning traces. However, many audio en-coders used in LALMs, such as Whisper [11], are optimized with audio-to-text prediction objectives [12, 13]. Although effective for language-conditioned audio understanding, their representations are shaped toward linguistic prediction and may not provide an ideal target space for supervising acousti-cally conditioned latent reasoning. This motivates using an acoustic representation space learned without text-prediction supervision. Joint-Embedding Predictive Architectures (JEPAs) learn representations by predicting latent targets from contextual observations, rather than reconstructing raw inputs or predicting textual labels. WavJEPA [14] extends this predictive objective to raw wave-forms and captures temporally predictable acoustic structure without transcript, caption, or answer supervision. Such pre-dictive waveform representations provide a promising space arXiv:2609.34407v1 [eess.AS] 28 Sep 2026 for constructing latent reasoning trajectories. Based on this insight, we introduce JELAR , a JE PA-conditioned Latent Audio Reasoning framework for LALMs. During training, a frozen WavJEPA encoder extracts audio representations from the input waveform. A non-causal ex-pert uses the question and ground-truth answer to construct a set of queries, which cross-attend to the WavJEPA em-beddings to produce fixed-length latent reasoning targets. At inference, the LALM independently generates the fixed-length latent reasoning sequence and subsequently produces the textual answer. Experiments on MMAU-mini and MMAR demonstrate that JELAR improves average accuracy over the Audio-Reasoner baseline by 2.70 and 9.10 absolute percent-age points. Our contributions are summarized as follows: • We introduce JELAR, a latent reasoning framework that replaces explicit textual CoT supervision with continuous latent targets conditioned on JEPA-based waveform representations. • We incorporate WavJEPA acoustic representations into a training-only non-causal expert to construct acousti-cally informed latent targets, which the LALM learns to autoregressively predict without the expert or Wav-JEPA at inference. • Controlled experiments on MMAU-mini and MMAR show consistent gains over explicit CoT training, while ablations isolate the contributions of acoustic condi-tioning, WavJEPA-based targets, and latent-only rea-soning. 
+
+2. METHOD 2.1. Overview 
+
+The architecture of the proposed JELAR is shown in Figure 1. Given an audio waveform a and a question q, the native audio encoder and the projector of the LALM first convert the waveform into a sequence of audio tokens: 
+
+Xa = EA(a), Xa ∈ RNx×dLLM , (1) where Nx is the number of audio tokens and dLLM is the input embedding dimension of the language model. The LALM receives the audio tokens Xa together with the question tokens and generates a fixed-length sequence of continuous latent embeddings: 
+
+bZ = {bz1, . . . , bzK } , bzt ∈ RdLLM , (2) where K denotes the latent reasoning steps. Each predicted latent embedding is fed back to the language model as the input embedding of the next reasoning step. During training, the latent inputs for subsequent reasoning steps are provided by a non-causal expert rather than by the model’s previous predictions. At inference, the model recursively feeds back its own predicted latent embeddings. 
+
+2.2. Supervised Fine-Tuning (SFT) for Latent Reasoning 
+
+Since continuous reasoning trajectories are not available in the training data, we introduce a non-causal expert, consisting of a bidirectional BERT encoder and a cross-attention mod-ule, to construct latent reasoning targets. For each training example (a, q, y ), the expert first forms answer-aware seman-tic queries from (q, y ), which then cross-attend to waveform representations extracted by WavJEPA [14]. 
+
+JEPA-conditioned latent target construction: To ob-tain the acoustic representations, we use a frozen WavJEPA encoder EJ to convert the waveform into a sequence of em-beddings [14]: 
+
+Za = EJ(a), Za ∈ RNa×dJ , (3) where Na and dJ denote the sequence length and feature di-mension of the WavJEPA representations, respectively. To determine which acoustic information is relevant to the target answer, we first construct K answer-aware semantic queries by a BERT encoder [15]. Let S0 ∈ RK×dB denote K learn-able token slots, where dB is the hidden dimension of the bidirectional BERT. The question and answer embeddings are processed jointly with these slots: 
+
+R = BERT 
+
+
+
+[S0; Wq (Emb( q)); Wy (Emb( y))] 
+
+
+
+> 1: K
+
+, (4) where Wq and Wy project the question and ground-truth an-swer embeddings into the BERT dimension and the seman-tic queries R = {r1, . . . , r K } consist of the output states corresponding to the learnable slots. The semantic queries subsequently attend to the WavJEPA representation sequence through a cross-attention module: 
+
+G = CrossAttn ( Q = R, K = WJZa, V = WJZa) , (5) where WJ projects the WavJEPA representations into the query dimension. The representations are finally projected into the LALM embedding space: 
+
+Z∗ = {z∗ 
+
+> 1
+
+, . . . , z ∗ 
+
+> K
+
+} = Wout G, Z∗ ∈ RK×dLLM . (6) These embeddings constitute the JEPA-conditioned la-tent targets, combining answer-aware semantic queries with acoustic information retrieved from the predictive waveform representations. 
+
+Training objective. During teacher-forced training, Z∗ is in-serted between ⟨LAT ⟩ and ⟨/LAT ⟩ tokens. Let flat be a la-tent prediction head. The hidden state at the ⟨LAT ⟩ position predicts the first latent embedding, while the hidden state at the position of z∗ 
+
+> t−1
+
+predicts the next one: 
+
+bzt = flat 
+
+
+
+hz∗
+
+> t−1
+
+
+
+, t = 2 , . . . , K. (7) We optimize the latent predictions using Smooth L1 loss: 
+
+Llat = 1
+
+K
+
+> K
+
+X
+
+> t=1
+
+SmoothL1 ( bzt, sg( z∗ 
+
+> t
+
+)) . (8) audio token  text token  latent embedding z* ₜ / ẑₜ  ⟨LAT ⟩ ⟨/LAT ⟩ WavJEPA embedding  slot / query  layer                                                                                                       
+
+> gray = positions masked during training dashed = generated by the model (prediction / fed back) L = L resp + L lat
+> Training:
+> Teacher Forcing z* ₁z* ₂z* ₃…z* ₂₀ (B) doorbell ⟨eos ⟩
+> ẑ₁ẑ₂ẑ₃…ẑ₂₀ (B) doorbell ⟨eos ⟩
+> LALM backbone (Audio-Reasoner) + latent head : hidden state → ẑₜ
+> audio tokens X aquestion tokens answer tokens
+> …Why does …bark ?⟨LAT ⟩⟨/LAT ⟩ẑ₁ẑ₂…ẑ₁₉ ẑ₂₀ (B) doorbell
+> z* ₁z* ₂…z* ₁₉ z* ₂₀ (B) doorbell
+> targets Z*
+> sequence position
+> Audio Encoder + projector Text Tokenizer
+> input audio A
+> Audio A: doorbell rings …dog starts
+> barking
+> Question Q: Why does the dog start barking?
+> (A) thunder (B) doorbell (C) siren
+> Answer Y(training only): (B) doorbell
+> question Q & answer Y
+> Non-causal expert
+> z* ₁z* ₂…z* ₁₉ z* ₂₀ Z*
+> ∈ℝK × d LLM
+> Wout
+> Cross-Attention
+> WJr₁r₂…r₂₀ R : K semantic queries
+> …Z_a BERT-base
+> WavJEPA-base s₁s₂…s₂₀ Why …siren (B) door-
+> bell
+> S
+> ₀(K slots)
+> Key / Value Query
+> Inference:
+> Next-token Prediction
+> Training:
+> Teacher Forcing
+> question Q
+> …Why does …bark ?⟨LAT ⟩⟨/LAT ⟩
+> WqEmb(Q) WyEmb(Y)
+> latent reasoning
+> input audio A
+> Trainable
+> Trainable
+> Frozen
+> Inference:
+> Next-token Prediction
+
+Fig. 1 . The training and inference pipeline of proposed JELAR. Stop-gradient is applied to the latent target in Eq. (8). The response loss is computed over the ground-truth an-swer tokens: 
+
+Lresp = − 1
+
+|y|
+
+|y|
+
+X
+
+i=1 
+
+log pθ (yi | Xa, q, Z ∗, y <i ) . (9) 
+
+Z∗ is inserted into the LALM without detachment, thus Eq. (9) also optimizes the non-causal expert, encouraging it to construct latent targets that support response generation. The complete training objective is 
+
+L = Lresp + Llat . (10) The WavJEPA encoder remains frozen, while all other com-ponents, including the non-causal expert, latent prediction head, audio encoder and projector, and LLM backbone, are jointly optimized. 
+
+2.3. Inference 
+
+At inference time, the non-causal expert and WavJEPA en-coder are discarded. Given an audio waveform a and a ques-tion q, as well as a special token ⟨LAT ⟩, the LALM first gen-erates the latent reasoning embeddings recursively. At step 
+
+t, the final hidden state is mapped to a continuous latent em-bedding bzt, which is fed back to LLM at the next time step 
+
+t + 1 . After K latent steps, the ⟨/LAT ⟩ token is appended. The LALM then continues standard autoregressive decoding to generate the formatted textual response: 
+
+byi ∼ pθ
+
+
+
+· | Xa, q, bZ, by<i 
+
+
+
+. (11) 
+
+3. EXPERIMENTS 3.1. Experimental Setup Model configuration. We build JELAR on the same Audio-Reasoner backbone as the baseline [8]. The explicit-CoT baseline and JELAR use the same training data and opti-mization configuration. The key difference is the reasoning supervision: Audio-Reasoner is trained with explicit textual CoT, whereas JELAR replaces textual CoT with continuous latent reasoning. We therefore emphasize their controlled comparison to assess the effect of replacing explicit CoT with JEPA-conditioned latent reasoning. In JELAR, a frozen WavJEPA-base encoder 1 provides the representations used to construct the latent targets, while the answer-aware query constructor is initialized from BERT-base-uncased 2. Un-less otherwise specified, the latent reasoning stage contains 
+
+K = 20 embeddings. We choose this based on performance on a held-out validation split of the development data. We evaluate the models on MMAU-mini [17] and MMAR [16]. MMAU-mini consists of closed-choice questions cov-ering sound, music, and speech. MMAR contains human-curated multiple-choice questions designed for multi-step audio reasoning .
+
+3.2. Main Results MMAU-mini results. As shown in Table 2, JELAR im-proves the average accuracy of Audio-Reasoner from 59.70% 
+
+> 1
+
+https://huggingface.co/labhamlet/wavjepa-base 
+
+> 2
+
+https://huggingface.co/google-bert/ bert-base-uncased Table 1 . Accuracy (%) on MMAR. Results marked with † are taken from the MMAR benchmark paper [16]; S, M, and Sp denote sound, music, and speech, respectively. Boldface denotes the better-performing result only within each controlled comparison. Model S M Sp S–M S–Sp M–Sp S–M–Sp Avg. Qwen2-Audio-Instruct † 33.33 24.27 32.31 9.09 31.19 30.49 25.00 30.00 Qwen-2.5-Omni-7B † 58.79 40.78 59.86 54.55 61.93 67.07 58.33 56.70 GPT-4o Audio † 53.94 50.97 70.41 63.64 72.48 62.20 75.00 63.50 Gemini 2.0 Flash † 61.21 50.97 72.11 81.82 72.48 65.85 70.83 65.60 Audio-Reasoner 44.24 35.92 46.26 27.27 47.71 50.00 25.00 43.70 
+
+JELAR 53.33 49.51 51.70 45.45 57.34 53.66 50.00 52.80 Table 2 . Accuracy (%) on MMAU-mini. Results marked with 
+
+† are reported in [8]. The bottom two rows constitute the pri-mary controlled comparison. Model Sound Music Speech Avg. GPT-4o + Caption † 63.36 60.77 53.15 57.30 Gemini-1.5-Pro † 56.75 49.40 58.55 54.90 Qwen2-Audio-Instruct † 54.95 50.98 42.04 49.20 Audio-Reasoner 66.86 61.57 51.37 59.70     
+
+> JELAR 64.31 62.28 60.66 62.40
+
+Table 3 . Effect of the latent reasoning length K. We re-port average classification accuracy (%) on MMAU-mini and MMAR.                      
+
+> K812 16 20 24 28 32 MMAU-mini 60.60 61.00 61.80 62.40 60.00 61.10 60.80 MMAR 49.60 50.40 51.00 52.80 51.00 51.30 51.70
+
+to 62.40%. The gain is mainly driven by the speech do-main, which increases from 51.37% to 60.66%, while music improves slightly and sound accuracy decreases. 
+
+MMAR results. Table 1 shows that JELAR delivers a sub-stantially larger gain on MMAR, raising average accuracy from 43.70% to 52.80%, an absolute improvement of 9.10 percentage points. Notably, it outperforms Audio-Reasoner across all seven categories, with especially large gains on mixed-domain reasoning tasks. The gain on MMAR is con-siderably larger than that on MMAU-mini. This is consistent with the design of MMAR, which places greater emphasis on multi-step reasoning and mixed-domain audio reasoning. The larger gain on MMAR is also consistent with the hypoth-esis that the proposed latent reasoning may be particularly beneficial for tasks requiring integration of multiple acoustic cues. 
+
+3.3. Ablation study 
+
+Table 3 examines the effect of latent reasoning length. In-creasing K from 8 to 20 improves MMAU-mini from 60.60% to 62.40% and MMAR from 49.60% to 52.80%, with both benchmarks peaking at K = 20 . Increasing K further does not yield additional gains, suggesting that more latent reason-ing steps are not inherently beneficial once sufficient reason-
+
+Table 4 . Ablation of acoustic conditioning and reasoning for-mat. Variant MMAU MMAR 
+
+JELAR (WavJEPA, latent-only) 62.40 52.80 
+
+w/o acoustic conditioning, latent-only 60.50 47.60 Whisper encoder, latent-only 61.60 50.70 WavJEPA, latent + explicit CoT 61.40 49.30 ing capacity is reached. Table 4 analyses the contributions of acoustic condition-ing and reasoning format. Removing acoustic condition-ing reduces the accuracy to 60.50% on MMAU-mini and 47.60% on MMAR. Conditioning the latent targets on the native Whisper encoder of Audio-Reasoner [11, 8] improves the results to 61.60% and 50.70%, while WavJEPA further raises them to 62.40% and 52.80%. These results indicate that acoustic conditioning provides additional benefit beyond answer-aware latent supervision, while WavJEPA provides a more effective acoustic target representation than the native Whisper encoder in this setting. For reasoning format, explicit textual CoT provides no ad-ditional benefit once latent reasoning is introduced. Adding an explicit CoT stage after the latent sequence lowers per-formance from 62.40% to 61.40% on MMAU-mini and from 52.80% to 49.30% on MMAR. This supports latent-only rea-soning as the more effective reasoning format in our setting. 
+
+4. CONCLUSION 
+
+In this work, we introduced JELAR, a JEPA-conditioned la-tent reasoning framework for LALMs. JELAR replaces ex-plicit textual CoT supervision with continuous latent targets constructed by answer-aware semantic queries attending to frozen WavJEPA representations. Under controlled compar-isons with Audio-Reasoner, JELAR improves average accu-racy by 2.70 and 9.10 percentage points on MMAU-mini and MMAR, respectively. Ablation studies further support the contributions of acoustic conditioning, WavJEPA-based tar-get representations, and latent-only reasoning. Future work will investigate larger backbones and more diverse audio rea-soning data. 5. REFERENCES 
+
+[1] Yunfei Chu, Jin Xu, Qian Yang, Haojie Wei, Xipin Wei, Zhifang Guo, Yichong Leng, Yuanjun Lv, Jinzheng He, Junyang Lin, et al., “Qwen2-audio technical report,” 
+
+arXiv preprint arXiv:2407.10759 , 2024. [2] Qwen Team, “Qwen3. 5-omni technical report,” arXiv preprint arXiv:2604.15804 , 2026. [3] Donghang Wu, Haoyang Zhang, Chen Chen, Tianyu Zhang, Fei Tian, Xuerui Yang, Gang Yu, Hexin Liu, Nana Hou, Yuchen Hu, and Eng Siong Chng, “Chrono-logical Thinking in Full-Duplex Spoken Dialogue Lan-guage Models,” in Proceedings of the 27th Annual Meeting of the Special Interest Group on Discourse and Dialogue , Atlanta, Georgia, USA, Aug. 2026, pp. 473– 485, Association for Computational Linguistics. [4] Donghang Wu, Haoyang Zhang, Jun Chen, Hexin Liu, Eng Siong Chng, Fei Tian, Xuerui Yang, Xi-angyu Zhang, Daxin Jiang, Gang Yu, et al., “Mind-paced speaking: A dual-brain approach to real-time rea-soning in spoken language models,” arXiv preprint arXiv:2510.09592 , 2025. [5] Fei Tian, Xiangyu Tony Zhang, Yuxin Zhang, Haoyang Zhang, Yuxin Li, Daijiao Liu, Yayue Deng, Donghang Wu, Jun Chen, Liang Zhao, et al., “Step-audio-r1 tech-nical report,” arXiv preprint arXiv:2511.15848 , 2025. [6] Zhihan Guo, Wenqian Cui, Guan-Ting Lin, Daxin Tan, Jingyao Li, Qiyong Zheng, Dingdong Wang, Jing Xiong, Han Shi, Jiaya Jia, et al., “A survey of au-dio reasoning in multimodal foundation models,” arXiv preprint arXiv:2605.21008 , 2026. [7] Shu Wu, Chenxing Li, Wenfu Wang, Hao Zhang, Hualei Wang, Meng Yu, and Dong Yu, “Audio-Thinker: Guid-ing Large Audio Language Model When and How to Think via Reinforcement Learning,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2026, vol. 40, pp. 33962–33970. [8] Xie Zhifei, Mingbao Lin, Zihang Liu, Pengcheng Wu, Shuicheng Yan, and Chunyan Miao, “Audio-reasoner: Improving reasoning capability in large audio language models,” in Proceedings of the 2025 Conference on Em-pirical Methods in Natural Language Processing , 2025, pp. 23840–23862. [9] Shibo Hao, Sainbayar Sukhbaatar, DiJia Su, Xian Li, Zhiting Hu, Jason Weston, and Yuandong Tian, “Train-ing Large Language Models to Reason in a Continuous Latent Space,” arXiv preprint arXiv: 2412.06769 , 2024. [10] Donghang Wu, Tianyu Zhang, Yuxin Li, Hexin Liu, Chen Chen, Eng Siong Chng, and Yoshua Bengio, “The silent thought: Modeling internal cognition in full-duplex spoken dialogue models via latent reasoning,” 
+
+arXiv preprint arXiv:2603.17837 , 2026. [11] Alec Radford, Jong Wook Kim, Tao Xu, Greg Brock-man, Christine McLeavey, and Ilya Sutskever, “Ro-bust Speech Recognition via Large-Scale Weak Super-vision,” 2022. [12] Hexin Liu, Xiangyu Zhang, Haoyang Zhang, Leibny Paola Garcia-Perera, Andy W. H. Khong, Eng Siong Chng, and Shinji Watanabe, “Aligning Speech to Languages to Enhance Code-Switching Speech Recognition,” IEEE Transactions on Au-dio, Speech and Language Processing , vol. 33, pp. 4712–4725, 2025. [13] Hexin Liu, Haoyang Zhang, Qiquan Zhang, Xiangyu Zhang, Dongyuan Shi, Eng Siong Chng, and Haizhou Li, “Code-Switching Speech Recognition Under the Lens: Model- and Data-Centric Perspectives,” IEEE Transactions on Audio, Speech and Language Process-ing , vol. 34, pp. 1853–1865, Mar. 2026. [14] Goksenin Yuksel, Pierre Guetschel, Michael Tanger-mann, Marcel van Gerven, and Kiki van der Heijden, “WavJEPA: Semantic learning unlocks robust audio foundation models for raw waveforms,” arXiv preprint arXiv:2509.23238 , 2025. [15] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova, “Bert: Pre-training of deep bidirec-tional transformers for language understanding,” in Pro-ceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers) , 2019, pp. 4171–4186. [16] Ziyang Ma, Yinghao Ma, Yanqiao Zhu, Chen Yang, Yi-Wen Chao, Ruiyang Xu, Wenxi Chen, Yuanzhe Chen, Zhuo Chen, Jian Cong, et al., “MMAR: A challenging benchmark for deep reasoning in speech, audio, music, and their mix,” Advances in Neural Information Pro-cessing Systems , vol. 38, 2026. [17] Sakshi Sakshi, Utkarsh Tyagi, Sonal Kumar, Ashish Seth, Ramaneswaran Selvakumar, Oriol Nieto, Ra-mani Duraiswami, Sreyan Ghosh, and Dinesh Manocha, “MMAU: A massive multi-task audio understanding and reasoning benchmark,” in International Confer-ence on Learning Representations , 2025, vol. 2025, pp. 84929–84964.

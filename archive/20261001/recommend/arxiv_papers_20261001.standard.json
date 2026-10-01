@@ -1,0 +1,144 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-01T23:15:50.122468+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.34217v1",
+      "source": "arxiv",
+      "title": "Explainable and Generalisable LLM-based Cognitive Decline Detection with Spontaneous Speech",
+      "abstract": "Alzheimer's disease (AD) and mild cognitive impairment (MCI), which may precede AD, manifest early through subtle linguistic and acoustic alterations. Traditional diagnostics, however, are often resource-intensive and lack scalability for mass screening. To address these challenges, we introduce a novel bilingual speech large language model framework for automated, explainable cognitive screening. Unlike conventional pipelines that rely on error-prone automatic speech recognition, our system directly processes raw speech to learn joint acoustic-semantic representations, preserving critical prosodic cues often lost in transcription. Utilising our newly collected PUTH-AD dataset alongside multiple open-source corpora, we implemented a multi-task learning objective that simultaneously performs cognitive status classification and generates clinician-understandable natural language explanations. Our system achieved the highest average accuracy and AUROC across six dataset/task conditions, comparing three representative baselines. The system demonstrated cross-task transfer to held-out PUTH-AD task subsets, maintaining classification accuracy on an entirely unseen cognitive task without task-specific fine-tuning. Furthermore, clinician evaluation confirms that the generated explanations are both clinically relevant and largely consistent with the underlying speech evidence, supporting their potential utility in clinical interpretation. This study provides a scalable, objective, and explainable framework for speech-based cognitive screening, combining cognitive status classification with natural language explanations that clinicians can assess and verify, bridging the gap between advanced AI and clinical utility.",
+      "authors": [
+        "Ziyun Cui",
+        "Wen Wu",
+        "Chuan Shi",
+        "Shuguang Yang",
+        "Xueying Gui",
+        "Yan Zheng",
+        "Qiong Yang",
+        "Haiyan Zhao",
+        "Wei-Qiang Zhang",
+        "Ji Wu",
+        "Yelei Li",
+        "Nan Li",
+        "Chao Zhang"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.CL"
+      ],
+      "published": "2026-09-28T03:23:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.34217v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "bilingual speech LLM preserving prosodic cues for cognitive screening",
+      "llm_evidence_cn": "保留韵律线索的双语语音大语言模型用于认知筛查",
+      "llm_evidence": "保留韵律线索的双语语音大语言模型用于认知筛查",
+      "canonical_evidence": "保留韵律线索的双语语音大语言模型用于认知筛查",
+      "llm_tldr_en": "A bilingual speech LLM framework directly processes raw speech to learn joint acoustic-semantic representations preserving prosodic cues, enabling explainable cognitive decline screening across multiple corpora.",
+      "llm_tldr_cn": "阿尔茨海默病等认知衰退常通过细微的语言与声学变化早期显现，但传统诊断依赖易错的语音识别流程。本文提出双语语音大语言模型框架，直接处理原始语音以学习联合声学-语义表征，保留转写中常丢失的韵律线索，并结合新采集的PUTH-AD与多个开源语料。结果实现可解释、可泛化的认知筛查，展示了语音大模型保留韵律信息做跨语料分析的价值。",
+      "llm_tldr": "阿尔茨海默病等认知衰退常通过细微的语言与声学变化早期显现，但传统诊断依赖易错的语音识别流程。本文提出双语语音大语言模型框架，直接处理原始语音以学习联合声学-语义表征，保留转写中常丢失的韵律线索，并结合新采集的PUTH-AD与多个开源语料。结果实现可解释、可泛化的认知筛查，展示了语音大模型保留韵律信息做跨语料分析的价值。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.31764v1",
+      "source": "arxiv",
+      "title": "Oracle Complementarity Is Not Realizable Complementarity in Frozen-Encoder Audio-Visual Emotion Recognition",
+      "abstract": "Complementarity analyses of multimodal systems commonly report an oracle ceiling (the fraction of examples on which at least one unimodal branch is correct) and interpret the gap between it and realized fusion accuracy as recoverable headroom. We show that this ceiling is not a fusion target. Using frozen self-supervised audio and visual encoders with a trained head, we measure the ceiling and realized gain on CREMA-D under two audio encoders (one whose fine-tuning lineage includes CREMA-D, one clean) and on EAV under the contaminated encoder. Replacing the fine-tuned encoder with a self-supervised one triples the headroom, from +0.055to +0.186. A second clean encoder and a controlled degradation of the contaminated one fall on the same curve, so provenance moves the headroom by changing audio-branch accuracy. Concatenation realizes at most about half of the headroom (converted fraction 0.55), and on EAV the converted fraction is indistinguishable from zero despite larger headroom. A learned router is beaten by plain concatenation everywhere. Oracle headroom measures branch disagreement, not a fusion budget.",
+      "authors": [
+        "Benjamin Hurt"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-24T07:22:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.31764v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "emotion recognition with frozen self-supervised encoders evaluated on CREMA-D and EAV",
+      "llm_evidence_cn": "在CREMA-D与EAV上用冻结自监督编码器做情感识别",
+      "llm_evidence": "在CREMA-D与EAV上用冻结自监督编码器做情感识别",
+      "canonical_evidence": "在CREMA-D与EAV上用冻结自监督编码器做情感识别",
+      "llm_tldr_en": "Multimodal emotion recognition papers report an oracle complementarity ceiling as recoverable fusion headroom. Using frozen self-supervised audio and visual encoders, the authors show this ceiling is not a fusion target: swapping a contaminated encoder for a clean one triples headroom, revealing encoder contamination effects on emotion benchmarks.",
+      "llm_tldr_cn": "多模态情感识别研究常报告一个oracle互补上限，并把它与融合精度之差当作可回收的提升空间，但该上限并非真正的融合目标。作者使用冻结的自监督音频与视觉编码器加训练头，在CREMA-D与EAV上测量该上限与实际增益。结果显示，将混入过CREMA-D的编码器替换为干净自监督编码器后，可回收空间从+0.055升至+0.186。该工作揭示编码器数据污染会显著影响情感识别基准的跨域结论，对跨语料评测协议具有警示意义。",
+      "llm_tldr": "多模态情感识别研究常报告一个oracle互补上限，并把它与融合精度之差当作可回收的提升空间，但该上限并非真正的融合目标。作者使用冻结的自监督音频与视觉编码器加训练头，在CREMA-D与EAV上测量该上限与实际增益。结果显示，将混入过CREMA-D的编码器替换为干净自监督编码器后，可回收空间从+0.055升至+0.186。该工作揭示编码器数据污染会显著影响情感识别基准的跨域结论，对跨语料评测协议具有警示意义。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "emotion recognition trained and evaluated on different independent speech emotion corpora",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34407v1",
+      "source": "arxiv",
+      "title": "Beyond Textual Chain-of-Thought: JEPA-Conditioned Latent Reasoning for Large Audio Language Models",
+      "abstract": "Explicit textual Chain-of-Thought (CoT) has improved the reasoning ability of large audio language models (LALMs). However, textual CoTs are often constructed from text captions of audio and provide limited access to the acoustic evidence, which can introduce problems like hallucination. To address this modality-gap issue, we introduce JELAR, a Joint-Embedding Predictive Architecture (JEPA)-based latent reasoning framework that conditions latent reasoning supervision on acoustic representations learned from raw waveforms. During training, a frozen WavJEPA model provides representations learned directly from raw waveforms. A non-causal expert first constructs answer-aware queries, which cross-attend to WavJEPA embeddings to produce latent reasoning targets. The LALM is trained to predict these targets before generating its response. Experimental results show that JELAR improves the Audio-Reasoner baseline by 2.70 and 9.10 absolute percentage points on MMAU-mini and MMAR, respectively, demonstrating the effectiveness of JEPA-conditioned latent reasoning as an alternative to explicit textual CoT supervision.",
+      "authors": [
+        "Donghang Wu",
+        "Haoyang Zhang",
+        "Yizhou Peng",
+        "Shreyas Gopal",
+        "Yi-Wen Chao",
+        "Chen Chen",
+        "Hexin Liu",
+        "William Tjhi",
+        "Eng-Siong Chng"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-09-28T06:19:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.34407v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "large audio language model with acoustic representation reasoning",
+      "llm_evidence_cn": "大型音频语言模型的声学表征推理",
+      "llm_evidence": "大型音频语言模型的声学表征推理",
+      "canonical_evidence": "大型音频语言模型的声学表征推理",
+      "llm_tldr_en": "Textual chain-of-thought in large audio language models relies on captions and lacks acoustic evidence. JELAR conditions latent reasoning on WavJEPA waveform representations via cross-attention to reduce hallucination.",
+      "llm_tldr_cn": "大型音频语言模型的文本思维链多由音频文本描述构造，难以直接利用声学证据，容易引入幻觉。本文提出JELAR框架，用冻结的WavJEPA从原始波形学习表征，让潜空间推理通过交叉注意力条件化于声学嵌入，并由非因果专家构造答案感知查询。该方法缓解了模态鸿沟，为音频大模型的可靠推理提供了新思路。",
+      "llm_tldr": "大型音频语言模型的文本思维链多由音频文本描述构造，难以直接利用声学证据，容易引入幻觉。本文提出JELAR框架，用冻结的WavJEPA从原始波形学习表征，让潜空间推理通过交叉注意力条件化于声学嵌入，并由非因果专家构造答案感知查询。该方法缓解了模态鸿沟，为音频大模型的可靠推理提供了新思路。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
