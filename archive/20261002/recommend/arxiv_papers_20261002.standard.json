@@ -1,0 +1,429 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-02T23:00:50.841389+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2609.39072v1",
+      "source": "arxiv",
+      "title": "Beyond Text: LLM-Based Dimensional Emotion Evaluation in Multimodal Dialogue",
+      "abstract": "Emotion recognition in conversation has been widely studied, but applying Large Language Models (LLMs) to continuous dimensional emotion evaluation in multimodal dialogue remains largely unexplored. We propose an LLM-based framework that performs discrete emotion recognition and Valence-Arousal-Dominance (VAD) dimensional evaluation on IEMOCAP, incorporating acoustic cues as natural language descriptions following the SpeechCueLLM approach. We evaluate six models spanning the LLaMA, GPT, and Qwen families under zero-shot prompting, few-shot prompting, and LoRA fine-tuning. LoRA fine-tuned LLaMA models substantially outperform prompt-engineered GPT models on both tasks despite GPT's larger scale, a gap we attribute to domain adaptation rather than model capacity. Our best model achieves a Valence CCC of 0.7822, a new state-of-the-art on IEMOCAP. Ablation studies confirm that textual audio descriptions meaningfully improve smaller models (+3.5 to 3.6 weighted F1) while contributing little for the largest model, suggesting audio cues are most valuable when linguistic capacity is limited. The performance asymmetry across VAD dimensions closely mirrors the annotator agreement hierarchy in IEMOCAP's own annotations.",
+      "authors": [
+        "Yutong Hu",
+        "Jinho Choi"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-09-30T06:09:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.39072v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "LLM-based emotion evaluation using acoustic cues as natural language descriptions",
+      "llm_evidence_cn": "将声学线索转为自然语言描述并用大模型做情感评估",
+      "llm_evidence": "将声学线索转为自然语言描述并用大模型做情感评估",
+      "canonical_evidence": "将声学线索转为自然语言描述并用大模型做情感评估",
+      "llm_tldr_en": "Applying LLMs to continuous dimensional emotion evaluation in multimodal dialogue is underexplored. An LLM framework converts acoustic cues into natural language descriptions and performs discrete and VAD evaluation on IEMOCAP, where LoRA-tuned LLaMA beats prompt-engineered GPT due to domain adaptation.",
+      "llm_tldr_cn": "对话情感识别研究广泛，但将大语言模型用于多模态对话的连续维度情感评估仍属空白。本文提出基于LLM的框架，借鉴SpeechCueLLM把声学线索转成自然语言描述，在IEMOCAP上同时做离散情感识别与效价-唤醒-支配度评估。对LLaMA、GPT、Qwen等六个模型在零样本、少样本与LoRA微调下评测，LoRA微调的LLaMA明显优于提示工程GPT，作者将差距归因于域适应而非规模。该结果凸显域适应在情感评估中的关键作用。",
+      "llm_tldr": "对话情感识别研究广泛，但将大语言模型用于多模态对话的连续维度情感评估仍属空白。本文提出基于LLM的框架，借鉴SpeechCueLLM把声学线索转成自然语言描述，在IEMOCAP上同时做离散情感识别与效价-唤醒-支配度评估。对LLaMA、GPT、Qwen等六个模型在零样本、少样本与LoRA微调下评测，LoRA微调的LLaMA明显优于提示工程GPT，作者将差距归因于域适应而非规模。该结果凸显域适应在情感评估中的关键作用。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.39453v1",
+      "source": "arxiv",
+      "title": "From Speech to Editable Concepts: Probing Emotion Recognition with Concept Bottleneck Models",
+      "abstract": "Speech emotion recognition (SER) is the task of assigning emotion labels to utterances. Early systems relied on acoustic features, whereas recent approaches combine multiple modalities, most commonly speech and text. Still, performance remains poor on many datasets. Large language models (LLMs) have therefore attracted interest for SER, as they can process diverse inputs jointly with instructions. However, direct audio input raises questions of explainability. To address similar questions in image classification, concept bottleneck models were introduced. This work adapts concept bottlenecks to SER to examine how individual predictions depend on transcripts, acoustic descriptions and speaker attributes. Experiments test three LLMs on CREMA-D, IEMOCAP and MELD, with concepts extracted by separate tools. On scripted corpora, LLMs are strongly biased towards the transcript in the zero-shot setting, which lowers Macro-F1 from 27.8 to 5.8 on CREMA-D. Fine-tuning removes this bias, and the transcript raises Macro-F1 from 41.8 to 45.1. Removing speech rate changes 48% of Neutral predictions to Disgust on CREMA-D; removing intensity level on MELD changes predictions despite little change in Macro-F1. These findings show that aggregate performance changes alone do not capture the effects of concept removal on individual predictions.",
+      "authors": [
+        "Hezhao Zhang",
+        "Thomas Hain"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "cs.CL",
+        "eess.AS"
+      ],
+      "published": "2026-09-30T10:26:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.39453v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "probing speech emotion recognition with acoustic descriptions via concept bottleneck models",
+      "llm_evidence_cn": "用概念瓶颈模型和声学描述探究语音情感识别",
+      "llm_evidence": "用概念瓶颈模型和声学描述探究语音情感识别",
+      "canonical_evidence": "用概念瓶颈模型和声学描述探究语音情感识别",
+      "llm_tldr_en": "Speech emotion recognition still performs poorly across datasets, and direct audio input to LLMs raises explainability concerns. This work adapts concept bottleneck models to SER, using transcripts, acoustic descriptions and speaker attributes to explain predictions across three LLMs.",
+      "llm_tldr_cn": "语音情感识别长期面临跨数据集性能不足的问题，且直接以音频输入大语言模型缺乏可解释性。本文把概念瓶颈模型引入语音情感识别，用转录文本、声学描述与说话人属性等中间概念来解释单个预测，并在三种大语言模型上开展实验。结果显示不同概念对预测的贡献可被显式编辑与检验，从而揭示模型依赖的线索。该工作提升了情感识别的可解释性，也为声学线索驱动的跨域情感表征分析提供工具。",
+      "llm_tldr": "语音情感识别长期面临跨数据集性能不足的问题，且直接以音频输入大语言模型缺乏可解释性。本文把概念瓶颈模型引入语音情感识别，用转录文本、声学描述与说话人属性等中间概念来解释单个预测，并在三种大语言模型上开展实验。结果显示不同概念对预测的贡献可被显式编辑与检验，从而揭示模型依赖的线索。该工作提升了情感识别的可解释性，也为声学线索驱动的跨域情感表征分析提供工具。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.29464v1",
+      "source": "arxiv",
+      "title": "TS-OPD: Reconciling ASR and QA in Speech Language Models via Task-Specific On-Policy Distillation",
+      "abstract": "Speech Language Models (SLMs) inherit strong instruction-following capabilities from pretrained language models, yet ASR specialization can substantially degrade them. To address this ASR--QA trade-off, we propose Task-Specific On-Policy Distillation (TS-OPD), which leverages models before and after ASR specialization as complementary QA and ASR teachers. The student generates separate task-conditioned trajectories for ASR and QA, each supervised only by its corresponding teacher, thereby reducing direct competition between the two supervision signals. Experiments on basic ASR, contextual ASR, and QA demonstrate that TS-OPD improves recognition while preserving QA capability. Moreover, TS-OPD remains robust across different balancing coefficients and continues to benefit from increased distillation data.",
+      "authors": [
+        "Yujie Guo",
+        "Hongjie Chen",
+        "Jian Kang",
+        "Jie Li",
+        "Yongxiang Li",
+        "Yong Qin"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-09-24T12:23:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.29464v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech language models and on-policy distillation for ASR and QA",
+      "llm_evidence_cn": "语音语言模型与在线策略蒸馏协调ASR和QA",
+      "llm_evidence": "语音语言模型与在线策略蒸馏协调ASR和QA",
+      "canonical_evidence": "语音语言模型与在线策略蒸馏协调ASR和QA",
+      "llm_tldr_en": "Proposes TS-OPD, task-specific on-policy distillation using pre/post-ASR models as QA and ASR teachers, to reconcile the ASR-QA trade-off in speech language models.",
+      "llm_tldr_cn": "语音语言模型继承了大语言模型的指令能力，但面向ASR的专门化训练会显著削弱其问答能力，形成ASR-QA权衡。本文提出任务特定在线策略蒸馏TS-OPD，分别以ASR专门化前后的模型作为QA与ASR教师，让学生模型按任务生成独立轨迹并接受对应教师监督。实验表明该方法在基础ASR、上下文ASR与QA上同时提升识别并保持问答能力，并在不同设定下保持稳健。",
+      "llm_tldr": "语音语言模型继承了大语言模型的指令能力，但面向ASR的专门化训练会显著削弱其问答能力，形成ASR-QA权衡。本文提出任务特定在线策略蒸馏TS-OPD，分别以ASR专门化前后的模型作为QA与ASR教师，让学生模型按任务生成独立轨迹并接受对应教师监督。实验表明该方法在基础ASR、上下文ASR与QA上同时提升识别并保持问答能力，并在不同设定下保持稳健。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.32504v1",
+      "source": "arxiv",
+      "title": "Toward Human-Aligned Judgement of Speech Emotion Similarity",
+      "abstract": "Evaluating emotion preservation in expressive speech generation involves assessing how closely generated speech matches a reference in emotion. Human listening tests assess this similarity, but their cost motivates automatic measures aligned with human judgments. To support the development and evaluation of such measures, we introduce SES-Bench, a speech emotion similarity benchmark built from human comparisons of two candidate utterances against a shared reference. These comparisons record which candidate listeners find emotionally closer to the reference and the strength of their preference. Using these annotations, we train SES-Judge to score emotion similarity between two utterances. SES-Judge significantly outperforms embedding cosine similarity and prompted large audio-language models in preference accuracy and correlation with human ratings that capture both preference direction and strength.",
+      "authors": [
+        "Yun-Shao Tsai",
+        "Yi-Cheng Lin",
+        "Chih-Kai Yang",
+        "Ho-Jung Cheng",
+        "Tsun-Yi Chang",
+        "Sheng-Wei Wu",
+        "Yi-Shan Chen",
+        "Hsiang-Chun Chang",
+        "Liang-Chieh Lee",
+        "Hung-yi Lee"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-09-26T11:47:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.32504v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark and model for human-aligned speech emotion similarity",
+      "llm_evidence_cn": "人类对齐的语音情感相似度基准与模型",
+      "llm_evidence": "人类对齐的语音情感相似度基准与模型",
+      "canonical_evidence": "人类对齐的语音情感相似度基准与模型",
+      "llm_tldr_en": "SES-Bench collects human comparisons of emotional similarity between utterances, and SES-Judge is trained on it to score emotion similarity, outperforming embedding cosine similarity and prompted baselines.",
+      "llm_tldr_cn": "评估生成语音的情感保真度通常依赖昂贵的人工听测，因此需要与人类判断对齐的自动度量。本文构建SES-Bench语音情感相似度基准，记录听者对两条候选语音相对参考语音的情感接近程度及偏好强度。基于这些标注训练SES-Judge对两段语音进行情感相似度打分。实验表明该模型显著优于嵌入余弦相似度与提示式方法，为情感相似度评测提供了可复用的自动指标。",
+      "llm_tldr": "评估生成语音的情感保真度通常依赖昂贵的人工听测，因此需要与人类判断对齐的自动度量。本文构建SES-Bench语音情感相似度基准，记录听者对两条候选语音相对参考语音的情感接近程度及偏好强度。基于这些标注训练SES-Judge对两段语音进行情感相似度打分。实验表明该模型显著优于嵌入余弦相似度与提示式方法，为情感相似度评测提供了可复用的自动指标。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition under domain shift across different speech datasets and recording conditions",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.38794v1",
+      "source": "arxiv",
+      "title": "A barrier or a booster? Familiarity effects on Mandarin emotion prosody recognition using AI-powered voice cloning",
+      "abstract": "Emotion prosody perception requires simultaneous processing of acoustic cues and speaker identity. While listeners effortlessly decode natural speech, AI synthetic voices introduce cognitive complexities due to subtle acoustic atypicalities. It remains unclear how these synthetic features interact with a listener's prior social knowledge and memory of a familiar speaker. This study investigated how speech sources (human vs. AI) and speaker familiarity affect emotion recognition accuracy and cognitive load. A within-subject task with Mandarin-speaking adults evaluated behavioral (accuracy, reaction time) and physiological data (heart rate variability). Results showed that human voices yielded significantly higher accuracy and faster processing times than AI voices, while HRV did not significantly differentiate between conditions. These findings show that decoding synthetic speech is gated by top-down social cognition, highlighting limitations in current AI synthesis technologies.",
+      "authors": [
+        "Feng Xu",
+        "Gaoyuan Zhang",
+        "Shanshan Xue",
+        "Yixiang Chen",
+        "Hanrui Zhou",
+        "Xurong Xie",
+        "Hui Chen"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.HC",
+        "cs.SD"
+      ],
+      "published": "2026-09-30T02:26:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.38794v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "emotion prosody recognition from acoustic cues and speaker identity",
+      "llm_evidence_cn": "基于声学线索与说话人身份的情感韵律识别",
+      "llm_evidence": "基于声学线索与说话人身份的情感韵律识别",
+      "canonical_evidence": "基于声学线索与说话人身份的情感韵律识别",
+      "llm_tldr_en": "Investigates how speech source (human vs AI-cloned) and speaker familiarity affect Mandarin emotion prosody recognition using behavioral and physiological measures.",
+      "llm_tldr_cn": "该研究关注情感韵律感知需同时处理声学线索与说话人身份，而AI合成语音的声学异常可能改变这一过程。作者以普通话听者为被试，采用受试内设计，比较人声与AI克隆声以及说话人熟悉度对情感识别准确率与认知负荷的影响。行为与心率变异性结果表明人声识别准确率显著更高。研究揭示了合成语音与熟悉度对情感韵律解码的交互作用。",
+      "llm_tldr": "该研究关注情感韵律感知需同时处理声学线索与说话人身份，而AI合成语音的声学异常可能改变这一过程。作者以普通话听者为被试，采用受试内设计，比较人声与AI克隆声以及说话人熟悉度对情感识别准确率与认知负荷的影响。行为与心率变异性结果表明人声识别准确率显著更高。研究揭示了合成语音与熟悉度对情感韵律解码的交互作用。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.39199v1",
+      "source": "arxiv",
+      "title": "UniAE-MoE: A Unified Audio Encoder via Mixture of Experts",
+      "abstract": "Large Audio Language Models (LALMs) rely on effective audio encoders for multi-task performance. We introduce UniAE-MoE, a unified audio encoder designed to model cross-domain audio representations and achieve outstanding downstream understanding performance via a Mixture-of-Experts (MoE) architecture. Specifically, we explore mainstream audio encoders and integrate those from Qwen2-Audio and Audio-Flamingo 3, which demonstrate superior downstream capabilities. To facilitate effective model fusion, we improve our encoder using SwiGLU with shared experts to decouple encoder networks, and we further introduce a two-stage instruction-tuning strategy to better adapt the model to diverse downstream tasks. Moreover, we propose the task-specific data scaling (TSDS) technique to enhance \\tool's understanding capabilities. On the XARES-LLM benchmark, UniAE-MoE attains a score of 0.802, achieving state-of-the-art performance. It also delivers top-tier performance in the official Interspeech 2026 Audio Encoder Capability Challenge, further demonstrating robust generalization across diverse audio tasks. Together, these results validate the effectiveness of \\tool for unified audio understanding across speech, music, and general audio domains.",
+      "authors": [
+        "Shengbo Cai",
+        "Zhisheng Zhang",
+        "Zichao Nie",
+        "Jing Peng",
+        "Jingran Xie",
+        "Zhiyong Wu"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-09-30T07:49:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.39199v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified audio encoder modeling cross-domain audio representations for large audio language models",
+      "llm_evidence_cn": "面向大型音频语言模型的跨域音频表征统一编码器",
+      "llm_evidence": "面向大型音频语言模型的跨域音频表征统一编码器",
+      "canonical_evidence": "面向大型音频语言模型的跨域音频表征统一编码器",
+      "llm_tldr_en": "UniAE-MoE is a unified audio encoder using mixture-of-experts to model cross-domain audio representations for large audio language models, with SwiGLU shared experts and two-stage instruction tuning.",
+      "llm_tldr_cn": "针对大型音频语言模型在多任务场景下依赖有效音频编码器、而单一编码器难以覆盖跨域表征的问题，本文提出UniAE-MoE统一音频编码器，采用专家混合架构融合Qwen2-Audio与Audio-Flamingo 3等主流编码器。作者引入带共享专家的SwiGLU解耦编码网络，并提出两阶段指令微调与任务特定数据缩放策略以适配多样下游任务。实验表明该编码器在跨域音频理解上取得突出表现，为音频语言模型的统一表征学习提供了新方案。",
+      "llm_tldr": "针对大型音频语言模型在多任务场景下依赖有效音频编码器、而单一编码器难以覆盖跨域表征的问题，本文提出UniAE-MoE统一音频编码器，采用专家混合架构融合Qwen2-Audio与Audio-Flamingo 3等主流编码器。作者引入带共享专家的SwiGLU解耦编码网络，并提出两阶段指令微调与任务特定数据缩放策略以适配多样下游任务。实验表明该编码器在跨域音频理解上取得突出表现，为音频语言模型的统一表征学习提供了新方案。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.39413v1",
+      "source": "arxiv",
+      "title": "Aligning the Incomplete: Joint Distribution Calibration for Multimodal EEG-Eye Emotion Recognition",
+      "abstract": "The success of cross-subject multimodal emotion recognition hinges on maintaining the consistency of the joint data distribution across individuals. However, real-world deployment frequently triggers the \\emph{asymmetric joint distribution collapse}: EEG signals suffer from severe cross-subject distribution shifts, while eye movements sensors are susceptible to packet loss and tracking failures. Existing methods treat domain adaptation and missing-modality imputation as disjoint tasks. Consequently, they fail to resolve the compounded errors when both degradations co-occur, either propagating domain shifts through imputed signals or destroying the joint decision boundary. To tackle this unified challenge, we propose GUARD (\\textbf{G}radient-guided \\textbf{U}nsupervised \\textbf{A}symmetric \\textbf{R}ecovery of \\textbf{D}istributions). First, GUARD establishes a reliable anchor manifold in the source domain by employing a theoretically grounded gradient-weighted objective, which forces the robust EEG modality to preemptively entangle task-discriminative ocular features. Next, to structurally recover the collapsed joint distribution, we constrain a generative module with downstream perceptual losses, prioritizing emotion-discriminative semantics over mere signal fidelity. Finally, we formulate target-domain adaptation as an ill-posed inverse problem. By driving a cycle-consistent flow, we achieve unsupervised calibration of the recovered joint distribution directly on the target-domain manifold. Extensive experiments demonstrate that GUARD significantly outperforms state-of-the-art methods, maintaining resilient discriminative performance even under complete auxiliary modality failure. Our code and models are made publicly available to ensure complete reproducibility.",
+      "authors": [
+        "Yang Wu",
+        "Jinpeng Li"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-09-30T09:53:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.39413v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "joint distribution calibration and domain adaptation for cross-subject emotion recognition",
+      "llm_evidence_cn": "面向跨被试情感识别的联合分布校准与域适应",
+      "llm_evidence": "面向跨被试情感识别的联合分布校准与域适应",
+      "canonical_evidence": "面向跨被试情感识别的联合分布校准与域适应",
+      "llm_tldr_en": "GUARD tackles asymmetric joint distribution collapse in multimodal EEG-eye emotion recognition, unifying domain adaptation and missing-modality imputation to handle cross-subject shifts.",
+      "llm_tldr_cn": "跨被试多模态情感识别依赖个体间联合数据分布的一致性，但实际部署常出现脑电跨被试分布偏移与眼动丢包的非对称联合分布崩溃。现有方法把域适应与缺失模态补全当作独立任务，难以处理两类退化同时发生的复合误差。本文提出GUARD，统一进行联合分布校准与域适应。该工作为跨域情感识别中分布不匹配与模态缺失的联合建模提供了新方案。",
+      "llm_tldr": "跨被试多模态情感识别依赖个体间联合数据分布的一致性，但实际部署常出现脑电跨被试分布偏移与眼动丢包的非对称联合分布崩溃。现有方法把域适应与缺失模态补全当作独立任务，难以处理两类退化同时发生的复合误差。本文提出GUARD，统一进行联合分布校准与域适应。该工作为跨域情感识别中分布不匹配与模态缺失的联合建模提供了新方案。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.01103v1",
+      "source": "arxiv",
+      "title": "ParaCalib: Semantically Calibrated Paralinguistic Modeling for Depression Detection",
+      "abstract": "Vocal behavior provides important signals for speech-based depression detection, but its interpretation often depends on what is being said and how it functions in context. However, existing methods typically treat acoustic cues as context-independent markers, making it difficult to distinguish vocal form from its context-dependent communicative function. We propose ParaCalib, a framework that semantically calibrates paralinguistic behavior by interpreting vocal patterns relative to utterance-level semantic context and inferred communicative function and representing them in a comparable state space. Concretely, ParaCalib uses an Audio-Language Model (ALM) to generate contextualized vocal descriptions and an LLM-based Paralinguistic State Extractor (PSE) to map these descriptions into a structured Semantically Calibrated Paralinguistic (SC-Para) representation. ParaCalib achieves the highest mean Macro-F1 among the evaluated methods, reaching 71.9\\% on DAIC-WOZ and 90.5\\% on MODMA. Our controlled analysis provides direct evidence of semantic calibration at the PSE stage: under a fixed caption-level acoustic description, varying the accompanying semantic context changes the inferred depression-related paralinguistic evidence. Our exploratory analysis further identifies recurring configurations of paralinguistic states associated with depression labels rather than a single uniformly dominant state.",
+      "authors": [
+        "Yuxin Li",
+        "Yifei Li",
+        "Yi-Wen Chao",
+        "Xiangyu Zhang",
+        "Eng Siong Chng",
+        "Cuntai Guan"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-10-01T05:43:08+00:00",
+      "link": "https://arxiv.org/pdf/2610.01103v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "paralinguistic vocal modeling with audio-language model features",
+      "llm_evidence_cn": "用音频语言模型特征进行副语言建模",
+      "llm_evidence": "用音频语言模型特征进行副语言建模",
+      "canonical_evidence": "用音频语言模型特征进行副语言建模",
+      "llm_tldr_en": "Acoustic cues in speech are usually treated as context-independent markers. ParaCalib uses an audio-language model to generate contextualized vocal descriptions and calibrate paralinguistic states, improving depression detection.",
+      "llm_tldr_cn": "语音抑郁检测依赖副语言线索，但现有方法把声学特征当作与语境无关的标记，难以区分声音形式与其交际功能。本文提出ParaCalib，用音频语言模型生成语境化声音描述，并借助大模型推断副语言状态，将其映射到可比状态空间进行语义校准。实验表明该校准提升抑郁检测效果，其副语言与音频语言模型思路可迁移至语音情感识别。",
+      "llm_tldr": "语音抑郁检测依赖副语言线索，但现有方法把声学特征当作与语境无关的标记，难以区分声音形式与其交际功能。本文提出ParaCalib，用音频语言模型生成语境化声音描述，并借助大模型推断副语言状态，将其映射到可比状态空间进行语义校准。实验表明该校准提升抑郁检测效果，其副语言与音频语言模型思路可迁移至语音情感识别。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.01560v1",
+      "source": "arxiv",
+      "title": "AURAL: Adaptive Latent Reasoning with Joint Chunk for Speech Language Models",
+      "abstract": "Model intelligence and fast response jointly shape the quality of interaction with speech language models, yet remain difficult to achieve together. Explicit chain-of-thought (CoT) improves reasoning and audio understanding, but generating intermediate reasoning tokens delays responses. Describing fine-grained acoustic cues further lengthens CoT and increases latency. Latent reasoning can reduce this overhead, yet existing methods often trail CoT and remain limited by single-path supervision and reasoning budgets that do not adapt to problem difficulty. We introduce AURAL, which models a distribution over multiple plausible reasoning continuations in latent space and jointly predicts chunks of future states to reduce sequential forward passes and reasoning latency. To provide initial supervision for latent reasoning, we construct AuralReason-683K: 683K bilingual speech utterances (about 1,000 hours) with concise CoT for emotion recognition, empathetic dialogue, and general reasoning. AURAL-RL then explores beyond these traces, rewarding concise reasoning that yields high-quality answers and adapting reasoning effort to each problem. Across two backbones, AURAL-RL achieves performance comparable to CoT-RL, with larger gains over the respective supervised checkpoints on most metrics. Analysis further shows that harder questions elicit more latent reasoning steps. On Qwen2.5-Omni, it reduces time to the first answer token by 11.8x, from 1.22 to 0.10 s, versus 0.05 s for direct answering.",
+      "authors": [
+        "Yuxiang Wang",
+        "Kunyu Feng",
+        "Yuancheng Wang",
+        "Zihang Liu",
+        "Shengbo Cai",
+        "Qinke Ni",
+        "Wan Lin",
+        "Tao Feng",
+        "Yingda shen",
+        "Ming-Hao Hsu",
+        "Zhixian Zhao",
+        "Liqiang Zhang",
+        "Teddy Sun",
+        "Steve Yves",
+        "Zhizheng Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG",
+        "cs.SD"
+      ],
+      "published": "2026-10-01T12:28:03+00:00",
+      "link": "https://arxiv.org/pdf/2610.01560v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speech language model reasoning over fine-grained acoustic cues",
+      "llm_evidence_cn": "语音语言模型对细粒度声学线索的推理",
+      "llm_evidence": "语音语言模型对细粒度声学线索的推理",
+      "canonical_evidence": "语音语言模型对细粒度声学线索的推理",
+      "llm_tldr_en": "AURAL tackles the latency-reasoning tradeoff in speech language models by modeling latent reasoning distributions and jointly predicting future chunks, reducing sequential forward passes while improving audio reasoning.",
+      "llm_tldr_cn": "针对语音语言模型难以兼顾推理质量与响应速度、显式思维链因生成中间标记而延迟增加的问题，该文提出AURAL，在潜在空间建模多种可能推理延续的分布并联合预测未来状态分块以减少顺序前向。实验显示其在保持或提升音频理解与推理的同时降低开销，缓解单路径监督与固定推理预算的限制。该工作为语音大模型的高效推理提供新思路，与音频语言模型情感理解方向相关。",
+      "llm_tldr": "针对语音语言模型难以兼顾推理质量与响应速度、显式思维链因生成中间标记而延迟增加的问题，该文提出AURAL，在潜在空间建模多种可能推理延续的分布并联合预测未来状态分块以减少顺序前向。实验显示其在保持或提升音频理解与推理的同时降低开销，缓解单路径监督与固定推理预算的限制。该工作为语音大模型的高效推理提供新思路，与音频语言模型情感理解方向相关。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.01695v1",
+      "source": "arxiv",
+      "title": "Teaching LLMs to Hear Who Spoke What: Metadata-Supervised Pretraining for Encoder-Free Speech-LLMs",
+      "abstract": "Encoder-based speech large language models (Speech-LLMs) commonly employ pretrained speech encoders that prioritize linguistic content but may discard fine-grained acoustic cues essential for speaker discrimination and paralinguistic understanding. Encoder-free Speech-LLMs instead map Mel-spectrogram features directly into the LLM input space through lightweight embedding layers, enabling the LLM to learn from low-level acoustic features. However, systematic pretraining strategies for encoder-free Speech-LLMs remain underexplored, limiting their ability to compensate for the absence of large-scale pretrained speech encoders. We propose metadata-supervised pretraining (MSP), which leverages speech attributes such as speaker identity and emotion to develop speaker-discriminative and paralinguistic capabilities. We further introduce speaker-aware utterance composition (SAUC) to strengthen speaker discrimination and apply random span masking to regularize pretraining. We primarily evaluate our approach on joint ASR and speaker diarization in multi-speaker conversations, complemented by experiments on paralinguistic speech-understanding tasks. Under matched training-data conditions, our encoder-free model outperforms its randomly initialized encoder-based counterpart. With limited metadata-annotated data, it is competitive with models using speech encoders pretrained on substantially larger corpora, outperforming them in several settings. These results demonstrate the potential of encoder-free architectures for building native multimodal LLMs that acquire diverse speech capabilities.",
+      "authors": [
+        "Mohan Shi",
+        "Ruchao Fan",
+        "Sunit Sivasankaran",
+        "Keqi Deng",
+        "Jinyu Li"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-10-01T13:46:43+00:00",
+      "link": "https://arxiv.org/pdf/2610.01695v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "low-level acoustic cues and paralinguistic understanding in encoder-free Speech-LLMs",
+      "llm_evidence_cn": "无编码器语音大模型中的低层声学线索与副语言理解",
+      "llm_evidence": "无编码器语音大模型中的低层声学线索与副语言理解",
+      "canonical_evidence": "无编码器语音大模型中的低层声学线索与副语言理解",
+      "llm_tldr_en": "To address encoder-based Speech-LLMs discarding fine-grained acoustic cues, this work proposes metadata-supervised pretraining for encoder-free Speech-LLMs, letting the LLM learn low-level acoustic features for speaker and paralinguistic understanding.",
+      "llm_tldr_cn": "针对基于编码器的语音大模型偏重语言内容、可能丢弃对说话人区分与副语言理解关键的细粒度声学线索，以及无编码器Speech-LLM预训练策略不足的问题，该文提出元数据监督预训练MSP，利用说话人身份等语音属性让模型直接从梅尔谱学习低层声学特征。该策略弥补缺少大规模语音编码器的不足，增强对说话人与副语言信息的建模。其价值在于凸显声学线索对语音大模型副语言理解的重要性，与情感表征学习方向相关。",
+      "llm_tldr": "针对基于编码器的语音大模型偏重语言内容、可能丢弃对说话人区分与副语言理解关键的细粒度声学线索，以及无编码器Speech-LLM预训练策略不足的问题，该文提出元数据监督预训练MSP，利用说话人身份等语音属性让模型直接从梅尔谱学习低层声学特征。该策略弥补缺少大规模语音编码器的不足，增强对说话人与副语言信息的建模。其价值在于凸显声学线索对语音大模型副语言理解的重要性，与情感表征学习方向相关。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

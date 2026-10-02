@@ -1,0 +1,217 @@
+Title: Toward Human-Aligned Judgement of Speech Emotion Similarity
+
+URL Source: https://arxiv.org/pdf/2609.32504v1
+
+Published Time: Tue, 29 Sep 2026 00:57:02 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# TOWARD HUMAN-ALIGNED JUDGEMENT OF SPEECH EMOTION SIMILARITY 
+
+# Yun-Shao Tsai 1, Yi-Cheng Lin 1,∗, Chih-Kai Yang 1,∗, Ho-Jung Cheng 2, Tsun-Yi Chang 3,Sheng-Wei Wu 4, Yi-Shan Chen 4, Hsiang-Chun Chang 3, Liang-Chieh Lee 3, Hung-yi Lee 1,3,51Graduate Institute of Communication Engineering, National Taiwan University, Taiwan 
+
+> 2
+
+# Independent Researcher 3National Taiwan University, Taiwan 
+
+> 4
+
+# National Taiwan University of Science and Technology, Taiwan 
+
+> 5
+
+# NTU Artificial Intelligence Center of Research Excellence (NTU AI-CoRE), Taiwan 
+
+ABSTRACT 
+
+Evaluating emotion preservation in expressive speech generation in-volves assessing how closely generated speech matches a reference in emotion. Human listening tests assess this similarity, but their cost motivates automatic measures aligned with human judgments. To support the development and evaluation of such measures, we intro-duce SES-Bench, a speech emotion similarity benchmark built from human comparisons of two candidate utterances against a shared ref-erence. These comparisons record which candidate listeners find emotionally closer to the reference and the strength of their pref-erence. Using these annotations, we train SES-Judge to score emo-tion similarity between two utterances. SES-Judge significantly out-performs embedding cosine similarity and prompted large audio-language models in preference accuracy and correlation with human ratings that capture both preference direction and strength. 
+
+Index Terms — Emotional similarity, expressive speech genera-tion, perceptual evaluation 
+
+1. INTRODUCTION 
+
+Recent advances in speech generation have enabled increasingly ex-pressive outputs in text-to-speech (TTS), voice conversion (VC), and speech-to-speech translation (ST) [1, 2, 3]. Evaluating these systems requires assessing how well outputs convey intended emotion. For systems using a reference utterance to guide emotional expression, this means assessing how closely each output matches the reference in emotion. Human listening tests assess this similarity, but their cost makes repeated evaluation during model development difficult [4]. This motivates automatic measures to assess emotion similarity at scale while remaining aligned with human perception [5, 6]. A common approach is EMO SIM, which computes cosine sim-ilarity between reference and generated speech embeddings, com-monly extracted using emotion2vec [7, 8]. However, these scores do not consistently agree with human choices [4]. To learn and evaluate measures aligned with human perception, we need comparisons that capture both which candidate sounds emotionally closer to a refer-ence and how strongly listeners prefer it. To support this approach, we introduce SES-Bench, a Speech Emotion Similarity Benchmark for evaluating how well automatic similarity measures agree with human judgments. Each sample is a triplet comprising one reference utterance and two generated can-didate utterances. Five annotators independently compare the can-didates against the reference, using a seven-level scale to indicate 
+
+> ∗Equal second-author contribution.
+
+which candidate sounds emotionally closer and how strongly they prefer it. These annotations support learning a similarity measure and evaluating agreement with human perception. We use these an-notations to train SES-Judge as a Speech Emotion Similarity Judge that assesses how similar two utterances sound in emotional expres-sion. Our evaluation measures agreement with human choices and correlation between its score differences and human ratings. SES-Judge significantly improves both measures over embedding simi-larity and judgments from large audio-language models (LALMs). • We introduce SES-Bench 1, a dataset and benchmark for human-perceived speech emotion similarity. It provides graded human comparisons for model training and a shared test set for evaluating agreement with human judgments. • We develop SES-Judge, which learns from these graded comparisons to assess emotional similarity between two ut-terances. It significantly outperforms pretrained embedding similarity and LALM judges in both preference accuracy and correlation with human ratings. 
+
+2. RELATED WORK 2.1. Speech Emotion Datasets 
+
+Speech emotion and expressive speech datasets describe utter-ances through categorical or dimensional labels [9, 10], or natural-language descriptions of speaking style that extend beyond fixed labels [11]. However, similarity rankings derived from categori-cal or dimensional emotion labels can disagree with annotators’ choices [12]. For generated speech, prior work asks listeners to judge which candidate is emotionally closer to a reference, but does not record how much closer they perceive it to be [4]. To capture this degree of perceived difference, SES-Bench uses a graded com-parison scale that distinguishes a slight similarity advantage from a large one, providing annotations for both training and evaluation. 
+
+2.2. Emotion Similarity Evaluation Methods 
+
+Emotion similarity is commonly measured using cosine similarity between utterance embeddings [8]. Beyond using pretrained embed-dings, similarity functions can be learned from triplets constructed using emotion labels [12]. Human ratings also provide supervision for AutoPCP, which predicts overall prosodic similarity between speech pairs [13]. Speech judge models also learn from human 
+
+> 1https://github.com/danielqwer/ Speech-Emotion-Similarity.git arXiv:2609.32504v1 [eess.AS] 26 Sep 2026
+
+feedback, although they assess naturalness and overall quality rather than emotional similarity to a reference [14, 15]. In concurrent work, STEB evaluates emotion preservation in speech translation using an LLM to compare emotion descriptions generated from the source and translated speech [16]. SES-Judge learns a reference– candidate emotion similarity score from SES-Bench’s graded human comparisons. These comparisons supervise the score differences, encouraging them to reflect both annotators’ preferred candidate and the perceived degree of difference. 
+
+3. SES-BENCH 3.1. Task Definition 
+
+We define perceived emotion similarity as the degree to which two utterances resemble each other in emotional expression. In speech generation evaluation, we treat the utterance providing the desired expression as a reference r and a generated utterance as a candidate 
+
+x. A judge assigns a score s(r, x ) ∈ R, where higher values indicate closer emotion matches. SES-Bench collects relative similarity judgments using triplets comprising one reference r and two candidates xA and xB . Each reference–candidate pair is scored independently, and the difference between the two scores represents the candidates’ relative similarity to the reference: 
+
+∆( r, x A, x B ) = s(r, x A) − s(r, x B ). (1) Positive values of ∆ favor A, while negative values favor B. The magnitude |∆| represents the predicted strength of this difference. 
+
+3.2. Data Construction 
+
+Candidate utterances are generated using zero-shot TTS and VC, with each triplet pairing outputs from either two TTS systems or two VC systems. To evaluate expressive speech generation, we exclude references labeled solely as neutral from both partitions. For TTS, the two systems receive the same reference utterance and target text. We generate this text using Claude Opus 5. 2 For VC, the source ut-terance serves as the reference, and the systems convert its speaker identity while retaining its linguistic content. Both systems use the same target speaker prompt to specify the speaker identity. The training set uses MSP-Podcast utterances [9] as references. We generate TTS candidates using CosyVoice 3 [17], Step-Audio-EditX [18], F5-TTS [19], and IndexTTS2 [1], and VC candidates us-ing AdaptVC [20], EZ-VC [21], Vevo2 [22], and FreeVC [23]. The TTS systems include autoregressive and non-autoregressive models, while the VC systems include VITS-based and flow-matching archi-tectures. We randomly sample candidate pairs from these outputs, keeping each system approximately equally represented. The test set uses CREMA-D utterances [10] as references to evaluate on a different corpus. To test generalization to unseen gen-eration systems, we use Qwen3-TTS [24] for TTS and Seed-VC [25] for VC exclusively in the test set. Each test triplet pairs an output from one of these systems with an output from a randomly selected system used to generate training candidates for the same task. 
+
+3.3. Annotation and Dataset Statistics 
+
+As shown in Fig. 1, five annotators independently listen to each triplet and select one of the seven ordered responses A3, A2, A1,            
+
+> 2https://www.anthropic.com/news/claude-opus-5 Which candidate is closer to the reference in emotion?
+> Reference Candidate A Candidate B
+> Choose
+> A3 A2 A1 SAME B1 B2 B3 Clearly closer Closer Slightly closer About the same Slightly closer Closer Clearly closer A closer to reference B closer to reference
+
+Fig. 1 . Annotation schematic. An annotator compares two candi-dates with a reference and rates their relative emotional similarity on a seven-point scale. SAME, B1, B2, and B3. A1, A2, and A3 mean that A is “slightly closer,” “closer,” and “clearly closer” to the reference in emotion, re-spectively, with corresponding meanings for B. The numbered levels indicate the strength of this preference rather than emotional inten-sity. SAME indicates approximately equal similarity to the refer-ence, even if neither candidate matches it closely. We remove any triplet flagged by at least one annotator as con-taining corrupted or unplayable audio. This leaves 2,974 training comparisons (1,491 TTS and 1,483 VC) and 848 test comparisons (417 TTS and 431 VC). The reference utterances cover 973 speak-ers in training (54.0% male, 46.0% female) and 91 in testing (52.7% male, 47.3% female). The 11,466 reference and candidate utterances total 10.97 hours, with 8.86 hours in training and 2.11 hours in test-ing. We summarize agreement among annotators by grouping A1– A3 as A and B1–B3 as B, with SAME as a third category. The pro-portion of annotators supporting the most frequent category defines Unanimous Agreement ( 5/5), Strong Majority ( 4/5), Simple Major-ity ( 3/5), or No Majority ( 2/5). Figure 2 summarizes distributions of agreement levels, reference emotions, and generation systems for the training and test sets. After removing comparisons flagged for corrupted or unplayable audio, more test comparisons have A as the majority answer than B. To reduce this imbalance, we randomly se-lect some comparisons with answer A and exchange candidates A and B, updating the annotations accordingly. Among comparisons with Simple Majority or higher agreement, the resulting answer dis-tribution is 318 A, 317 B, and 37 SAME. This changes only candi-date positions, preserving the audio pairs and human judgments. 
+
+4. SES-JUDGE 
+
+We use a pretrained, frozen WavLM-based dimensional speech emo-tion recognition model (WavLM-SER) [26] as our audio encoder. 3
+
+We temporally average frame-level features to obtain utterance representations, apply a separate trainable linear projection [27] and normalization to each layer representation, and combine them through a learnable weighted sum. A final linear projection pro-duces a 1024-dimensional embedding, and we use cosine similarity to score each reference–candidate pair. We train the model on SES-Bench’s graded comparisons using cumulative logit ordinal regression. The difference between the two similarity scores is mapped to probabilities over seven responses or-dered from B3 through SAME to A3 using a learned positive scale and ordered thresholds. We constrain the thresholds to be symmet-ric about zero so that exchanging A and B reverses the predicted       
+
+> 3https://huggingface.co/3loi/ SER-Odyssey-Baseline-WavLM-Multi-Attributes 8% 24% 46% 22% 11% 24% 44% 21% 13% 15% 14% 14% 14% 15% 15% 25% 21% 21% 18% 15% 26% 23% 26% 25% 13% 12% 13% 12% 50% 25% 25% 25% 25% 12% 12% 13% 13% 50%
+
+Agreement 
+
+Train Test 
+
+Reference emotion labels 
+
+Train Test 
+
+> Training set (MSP-Podcast) only
+
+TTS systems 
+
+Train Test 
+
+VC systems 
+
+Train Test  
+
+> Unanimous Agreement Strong Majority Simple Majority No Majority Angry Happy Sad Fear Disgust Contempt Surprise CosyVoice 3 IndexTTS2 F5-TTS Qwen3-TTS Step-Audio-EditX AdaptVC EZ-VC Vevo2 FreeVC Seed-VC
+
+Fig. 2 . Distributions of agreement, reference emotion labels, and generation systems in SES-Bench, with Train and Test shown side by side for each group. System proportions count candidate occurrences separately for TTS and VC. 
+
+Table 1 . Baseline configurations. Training data and objectives refer to additional training in this work. Each listed scoring input defines a separate evaluation. Fused embeddings combine layer representations; head-hidden embeddings are taken after the downstream hidden layer. Classification is trained separately with and without synthetic speech. Model / Encoder Training data Training task / loss Scoring input Scoring rule EmotionRankCLAP — — Projected audio embedding Cosine similarity WavLM-SER — — SER head-hidden embedding Cosine similarity emotion2vec — — Final encoder-layer embedding Cosine similarity WavLM-SER emotion2vec MSP-Podcast with / without synthetic speech Emotion classification Cross-entropy Fused embedding Cosine similarity Head-hidden embedding Cosine similarity Class probabilities Negative KL divergence WavLM-SER emotion2vec MSP-Podcast VAD regression MSE Fused embedding Cosine similarity Head-hidden embedding Cosine similarity Predicted VAD values Negative Euclidean distance WavLM-SER emotion2vec MSP-Podcast VAD-based similarity Triplet loss Learned embedding Cosine similarity Qwen3-Omni Gemini 3.8 Flash — — Seven-option responses Mean signed rating / Most frequent A/B/SAME category response distribution. We minimize cross-entropy against the empir-ical distribution of all five annotators’ responses: 
+
+Lord = − 1
+
+N
+
+> N
+
+X
+
+> i=1 7
+
+X
+
+> k=1
+
+qik log pik , (2) where N is the number of triplets, qik is the fraction of annotators selecting response k for triplet i, and pik is its predicted probability. 
+
+5. EXPERIMENT 5.1. Setup 
+
+We train SES-Judge on all SES-Bench Train comparisons, regard-less of agreement among annotators (Section 3.3). For evaluation, we map A3, A2, A1, SAME, B1, B2, and B3 to the discrete scores 
+
+3, 2, 1, 0, −1, −2, −3, respectively. Positive scores favor A, while negative scores favor B. We compute Spearman correlation between model predictions and mean human ratings over all 848 test compar-isons. These ratings capture both preference direction and strength. We also report accuracy on a simplified A/B choice task using 635 comparisons, excluding comparisons with majority SAME re-sponses or No Majority. Score-based methods select the candidate with the higher similarity score, while LALM predictions follow the response aggregation described in Section 5.2. Tied similarity scores and LALM predictions of SAME are counted as incorrect. 
+
+5.2. Baselines 
+
+Table 1 summarizes models, training objectives, and scoring meth-ods. We evaluate cosine similarity using pretrained embeddings from EmotionRankCLAP [28], WavLM-SER, and emotion2vec [7]. For emotion classification and methods based on valence, arousal, and dominance (VAD), we use frozen WavLM-SER and emo-tion2vec base encoders with the same per-layer projection, normal-ization, and learnable weighted sum as SES-Judge, producing a fused representation. These models are trained on MSP-Podcast’s official training split. For emotion classification only, we exclude ut-terances with emotion-category labels O (other) or X (no agreement among annotators). We train classifiers on MSP-Podcast plus all synthetic candidates from SES-Bench Train, assigning each candi-date its reference’s emotion category. With both methods using these synthetic utterances, we compare supervision from emotion cate-gories and human similarity judgments. Following emotion2vec’s downstream head design [7], we use a 256-unit linear layer with ReLU followed by an eight-class output layer. For VAD regression, Table 2 . Baselines grouped by encoder and training objective. Fused and hidden cosine use embeddings before and after the downstream hidden layer. VAD distance is the negative Euclidean distance be-tween predicted VAD vectors. ∗ indicates a significant difference from SES-Judge (paired triplet bootstrap for Spearman; exact two-sided McNemar for accuracy, α = 0 .05 ). Method Spearman Accuracy (%) 
+
+SES-Judge 0.5297 74 .96 
+
+Embedding cosine similarity 
+
+EmotionRankCLAP 0.3537 ∗ 63 .46 ∗
+
+WavLM-SER 0.3591 ∗ 64 .25 ∗
+
+emotion2vec 0.3064 ∗ 65 .51 ∗
+
+WavLM-SER + downstream training 
+
+VAD reg. / Fused cosine 0.4820 ∗ 71 .65 ∗
+
+VAD reg. / Hidden cosine 0.3660 ∗ 64 .72 ∗
+
+VAD reg. / VAD distance 0.3655 ∗ 66 .30 ∗
+
+Classification / Fused cosine 0.4594 ∗ 70 .55 ∗
+
+Classification / Hidden cosine 0.3360 ∗ 61 .57 ∗
+
+Classification / Negative KL 0.3227 ∗ 59 .53 ∗
+
+VAD triplet / Cosine 0.4736 ∗ 68 .35 ∗
+
+emotion2vec + downstream training 
+
+VAD reg. / Fused cosine 0.4258 ∗ 68 .82 ∗
+
+VAD reg. / Hidden cosine 0.3399 ∗ 66 .93 ∗
+
+VAD reg. / VAD distance 0.3174 ∗ 64 .72 ∗
+
+Classification / Fused cosine 0.4124 ∗ 66 .46 ∗
+
+Classification / Hidden cosine 0.3063 ∗ 62 .20 ∗
+
+Classification / Negative KL 0.2903 ∗ 62 .20 ∗
+
+VAD triplet / Cosine 0.3671 ∗ 67 .09 ∗
+
+LALMs as judges 
+
+Gemini 3.8 Flash 0.3813 ∗ 60 .63 ∗
+
+Qwen3-Omni 0.0739 ∗ 3.15 ∗
+
+we retain the hidden layer and use three sigmoid outputs for VAD ratings scaled to [0 , 1] . Triplet learning uses VAD distances to select positive and negative utterances and trains a final linear projection of the fused representation, using normalized embeddings. For Qwen3-Omni [29] and Gemini 3.8 Flash 4, we ask “Which of A and B is closer to the REFERENCE in emotion?” with the seven human annotation options. Each model answers ten times per triplet, with five presentations in each A/B order. We restore candi-date identities and average signed responses for Spearman correla-tion. For accuracy, we group responses into A, B, or SAME and take the most frequent category, assigning SAME when the highest vote counts are tied. 
+
+5.3. Experimental Results 
+
+Table 2 compares SES-Judge with methods trained without SES-Bench’s comparison labels. SES-Judge achieves a Spearman cor-relation of 0.5297, significantly outperforming all baselines, and the highest accuracy of 74.96%. The correlation advantage extends 
+
+> 4https://ai.google.dev/gemini-api/docs/models/ gemini-3.8-flash
+
+Table 3 . Comparison with classification baselines trained on MSP-Podcast and synthetic speech from SES-Bench Train. Fused and hid-den cosine use embeddings before and after the downstream hidden layer. ∗ indicates a significant difference from SES-Judge (paired triplet bootstrap for Spearman; exact two-sided McNemar for accu-racy, α = 0 .05 ). Method Spearman Accuracy (%) 
+
+SES-Judge 0.5297 74 .96 
+
+WavLM-SER + downstream training 
+
+Classification / Fused cosine 0.3559 ∗ 66 .61 ∗
+
+Classification / Hidden cosine 0.1783 ∗ 57 .80 ∗
+
+Classification / Negative KL 0.1330 ∗ 56 .38 ∗
+
+emotion2vec + downstream training 
+
+Classification / Fused cosine 0.3936 ∗ 66 .14 ∗
+
+Classification / Hidden cosine 0.2257 ∗ 59 .53 ∗
+
+Classification / Negative KL 0.1557 ∗ 56 .85 ∗
+
+across embedding metrics, models trained with emotion labels, and prompted LALMs. Qwen3-Omni’s low accuracy primarily reflects frequent SAME predictions, which account for 94.96% of its ag-gregated predictions on the A/B evaluation subset. Together, these results support using SES-Bench’s comparisons to learn a metric aligned with human judgments of preference direction and strength. Across both encoders, VAD regression yields higher Spearman correlation and accuracy than emotion classification across the three readouts. For both training objectives, cosine similarity between fused representations performs best, outperforming hidden-layer co-sine similarity and output-space distances. These results suggest that representations trained with emotion labels retain similarity informa-tion that is less accessible through their downstream heads. Table 3 shows that SES-Judge retains its advantage when classi-fiers also receive the synthetic utterances used in its training. SES-Judge significantly outperforms the classifiers using either encoder across three readouts on both metrics. Thus, even with the same synthetic utterances, classifiers trained with emotion category labels do not match SES-Judge’s agreement with human judgments. This finding highlights the value of SES-Bench as a source of human sim-ilarity supervision, beyond providing synthetic training speech. 
+
+6. CONCLUSION 
+
+We introduced SES-Bench, a benchmark for evaluating perceived emotion similarity through graded human comparisons. Its annota-tions capture both preference direction and relative strength and can be used to train and evaluate emotion similarity models. Trained on these comparisons, SES-Judge shows stronger agreement with human judgments than embedding cosine similarity and prompted LALMs. Future work will explore using SES-Judge as a reward model to guide expressive speech generation toward closer emo-tional similarity to a reference utterance. 
+
+7. REFERENCES 
+
+[1] Siyi Zhou et al., “Indextts2: A breakthrough in emotionally ex-pressive and duration-controlled auto-regressive zero-shot text-to-speech,” in Proceedings of the AAAI Conference on Artifi-cial Intelligence , 2026. [2] Xiaosu Su et al., “DiffEmotionVC: A Dual-Granularity Disen-tangled Diffusion Framework for Any-to-Any Emotional Voice Conversion,” in Interspeech 2025 , 2025. [3] Szu-Chi Chen et al., “Move: Translating laughter and tears via mixture of vocalization experts in speech-to-speech trans-lation,” arXiv preprint arXiv:2604.17435 , 2026. [4] Yun-Shao Tsai et al., “The false resonance: A critical exami-nation of emotion embedding similarity for speech generation evaluation,” arXiv preprint arXiv:2604.26347 , 2026. [5] Takaaki Saeki et al., “UTMOS: UTokyo-SaruLab System for VoiceMOS Challenge 2022,” in Interspeech 2022 , 2022. [6] Wenze Ren et al., “Highratemos: sampling-rate aware model-ing for speech quality assessment,” in 2025 IEEE Automatic Speech Recognition and Understanding Workshop (ASRU) ,2025. [7] Ziyang Ma et al., “emotion2vec: Self-supervised pre-training for speech emotion representation,” in Findings of the Associ-ation for Computational Linguistics: ACL 2024 . 2024, Associ-ation for Computational Linguistics. [8] Sirui Wang et al., “Beyond global emotion: Fine-grained emo-tional speech synthesis with dynamic word-level modulation,” in ICASSP 2026 - 2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , 2026. [9] Carlos Busso et al., “The msp-podcast corpus,” IEEE Trans-actions on Affective Computing , 2026. [10] Houwei Cao et al., “Crema-d: Crowd-sourced emotional mul-timodal actors dataset,” IEEE Transactions on Affective Com-puting , 2014. [11] Zeyu Jin et al., “Speechcraft: A fine-grained expressive speech dataset with natural language description,” in Proceedings of the 32nd ACM International Conference on Multimedia , 2024. [12] John Harvill et al., “Quantifying emotional similarity in speech,” IEEE Transactions on Affective Computing , 2023. [13] Lo¨ ıc Barrault et al., “Seamless: Multilingual expres-sive and streaming speech translation,” arXiv preprint arXiv:2312.05187 , 2023. [14] Xueyao Zhang et al., “Speechjudge: Towards human-level judgment for speech naturalness,” in International Conference on Learning Representations , 2026. [15] Hui Wang et al., “SpeechLLM-as-judges: Towards general and interpretable speech quality evaluation,” in Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) . 2026, Association for Computational Linguistics. [16] Sitong Cheng et al., “Steb: A speech-to-speech translation ex-pressiveness benchmark for evaluating beyond translation fi-delity,” arXiv preprint arXiv:2606.25529 , 2026. [17] Zhihao Du et al., “Cosyvoice 3: Towards in-the-wild speech generation via scaling-up and post-training,” arXiv preprint arXiv:2505.17589 , 2025. [18] Chao Yan et al., “Step-audio-editx technical report,” arXiv preprint arXiv:2511.03601 , 2025. [19] Yushen Chen et al., “F5-TTS: A fairytaler that fakes fluent and faithful speech with flow matching,” in Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) , 2025. [20] Jaehun Kim et al., “Adaptvc: High quality voice conversion with adaptive learning,” in ICASSP 2025 - 2025 IEEE Interna-tional Conference on Acoustics, Speech and Signal Processing (ICASSP) , 2025. [21] Advait Joglekar et al., “EZ-VC: Easy zero-shot any-to-any voice conversion,” in Findings of the Association for Com-putational Linguistics: EMNLP 2025 , 2025. [22] Xueyao Zhang et al., “Vevo2: A unified and controllable framework for speech and singing voice generation,” IEEE Transactions on Audio, Speech and Language Processing ,2026. [23] Jingyi Li et al., “Freevc: Towards high-quality text-free one-shot voice conversion,” in ICASSP 2023 - 2023 IEEE Interna-tional Conference on Acoustics, Speech and Signal Processing (ICASSP) , 2023. [24] Hangrui Hu et al., “Qwen3-tts technical report,” arXiv preprint arXiv:2601.15621 , 2026. [25] Songting Liu, “Zero-shot voice conversion with diffusion transformers,” arXiv preprint arXiv:2411.09943 , 2024. [26] Lucas Goncalves et al., “Odyssey 2024 - Speech Emotion Recognition Challenge: Dataset, Baseline Framework, and Re-sults,” in The Speaker and Language Recognition Workshop (Odyssey 2024) , 2024. [27] Haolan Wang et al., “No-Reference Speech Intelligibility Pre-diction Leveraging a Noisy-Speech ASR Pre-Trained Model,” in Interspeech 2024 , 2024. [28] Shreeram Suresh Chandra et al., “EmotionRankCLAP: Bridg-ing Natural Language Speaking Styles and Ordinal Speech Emotion via Rank-N-Contrast,” in Interspeech 2025 , 2025. [29] Jin Xu et al., “Qwen3-omni technical report,” arXiv preprint arXiv:2509.17765 , 2025.

@@ -1,0 +1,169 @@
+{
+  "date": "20261002",
+  "date_label": "",
+  "generated_at": "2026-10-02 23:06:21 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.39072v1",
+      "route": "202610/02/2609.39072v1-beyond-text-llm-based-dimensional-emotion-evaluation-in-multimodal-dialogue",
+      "title": "Beyond Text: LLM-Based Dimensional Emotion Evaluation in Multimodal Dialogue",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将声学线索转为自然语言描述并用大模型做情感评估",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2609.39453v1",
+      "route": "202610/02/2609.39453v1-from-speech-to-editable-concepts-probing-emotion-recognition-with-concept-bottleneck-models",
+      "title": "From Speech to Editable Concepts: Probing Emotion Recognition with Concept Bottleneck Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用概念瓶颈模型和声学描述探究语音情感识别",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2609.29464v1",
+      "route": "202610/02/2609.29464v1-ts-opd-reconciling-asr-and-qa-in-speech-language-models-via-task-specific-on-policy-distillation",
+      "title": "TS-OPD: Reconciling ASR and QA in Speech Language Models via Task-Specific On-Policy Distillation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语音语言模型与在线策略蒸馏协调ASR和QA",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2609.32504v1",
+      "route": "202610/02/2609.32504v1-toward-human-aligned-judgement-of-speech-emotion-similarity",
+      "title": "Toward Human-Aligned Judgement of Speech Emotion Similarity",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "人类对齐的语音情感相似度基准与模型",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2609.38794v1",
+      "route": "202610/02/2609.38794v1-a-barrier-or-a-booster-familiarity-effects-on-mandarin-emotion-prosody-recognition-using-ai-powered-voice-cloning",
+      "title": "A barrier or a booster? Familiarity effects on Mandarin emotion prosody recognition using AI-powered voice cloning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于声学线索与说话人身份的情感韵律识别",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2609.39199v1",
+      "route": "202610/02/2609.39199v1-uniae-moe-a-unified-audio-encoder-via-mixture-of-experts",
+      "title": "UniAE-MoE: A Unified Audio Encoder via Mixture of Experts",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向大型音频语言模型的跨域音频表征统一编码器",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2609.39413v1",
+      "route": "202610/02/2609.39413v1-aligning-the-incomplete-joint-distribution-calibration-for-multimodal-eeg-eye-emotion-recognition",
+      "title": "Aligning the Incomplete: Joint Distribution Calibration for Multimodal EEG-Eye Emotion Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向跨被试情感识别的联合分布校准与域适应",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2610.01103v1",
+      "route": "202610/02/2610.01103v1-paracalib-semantically-calibrated-paralinguistic-modeling-for-depression-detection",
+      "title": "ParaCalib: Semantically Calibrated Paralinguistic Modeling for Depression Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用音频语言模型特征进行副语言建模",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2610.01560v1",
+      "route": "202610/02/2610.01560v1-aural-adaptive-latent-reasoning-with-joint-chunk-for-speech-language-models",
+      "title": "AURAL: Adaptive Latent Reasoning with Joint Chunk for Speech Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语音语言模型对细粒度声学线索的推理",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    },
+    {
+      "paper_id": "2610.01695v1",
+      "route": "202610/02/2610.01695v1-teaching-llms-to-hear-who-spoke-what-metadata-supervised-pretraining-for-encoder-free-speech-llms",
+      "title": "Teaching LLMs to Hear Who Spoke What: Metadata-Supervised Pretraining for Encoder-Free Speech-LLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无编码器语音大模型中的低层声学线索与副语言理解",
+      "first_seen_at": "2026-10-02 23:06:21 UTC",
+      "updated_at": "2026-10-02 23:06:21 UTC"
+    }
+  ]
+}
