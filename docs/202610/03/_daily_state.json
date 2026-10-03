@@ -1,0 +1,41 @@
+{
+  "date": "20261003",
+  "date_label": "",
+  "generated_at": "2026-10-03 22:08:13 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.37818v1",
+      "route": "202610/03/2609.37818v1-thinking-in-depth-speaking-directly-recurrent-latent-reasoning-for-paralinguistically-grounded-spoken-dialogue",
+      "title": "Thinking in Depth, Speaking Directly: Recurrent Latent Reasoning for Paralinguistically Grounded Spoken Dialogue",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "口语对话中的副语言感知与声学接地",
+      "first_seen_at": "2026-10-03 22:08:13 UTC",
+      "updated_at": "2026-10-03 22:08:13 UTC"
+    },
+    {
+      "paper_id": "2609.39421v1",
+      "route": "202610/03/2609.39421v1-ideal-a-multimodal-domain-adaptation-framework-for-eeg-eye-emotion-recognition",
+      "title": "IDEAL: A Multimodal Domain Adaptation Framework for EEG-Eye Emotion Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向情感识别的多模态域适应，采用实例级域扩展与对抗学习",
+      "first_seen_at": "2026-10-03 22:08:13 UTC",
+      "updated_at": "2026-10-03 22:08:13 UTC"
+    }
+  ]
+}

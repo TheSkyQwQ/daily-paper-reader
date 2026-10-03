@@ -1,0 +1,96 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-03T22:07:24.753918+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.37818v1",
+      "source": "arxiv",
+      "title": "Thinking in Depth, Speaking Directly: Recurrent Latent Reasoning for Paralinguistically Grounded Spoken Dialogue",
+      "abstract": "Empathetic spoken dialogue requires models to use both what is said and how it is said to decide how to respond. Explicit CoT can improve paralinguistic perception and make acoustic cues more explicit in replies, yet does not ensure their effective use in response planning. We call this mismatch the perception-reasoning gap. In addition, CoT may not fully capture acoustic cues in words, and generating it adds inference latency. To address these limitations, we introduce LoopSLM, which builds on looped Transformers for latent reasoning, reusing a decoder block to refine hidden states with acoustic grounding at every pass. Its two-stage training further narrows the perception-reasoning gap by separating learning to reason from learning to respond, enabling direct inference without CoT. On EchoMind, LoopSLM improves paralinguistic understanding, reasoning, and reply quality over Qwen2.5-Omni-7B. Against the CoT-SFT baseline, LoopSLM gains over 20 points in reasoning accuracy while generating 64.5% fewer tokens at half the latency. It also outperforms Qwen3-Omni-Thinking on most empathetic reply metrics with 34x lower latency. Despite training only on dialogue data, LoopSLM improves accuracy on general audio benchmarks.",
+      "authors": [
+        "Shengbo Cai",
+        "Yuxiang Wang",
+        "Jingran Xie",
+        "Zhisheng Zhang",
+        "Shun Lei",
+        "Di Cao",
+        "Teddy Sun",
+        "Zhiyong Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-09-29T15:28:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.37818v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "paralinguistic perception and acoustic grounding in spoken dialogue",
+      "llm_evidence_cn": "口语对话中的副语言感知与声学接地",
+      "llm_evidence": "口语对话中的副语言感知与声学接地",
+      "canonical_evidence": "口语对话中的副语言感知与声学接地",
+      "llm_tldr_en": "Empathetic spoken dialogue needs both what is said and how it is said. The authors propose LoopSLM, a looped-Transformer latent reasoning model with acoustic grounding and two-stage training, narrowing the perception-reasoning gap while avoiding explicit CoT latency.",
+      "llm_tldr_cn": "共情口语对话需兼顾说了什么与怎么说，显式思维链虽提升副语言感知，却存在感知-推理鸿沟与推理延迟。作者提出LoopSLM，基于循环Transformer进行潜在推理，每轮用声学接地精炼隐状态，并用两阶段训练弥合鸿沟。该方法在不生成显式思维链的情况下更好利用声学线索，降低延迟并提升副语言接地对话表现。研究为副语言接地的口语对话提供了高效的潜在推理框架。",
+      "llm_tldr": "共情口语对话需兼顾说了什么与怎么说，显式思维链虽提升副语言感知，却存在感知-推理鸿沟与推理延迟。作者提出LoopSLM，基于循环Transformer进行潜在推理，每轮用声学接地精炼隐状态，并用两阶段训练弥合鸿沟。该方法在不生成显式思维链的情况下更好利用声学线索，降低延迟并提升副语言接地对话表现。研究为副语言接地的口语对话提供了高效的潜在推理框架。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.39421v1",
+      "source": "arxiv",
+      "title": "IDEAL: A Multimodal Domain Adaptation Framework for EEG-Eye Emotion Recognition",
+      "abstract": "Electroencephalography (EEG) emotion recognition serves as a pivotal interface for human-computer interaction, yet the physiological variability across individuals complicates the already challenging task of fusing heterogeneous physiological signals (e.g., EEG and eye movements). However, most prevalent domain adaptation paradigms are tailored for unimodal scenarios, failing to address the heterogeneity of multimodal signals. Furthermore, they predominantly rely on feature-level alignment, overlooking the fundamental data-level discrepancy, which risks compromising fine-grained discriminative information during aggressive adaptation. To bridge these coupled gaps, we propose Instance-based Domain Expansion and Adversarial Learning (IDEAL), a unified framework that synergizes instance-level curriculum expansion with feature-level hierarchical adversarial alignment. IDEAL first introduces a multi-model collaborative screening mechanism, which propagates high-confidence target samples to explicitly bridge the distributional gap at the data level via a quantity-quality equilibrium strategy. We provide a theoretical analysis that this instance expansion strategy strictly tightens the upper bound of the target risk. Subsequently, a hierarchical adversarial network, augmented with the angular-contrastive constraints, progressively aligns representations from low-level statistics to high-level semantics while preserving class separability. Extensive experiments on four benchmark datasets demonstrate that IDEAL significantly outperforms state-of-the-art methods. To facilitate reproducibility and future research, our source code is publicly available at https://github.com/WY-BCI-Club/IDEAL.",
+      "authors": [
+        "Yang Wu",
+        "Jinpeng Li"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-09-30T10:02:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.39421v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal domain adaptation for emotion recognition via instance-based domain expansion and adversarial learning",
+      "llm_evidence_cn": "面向情感识别的多模态域适应，采用实例级域扩展与对抗学习",
+      "llm_evidence": "面向情感识别的多模态域适应，采用实例级域扩展与对抗学习",
+      "canonical_evidence": "面向情感识别的多模态域适应，采用实例级域扩展与对抗学习",
+      "llm_tldr_en": "IDEAL tackles cross-individual emotion recognition by proposing multimodal domain adaptation with instance-based domain expansion and adversarial learning, addressing data-level discrepancy beyond feature alignment.",
+      "llm_tldr_cn": "针对脑电与眼动等多模态生理信号在个体间差异大、现有域适应方法多为单模态且只做特征对齐的问题，本文提出 IDEAL 多模态域适应框架，结合实例级域扩展与对抗学习，在数据层面缩小分布差异以保留细粒度判别信息。实验表明该方法提升跨被试情感识别性能，其域适应思路对语音情感识别的跨域建模具有借鉴意义。",
+      "llm_tldr": "针对脑电与眼动等多模态生理信号在个体间差异大、现有域适应方法多为单模态且只做特征对齐的问题，本文提出 IDEAL 多模态域适应框架，结合实例级域扩展与对抗学习，在数据层面缩小分布差异以保留细粒度判别信息。实验表明该方法提升跨被试情感识别性能，其域适应思路对语音情感识别的跨域建模具有借鉴意义。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-02</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-03</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 10 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-02 23:06:21 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-03 22:08:13 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 10 篇推荐（精读 2 篇，速读 8 篇）</p>
-<p>精读：《Beyond Text: LLM-Based Dimensional Emotion Evaluation in Multimodal Dialogue》（8.0/10）, 《From Speech to Editable Concepts: Probing Emotion Recognition with Concept Bottleneck Models》（8.0/10）</p>
-<p>速读：《TS-OPD: Reconciling ASR and QA in Speech Language Models via Task-Specific On-Policy Distillation》（6.0/10）, 《Toward Human-Aligned Judgement of Speech Emotion Similarity》（6.0/10）, 《A barrier or a booster? Familiarity effects on Mandarin emotion prosody recognition using AI-powered voice cloning》（6.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今日速读2篇，聚焦语音对话推理与脑电-眼动情绪识别两个交叉方向。最值得看的是用循环隐式推理让语音对话兼顾语义深度与副语言表达，以及多模态域适应在EEG-眼动情绪识别中的落地。普通读者可先关注这两类&quot;多模态+推理&quot;思路如何提升人机交互的自然度与可靠性。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Beyond Text: LLM-Based Dimensional Emotion Evaluation in Multimodal Dialogue">Beyond Text: LLM-Based Dimensional Emotion Evaluation in Multimodal Dialogue</span></li><li><span class="dpr-home-dashboard-paper-title" title="From Speech to Editable Concepts: Probing Emotion Recognition with Concept Bottleneck Models">From Speech to Editable Concepts: Probing Emotion Recognition with Concept Bottleneck Models</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -94,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">8 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="TS-OPD: Reconciling ASR and QA in Speech Language Models via Task-Specific On-Policy Distillation">TS-OPD: Reconciling ASR and QA in Speech Language Models via Task-Specific On-Policy Distillation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Toward Human-Aligned Judgement of Speech Emotion Similarity">Toward Human-Aligned Judgement of Speech Emotion Similarity</span></li><li><span class="dpr-home-dashboard-paper-title" title="A barrier or a booster? Familiarity effects on Mandarin emotion prosody recognition using AI-powered voice cloning">A barrier or a booster? Familiarity effects on Mandarin emotion prosody recognition using AI-powered voice cloning</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Thinking in Depth, Speaking Directly: Recurrent Latent Reasoning for Paralinguistically Grounded Spoken Dialogue">Thinking in Depth, Speaking Directly: Recurrent Latent Reasoning for Paralinguistically Grounded Spoken Dialogue</span></li><li><span class="dpr-home-dashboard-paper-title" title="IDEAL: A Multimodal Domain Adaptation Framework for EEG-Eye Emotion Recognition">IDEAL: A Multimodal Domain Adaptation Framework for EEG-Eye Emotion Recognition</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>8</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
 </section>
 </div>
 

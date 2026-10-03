@@ -1,0 +1,39 @@
+{
+  "label": "2026-10-03",
+  "date": "2026-10-03",
+  "generated_at": "2026-10-03T22:08:14",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202610/03/2609.37818v1-thinking-in-depth-speaking-directly-recurrent-latent-reasoning-for-paralinguistically-grounded-spoken-dialogue",
+      "section": "quick",
+      "title_en": "Thinking in Depth, Speaking Directly: Recurrent Latent Reasoning for Paralinguistically Grounded Spoken Dialogue",
+      "authors": "Shengbo Cai, Yuxiang Wang, Jingran Xie, Zhisheng Zhang, Shun Lei, Di Cao, Teddy Sun, Zhiyong Wu",
+      "date": "2026-09-29",
+      "pdf": "https://arxiv.org/pdf/2609.37818v1",
+      "score": "6.0",
+      "evidence": "口语对话中的副语言感知与声学接地",
+      "tldr": "共情语音对话需同时利用说了什么和怎么说，但显式思维链虽能增强副语言感知，却存在感知-推理鸿沟，且推理延迟高、易丢失声学线索。为此提出 LoopSLM，基于循环 Transformer 做潜在推理，每轮复用解码块并以声学基础精炼隐状态。两阶段训练分离推理与回应学习，实现无需 CoT 的直接推理。在 EchoMind 上，推理准确率较 CoT-SFT 提升超 20 分，生成 token 减少 64.5%，延迟减半，并优于 Qwen3-Omni-Thinking。",
+      "tags": "query:ser-da",
+      "abstract_en": "Empathetic spoken dialogue requires models to use both what is said and how it is said to decide how to respond. Explicit CoT can improve paralinguistic perception and make acoustic cues more explicit in replies, yet does not ensure their effective use in response planning. We call this mismatch the perception-reasoning gap. In addition, CoT may not fully capture acoustic cues in words, and generating it adds inference latency. To address these limitations, we introduce LoopSLM, which builds on looped Transformers for latent reasoning, reusing a decoder block to refine hidden states with acoustic grounding at every pass. Its two-stage training further narrows the perception-reasoning gap by separating learning to reason from learning to respond, enabling direct inference without CoT. On EchoMind, LoopSLM improves paralinguistic understanding, reasoning, and reply quality over Qwen2.5-Omni-7B. Against the CoT-SFT baseline, LoopSLM gains over 20 points in reasoning accuracy while generating 64.5% fewer tokens at half the latency. It also outperforms Qwen3-Omni-Thinking on most empathetic reply metrics with 34x lower latency. Despite training only on dialogue data, LoopSLM improves accuracy on general audio benchmarks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2609.39421v1-ideal-a-multimodal-domain-adaptation-framework-for-eeg-eye-emotion-recognition",
+      "section": "quick",
+      "title_en": "IDEAL: A Multimodal Domain Adaptation Framework for EEG-Eye Emotion Recognition",
+      "authors": "Yang Wu, Jinpeng Li",
+      "date": "2026-09-30",
+      "pdf": "https://arxiv.org/pdf/2609.39421v1",
+      "score": "6.0",
+      "evidence": "面向情感识别的多模态域适应，采用实例级域扩展与对抗学习",
+      "tldr": "脑电与眼动情绪识别面临个体生理差异和跨模态异构难题，现有域适应多为单模态且仅做特征对齐，忽略数据层分布差异。IDEAL提出实例级课程扩展与特征级层次对抗对齐，通过多模型协同筛选高置信目标样本并以数量-质量均衡缩小数据层差距，同时用角度对比约束从低层统计到高层语义逐步对齐。四个基准数据集实验显示其显著优于现有方法，理论分析还证明该扩展策略收紧目标风险上界。",
+      "tags": "query:ser-da",
+      "abstract_en": "Electroencephalography (EEG) emotion recognition serves as a pivotal interface for human-computer interaction, yet the physiological variability across individuals complicates the already challenging task of fusing heterogeneous physiological signals (e.g., EEG and eye movements). However, most prevalent domain adaptation paradigms are tailored for unimodal scenarios, failing to address the heterogeneity of multimodal signals. Furthermore, they predominantly rely on feature-level alignment, overlooking the fundamental data-level discrepancy, which risks compromising fine-grained discriminative information during aggressive adaptation. To bridge these coupled gaps, we propose Instance-based Domain Expansion and Adversarial Learning (IDEAL), a unified framework that synergizes instance-level curriculum expansion with feature-level hierarchical adversarial alignment. IDEAL first introduces a multi-model collaborative screening mechanism, which propagates high-confidence target samples to explicitly bridge the distributional gap at the data level via a quantity-quality equilibrium strategy. We provide a theoretical analysis that this instance expansion strategy strictly tightens the upper bound of the target risk. Subsequently, a hierarchical adversarial network, augmented with the angular-contrastive constraints, progressively aligns representations from low-level statistics to high-level semantics while preserving class separability. Extensive experiments on four benchmark datasets demonstrate that IDEAL significantly outperforms state-of-the-art methods. To facilitate reproducibility and future research, our source code is publicly available at https://github.com/WY-BCI-Club/IDEAL.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
