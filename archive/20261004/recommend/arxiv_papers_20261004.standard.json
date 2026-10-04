@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-04T22:36:53.163546+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.32730v1",
+      "source": "arxiv",
+      "title": "Domain Adaptation with Target Information via Doubly-Anchored Distributionally Robust Optimization",
+      "abstract": "Domain Adaptation (DA) often lacks worst-case guarantees, while Distributionally Robust Optimization (DRO) based only on source data centers its ambiguity set at the source law and ignores available target structure. To bridge this gap, we introduce a doubly-anchored DRO framework whose ambiguity set is the intersection of $φ$-divergence balls centered at the source law and a source-completed target reference law, the latter pairing the target covariate law with the source conditional law. We derive dual-induced adversarial bridge geometries for symmetric and asymmetric divergence pairings, notably introducing a Kullback--Leibler/squared-Hellinger (KL/HD) bridge. This asymmetric formulation yields a Lambert-$W$ geometry in which source-side exponential risk tilting and target-side Hellinger stabilization enter through distinct terms, attenuating, but not bounding, the effect of large likelihood ratios. Furthermore, without imposing covariate shift, we establish finite-sample generalization bounds for the minimizer of a structural, loss-agnostic density-bridge risk under bounded-overlap conditions; these bounds do not apply directly to the loss-aware DRO min--max estimator. We translate our framework into a bridge-weighted Nadaraya--Watson estimator, proving uniform consistency for the source regression function and pointwise asymptotic normality, with target recovery when the source and target regression functions coincide, as under covariate shift. Finally, an empirical evaluation on a domain-shifted Fashion-MNIST dataset illustrates the finite-sample stability of the asymmetric KL/HD bridge under severe synthetic target-covariate corruption.",
+      "authors": [
+        "David Kepplinger",
+        "Anand N. Vidyashankar"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.IT",
+        "cs.LG",
+        "math.PR",
+        "math.ST"
+      ],
+      "published": "2026-09-26T15:49:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.32730v1",
+      "tags": [
+        "keyword:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "domain adaptation via doubly-anchored distributionally robust optimization",
+      "llm_evidence_cn": "双锚定分布鲁棒优化实现域适应",
+      "llm_evidence": "双锚定分布鲁棒优化实现域适应",
+      "canonical_evidence": "双锚定分布鲁棒优化实现域适应",
+      "llm_tldr_en": "The paper proposes a doubly-anchored distributionally robust optimization framework for domain adaptation, intersecting source and source-completed target ambiguity sets and deriving KL/Hellinger bridge geometries for tighter robustness guarantees.",
+      "llm_tldr_cn": "域适应方法常缺乏最坏情况保证，而仅基于源数据的分布鲁棒优化把模糊集锚定在源分布上，忽略了可用的目标域结构。本文提出双锚定DRO框架，将模糊集设为以源分布和源补全目标参考分布为中心的两类散度球的交集，并推导出对称与非对称配对下的对偶对抗桥几何，特别是KL与平方Hellinger桥。该非对称形式给出更紧的鲁棒性保证，为跨域分布对齐提供了可迁移的理论工具。",
+      "llm_tldr": "域适应方法常缺乏最坏情况保证，而仅基于源数据的分布鲁棒优化把模糊集锚定在源分布上，忽略了可用的目标域结构。本文提出双锚定DRO框架，将模糊集设为以源分布和源补全目标参考分布为中心的两类散度球的交集，并推导出对称与非对称配对下的对偶对抗桥几何，特别是KL与平方Hellinger桥。该非对称形式给出更紧的鲁棒性保证，为跨域分布对齐提供了可迁移的理论工具。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.33716v1",
+      "source": "arxiv",
+      "title": "Revisiting Diffusion Fine-Tuning for Unsupervised Domain Adaptation",
+      "abstract": "Diffusion-based unsupervised domain adaptation (UDA) improves cross-domain transfer by generating target-specific synthetic data for downstream adaptation. Existing methods are largely designed for single-target adaptation: when a model trained on one labeled source domain must be adapted to multiple unlabeled target domains, they typically require separate diffusion fine-tuning for each source--target pair, causing training, storage, and deployment costs to grow with the number of targets. In this paper, we study multi-target data generation for diffusion-based UDA, where a single source-guided diffusion fine-tuning process is reused to generate target-specific synthetic data for multiple target domains. We propose MUSE (Multi-target UDA-oriented Synthesis with Efficient diffusion fine-tuning), a decoupled adaptation framework that separates source-supervised semantic adaptation from target-specific style adaptation. MUSE uses a shared semantic branch updated by labeled source data and target-private style branches specialized to individual target domains, enabling target-specific generation while avoiding repeated source-guided fine-tuning for each target. Experiments on standard UDA benchmarks show that MUSE achieves a stronger accuracy--efficiency trade-off than repeated per-target diffusion adaptation, reducing diffusion fine-tuning cost while improving average target-domain accuracy. The project page is available at https://xuanqi99.github.io/MUSE/.",
+      "authors": [
+        "Xuan Qi",
+        "Yi Wei",
+        "Daniele Berardini",
+        "Vito Paolo Pastore",
+        "Vittorio Murino"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-27T16:18:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.33716v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-target diffusion fine-tuning for unsupervised domain adaptation",
+      "llm_evidence_cn": "面向无监督域适应的多目标扩散微调",
+      "llm_evidence": "面向无监督域适应的多目标扩散微调",
+      "canonical_evidence": "面向无监督域适应的多目标扩散微调",
+      "llm_tldr_en": "MUSE reuses a single source-guided diffusion fine-tuning to generate target-specific synthetic data for multiple target domains in unsupervised domain adaptation, cutting training and storage costs.",
+      "llm_tldr_cn": "扩散式无监督域适应通过生成目标域合成数据提升跨域迁移，但现有方法多为单目标设定，需为每个源-目标对单独微调，导致训练、存储与部署成本随目标数量增长。本文研究面向多目标的扩散数据生成，提出MUSE方法，用一次源引导的扩散微调过程为多个目标域复用生成目标特定合成数据。该设计可显著降低适配开销，其多目标域适应机制对跨语料语音情感识别等任务具有可迁移的方法价值。",
+      "llm_tldr": "扩散式无监督域适应通过生成目标域合成数据提升跨域迁移，但现有方法多为单目标设定，需为每个源-目标对单独微调，导致训练、存储与部署成本随目标数量增长。本文研究面向多目标的扩散数据生成，提出MUSE方法，用一次源引导的扩散微调过程为多个目标域复用生成目标特定合成数据。该设计可显著降低适配开销，其多目标域适应机制对跨语料语音情感识别等任务具有可迁移的方法价值。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "date": "20261004",
+  "date_label": "",
+  "generated_at": "2026-10-04 22:40:17 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.32730v1",
+      "route": "202610/04/2609.32730v1-domain-adaptation-with-target-information-via-doubly-anchored-distributionally-robust-optimization",
+      "title": "Domain Adaptation with Target Information via Doubly-Anchored Distributionally Robust Optimization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "双锚定分布鲁棒优化实现域适应",
+      "first_seen_at": "2026-10-04 22:40:17 UTC",
+      "updated_at": "2026-10-04 22:40:17 UTC"
+    },
+    {
+      "paper_id": "2609.33716v1",
+      "route": "202610/04/2609.33716v1-revisiting-diffusion-fine-tuning-for-unsupervised-domain-adaptation",
+      "title": "Revisiting Diffusion Fine-Tuning for Unsupervised Domain Adaptation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向无监督域适应的多目标扩散微调",
+      "first_seen_at": "2026-10-04 22:40:17 UTC",
+      "updated_at": "2026-10-04 22:40:17 UTC"
+    }
+  ]
+}

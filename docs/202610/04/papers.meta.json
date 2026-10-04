@@ -1,0 +1,39 @@
+{
+  "label": "2026-10-04",
+  "date": "2026-10-04",
+  "generated_at": "2026-10-04T22:40:18",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202610/04/2609.32730v1-domain-adaptation-with-target-information-via-doubly-anchored-distributionally-robust-optimization",
+      "section": "quick",
+      "title_en": "Domain Adaptation with Target Information via Doubly-Anchored Distributionally Robust Optimization",
+      "authors": "David Kepplinger, Anand N. Vidyashankar",
+      "date": "2026-09-26",
+      "pdf": "https://arxiv.org/pdf/2609.32730v1",
+      "score": "6.0",
+      "evidence": "双锚定分布鲁棒优化实现域适应",
+      "tldr": "域适应常缺乏最坏情况保证，而仅依赖源数据的DRO以源分布为中心，忽视目标结构信息，难以利用目标协变量。本文提出双锚DRO方法，将模糊集设为源律与源补全目标参考律为中心的φ散度球交集。针对对称与非对称散度配对导出对抗桥几何，提出KL/HD桥并给出Lambert-W几何结构。理论上建立有限样本泛化界，构造桥加权Nadaraya-Watson估计，实验在Fashion-MNIST上验证非对称桥在目标协变量严重破坏下的稳定性。",
+      "tags": "query:ser-da",
+      "abstract_en": "Domain Adaptation (DA) often lacks worst-case guarantees, while Distributionally Robust Optimization (DRO) based only on source data centers its ambiguity set at the source law and ignores available target structure. To bridge this gap, we introduce a doubly-anchored DRO framework whose ambiguity set is the intersection of $φ$-divergence balls centered at the source law and a source-completed target reference law, the latter pairing the target covariate law with the source conditional law. We derive dual-induced adversarial bridge geometries for symmetric and asymmetric divergence pairings, notably introducing a Kullback--Leibler/squared-Hellinger (KL/HD) bridge. This asymmetric formulation yields a Lambert-$W$ geometry in which source-side exponential risk tilting and target-side Hellinger stabilization enter through distinct terms, attenuating, but not bounding, the effect of large likelihood ratios. Furthermore, without imposing covariate shift, we establish finite-sample generalization bounds for the minimizer of a structural, loss-agnostic density-bridge risk under bounded-overlap conditions; these bounds do not apply directly to the loss-aware DRO min--max estimator. We translate our framework into a bridge-weighted Nadaraya--Watson estimator, proving uniform consistency for the source regression function and pointwise asymptotic normality, with target recovery when the source and target regression functions coincide, as under covariate shift. Finally, an empirical evaluation on a domain-shifted Fashion-MNIST dataset illustrates the finite-sample stability of the asymmetric KL/HD bridge under severe synthetic target-covariate corruption.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/04/2609.33716v1-revisiting-diffusion-fine-tuning-for-unsupervised-domain-adaptation",
+      "section": "quick",
+      "title_en": "Revisiting Diffusion Fine-Tuning for Unsupervised Domain Adaptation",
+      "authors": "Xuan Qi, Yi Wei, Daniele Berardini, Vito Paolo Pastore, Vittorio Murino",
+      "date": "2026-09-27",
+      "pdf": "https://arxiv.org/pdf/2609.33716v1",
+      "score": "6.0",
+      "evidence": "面向无监督域适应的多目标扩散微调",
+      "tldr": "现有基于扩散的UDA多面向单目标，每个源-目标对都需单独微调，训练、存储与部署成本随目标数增长。MUSE将源监督语义适应与目标特有风格适应解耦，用共享语义分支和目标私有风格分支实现单次源引导微调生成多目标合成数据。在标准UDA基准上，MUSE以更低扩散微调开销取得更优平均目标域精度，改善精度-效率权衡并降低多目标适配成本。",
+      "tags": "query:ser-da",
+      "abstract_en": "Diffusion-based unsupervised domain adaptation (UDA) improves cross-domain transfer by generating target-specific synthetic data for downstream adaptation. Existing methods are largely designed for single-target adaptation: when a model trained on one labeled source domain must be adapted to multiple unlabeled target domains, they typically require separate diffusion fine-tuning for each source--target pair, causing training, storage, and deployment costs to grow with the number of targets. In this paper, we study multi-target data generation for diffusion-based UDA, where a single source-guided diffusion fine-tuning process is reused to generate target-specific synthetic data for multiple target domains. We propose MUSE (Multi-target UDA-oriented Synthesis with Efficient diffusion fine-tuning), a decoupled adaptation framework that separates source-supervised semantic adaptation from target-specific style adaptation. MUSE uses a shared semantic branch updated by labeled source data and target-private style branches specialized to individual target domains, enabling target-specific generation while avoiding repeated source-guided fine-tuning for each target. Experiments on standard UDA benchmarks show that MUSE achieves a stronger accuracy--efficiency trade-off than repeated per-target diffusion adaptation, reducing diffusion fine-tuning cost while improving average target-domain accuracy. The project page is available at https://xuanqi99.github.io/MUSE/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
