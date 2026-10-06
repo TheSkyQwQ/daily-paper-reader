@@ -51,14 +51,14 @@
       <span class="dpr-home-dashboard-kicker">2026-10-06</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>6</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-06 00:25:42 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-06 23:28:54 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-10-06 日报：今日无精读，速读 4 篇，主题集中在噪声环境下的多类语音分类，以及大型音频语言模型的能力组合与轻量监督。</p>
-<p>最值得看的是 7.0 分的《Multiclass Speech Classification Under Noise Disparity》，讲噪声差异下的语音分类；两篇 6.0 分论文则分别诊断大型音频语言模型的&quot;组合性缺口&quot;，以及用单 token 监督让冻结 LLM 不依赖转录也能&quot;听见&quot;更多信息。</p>
-<p>给普通读者的建议：先看噪声语音分类那篇了解鲁棒性思路，另两篇可当作音频-语言模型评测与低成本适配的参考。</p>
+<p>2026-10-06 日报速读 6 篇语音方向论文，精读 0 篇，重点关注噪声差异下的多类语音分类。最值得看的是《Multiclass Speech Classification Under Noise Disparity》（7.0/10），以及共情的结构化语音对话推理与 vMF 无标签说话人嵌入增强两条 6.0 分思路。普通读者可先读 7 分那篇了解噪声鲁棒性，再按兴趣选读对话共情或说话人嵌入方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -93,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Multiclass Speech Classification Under Noise Disparity">Multiclass Speech Classification Under Noise Disparity</span></li><li><span class="dpr-home-dashboard-paper-title" title="When Capabilities Fail to Compose: Diagnosing the Compositionality Gap in Large Audio-Language Models">When Capabilities Fail to Compose: Diagnosing the Compositionality Gap in Large Audio-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript">Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Multiclass Speech Classification Under Noise Disparity">Multiclass Speech Classification Under Noise Disparity</span></li><li><span class="dpr-home-dashboard-paper-title" title="EchoChat: Structured Cognitive Reasoning in Empathetic Spoken Dialogue">EchoChat: Structured Cognitive Reasoning in Empathetic Spoken Dialogue</span></li><li><span class="dpr-home-dashboard-paper-title" title="Revisiting Label-Free Speaker Embedding Enhancement with vMF Profile Likelihood">Revisiting Label-Free Speaker Embedding Enhancement with vMF Profile Likelihood</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>6</strong></span></div>
 </section>
 </div>
 

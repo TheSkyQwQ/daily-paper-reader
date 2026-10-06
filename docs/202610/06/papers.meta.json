@@ -1,8 +1,8 @@
 {
   "label": "2026-10-06",
   "date": "2026-10-06",
-  "generated_at": "2026-10-06T00:25:45",
-  "count": 4,
+  "generated_at": "2026-10-06T23:28:56",
+  "count": 6,
   "papers": [
     {
       "paper_id": "202610/06/2610.03381v1-multiclass-speech-classification-under-noise-disparity",
@@ -16,6 +16,36 @@
       "tldr": "多类语音分类中，不同类别常与特定噪声条件共同出现，分类器可能利用这种噪声差异进行捷径学习。为此，作者在二分类工作基础上提出多类交叉增强：让每个类别接触其他类别的噪声特征，以切断噪声条件与类别标签的关联。在多类情感识别实验中，该方法在多个信噪比下有效缓解噪声差异，而将语音增强作为预处理反而降低模型性能，说明应抑制噪声捷径而非直接去噪。",
       "tags": "query:ser-da",
       "abstract_en": "We investigate noise disparity in multi-class speech classification tasks and develop a strategy to prevent classifiers from exploiting class-dependent noise characteristics. Building on our previous work for binary classification, we introduce a multi-class cross-augmentation scheme that exposes each class to the noise characteristics of the other classes, thereby removing the association between individual noise conditions and class labels. We compare this training-based approach with speech enhancement (SE) as a preprocessing strategy, which aims to suppress noise-related cues directly from the input. Experiments on multi-class emotion recognition show that cross-augmentation effectively mitigates the effect of noise disparity across a range of signal-to-noise-ratios, while SE has a detrimental effect on model performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/06/2610.04826v1-echochat-structured-cognitive-reasoning-in-empathetic-spoken-dialogue",
+      "section": "quick",
+      "title_en": "EchoChat: Structured Cognitive Reasoning in Empathetic Spoken Dialogue",
+      "authors": "Dingdong Wang, Shujie Liu, Yayue Deng, Yuxuan Hu, Yunrui Cai, Jincenzi Wu, Jianwei Yu, Jinyu Li, Helen Meng",
+      "date": "2026-10-04",
+      "pdf": "https://arxiv.org/pdf/2610.04826v1",
+      "score": "6.0",
+      "evidence": "基于语音大模型的共情对话，涉及情感识别",
+      "tldr": "现有 SpeechLLM 把共情对话当作直接映射，回应虽温暖却缺乏情感深度，且多阶段推理误差会级联传播。EchoChat 将其重构为感知、心理状态推理与回应生成的结构化认知推理，并构建 EchoDialogue-400K，引入 Acoustic-Anchored Attention 和阶段感知的 Step-Decomposed Credit Assignment。实验表明其在感知、推理和回应对齐上达 SOTA，并发布 EchoEval 专家基准。",
+      "tags": "query:ser-da",
+      "abstract_en": "Empathetic spoken dialogue is a sophisticated cognitive process that requires not only recognizing emotions but also inferring a user's latent mental states to provide appropriate support. However, current SpeechLLMs often treat empathy as a direct input-to-response mapping, leading to \"superficially warm\" but emotionally hollow interactions. In addition, since empathy relies on a multi-stage process with strong inter-step dependency, errors at any intermediate step can cascade through subsequent steps and lead to inappropriate responses, while existing training paradigms lack mechanisms to precisely localize and improve such errors. In this work, we propose EchoChat, a unified framework that reformulates empathetic spoken dialogue as a structured cognitive reasoning process integrating perception, mental-state reasoning, and response generation. To support this paradigm, we first construct EchoDialogue-400K, an acoustically rich dataset for multi-stage empathetic supervision. During the SFT stage, we strengthen acoustic grounding through proposed Acoustic-Anchored Attention (AAA). During the RL stage, we further introduce a novel stage-aware optimization objective with Step-Decomposed Credit Assignment (SDCA) to localize reasoning errors and mitigate cascaded error propagation. In addition, we introduce EchoEval, an expert-annotated benchmark for multi-dimensional empathy evaluation. Extensive experiments demonstrate that EchoChat achieves state-of-the-art performance in perception, reasoning, and response alignment. Project page: https://github.com/dingdongwang/EchoChat",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/06/2610.06691v1-revisiting-label-free-speaker-embedding-enhancement-with-vmf-profile-likelihood",
+      "section": "quick",
+      "title_en": "Revisiting Label-Free Speaker Embedding Enhancement with vMF Profile Likelihood",
+      "authors": "Seunghwan Kim, Jinyong Kim, Sooyoung Yang, Youngjin Ko, Myungjoo Kang",
+      "date": "2026-10-05",
+      "pdf": "https://arxiv.org/pdf/2610.06691v1",
+      "score": "6.0",
+      "evidence": "声学失配下单位超球面的vMF嵌入增强",
+      "tldr": "说话人确认在声学失配下性能下降，无标签嵌入增强可在不修改冻结主干的前提下改善表现。该工作重新审视这一设定，将干净目标视为单位超球面上的匹配问题，用 von Mises-Fisher 似然建模并剖分出样本级浓度参数，得到形式简单且带自适应权重的闭式目标。在 VoxCeleb1、VoxSRC23、CN-Celeb、VOiCES 与 VC-Mix 上，方法基本保持基线，并在困难失配集上取得更清晰增益。结果表明，有效的无标签嵌入增强未必需要高度结构化的建模。",
+      "tags": "query:ser-da",
+      "abstract_en": "Embedding enhancement improves speaker verification under acoustic mismatch without modifying a frozen backbone. Recent work has established a practical label-free setting for this task, but often adopts increasingly structured formulations. Here, the clean target is directly observed during training, making enhancement a matching problem on the unit hypersphere. We model the clean target with a von Mises--Fisher (vMF) likelihood and profile out a sample-wise concentration parameter, yielding a simple closed-form objective with adaptive weighting. Across VoxCeleb1, VoxSRC23, CN-Celeb, VOiCES, and VC-Mix, the proposed method largely preserves the baseline and gives clearer gains on challenging mismatch sets. It also remains stable under a broad single-view recipe, where a recent diffusion baseline becomes less reliable in controlled comparisons. These results suggest that effective label-free embedding enhancement in this setting does not require a highly structured formulation.",
       "source": "arxiv",
       "selection_source": "fresh_fetch"
     },
