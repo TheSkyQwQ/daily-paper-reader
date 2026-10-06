@@ -1,0 +1,73 @@
+{
+  "date": "20261006",
+  "date_label": "",
+  "generated_at": "2026-10-06 00:25:42 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2610.03381v1",
+      "route": "202610/06/2610.03381v1-multiclass-speech-classification-under-noise-disparity",
+      "title": "Multiclass Speech Classification Under Noise Disparity",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "多类情感识别中的噪声差异缓解",
+      "first_seen_at": "2026-10-06 00:25:42 UTC",
+      "updated_at": "2026-10-06 00:25:42 UTC"
+    },
+    {
+      "paper_id": "2609.36921v1",
+      "route": "202610/06/2609.36921v1-when-capabilities-fail-to-compose-diagnosing-the-compositionality-gap-in-large-audio-language-models",
+      "title": "When Capabilities Fail to Compose: Diagnosing the Compositionality Gap in Large Audio-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "含情感线索的大型音频语言模型组合性诊断",
+      "first_seen_at": "2026-10-06 00:25:42 UTC",
+      "updated_at": "2026-10-06 00:25:42 UTC"
+    },
+    {
+      "paper_id": "2610.02638v1",
+      "route": "202610/06/2610.02638v1-batched-speech-decisions-without-decoding-single-token-supervision-lets-a-frozen-llm-hear-beyond-the-transcript",
+      "title": "Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "冻结大模型不解码直接识别语音情感",
+      "first_seen_at": "2026-10-06 00:25:42 UTC",
+      "updated_at": "2026-10-06 00:25:42 UTC"
+    },
+    {
+      "paper_id": "2610.03125v1",
+      "route": "202610/06/2610.03125v1-parageo-decomposing-paralinguistic-variation-into-a-shared-latent-geometry",
+      "title": "ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "在冻结语音语言模型中分解副语言变化",
+      "first_seen_at": "2026-10-06 00:25:42 UTC",
+      "updated_at": "2026-10-06 00:25:42 UTC"
+    }
+  ]
+}

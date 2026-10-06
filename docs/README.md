@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-04</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-06</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-04 22:40:17 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-06 00:25:42 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读两篇域适应论文，均获6.0分，暂无精读。两篇分别用双重锚定分布鲁棒优化引入目标信息、以及重新审视扩散微调做无监督域适应，值得关注域适应与扩散模型交叉方向。普通读者可先浏览这两篇摘要，判断是否需精读或跟进其方法。</p>
+<p>2026-10-06 日报：今日无精读，速读 4 篇，主题集中在噪声环境下的多类语音分类，以及大型音频语言模型的能力组合与轻量监督。</p>
+<p>最值得看的是 7.0 分的《Multiclass Speech Classification Under Noise Disparity》，讲噪声差异下的语音分类；两篇 6.0 分论文则分别诊断大型音频语言模型的&quot;组合性缺口&quot;，以及用单 token 监督让冻结 LLM 不依赖转录也能&quot;听见&quot;更多信息。</p>
+<p>给普通读者的建议：先看噪声语音分类那篇了解鲁棒性思路，另两篇可当作音频-语言模型评测与低成本适配的参考。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -91,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Domain Adaptation with Target Information via Doubly-Anchored Distributionally Robust Optimization">Domain Adaptation with Target Information via Doubly-Anchored Distributionally Robust Optimization</span></li><li><span class="dpr-home-dashboard-paper-title" title="Revisiting Diffusion Fine-Tuning for Unsupervised Domain Adaptation">Revisiting Diffusion Fine-Tuning for Unsupervised Domain Adaptation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Multiclass Speech Classification Under Noise Disparity">Multiclass Speech Classification Under Noise Disparity</span></li><li><span class="dpr-home-dashboard-paper-title" title="When Capabilities Fail to Compose: Diagnosing the Compositionality Gap in Large Audio-Language Models">When Capabilities Fail to Compose: Diagnosing the Compositionality Gap in Large Audio-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript">Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>4</strong></span></div>
 </section>
 </div>
 

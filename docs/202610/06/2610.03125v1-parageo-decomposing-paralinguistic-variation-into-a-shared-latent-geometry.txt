@@ -1,0 +1,2218 @@
+PARAGEO: DECOMPOSING PARALINGUISTIC VARIATION INTO A SHARED LATENT
+GEOMETRY
+Yuhan Liu1, Yuxuan Ou2, Ruoxi Su3, Mohamed Ahmed Zaki1, Yunbo Long1 ∗
+1Department of Engineering, University of Cambridge
+2Department of Engineering Science, University of Oxford
+3Department of Computing & Software Systems, University of Washington Bothell
+ABSTRACT
+Speech delivery varies with both the requested paralin-
+guistic attribute and the linguistic content.
+We introduce
+ParaGeo, a matched-content decomposition of paralinguistic
+variation in a frozen speech language model. Synthesized au-
+dio tokens are replayed with a fixed listening prompt; pooled
+key/value (K/V) representations are centered and projected
+into a shared low-dimensional space.
+Our GLM-4-Voice
+probe spans 80 requested controls from 12 benchmark fami-
+lies across eight sentences. With a globally fitted calibration
+basis, content-held-out centroid accuracy is 9.49% versus a
+1.25% permutation baseline; same-label cross-content co-
+sine similarity is 0.285 versus 0.017, and both conditional
+permutation tests yield p = 0.001. A separate ten-scenario,
+six-style probe reveals reproducible contrast directions across
+scenarios. Static, additive, and temporal interventions pro-
+duce attribute-, layer-, and schedule-dependent response
+profiles. These results provide a shared coordinate represen-
+tation for measuring paralinguistic structure and an empirical
+starting point for latent speech control. Code is available at
+https://github.com/yuhanlydia/ParaGeo.
+Index Terms— paralinguistic representation, latent ge-
+ometry, speech language models, speech control
+1. INTRODUCTION
+A sentence can be spoken with high pitch, slow pace, warm
+attitude, or hesitant delivery. Expressive speech therefore re-
+quires controlling delivery while preserving the lexical mes-
+sage. Learned style tokens, reference-conditioned prosody
+transfer, and information bottlenecks provide reusable speech
+factors [1, 2, 3]. Semantic–acoustic token hierarchies [4] and
+speech-native dialogue models [5, 6] bring this question to
+speech language models. We ask: which changes in vocal
+delivery recur across contexts, and how can heterogeneous
+attributes be described in a shared coordinate system?
+In a ten-scenario debt-negotiation probe, six requested
+styles yield reproducible key/value (K/V) differences (Fig. 1).
+∗Corresponding author
+Fig. 1. Vocal-style changes recur across contexts. Each cell
+measures the cross-scenario consistency of the same style-
+difference direction, rather than similarity between styles. Re-
+sults use ten CRAD scenarios and two seeds. All 15 unique
+contrasts pass Benjamini–Hochberg correction at a false dis-
+covery rate of 0.05.
+We therefore construct a broader probe of 80 controls from
+12 SpeechParaling-Bench families [7], crossed with eight
+common sentences.
+The resulting 16-dimensional coordi-
+nates yield a label-decoding accuracy of 9.49% versus a
+permutation baseline of 1.25%.
+Activation Addition and Contrastive Activation Addition
+construct behavior directions [8, 9]; the linear representation
+hypothesis links probing and steering geometry [10].
+Ex-
+pressive TTS methods either steer activations [11, 12, 13]
+or combine weight-space changes [14, 15].
+Emo-FiLM
+learns word-level modulation [16], while DisCo-Speech
+learns a content/prosody/timbre codec decomposition [17].
+CoCoEmo and subsequent geometric analyses examine emo-
+tion composition and steering sites [13, 18]. We focus on
+a shared projection across heterogeneous request families in
+This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version
+may no longer be accessible.
+arXiv:2610.03125v1  [cs.SD]  2 Oct 2026
+
+
+Fig. 2. ParaGeo overview. Matched-content renditions are synthesized and replayed through the frozen speech model. Audio-
+position K/V pooling, within-content centering, low-rank decomposition, and a content-associated projection yield shared co-
+ordinates. Static, additive, and temporal updates reuse the same basis. The diagram and waveforms are schematic.
+the replay-conditioned K/V representations of a frozen speech
+model. ParaGeo contributes (i) cross-content evidence for
+requested paralinguistic structure, (ii) a frozen-model de-
+composition into shared low-dimensional coordinates, and
+(iii) measurements of alignment–discrimination and control–
+fidelity trade-offs. We compare static, additive, and temporal
+updates on the same fitted projection.
+2. PARAGEO
+2.1. Matched-content acquisition and decomposition
+For a sentence x and a requested attribute a, we synthesize
+one rendition, verify that its emitted text matches x, and re-
+play its audio tokens through the same frozen model (Fig. 2).
+All replays use the same prompt: “Listen to the speech and
+represent how it is spoken. Focus on paralinguistic deliv-
+ery and ignore lexical content.” We do not append the re-
+quest label separately. At the output of each selected fused
+QKV projection before attention, we average K and V sepa-
+rately over audio-token positions and concatenate the layer-
+wise summaries into h(x, a) ∈Rd.
+For the retained label set Ax of each sentence, define
+µx =
+1
+|Ax|
+X
+a∈Ax
+h(x, a),
+eh(x, a) = h(x, a) −µx. (1)
+Stacking the residuals yields H ∈RN×d. A truncated SVD
+of H gives H ≈UrΣrV ⊤
+r , with Br = Vr ∈Rd×r. Center-
+ing removes additive sentence offsets, and the SVD captures
+shared residual variation without preference labels or speech-
+model training.
+2.2. Shared projection and coordinate operations
+We separately obtain an orthonormal reference S from an
+SVD of the centered sentence means.
+We residualize Br
+against S and average the residuals for each label:
+B⊥= orth[(I −SS⊤)Br],
+pa =
+1
+|Xa|
+X
+x∈Xa
+eh(x, a), (2)
+where Xa denotes the retained sentences for label a. Then
+ca = B⊤
+⊥pa,
+da = B⊥ca = P⊥pa.
+(3)
+Here P⊥= B⊥B⊤
+⊥.
+Unlike target-supervised removal in
+INLP or LEACE [19, 20], S is estimated from sentence means
+rather than labels. The resulting projection provides a measur-
+able content proxy; representation similarity and intervention
+effects are distinct quantities [21, 22].
+For concatenated generation-time K/V projections qt,
+static steering adds αda to qt. For a combination C, we use
+q′
+t = qt + αB⊥
+X
+a∈C
+ca = qt + αP⊥
+X
+a∈C
+pa.
+(4)
+Thus, coordinate addition applies the common projector to the
+sum of independently calibrated prototypes. For a transition
+a →b, we use
+ct = (1 −λt)ca + λtcb,
+q′
+t = qt + αB⊥ct.
+(5)
+The gradual coefficient is λt = min(t/191, 1); the sudden
+schedule switches at pass 96. After 192 forward passes, the
+endpoint is held. The index follows interleaved text/audio
+generation rather than waveform time.
+
+
+3. EXPERIMENTAL SETUP
+Model and calibration. We use GLM-4-Voice-9B [5] with
+int4/NF4 weights, temperature 0.8, top-p 0.8, and at most 768
+generated tokens. Our probe crosses 80 benchmark-derived
+requests with eight fixed sentences, yielding 640 requested
+pairs and 590 retained representations after text matching
+and audio-token availability checks. This is a requested-label
+probe rather than an official recognition benchmark.
+Fea-
+tures are extracted from layers {16, 20, 24, 28, 32, 36} with
+rank 16. The content reference retains eight SVD columns,
+although eight centered means span at most seven nonzero-
+variance directions.
+Representation tests. A cosine nearest-centroid classifier
+predicts one of 80 exact labels, using seven sentences to form
+centroids and the remaining sentence for testing. The basis
+and unlabeled within-sentence centering use all calibration
+features, making this a fixed-basis, content-held-out centroid
+probe [23]. We also measure same-label cross-content cosine
+similarity and raw-SVD explained variance. For 1,000 condi-
+tional permutations, labels are independently shuffled within
+each sentence; p = (1 + b)/1001, where b is the number of
+null statistics at least as large as the observed value [24]. The
+separate six-style discovery uses all 126 overlapping balanced
+5/5 scenario splits, bidirectional evaluation, and Benjamini–
+Hochberg FDR across 15 style contrasts [25]; these splits are
+not independent replications.
+Generation and controls.
+Catalog-covered English
+SpeechParaling inputs use the waveform path and model-
+based pairwise evaluation protocol of SpeechParaling. Devel-
+opment uses positions 0, 5, 10, . . . in the eligible-item list; all
+other positions are held out. We select α ∈{0.25, 0.5, 1, 1.5}
+by maximizing development preference subject to a prespec-
+ified two-percentage-point text-WER tolerance (∆WER ≤
+0.02), breaking ties toward smaller scales.
+Static steering
+selects α = 0.5. Composition uses α = 0.25 exploratorily
+because no scale satisfies the tolerance; dynamic steering
+uses α = 0.25 exploratorily because the selected scale 1.5 is
+incomplete. Evaluation sets contain 168 static, 38 composi-
+tion, and 60 dynamic items; ablations use the first 24 held-out
+items in benchmark-index order.
+The reference is matched prompt-only generation. Full-
+space composition sums the same prototypes and matches the
+global norm of the projected vector. A Gaussian unit direc-
+tion provides norm-matched controls; its orientation is fixed
+per dynamic item, while its norm follows the target schedule.
+Judgments are scored as 1 for a win, 0.5 for a tie, and 0 for a
+loss; scores are first averaged within an item and then across
+items. A preference score of 50 denotes parity. Nominal 95%
+intervals are computed using 10,000 item-level bootstrap re-
+samples [26]. A balanced extension reuses 180 ParaGeo out-
+puts (18 labels, ten inputs each) against five direction-control
+seeds; these are not 900 independent inputs.
+Table 1. Representation measurements on 590 records.
+Both rows are centered within sentence. Accuracy predicts
+the exact requested label; cosine compares the same label
+across sentences.
+Representation
+80-way accuracy
+Cosine
+Centered full K/V
+11.69%
+0.152
+Projected 16-D coordinates
+9.49%
+0.285
+4. RESULTS AND ANALYSIS
+4.1. Cross-context structure and compact representation
+The discovery study (Fig. 1) yields a median six-style accu-
+racy of 85.0% with audio-token averaging, compared with
+52.92% for the last audio token and 16.7% chance. All 15
+style contrasts pass Benjamini–Hochberg FDR at 0.05. Mean
+cross-scenario consistency is 0.498; firm–hesitant reaches
+0.803, compared with 0.137 for calm–neutral. The repeatabil-
+ity of the same style change motivates both pooled acquisition
+and shared-coordinate analysis.
+Table 1 separates discrimination from alignment.
+Pro-
+jected decoding gives 56 correct labels, versus 69 in full
+space.
+Accuracy is 9.49% against a permutation mean of
+1.247%; cosine is 0.285 against 0.017.
+Both tests yield
+p = 1/1001.
+The raw rank-16 SVD captures 61.76% of
+residual variance. Projection raises same-label cosine by a
+factor of 1.88 while reducing exact-label accuracy by 2.20
+points: agreement within labels and separation between labels
+measure different properties of the shared geometry.
+4.2. Layer, rank, and schedule responses
+Table 2 compares all 11 dynamic configurations using the
+same control and fidelity metrics.
+Middle-layer steering
+achieves the highest preference estimate, 68.75 [56.25,81.25],
+with ∆WER = −0.0060. Static middle-layer preference is
+64.58 [50.00,79.17], compared with 60.42 for all layers.
+Layer groups are defined as early {16, 20}, middle {24, 28},
+and late {32, 36}. Because masking also changes perturbation
+energy, these results are exploratory operating configurations
+rather than an energy-matched localization test.
+Dynamic preference is nonmonotone in rank. The all-
+layer schedule scores 54.17, compared with 56.25 for the
+static start coordinate. These nominal comparisons separate
+the recovered representation from its injection operator.
+4.3. Attribute-specific response and projection trade-offs
+The complete balanced matrix (Fig. 3) exposes substantial
+heterogeneity. Tired and polite average 71 and 64 against the
+five controls, with minima of 65 and 55. Teasing averages 65,
+with four above-parity cells and one tie. All 18 attributes are
+shown: the pooled direct preference is 51.50 [45.39,57.56],
+
+
+Tired
+Teasing
+Polite
+Sarcastic
+Enthusiastic
+Confident
+Doubting
+Confused
+Rude
+Anxious
+Helpless
+Sincere
+Nervous
+Hesitant
+Cold
+Perfunctory
+Curious
+Contemptuous
+S1
+S2
+S3
+S4
+S5
+Mean
+Min
+>50
+70
+50
+60
+60
+55
+65
+40
+35
+40
+70
+60
+40
+40
+50
+35
+40
+45
+35
+70
+65
+75
+65
+40
+60
+60
+55
+45
+20
+60
+55
+65
+60
+55
+30
+45
+30
+70
+70
+55
+35
+50
+50
+65
+65
+45
+50
+60
+55
+75
+20
+10
+45
+30
+35
+80
+65
+55
+80
+70
+35
+50
+55
+60
+65
+45
+35
+15
+40
+50
+30
+30
+50
+65
+75
+75
+70
+80
+65
+60
+60
+65
+50
+25
+55
+45
+45
+55
+45
+40
+20
+71
+65
+64
+62
+59
+55
+55
+54
+51
+51
+50
+48
+48
+43
+41
+38
+38
+34
+65
+50
+55
+35
+40
+35
+40
+35
+40
+20
+25
+35
+15
+20
+10
+30
+30
+20
+5
+4
+5
+4
+3
+3
+3
+4
+2
+2
+3
+3
+2
+1
+2
+0
+0
+0
+Fig. 3. Attribute-specific responses across five direction controls. Columns show all 18 attributes, ordered by mean; S1–S5
+denote the five random-direction comparison seeds. Each column reuses ten inputs and the same ParaGeo outputs. Cells report
+direct preference; summaries are mean, minimum, and count above 50. The pooled preference is 51.50 [45.39,57.56].
+Table 2. Dynamic control and text fidelity. Fixed 24-item
+subset; preference against prompt-only (50 = parity), nomi-
+nal 95% bootstrap CIs, and absolute change in text-channel
+WER.
+Configuration
+Pref.↑
+95% CI
+∆WER↓
+All layers (r = 16) 54.17 [37.50,70.83]
++0.0055
+w/o content proj.
+43.75 [27.08,60.42]
++0.0021
+Rank 4
+58.33 [41.67,75.00]
+0.0000
+Rank 8
+54.17 [37.50,70.83]
++0.0108
+Rank 32
+47.92 [31.25,64.58]
++0.0021
+Early layers
+60.42 [45.83,75.00]
++0.0160
+Middle layers
+68.75 [56.25,81.25] −0.0060
+Late layers
+60.42 [45.83,75.00]
+0.0000
+Start only
+56.25 [39.58,70.83]
++0.0010
+End only
+47.92 [31.25,66.67]
++0.0327
+Midpoint only
+45.83 [29.17,62.50]
+0.0000
+and three of five seed-level estimates exceed 50. The high-
+lighted labels are descriptive patterns, not independent confir-
+mations of a general control gain. On 38 exploratory compo-
+sition inputs, norm-matched low-rank updates yield 45.67%
+text-channel WER, which is 4.61 points below full-space ad-
+dition (50.28%) but 6.88 points above prompt-only (38.79%).
+Direct preference for the projection over full-space addition
+is 42.98 [34.87,51.10]. Thus, the reduced text disturbance
+of the projection comes with a measurable control–fidelity
+trade-off. At the full-task level, static ParaGeo scores 55.36
+[49.11,61.61] against prompt-only, while the direction con-
+trol scores 55.95. Exploratory composition and dynamic pref-
+erences are 45.39 [36.18,54.82] and 51.67 [40.00,63.33], re-
+spectively. Table 3 reports the six families in the 60-item dy-
+namic set, which is distinct from the 18-label static extension.
+Pace achieves a preference score of 75 over 12 inputs without
+family-specific tuning.
+Table 3.
+Dynamic family profiles.
+All 60 inputs at ex-
+ploratory α = 0.25; preference against prompt-only.
+Family
+Inputs
+Preference
+Emotion
+12
+54.17
+Pace
+12
+75.00
+Pitch
+12
+45.83
+Rhythm
+12
+37.50
+Timbre
+4
+62.50
+Volume
+8
+37.50
+5. CONCLUSION
+We identified recurring paralinguistic structure in GLM-4-
+Voice and introduced ParaGeo to represent it in shared coor-
+dinates. Cross-scenario contrasts, fixed-basis centroid probes,
+and conditional permutation tests support this structure. The
+projection increases same-label alignment while reducing
+fine-grained discrimination; generation tests reveal attribute-,
+layer-, and schedule-dependent responses.
+A shared basis
+makes vocal delivery an explicit object for comparison and
+editing, as attributes, combinations, and temporal paths reuse
+the same coordinates without updating the model. This pro-
+vides an empirical starting point for latent speech control by
+separating the representation of delivery from its generation-
+time application. Future work will target training-only basis
+fitting, cross-model replication, and listener validation.
+
+
+REFERENCES
+[1] Y. Wang et al., “Style tokens: Unsupervised style modeling,
+control and transfer in end-to-end speech synthesis,” in Proc.
+ICML, 2018, pp. 5180–5189.
+[2] R. J. Skerry-Ryan et al., “Towards end-to-end prosody transfer
+for expressive speech synthesis with tacotron,” in Proc. ICML,
+2018, pp. 4693–4702.
+[3] K. Qian, Y. Zhang, S. Chang, M. Hasegawa-Johnson, and
+D. Cox,
+“Unsupervised speech decomposition via triple in-
+formation bottleneck,” in Proc. ICML, 2020, pp. 7836–7846.
+[4] X. Zhang, D. Zhang, S. Li, Y. Zhou, and X. Qiu, “Speech-
+Tokenizer: Unified speech tokenizer for speech large language
+models,” in Proc. ICLR, 2024.
+[5] A. Zeng et al., “GLM-4-Voice: Towards intelligent and human-
+like end-to-end spoken chatbot,” arXiv:2412.02612, 2024.
+[6] A. D´efossez et al., “Moshi: A speech-text foundation model
+for real-time dialogue,” arXiv:2410.00037, 2024.
+[7] R. Liu et al.,
+“SpeechParaling-Bench:
+A comprehen-
+sive benchmark for paralinguistic-aware speech generation,”
+arXiv:2604.20842, 2026.
+[8] A. M. Turner et al., “Steering language models with activation
+engineering,” arXiv:2308.10248, 2023.
+[9] N. Rimsky, N. Gabrieli, J. Schulz, M. Tong, E. Hubinger, and
+A. Turner, “Steering Llama 2 via contrastive activation addi-
+tion,” in Proc. ACL, 2024, pp. 15504–15522.
+[10] K. Park, Y. J. Choe, and V. Veitch, “The linear representation
+hypothesis and the geometry of large language models,”
+in
+Proc. ICML, 2024.
+[11] T. Xie, S. Yang, C. Li, D. Yu, and L. Liu,
+“EmoSteer-
+TTS: Fine-grained and training-free emotion-controllable text-
+to-speech via activation steering,” arXiv:2508.03543, 2025.
+[12] L. Zhou, H. Jiang, J. Li, T. Wang, and H. Li,
+“EmoShift:
+Lightweight activation steering for enhanced emotion-aware
+speech synthesis,” arXiv:2601.22873, 2026.
+[13] S. Wang et al.,
+“CoCoEmo:
+Composable and control-
+lable human-like emotional TTS via activation steering,”
+arXiv:2602.03420, 2026.
+[14] P. Kalyan, P. Rao, P. Jyothi, and P. Bhattacharyya, “Emotion
+arithmetic: Emotional speech synthesis via weight space inter-
+polation,” in Proc. Interspeech, 2024, pp. 1805–1809.
+[15] P. Feng et al., “Task Vector in TTS: Toward emotionally ex-
+pressive dialectal speech synthesis,” arXiv:2512.18699, 2025.
+[16] S. Wang, A. Chen, and T. Zhao,
+“Beyond global emotion:
+Fine-grained emotional speech synthesis with dynamic word-
+level modulation,” arXiv:2509.20378, 2025.
+[17] T. Li et al.,
+“DisCo-Speech: Controllable zero-shot speech
+generation with a disentangled speech codec,” in Proc. ACL,
+2026, pp. 18917–18931.
+[18] S. Wang, J. Bailey, and T. Dang,
+“A geometric perspective
+on composable emotion steering in text-to-speech models,”
+arXiv:2607.00946, 2026.
+[19] S. Ravfogel, Y. Elazar, H. Gonen, M. Twiton, and Y. Gold-
+berg, “Null it out: Guarding protected attributes by iterative
+nullspace projection,” in Proc. ACL, 2020, pp. 7237–7256.
+[20] N. Belrose, D. Schneider-Joseph, S. Ravfogel, R. Cotterell,
+E. Raff, and S. Biderman,
+“LEACE: Perfect linear concept
+erasure in closed form,” in Advances in Neural Information
+Processing Systems, 2023, vol. 36.
+[21] Y. Elazar, S. Ravfogel, A. Jacovi, and Y. Goldberg, “Amnesic
+probing: Behavioral explanation with amnesic counterfactu-
+als,”
+Trans. Assoc. Comput. Linguist., vol. 9, pp. 160–175,
+2021.
+[22] A. Dobrzeniecka, A. Fokkens, and P. Sommerauer, “Improving
+causal interventions in amnesic probing with mean projection
+or LEACE,” in Findings of ACL, 2025, pp. 12981–12993.
+[23] J. Hewitt and P. Liang,
+“Designing and interpreting probes
+with control tasks,” in Proc. EMNLP-IJCNLP, 2019, pp. 2733–
+2743.
+[24] B. Phipson and G. K. Smyth, “Permutation p-values should
+never be zero: Calculating exact p-values when permutations
+are randomly drawn,” Stat. Appl. Genet. Mol. Biol., vol. 9, no.
+1, 2010, Article 39.
+[25] Y. Benjamini and Y. Hochberg, “Controlling the false discov-
+ery rate: A practical and powerful approach to multiple test-
+ing,” J. R. Stat. Soc. B (Methodol.), vol. 57, no. 1, pp. 289–300,
+1995.
+[26] R. Dror, G. Baumer, S. Shlomov, and R. Reichart, “The hitch-
+hiker’s guide to testing statistical significance in natural lan-
+guage processing,” in Proc. ACL, 2018, pp. 1383–1392.
+6. FUNDING ACKNOWLEDGMENTS
+No funding was received for conducting this study. The au-
+thors have no relevant financial or nonfinancial interests to
+disclose.
+7. COMPLIANCE WITH ETHICAL STANDARDS
+This is a study using public datasets for which no ethical ap-
+proval was required.
+
+
+A. EXTENDED RESULTS
+A.1. A shared representation with measured intervention
+responses
+ParaGeo makes a heterogeneous set of vocal requests compa-
+rable within one frozen speech model. The central object is
+a common projection of replay-conditioned K/V representa-
+tions. An attribute, a combination of attributes, and a tempo-
+ral transition can all be expressed with that projection. The
+extended results answer two connected questions: whether
+requested delivery has recurring structure across lexical con-
+texts, and how updates constructed from that structure affect
+generation. Keeping those questions explicit makes the favor-
+able results interpretable without requiring every intervention
+to improve the aggregate benchmark score.
+The strongest representation evidence is the conjunction
+of cross-content decoding, same-label alignment, and a con-
+ditional permutation control. In the 590-record calibration
+collection, projected exact-label accuracy is 9.49%, com-
+pared with a permutation mean of 1.25%; same-label cosine
+is 0.285, compared with 0.017. Both finite permutation esti-
+mates are 1/1001 ≈0.001. The raw rank-16 SVD captures
+61.76% of residual variance. These measurements support a
+compact, shared description of requested delivery under the
+acquisition protocol. The final projection also changes which
+distinctions are retained:
+same-label alignment increases
+while exact-label decoding decreases relative to centered full
+K/V.
+The generation results locate useful responses within that
+representation. Middle-layer dynamic injection has a prefer-
+ence estimate of 68.75 on the fixed diagnostic subset, with a
+nominal interval of [56.25,81.25] and a text-WER change of
+−0.0060. In the balanced static study, tired and polite have
+means of 71 and 64 against five direction controls, and both
+remain above parity in every control column. Pace transi-
+tions score 75 on the 12 corresponding dynamic inputs. Each
+finding identifies an observed setting in which the coordinates
+produce a favorable response.
+Their full comparison sets,
+sampling units, and uncertainty appear below.
+The aggregate results set the scope of those responses.
+The direct static comparison against five random-direction
+controls is 51.50 [45.39,57.56].
+Composition reduces text
+disturbance relative to norm-matched full-space addition, but
+does not win the direct preference comparison. The com-
+plete dynamic evaluation uses an exploratory scale because
+the development-selected arm is incomplete. The resulting
+scientific account is a shared-coordinate representation with
+attribute- and operator-dependent response profiles; the evi-
+dence does not establish an overall controller advantage over
+the qualified direction controls.
+A.2. Discovery in spoken interaction
+The initial discovery collection contains ten debt-negotiation
+scenarios, two generation seeds, and six vocal styles: 120
+unique representations.
+Across all 126 overlapping bal-
+anced 5/5 scenario partitions, evaluated in both directions,
+audio-token mean pooling gives a median six-way accuracy
+of 85.0%, compared with 52.92% for the last audio token
+and 16.7% uniform chance. Every partition exceeds its re-
+ported shuffled 95th-percentile reference.
+All 15 oriented
+style contrasts pass the reported Benjamini–Hochberg proce-
+dure at FDR 0.05 [25]. Their mean cross-scenario direction
+consistency is 0.498; firm–hesitant reaches 0.803, whereas
+calm–neutral is 0.137.
+These measurements motivate pooled acquisition:
+the
+same requested change can recur across scenarios even when
+lexical content changes. Contrast consistency is the cosine
+between the same oriented style difference in different sce-
+narios, rather than similarity between the two named styles.
+The repeated partitions reuse utterances and are not indepen-
+dent replications.
+Six-way scenario decoding and 80-way
+sentence decoding use different label spaces and preprocess-
+ing. Historical negotiation search did not establish a reliable
+terminal-utility gain; it supplies the discovery context, rather
+than a downstream success claim for ParaGeo.
+The com-
+plete contrast matrix, repeated-split confusion counts, and
+historical task summaries remain in the supplied data.
+B. CALIBRATION AND REPRESENTATION
+CONSTRUCTION
+B.1. The matched-content collection
+The intended calibration design crosses eight fixed English
+sentences with 80 requested controls, giving 640 requested
+pairs. One rendition is generated per cell. A record is retained
+when the normalized emitted text matches the normalized tar-
+get sentence and audio tokens are available for replay. The re-
+sulting matrix contains 590 rows. The aggregate record does
+not identify the individual reasons for all 50 omissions, so
+their causes are left unspecified. Table A2 lists the complete
+lexical bank, and Table A3 lists the actual control strings.
+Synthesis uses a deterministic assignment indexed by con-
+tent and lexicographically sorted control labels.
+Matching
+is checked in the model’s emitted text channel. It is a lex-
+ical acquisition check, not independent waveform transcrip-
+tion or human confirmation of the requested style. In particu-
+lar, the subsequent classification target is the exact requested
+label, such as Pitch::high pitch; it is neither a 12-
+family classification problem nor a human-annotated recog-
+nition benchmark.
+The catalog includes utterance-level requests and word-
+local instructions. A request to stress “must,” for example,
+6
+
+
+Table A1. How to read the evidence. Each row names a distinct measurement obligation. Preference uses a 0–100 scale with
+50 denoting parity; differences in WER elsewhere are absolute fractions.
+Question
+Evidence in this record
+Interpretation
+Does a requested change re-
+cur across content?
+Six-style cross-scenario contrasts; 80-way content-
+held-out centroids; conditional permutations
+Request-associated structure in a specified replay
+representation.
+What does the projection re-
+tain?
+Raw-SVD variance; full versus projected decoding and
+cosine
+Increased alignment with a loss of some fine-
+grained label distinctions.
+Where do updates respond
+favorably?
+Complete rank/layer/schedule ablations; 18-attribute
+control matrix; task-family profiles
+Descriptive operating settings, with nominal sub-
+set intervals and complete unfavorable entries.
+Is there an aggregate control
+gain?
+Development selection; full held-out results; direct ran-
+dom and full-space comparisons
+The current aggregate comparisons do not estab-
+lish general superiority.
+Table A2. The eight fixed calibration sentences. All con-
+trols reuse this lexical bank. The identifiers match the re-
+leased calibration-sentence file.
+ID
+Target text
+cal:00 The morning train arrived exactly on time.
+cal:01 Please place the blue notebook beside the lamp.
+cal:02 We will review the final report after lunch.
+cal:03 A small bird landed quietly on the garden fence.
+cal:04 The museum opens at nine o’clock tomorrow.
+cal:05 I left the keys on the wooden table near the door.
+cal:06 The team finished the experiment before sunset.
+cal:07 She carried a warm cup of tea into the study.
+can be paired with a calibration sentence that does not con-
+tain that word. Such entries remain visible in the inventory
+because they were part of the actual design. They should be
+read as requested controls, rather than as 80 independently
+validated and mutually exclusive acoustic factors. Emotion,
+pitch, pace, and rhythm can covary. A common subspace does
+not assign an independent causal axis to each family.
+B.2. Synthesis followed by common-prompt replay
+Acquisition has two passes through frozen GLM-4-Voice [5].
+The first synthesizes the target sentence under the control re-
+quest and saves its audio-token IDs. The second replays those
+IDs with the same instruction for every control:
+Listen to the speech and represent how it is spo-
+ken. Focus on paralinguistic delivery and ignore
+lexical content.
+The model’s assistant streaming-transcription prefix is used
+in replay. No attribute name is separately appended to this
+prompt. Request information can therefore enter the mea-
+sured representation through the synthesized tokens, includ-
+ing duration and other correlated properties of the rendition.
+This is a representation of listening to the output; it is not the
+original generation-state activation.
+The recorder takes K and V at the output of the fused
+QKV projection, before attention. The sampled layers are
+{16, 20, 24, 28, 32, 36}. For audio positions Taudio,
+¯K(ℓ) =
+1
+|Taudio|
+X
+t∈Taudio
+K(ℓ)
+t ,
+¯V (ℓ) =
+1
+|Taudio|
+X
+t∈Taudio
+V (ℓ)
+t
+.
+(A1)
+The feature h(x, a) concatenates these pooled chunks in the
+stored layer/K/V order.
+With L layers and flattened K/V
+width dkv, its dimension is d = 2Ldkv. The exact width fol-
+lows the model configuration and artifact metadata. Branch
+IDs align features with calibration records; their association
+is not inferred from a common row order.
+B.3. Centering, SVD, and the content proxy
+For sentence x, let Ax be its retained controls. Centering uses
+their mean µx, as in Eq. 1. Writing H0 for the uncentered
+feature matrix, the same operation is H = CH0, with
+C = blockdiag(Cx),
+Cx = Inx −1
+nx
+11⊤,
+C2
+x = Cx = C⊤
+x .
+(A2)
+Consequently Cx(Hx + 1u⊤
+x ) = CxHx: an additive sentence
+offset is removed exactly. Under a balanced additive model
+h(x, a) = ux + va + ϵx,a, this leaves va −¯v + ϵx,a −¯ϵx.
+In the observed incomplete collection, the sentence-specific
+attribute mix and content–attribute interactions can also con-
+tribute to the residual. Centering provides a controlled com-
+parison, rather than a guarantee of full linguistic invariance.
+The raw right-singular vectors Br come from the full
+residual matrix. A separate SVD of centered sentence means
+supplies an orthonormal content proxy S. The implementa-
+tion requests eight columns, although eight centered means
+have at most seven nonzero-variance directions and the helper
+7
+
+
+Table A3. Complete calibration catalog: 80 controls in 12 benchmark families. Semicolons separate entries. The original
+benchmark wording, including “loudly volume” and distinct stress phrasings, is preserved.
+Family
+Count
+Requested controls
+Age
+4
+child’s voice; youthful voice; adult voice; elderly voice.
+Pitch
+5
+very high pitch; high pitch; medium pitch; low pitch; very low pitch.
+Timbre
+6
+bright timbre; hoarse timbre; smooth timbre; rich timbre; gentle timbre; sweet timbre.
+Pace
+5
+very fast pace; fast pace; medium pace; slow pace; very slow pace.
+Volume
+5
+shouting manner; loudly volume; normal volume; quietly volume; whisper.
+Pause
+3
+clear pause after the word ‘listen’; clear pause after the word ‘but’; clear pause after the word ‘good’.
+Rhythm
+7
+steady rhythm; lighthearted rhythm; soothing rhythm; rushed rhythm; emphatic rhythm; dragging
+rhythm; halting rhythm.
+Stress
+12
+emphasis on ‘must’; emphasis on ‘is’; emphasis on ‘here’; stress on ‘must’; stress on ‘every day’; stress
+on ‘key’; heavy stress on ‘not allowed’; heavy stress on ‘very’; heavy stress on ‘must’; forceful tone on
+‘now’; forceful tone on ‘careful’; forceful tone on ‘remember’.
+Emotion
+7
+neutral emotion; happy emotion; sad emotion; angry emotion; surprised emotion; disgusted emotion;
+fearful emotion.
+Cognitive State
+9
+confident tone; hesitant tone; confused tone; doubting tone; tired tone; curious tone; anxious tone; help-
+less tone; nervous tone.
+Non-Linguistic
+Vocal-
+izations
+8
+laughter; crying; sigh; coughing; scream; hiccups; yawn; smack of the lips.
+Attitude
+9
+polite tone; sincere tone; enthusiastic tone; cold tone; sarcastic tone; contemptuous tone; rude tone;
+perfunctory tone; teasing tone.
+Total
+80
+Each prototype is calibrated from single-control requests.
+does not truncate them by a singular-value tolerance. The
+eighth configured column is therefore not an established se-
+mantic factor. Residualizing Br gives R = (I −SS⊤)Br;
+QR orthogonalization retains columns whose corresponding
+diagonal magnitude exceeds 10−9. The default stored basis
+has 16 columns.
+The final coordinates are recalculated from the residual
+prototypes: ca = B⊤
+⊥pa, da = B⊥ca. This sentence-mean
+construction differs from target-supervised removal in INLP
+and LEACE [19, 20].
+It defines a reproducible content-
+associated projection that can be ablated; it does not certify
+removal of every lexical signal.
+C. GEOMETRY DIAGNOSTICS AND THEIR
+INTERPRETATION
+C.1. What the content hold-out tests
+In fold x, cosine nearest-centroid decoding forms one pro-
+totype per label from the other seven sentences and predicts
+the exact requested label of the held-out rows. Accuracy is
+micro-averaged across all 590 retained records. The full cen-
+tered representation gives 69 correct predictions (11.6949%);
+the projected representation gives 56 (9.4915%). Uniform 80-
+way chance is 1.25%, and the empirical permutation reference
+accounts for the observed within-sentence label inventory.
+The fitted basis uses all eight calibration sentences. Each
+held-out sentence is also centered from its own unlabeled
+bank of retained controls. If X denotes the complete lexical
+bank, the recorded fold evaluates
+Tx = T
+ B(X), pa,−x, zx,a
+
+,
+(A3)
+rather than a pipeline with B(X \{x}). Thus the test measures
+content-held-out label centroids within a fixed, transductively
+preprocessed calibration representation [23]. It does not esti-
+mate inductive deployment on a single new utterance without
+a matched control bank. This boundary applies to the mean-
+ing of the accuracy, while the fixed map remains appropriate
+for the conditional label-permutation comparison.
+For alignment, examples of each label are normalized
+and compared across distinct contents. The mean uses 1,915
+dependent content pairs, rather than 1,915 independent utter-
+ances. Centered full K/V has mean cosine 0.151710, median
+0.1387, and 5th–95th percentiles [−0.1612, 0.5331].
+Pro-
+jected mean cosine is 0.285311. The increase is a factor of
+1.8806; it coexists with a 2.2034-percentage-point decrease
+in exact-label accuracy.
+C.2. Conditional permutation and compactness
+Each null draw independently permutes labels within every
+sentence while keeping features, sentence membership, and
+within-sentence label counts fixed. This destroys consistent
+8
+
+
+Table A4.
+The complete projected-geometry null sum-
+mary.
+Quantiles refer to 1,000 conditional permutations;
+LOCO is exact 80-way centroid accuracy in percent.
+Statistic
+LOCO (%) Mean cosine
+Observed
+9.4915
+0.28531
+Null mean
+1.2468
+0.01703
+Null median
+1.1864
+0.01647
+Null 5th percentile
+0.5085
+0.00443
+Null 95th percentile
+2.0339
+0.03117
+Monte Carlo p
+0.000999
+0.000999
+Permutations
+1,000
+1,000
+request-to-feature correspondence across sentences. Apply-
+ing the same permutation to all sentences would only rename
+classes and would not provide the intended null. For B =
+1000 draws, the plus-one estimate is [24]
+bp = 1 + PB
+b=1 1[Tb ≥Tobs]
+B + 1
+.
+(A4)
+Neither statistic has a null draw at least as large as its ob-
+served value, giving bp = 1/1001 ≈0.000999 for both. The
+rounded abstract value is 0.001. This is the finite experiment’s
+resolution; it is not an exact analytic tail probability.
+The raw rank-16 SVD captures 61.7621% of residual
+variance.
+This value belongs to the raw decomposition,
+before content residualization.
+The historical summary’s
+rank 95 energy field is capped at the saved maximum
+rank of 32. Its returned value of 32 cannot distinguish at-
+tainment of 95% at that rank from a higher uncapped rank.
+The reported compactness claim therefore uses the verified
+rank-16 energy, without claiming 95% compression to 32 di-
+mensions or the same variance fraction for the final projected
+basis.
+C.3. Why alignment can rise while decoding falls
+An orthogonal projection changes both the cosine numerator
+and its normalization. For u = u∥+ u⊥and v = v∥+ v⊥,
+cos(u, v) =
+u⊤
+∥v∥+ u⊤
+⊥v⊥
+DuDv
+,
+Dw =
+q
+∥w∥∥2 + ∥w⊥∥2,
+w ∈{u, v}.
+(A5)
+Removing content-dependent variation can align the same la-
+bel across contents while also removing a distinction between
+two labels. A centered mathematical example illustrates the
+compatibility. Let four labels be (f, b) ∈{−1, +1}2, let two
+contents be s ∈{−1, +1}, and define
+xf,b,s = (f, sLf, bϵ),
+0 < L < 1,
+ϵ > 0,
+P = diag(1, 0, 0).
+(A6)
+The four labels average to zero at each content. Their same-
+label cross-content cosine is (1−L2+ϵ2)/(1+L2+ϵ2) before
+projection and one afterwards. Yet Pxf,+1,s = Pxf,−1,s, so
+projection loses b. Training cosine centroids on one content
+and testing on the other, the correct full-space dot product
+exceeds the same-f, opposite-b alternative by 2ϵ2, and the
+opposite-f, same-b alternative by 2(1 −L2). Both are posi-
+tive. Full-space accuracy is one; a fixed tie-breaking rule in
+the projected space gives 50% on balanced labels.
+This example is an analytic illustration, not measured
+GLM geometry. It explains why the observed alignment gain
+and decoding loss are consistent.
+The aggregate does not
+identify which GLM distinctions were discarded, support a
+paired correctness test, or measure an information-retention
+percentage.
+D. COORDINATE OPERATIONS AND THE
+GENERATION INTERFACE
+D.1. The shared projector is the operative object
+For fixed prototypes, a static update depends on P⊥
+=
+B⊥B⊤
+⊥, its scale, and its injection sites.
+The individual
+axes are not uniquely identifiable. For orthogonal Q ∈Rr×r,
+B⊥Q with coordinates Q⊤ca reconstructs the same da. The
+following identities hold exactly:
+B⊥(ca + cb) = P⊥(pa + pb),
+(A7)
+B⊥((1 −λ)ca + λcb) = (1 −λ)da + λdb,
+(A8)
+∥B⊥c∥2 = ∥c∥2.
+(A9)
+They explain the common interface: attribute addition is pro-
+jection of a summed prototype, temporal interpolation is in-
+terpolation of reconstructed directions, and coordinate nor-
+malization controls their global Euclidean norm. They are
+linear-algebra properties; perceptual composition and timed
+acoustic realization remain empirical questions.
+D.2. Matched controls and layer masking
+Prompt-only retains the same model and request without in-
+jection. A Gaussian unit vector u = g/∥g∥2, g ∼N(0, I),
+supplies the direction control.
+For selected-layer target
+chunks dt, the random update is α∥dt∥2u. Dynamic items
+hold u fixed while its magnitude follows the target schedule.
+This matches the concatenated K/V norm after layer selec-
+tion. It does not separately match every layer, the K versus V
+norm, the attention-logit effect, or the downstream response.
+For composition, vC = P
+a∈C pa and dC = P⊥vC. The
+full-space control is
+¯dfull
+C
+= ∥dC∥2
+∥vC∥2
+vC,
+(A10)
+9
+
+
+when both norms are nonzero. Undefined zero-norm matches
+are rejected. In the all-layer comparison this holds the inter-
+vention norm fixed and changes its direction. The mean and
+normalized-sum variants change magnitude as well as con-
+struction: with m constituents, the mean is 1/m times the
+sum. Their score differences do not alone identify nonlinear
+composition.
+Layer groups are early {16, 20}, middle {24, 28}, and late
+{32, 36}. These names refer to the sampled groups. Masking
+removes the other chunks without redistributing their energy,
+so the ablation compares practical injection configurations. It
+is not an energy-matched causal localization study. Similarly,
+rank changes both available directions and their norms under
+the recorded scaling.
+D.3. Temporal schedules
+For a requested transition a →b, ct = (1 −λt)ca + λtcb.
+Gradual interpolation uses λt = min(t/191, 1); the sudden
+schedule switches from zero to one at forward pass 96. Start-
+only, end-only, and midpoint-only use constant coefficients
+zero, one, and one-half. The endpoint is held after the 192-
+pass schedule. Figure A1 shows the prescribed coefficients.
+Early termination can prevent a trajectory from reaching
+its endpoint, and a forward-pass midpoint need not be the
+acoustic midpoint. A preference response to the requested
+transition therefore does not verify its waveform timing. The
+constant-coordinate controls test whether the implemented
+path contributes beyond one fixed point under the same gen-
+eration interface.
+D.4. Representation and intervention have distinct de-
+pendencies
+Replay features summarize listening to an utterance; the up-
+date acts while producing new text/audio tokens. Their model
+weights are shared, but prompts, token roles, and causal states
+differ.
+Locally, an output statistic f(q) responds approxi-
+mately as f(q + δ) −f(q) ≈Jf(q)δ. The covariance used
+to fit B⊥does not identify this Jacobian. A decodable direc-
+tion can consequently have a weak or unintended generation
+effect [21, 22]. This is a distinction between estimands, not a
+measured diagnosis of the aggregate controller result.
+For an ordinary attention query, adding a common post-
+position-transform key offset to every unmasked source po-
+sition shifts all logits equally and leaves their softmax un-
+changed. A common value offset instead adds that offset to
+the weighted value sum.
+These identities require uniform
+offsets at the stated locations. A pre-attention fused-QKV
+hook, positional transformations, selective token updates,
+and caching need not satisfy those assumptions. They clarify
+why K/V intervention details matter without implying that
+the recorded hook is inert.
+E. EVALUATION PROTOCOL AND COMPLETE
+HELD-OUT RESULTS
+E.1. Coverage, development, and selected scales
+Evaluation uses catalog-covered English SpeechParaling-
+Bench requests and its waveform evaluation path [7]. Static
+requires one covered control, composition requires every
+constituent, and dynamic requires both endpoints. Coverage
+filtering precedes development partitioning and does not use
+judge scores. Positions 0, 5, 10, . . . in the eligible list form
+development; all remaining positions are held out. These are
+task subsets with a matched prompt-only reference, rather
+than an official overall multilingual leaderboard run. Situa-
+tional adaptation is outside this evaluation.
+The development rule maximizes preference over α ∈
+{0.25, 0.5, 1.0, 1.5} among complete candidates whose mean
+emitted-text WER degradation is at most 0.02. Ties favor
+the smaller scale. Table A5 preserves the full available grid.
+Static selects 0.5. Its 1.5 candidate is excluded because only
+19 of 42 baseline items are present. No composition candi-
+date passes the fidelity gate. Dynamic selects 1.5, but that
+held-out arm stops at 16 of 60 items; the complete 0.25 arm
+is reported as exploratory. Neither incomplete selection nor a
+failed gate is converted into a formal test result.
+E.2. Preference, fidelity, and uncertainty
+For item i and judged dimension j, a win, tie, or loss re-
+ceives wij ∈{1, 1
+2, 0}. With mi judged dimensions, si =
+m−1
+i
+P
+j wij and reported preference is 100n−1 P
+i si. Ev-
+ery item receives equal weight even when it supplies several
+dimension decisions. A value of 50 denotes parity and is not
+a percentage of strict wins. For example, the 38 composition
+items supply 88 dimension decisions; item-level analysis uses
+38 scores.
+Nominal 95% preference intervals use 10,000 item-level
+bootstrap resamples [26]. The balanced static extension re-
+ports its recorded hierarchical interval for reused item/control
+comparisons. All intervals below are reproduced from the
+supplied summaries, rather than recalculated from unavail-
+able raw judgments. Configuration intervals test preference
+relative to the stated comparator; ordering two estimates does
+not supply a paired significance test between them.
+Text fidelity is recorded as WER between the intended
+words and the model’s generated text channel. The public
+summaries do not provide independent waveform ASR, a lis-
+tening study, or a timing measurement. The local evaluator
+wrapper uses upstream English static, composition, and dy-
+namic modules. Its saved paths do not pin the run-level judge
+checkpoint, service version, and upstream revision. Speech-
+Paraling’s published evaluator describes a model-based pair-
+wise judge; recovering the exact evaluator used in these runs
+10
+
+
+0
+96
+191
+220
+Generation forward pass t
+0.0
+0.5
+1.0
+Coefficient λt
+Gradual
+Sudden
+Midpoint
+Start only
+End only
+Fig. A1. Prescribed coordinate schedules, not measured acoustic trajectories. The x-axis counts generation forward passes.
+Gradual interpolation reaches one at pass 191; the sudden switch occurs at 96; constant controls provide the start, end, and
+midpoint comparisons. Interleaved text/audio tokens make this index different from waveform time.
+Table A5. Development scale selection. Preference and nominal 95% intervals are against prompt-only. ∆WER is an absolute
+change in emitted-text WER; the tolerance is +0.02.
+Task
+α
+Items
+Preference
+95% CI
+∆WER
+Status
+Static
+0.25
+42
+53.57
+[40.48,65.48]
++0.03335
+Fidelity gate not met
+Static
+0.5
+42
+46.43
+[33.33,59.52]
++0.00413
+Selected
+Static
+1.0
+42
+42.86
+[29.76,55.95]
+−0.06605
+Eligible
+Static
+1.5
+19/42
+—
+—
+—
+Incomplete; excluded
+Composition
+0.25
+10
+70.83
+[55.00,85.83]
++0.12000
+Fidelity gate not met
+Composition
+0.5
+10
+70.00
+[47.50,90.00]
++0.12000
+Fidelity gate not met
+Composition
+1.0
+10
+74.17
+[58.33,88.33]
++0.12000
+Fidelity gate not met
+Composition
+1.5
+10
+75.83
+[53.33,95.00]
++0.12000
+Fidelity gate not met
+Dynamic
+0.25
+15
+46.67
+[23.33,70.00]
+−0.00562
+Eligible
+Dynamic
+0.5
+15
+50.00
+[26.67,73.33]
+−0.01022
+Eligible
+Dynamic
+1.0
+15
+43.33
+[20.00,66.67]
++0.00106
+Eligible
+Dynamic
+1.5
+15
+53.33
+[30.00,76.67]
+−0.01172
+Selected
+requires the original metadata rather than assuming the cur-
+rent upstream version.
+E.3. Task-level results and their comparison targets
+Table A6 reports the full-task comparisons, including the
+direction controls. Static at the selected scale scores 55.36
+against prompt-only, while its direction control scores 55.95.
+Those are two baseline comparisons; their difference is not
+a head-to-head win rate. The balanced direct comparison in
+Appendix G is the relevant available test of direction speci-
+ficity.
+The recorded controller acceptance rule additionally re-
+quires a five-point gain for static/composition or an eight-
+point gain for dynamic, together with fidelity and random-
+control conditions. No complete task satisfies this combined
+rule. This retrospective reporting preserves the rule in the
+source record without treating it as a newly passed prospec-
+tive gate. The favorable configurations below characterize re-
+sponses of the fitted controller rather than replace that task-
+level assessment.
+F. COMPLETE RANK, PROJECTION, AND LAYER
+STUDY
+F.1. A fixed diagnostic subset
+Each task’s configuration study uses the first 24 eligible held-
+out items in benchmark-index order. The subset is fixed but
+can have a different family mix from the full task. Its purpose
+is to inspect rank, projection, injection location, and schedule
+under a consistent selection. It is not newly sampled confir-
+11
+
+
+Table A6. Complete reported task-level preference comparisons. All entries use item-averaged scores (50 = parity). “Se-
+lected” identifies the completed development-selected static arm. Composition has no admissible development scale; the com-
+plete dynamic arm uses exploratory α = 0.25.
+Task
+Candidate versus comparator
+Items
+Preference
+95% CI
+Status
+Static
+ParaGeo vs prompt-only
+168
+55.36
+[49.11,61.61]
+Selected, α = 0.5
+Static
+Random vs prompt-only
+168
+55.95
+[49.40,62.50]
+Direction control
+Composition
+ParaGeo vs prompt-only
+38
+45.39
+[36.18,54.82]
+Exploratory
+Composition
+Full-space vs prompt-only
+38
+48.03
+[37.94,58.33]
+Exploratory
+Composition
+ParaGeo vs full-space
+38
+42.98
+[34.87,51.10]
+Exploratory direct
+Dynamic
+ParaGeo vs prompt-only
+60
+51.67
+[40.00,63.33]
+Exploratory
+Dynamic
+Random vs prompt-only
+60
+46.67
+[35.00,58.33]
+Exploratory control
+Table A7. Complete ParaGeo text-channel fidelity. WER
+and paired changes are absolute fractions. A change of +0.02
+is two percentage points, rather than a two-percent relative
+increase.
+Task
+Items ParaGeo Prompt-only
+∆WER
+Static
+168
+0.30526
+0.31254 −0.00729
+Composition
+38
+0.45671
+0.38789 +0.06883
+Dynamic
+60
+0.26093
+0.23537 +0.02556
+mation of a configuration chosen from these outcomes. Ta-
+bles A8–A10 retain every recorded configuration, its nominal
+preference interval, and its text-fidelity change.
+The main condition uses all six sampled layers, rank 16,
+the content-associated projection, summed coordinates for
+composition, and the request-dependent temporal schedule.
+The no-projection condition uses the raw basis. Rank variants
+use the same stored decomposition at ranks 4, 8, and 32. The
+static rank-4 preference has 23 judged inputs, while its WER
+summary has 24; the mismatch is explicit and constrains
+comparison with the other rows.
+F.2. The favorable layer setting and the rank response
+The middle group has the highest layer-group point esti-
+mate for static and dynamic requests.
+Static scores 64.58
+[50.00,79.17], with ∆WER = −0.0278.
+Dynamic scores
+68.75 [56.25,81.25], with ∆WER = −0.0060. The dynamic
+result is a positive response relative to prompt-only at that op-
+erating point, with no mean text-channel fidelity loss on the
+subset. Its interval is nominal and unadjusted for inspecting
+multiple configurations; the record does not contain a direct,
+energy-matched test against the all-layer condition.
+The composition result supplies a different operating
+point. All-layer rank-16 addition scores 66.67 [54.17,78.12]
+on the 24-input subset, but increases text WER by 0.1250.
+Middle-layer composition scores 54.17 with a smaller change
+of 0.0139. Thus the largest preference in this subset is accom-
+Table A8. Complete static configuration results. The first
+24 eligible held-out inputs form the fixed diagnostic subset.
+Preference is against prompt-only (50 = parity); intervals are
+nominal 95% item-bootstrap CIs. ∆WER is an absolute text-
+channel change. Static rank-4 preference has 23 judged in-
+puts; its WER summary has 24.
+Configuration
+n Pref.
+95% CI
+∆WER
+Main (all; rank 16)
+24 60.42 [45.83,72.92] −0.0528
+No content projection 24 56.25 [39.58,70.83] −0.0528
+Rank 4
+23 52.17 [36.96,65.22] −0.0403
+Rank 8
+24 58.33 [41.67,75.00] −0.0528
+Rank 32
+24 56.25 [37.50,72.92] +0.0065
+Early layers
+24 52.08 [37.50,66.67] −0.0528
+Middle layers
+24 64.58 [50.00,79.17] −0.0278
+Late layers
+24 58.33 [45.83,70.83] −0.0153
+Table A9.
+Complete composition configuration results.
+The first 24 eligible held-out inputs form the fixed diagnos-
+tic subset. Preference is against prompt-only (50 = parity);
+intervals are nominal 95% item-bootstrap CIs. ∆WER is an
+absolute text-channel change.
+Configuration
+n Pref.
+95% CI
+∆WER
+Main (all; rank 16)
+24 66.67 [54.17,78.12] +0.1250
+No content projection 24 48.96 [35.42,61.46] −0.0333
+Rank 4
+24 53.12 [37.50,68.75] −0.0333
+Rank 8
+24 50.00 [38.54,61.46] −0.0333
+Rank 32
+24 56.25 [43.75,68.75] +0.1125
+Early layers
+24 42.71 [30.21,55.21] −0.0542
+Middle layers
+24 54.17 [44.79,64.58] +0.0139
+Late layers
+24 46.88 [39.58,54.17] −0.0556
+Mean sum
+24 59.38 [50.00,68.75] +0.1250
+Normalized sum
+24 43.75 [31.25,56.25] −0.0347
+panied by a material fidelity cost. This preserves the positive
+measured response and explains why it cannot establish joint
+12
+
+
+Table A10. Complete dynamic configuration results. The
+first 24 eligible held-out inputs form the fixed diagnostic sub-
+set. Preference is against prompt-only (50 = parity); intervals
+are nominal 95% item-bootstrap CIs. ∆WER is an absolute
+text-channel change.
+Configuration
+n Pref.
+95% CI
+∆WER
+Main (all; rank 16)
+24 54.17 [37.50,70.83] +0.0055
+No content projection 24 43.75 [27.08,60.42] +0.0021
+Rank 4
+24 58.33 [41.67,75.00] +0.0000
+Rank 8
+24 54.17 [37.50,70.83] +0.0108
+Rank 32
+24 47.92 [31.25,64.58] +0.0021
+Early layers
+24 60.42 [45.83,75.00] +0.0160
+Middle layers
+24 68.75 [56.25,81.25] −0.0060
+Late layers
+24 60.42 [45.83,75.00] +0.0000
+Start only
+24 56.25 [39.58,70.83] +0.0010
+End only
+24 47.92 [31.25,66.67] +0.0327
+Midpoint only
+24 45.83 [29.17,62.50] +0.0000
+compositional improvement.
+Rank response is nonmonotone.
+Static preferences at
+ranks 4, 8, 16, and 32 are 52.17, 58.33, 60.42, and 56.25;
+dynamic values are 58.33, 54.17, 54.17, and 47.92. Retaining
+more raw variance therefore does not monotonically improve
+the recorded intervention score. These are practical rank set-
+tings with different reconstructed vectors and norms. They do
+not isolate the causal effect of dimension count or measure a
+correlation between layerwise decoding and steering.
+Removing content projection gives static preference 56.25
+and dynamic preference 43.75, compared with 60.42 and
+54.17 for the projected main setting. On composition, projec-
+tion changes both preference and text disturbance. The com-
+parison supports treating the projection as a consequential
+design choice; its generation results do not validate complete
+semantic disentanglement.
+Earlier injections also change
+later inputs, so all-layer intervention can reinforce or counter-
+act later perturbations. The reported layer profiles reveal the
+dependence without identifying its mechanism.
+G. BALANCED STATIC RESPONSES ACROSS
+ATTRIBUTES AND CONTROLS
+G.1. A direct comparison at a common setting
+The expanded study tests all nine Attitude and nine Cognitive
+State controls with ten inputs per label: 180 unique inputs.
+Each ParaGeo output is compared with five random-direction
+conditions, giving 900 reused candidate–comparator compar-
+isons.
+S1–S5 are anonymous identifiers for the direction-
+control conditions. These are control orientations, rather than
+independently trained ParaGeo models or five independent
+speech-generation replications. Tables A11 and A12 give the
+full attribute and control summaries.
+G.2. Which responses persist across the inspected con-
+trols?
+Tired has preference values [70,70,70,80,65], mean 71, and
+minimum 65; polite has [60,75,55,55,75], mean 64, and min-
+imum 55. Each exceeds 50 in all five columns. Teasing has
+mean 65, with four columns above parity and one tie. Sarcas-
+tic has mean 62, with four above-parity columns but a min-
+imum of 35. The minimum and positive-column counts dis-
+tinguish a favorable mean from a pattern that persists across
+the inspected control orientations. They remain descriptions
+of the same small input groups.
+The complete matrix also contains adverse responses.
+Contemptuous averages 34, perfunctory and curious 38, and
+cold 41. Some labels are strongly control-dependent: nervous
+ranges from 15 to 75, while anxious ranges from 20 to 70.
+These entries are essential to understanding why a favorable
+response for one requested style does not extend to the whole
+family. The sorted heatmap in main-text Fig. 3 presents the
+same values; the native table here retains the original label
+order for exact lookup.
+A descriptive two-way sum-of-squares decomposition of
+the 18-by-5 cell means assigns 40.15% of cell variation to at-
+tribute means, 2.19% to control-column means, and 57.66%
+to the remaining interaction plus unseparated sampling/judge
+residual. This is a summary of the observed matrix, not in-
+ferential ANOVA or a causal variance decomposition. It em-
+phasizes that response depends substantially on the requested
+attribute and its interaction with the comparison setting, rather
+than on a single pooled mean.
+G.3. The aggregate result and fidelity
+Pooling all labels and controls gives preference 51.50 with
+the recorded hierarchical interval [45.39,57.56]. Three of five
+control-specific estimates exceed 50. The source claim rule
+requires both a pooled lower bound above 50 and positive
+point estimates in at least four columns, so this record does
+not pass that rule. It also does not establish equivalence be-
+tween learned and random updates; a near-parity estimate
+with a wide interval answers neither a superiority nor an
+equivalence question by itself.
+Mean ParaGeo text WER is 0.19509. Paired mean WER
+differences relative to S1–S5 are approximately +0.00646,
+−0.00572, −0.00611, −0.00191, and −0.00113. Their small
+size indicates that this comparison is not accompanied by
+a large relative text-channel penalty. The remaining uncer-
+tainty concerns direction specificity and attribute response at
+this setting. Similar scores may reflect nonspecific acoustic
+changes, generation stochasticity, judge variation, or their
+13
+
+
+Early
+16,20
+Middle
+24,28
+Late
+32,36
+All six
+Static
+Composition
+Dynamic
+52.08
+64.58
+58.33
+60.42
+42.71
+54.17
+46.88
+66.67
+60.42
+68.75
+60.42
+54.17
+Task-specific responses to intervention location (n=24)
+0
+20
+40
+60
+80
+100
+Preference vs prompt-only (%)
+Fig. A2. The layer response depends on the task. All four sampled-layer configurations are shown for all three 24-input
+diagnostic tasks. Cells are preference estimates against prompt-only; their recorded nominal intervals appear in Tables A8–
+A10. Middle-layer injection has the largest static and dynamic estimates; all-layer composition has the largest composition
+estimate and a substantial text-fidelity cost (Table A9). The matrix is a response profile, not a corrected test of pairwise layer
+superiority.
+Table A11. All 18 attributes against all five random-direction conditions. Each row uses ten unique inputs, with the same
+ParaGeo outputs reused across S1–S5. The final columns are descriptive mean, minimum, and count strictly above 50. Labels
+retain the source order; no unfavorable row is excluded.
+Attribute
+S1
+S2
+S3
+S4
+S5
+Mean
+Min.
+> 50
+Cold
+35
+55
+10
+50
+55
+41
+10
+2/5
+Contemptuous
+35
+30
+35
+50
+20
+34
+20
+0/5
+Enthusiastic
+55
+40
+50
+70
+80
+59
+40
+3/5
+Perfunctory
+40
+30
+45
+30
+45
+38
+30
+0/5
+Polite
+60
+75
+55
+55
+75
+64
+55
+5/5
+Rude
+40
+45
+45
+60
+65
+51
+40
+2/5
+Sarcastic
+60
+65
+35
+80
+70
+62
+35
+4/5
+Sincere
+40
+55
+55
+35
+55
+48
+35
+3/5
+Teasing
+50
+65
+70
+65
+75
+65
+50
+4/5
+Anxious
+70
+20
+50
+65
+50
+51
+20
+2/5
+Confident
+65
+60
+50
+35
+65
+55
+35
+3/5
+Confused
+35
+55
+65
+55
+60
+54
+35
+4/5
+Curious
+45
+45
+30
+30
+40
+38
+30
+0/5
+Doubting
+40
+60
+65
+50
+60
+55
+40
+3/5
+Helpless
+60
+60
+60
+45
+25
+50
+25
+3/5
+Hesitant
+50
+60
+20
+40
+45
+43
+20
+1/5
+Nervous
+40
+65
+75
+15
+45
+48
+15
+2/5
+Tired
+70
+70
+70
+80
+65
+71
+65
+5/5
+combination; the aggregate does not separate those explana-
+tions.
+Tired and polite were highlighted after the complete ma-
+trix was inspected. Their consistency is useful exploratory ev-
+idence for attribute-dependent controllability, but shared out-
+puts, ten-input label groups, and subgroup selection prevent
+treating five positive columns as independent confirmation.
+This distinction preserves the practical value of the observed
+14
+
+
+Table A12. Direct ParaGeo preference for each direction-
+control condition. Every row reuses the same 180 inputs.
+The source intervals and strict win/tie/loss counts are pre-
+served. Control orientations do not provide independent Par-
+aGeo runs.
+Control
+Pref.
+95% CI
+W/T/L
+S1
+49.44 [41.11,58.06] 75/28/77
+S2
+53.06 [43.61,62.22] 81/29/70
+S3
+49.17 [38.89,59.17] 79/19/82
+S4
+50.56 [40.56,60.28] 74/34/72
+S5
+55.28 [45.56,64.72] 85/29/66
+patterns while keeping the aggregate test visible.
+H. COMPOSITION AND DYNAMIC FAMILY
+PROFILES
+H.1. What low-rank composition changes
+The 38-input composition comparison holds the summed pro-
+totype construction and concatenated intervention norm fixed
+while comparing projected and full-space directions (Ap-
+pendix D). Text WER is 0.45671 with projection and 0.50280
+in full space, a descriptive reduction of 4.61 percentage
+points. Prompt-only WER is 0.38789, so both interventions
+still disturb the text channel relative to that reference. No
+paired WER interval is supplied for the projected–full-space
+difference.
+Direct preference for the projected direction is 42.98
+[34.87,51.10].
+Of the 38 item-averaged scores, eight are
+above parity, 17 equal, and 13 below. Their 88 dimension
+decisions comprise ten wins, 56 ties, and 22 losses.
+The
+denominators refer to different units and are both retained.
+No reported family in the direct comparison exceeds 50. Pro-
+jection therefore yields less text disturbance at this matched
+operating point, accompanied by a lower control-preference
+estimate; it is not demonstrated compositional superiority.
+The 24-input configuration study in Appendix F is a dif-
+ferent subset. Its all-layer preference of 66.67 cannot replace
+the complete 38-input estimate of 45.39. Together, the two re-
+sults show that favorable local preference and complete-task
+performance can differ, and that composition scale remains
+constrained by text fidelity. The mean and normalized-sum
+ablations help characterize that dependence, but their changed
+magnitude prevents a pure test of semantic compositionality.
+H.2. All static and dynamic family outcomes
+Table A14 reports every covered static family and every
+family with dynamic inputs, including the random-versus-
+prompt-only references. The columns use separate baseline
+comparisons.
+They cannot be subtracted to obtain direct
+ParaGeo-versus-random preference.
+The static profile contains point estimates of 66.67 for
+age, timbre, and volume, 64.71 for emotion, and 63.16 for
+non-linguistic vocalizations. Attitude and Cognitive State are
+below parity in this full static set. The balanced extension
+uses different inputs and a direct random comparison, so its
+favorable individual labels answer a different question from
+those family-level baseline scores.
+Dynamic pace has preference 75 over 12 inputs at the
+common exploratory scale, without family-specific tuning.
+Emotion scores 54.17, timbre 62.50 over four inputs, pitch
+45.83, and rhythm and volume 37.50.
+The complete dy-
+namic score of 51.67 consequently averages contrasting fam-
+ily responses.
+These are small descriptive groups without
+family-specific intervals or corrected subgroup tests.
+The
+pace estimate supplies a concrete positive response, while the
+full family table prevents it from standing in for all temporal
+controls.
+On the 24-input schedule subset, the varying main co-
+ordinate scores 54.17, while a constant start coordinate
+scores 56.25, a constant end 47.92, and a constant mid-
+point 45.83.
+The record therefore does not establish an
+aggregate advantage of the prescribed temporal path over its
+constant-coordinate controls. It also does not contain mea-
+sured pitch/energy contours or transition-onset annotations.
+Such measurements would be needed to distinguish endpoint
+selection from successful timing of a transition.
+I. REPRODUCIBILITY, RELATED METHODS, AND
+SCOPE
+I.1. Execution settings and artifact identity
+The settings in Table A15 apply to the evaluated frozen-
+backbone snapshot.
+All empirical summaries originate
+from repository commit b71c6cc5a1faf51f3e952450
+68b4c9c9241f8c0e, specifically the geometry, ICASSP
+evaluation, and balanced static summaries. The manuscript’s
+public code link and the historical result repository identify
+different stages of the project; the commit, result paths, and
+numerical summaries fix the evidence used here.
+Feature records must align by branch ID, and stored
+layer/pooling metadata determine the K/V chunk order. Gen-
+eration manifests record item, split, variant, scale, seed,
+transcript, and waveform identity. Random vectors are con-
+sumed from a seeded NumPy generator during item traversal.
+Resuming with skipped items can change this mapping unless
+the original traversal and saved manifests are preserved. A
+seed alone is therefore insufficient to guarantee restart equiv-
+alence. These details affect reproduction, even though they
+do not alter the numerical summaries reported here.
+15
+
+
+Table A13. Composition control and fidelity on the same 38 inputs. Preference is against prompt-only; both interventions
+use exploratory α = 0.25. The final row is the direct preference for projection over full-space addition. WER is in percent here,
+for direct comparison with the percentage-point changes.
+Comparison
+Preference
+95% CI
+Text WER (%)
+∆WER (pp)
+Prompt-only
+—
+—
+38.79
+0.00
+Projected sum vs prompt-only
+45.39
+[36.18,54.82]
+45.67
++6.88
+Full-space sum vs prompt-only
+48.03
+[37.94,58.33]
+50.28
++11.49
+Projected vs full-space
+42.98
+[34.87,51.10]
+—
+−4.61
+Table A14. Every reported static and dynamic family. Both preference columns compare separately with prompt-only (50
+= parity); they are not a head-to-head comparison. Static uses selected α = 0.5 and dynamic uses exploratory α = 0.25.
+Family-specific intervals are unavailable.
+Task
+Family
+Inputs
+ParaGeo
+Random control
+Static
+Age
+9
+66.67
+50.00
+Static
+Attitude
+22
+40.91
+56.82
+Static
+Cognitive State
+22
+45.45
+63.64
+Static
+Emotion
+17
+64.71
+64.71
+Static
+Non-Linguistic Vocalizations
+19
+63.16
+63.16
+Static
+Pace
+12
+50.00
+58.33
+Static
+Pause
+2
+25.00
+50.00
+Static
+Pitch
+12
+54.17
+37.50
+Static
+Rhythm
+17
+52.94
+64.71
+Static
+Stress
+9
+55.56
+33.33
+Static
+Timbre
+15
+66.67
+46.67
+Static
+Volume
+12
+66.67
+54.17
+Dynamic
+Emotion
+12
+54.17
+62.50
+Dynamic
+Pace
+12
+75.00
+62.50
+Dynamic
+Pitch
+12
+45.83
+62.50
+Dynamic
+Rhythm
+12
+37.50
+16.67
+Dynamic
+Timbre
+4
+62.50
+37.50
+Dynamic
+Volume
+8
+37.50
+25.00
+I.2. What the supplied package can reproduce
+The package provides aggregate geometry and confidence
+bounds, complete configuration scores, per-family sum-
+maries, the 18-by-5 response matrix, and the historical
+discovery matrices.
+They support the native tables and
+summary-level plots.
+The raw K/V NPZ files, every gen-
+erated waveform, the full singular spectrum, per-item judge
+outputs, and all permutation draws are not present in the at-
+tached packet. The recorded intervals are retained without
+fabricating replacements from means. A true 80-by-80 proto-
+type geometry, uncapped energy rank, or measured acoustic
+trajectory requires the original local artifacts. The local ex-
+porter can process those artifacts when available; its presence
+does not imply it has been run on them.
+I.3. Positioning the contribution against existing controls
+Learned style tokens and reference-conditioned prosody
+transfer make expressive speech factors reusable [1, 2];
+SpeechSplit and SpeechTokenizer separate speech infor-
+mation through learned bottlenecks or token structure [3, 4].
+ParaGeo studies a post-hoc shared projection in a frozen
+model’s speech-replay K/V representation.
+This describes
+the object investigated without asserting that learned style
+factors or latent arithmetic are new.
+Activation addition and contrastive addition already con-
+struct inference-time behavior directions [8, 9], and the lin-
+ear representation hypothesis connects probing and steer-
+ing through geometry [10].
+In speech, EmoSteer-TTS se-
+lects emotion-relevant token contributions; EmoShift learns
+emotion-specific activation offsets; and CoCoEmo constructs
+matched emotion contrasts and analyzes steering locations
+16
+
+
+Table A15. Recorded execution settings. Restart equiva-
+lence also requires traversal and artifact identity.
+Setting
+Value
+Backbone; weights
+GLM-4-Voice-9B; int4/NF4
+Temperature; top-p
+0.8; 0.8
+Maximum new tokens;
+waveform rate
+768; 22.05 kHz
+Selected layers
+16, 20, 24, 28, 32, 36
+Default rank; evaluated
+alternatives
+16; 4, 8, 32
+Content-basis setting
+8 returned columns; rank boundary in
+Appendix B
+Schedule; sudden
+switch
+192 forward passes; switch at pass 96
+Development grid
+0.25, 0.5, 1.0, 1.5
+Development partition;
+ablation subset
+Every fifth eligible input; first 24
+held-out inputs
+Permutation draws;
+bootstrap resamples
+1,000; 10,000
+and mixed-emotion behavior [11, 12, 13]. Emo-FiLM targets
+word-level modulation, DisCo-Speech uses a disentangled
+codec, and later work examines the geometry of emotion
+composition [16, 17, 18]. Emotion Arithmetic and Task Vec-
+tor in TTS instead operate in model weight space [14, 15].
+The present contribution is the shared matched-content
+description across heterogeneous requested controls and
+the explicit separation of its geometry diagnostics from its
+generation-response tests. Same-backbone prompt-only, ran-
+dom, raw-basis, full-space, rank, layer, and schedule controls
+isolate the recorded operations. Full-space prototype addition
+is not a reproduced CoCoEmo system: it omits that method’s
+complete extraction, site-selection, renormalization, and eval-
+uation design. None of these controls supplies a performance
+claim against named published TTS methods.
+The source
+packet supports an empirical analysis of a specified repre-
+sentation and interface, rather than a new priority claim for
+activation steering or composition.
+I.4. Boundaries of the conclusions
+The experiments cover one backbone, English generation
+requests, a fixed calibration lexical bank, and model-based
+judgments.
+The balanced extension reuses one synthetic
+input voice. Requested labels are not independently anno-
+tated realized attributes, and emitted-text matching/WER is
+not waveform transcription.
+The globally fitted basis, im-
+perfect content proxy, unadjusted exploratory configuration
+intervals, reused control comparisons, and missing evaluator
+version limit the respective generalization and replication
+claims. These restrictions attach to specific measurements,
+rather than cancel the observed request-associated structure
+or favorable response settings.
+Age, Cognitive State, and Attitude are generation-request
+labels. A coordinate for confident tone does not measure a
+real person’s confidence, and an elderly-voice instruction is
+not a validated age estimator. The record supplies no clini-
+cal, demographic, or personality inference. Applications to
+speaker profiling or consequential decisions would require
+different evidence and ethical assessment.
+The extended results make the practical implication pre-
+cise: a common coordinate system allows vocal delivery to be
+compared, combined, and scheduled with fixed speech-model
+weights; choosing an effective intervention still requires at-
+tention to the attribute, injection location, norm, and temporal
+interface. Training-only basis evaluation, independent acous-
+tic/listener validation, exact evaluator recovery, and fresh con-
+firmation of the favorable settings remain separate evidence
+obligations.
+17

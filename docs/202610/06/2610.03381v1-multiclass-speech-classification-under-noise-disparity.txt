@@ -1,0 +1,769 @@
+MULTICLASS SPEECH CLASSIFICATION UNDER NOISE DISPARITY
+Mahdi Amiri1,2, Sayantan Biswas2, Mingchi Hou1,2, Pascal Frossard2, Ina Kodrasi1
+1Idiap Research Institute, Switzerland
+2 ´Ecole Polytechnique F´ed´erale de Lausanne (EPFL), Switzerland
+ABSTRACT
+We investigate noise disparity in multi-class speech classification
+tasks and develop a strategy to prevent classifiers from exploiting
+class-dependent noise characteristics.
+Building on our previous
+work for binary classification, we introduce a multi-class cross-
+augmentation scheme that exposes each class to the noise char-
+acteristics of the other classes, thereby removing the association
+between individual noise conditions and class labels. We compare
+this training-based approach with speech enhancement (SE) as a
+preprocessing strategy, which aims to suppress noise-related cues
+directly from the input. Experiments on multi-class emotion recog-
+nition show that cross-augmentation effectively mitigates the effect
+of noise disparity across a range of signal-to-noise-ratios, while SE
+has a detrimental effect on model performance.
+Index Terms— speech emotion recognition, spurious correla-
+tion, speech enhancement, noise augmentation
+1. INTRODUCTION
+Self-supervised learning (SSL) foundation models have emerged as
+powerful general-purpose speech representations, achieving state-
+of-the-art performance across a wide range of classification tasks
+such as emotion recognition [1,2], pathological speech detection [3–
+6], or speaker verification [7, 8]. Models such as wav2vec 2.0 [9]
+and XLS-R [10] provide rich speech representations without requir-
+ing task-specific feature engineering, and have therefore become in-
+creasingly prevalent in downstream speech classification tasks.
+However, the strong representational capacity of SSL models
+also makes them susceptible to exploiting spurious correlations in
+the training data.
+A particularly problematic setting arises when
+noise characteristics are systematically associated with class labels, a
+phenomenon we refer to as noise disparity. Such disparity can natu-
+rally arise when recordings from different classes are collected under
+different acoustic conditions, with different recording devices or in
+different environments. In this situation, noise becomes predictive
+of the class label, allowing a classifier to achieve high performance
+by exploiting noise-related cues rather than the speech characteris-
+tics relevant to the target task. Importantly, this problem can remain
+hidden when evaluation data share the same noise characteristics
+as the training data, while causing substantial performance degra-
+dation when the acoustic conditions change. For example, in [11]
+we showed that binary pathological speech classifiers trained on the
+TORGO [12] and UASpeech [13] datasets perform considerably bet-
+ter on non-speech than on speech segments, demonstrating that they
+exploit recording-related characteristics present in non-speech seg-
+ments rather than pathology-relevant properties of the speech signal.
+This work was supportecd by the Swiss National Science Foundation
+projects CRSII5 202228 on “Characterisation of motor speech disorders and
+processes” and 200021 215187 on “Pathological Speech Enhancement”.
+Similar reliance on non-task-related cues has been observed in other
+speech classification tasks [14,15].
+An intuitive way to mitigate noise disparity is to suppress the
+noise from the recordings before classification. Speech enhance-
+ment (SE) models [16, 17] are widely used as preprocessing mod-
+ules for downstream speech tasks [18], and therefore provide a nat-
+ural candidate for this purpose. In principle, if class-discriminative
+noise is sufficiently suppressed, the classifier cannot exploit noise-
+related cues. However, SE does not simply remove noise, as en-
+hancement models can also modify the speech signal and introduce
+artifacts whose characteristics depend on the input noise, signal-to-
+noise ratio (SNR), and enhancement model itself [19]. If these arti-
+facts vary systematically with the original noise conditions, they can
+themselves become predictive of the class labels. Consequently, SE
+may replace one source of spurious information with another, rather
+than eliminating the underlying shortcut.
+An alternative strategy is to instead modify the training data it-
+self, removing the association between noise and class label directly.
+To suppress noise-related cues for the binary pathological speech
+detection task, we previously proposed an augmentation-based ap-
+proach that combines each training sample with a proxy of the noise
+extracted from the opposite class [20]. This augmentation exposes
+both classes to comparable noise characteristics, suppressing the as-
+sociation between noise and class labels so that a classifier can only
+succeed by relying on genuine speech content. This formulation,
+however, is defined for pairs of samples. In the multiclass setting,
+a sample can be matched with noise from several other classes, and
+it is not clear a priori which noise, or which combination of noises,
+should be added.
+In this paper, we propose an extension of the binary augmenta-
+tion approach from [20] to the multiclass setting, using multiclass
+speech emotion recognition as an exemplary task. Additionally, we
+investigate whether SE can provide an alternative means of mitigat-
+ing noise-related shortcuts. Our main contributions are as follows:
+• We demonstrate that noise disparity can induce spurious
+class-discriminative cues in multiclass speech classification,
+resulting in models that rely on noise characteristics rather
+than task-relevant speech information.
+• We extend our augmentation strategy [20] from binary to
+multiclass classification by comparing three cross-class noise
+augmentation schemes. We show that augmenting each sam-
+ple with noise from all other classes effectively suppresses
+the noise-disparity shortcut across SNR conditions, while
+random and batch-pairing strategies are ineffective.
+• We systematically investigate SE as a commonly used prepro-
+cessing strategy for handling noisy inputs. We show that in
+the presence of noise disparity, SE models introduce spurious
+enhancement-dependent artifacts that also impair classifica-
+tion performance.
+arXiv:2610.03381v1  [eess.AS]  2 Oct 2026
+
+
+2. PRELIMINARIES
+Consider a C-class speech classification task, where yc
+i (k) denotes
+the i-th noisy speech sample from class c at time index k. Each noisy
+sample is modeled as
+yc
+i (k) = sc
+i(k) + nc
+i(k),
+(1)
+where sc
+i(k) and nc
+i(k) denote the corresponding clean speech and
+noise signals, respectively. In practice only the noisy mixture yc
+i (k)
+is observed, while the clean speech and noise components are not
+available. We define noise disparity as a setting in which the noise
+distribution depends on the class c, i.e., samples belonging to the
+same class are corrupted according to the same noise distribution,
+while the noise distribution differs across classes.
+This happens
+when recordings from different classes are collected under different
+acoustic conditions. Consequently, noise characteristics can become
+correlated with the class label and provide spurious cues for classifi-
+cation.
+To characterize the signal and noise levels, we define the average
+power of a signal x(k) of length K as
+Px = 1
+K
+K−1
+X
+k=0
+x2(k).
+(2)
+Accordingly, for a noisy signal y(k) = s(k) + n(k), we define the
+SNR as
+SNRn
+y = 10 log 10 Ps
+Pn .
+(3)
+The notations Px and SNRn
+y are used throughout the remainder of
+this paper to denote the corresponding signal powers and SNRs, re-
+spectively. For ease of readability, the time index k is omitted in the
+following.
+3. NOISE DISPARITY IN THE TWO-CLASS SETTING
+We proposed a strategy for mitigating noise disparity in the two-
+class classification setting in [20]. The underlying idea is to cross-
+augment samples from the two classes with each other’s noise, such
+that the resulting samples have matched noise characteristics. If this
+is achieved, noise is no longer predictive of the class label and a clas-
+sifier can then only succeed by relying on genuine speech content.
+Specifically, consider a sample ya
+i from class ca and a sample yb
+j
+from the other class cb, with a̸ = b. Their augmented versions are
+given by
+ˆya
+i = sa
+i + na
+i
+| {z }
+ya
+i
++Γbj→ai ˆnb
+j,
+ˆyb
+j = sb
+j + nb
+j
+| {z }
+yb
+j
++Γai→bj ˆna
+i ,
+(4)
+where ˆna
+i and ˆnb
+j are the estimated noises from samples ya
+i and
+yb
+j, respectively, and Γbj→ai and Γai→bj are scalar coefficients
+used to scale these noise estimates when augmenting each sample.
+Following [20], noise is estimated using the non-speech segments
+of each sample, which are extracted with a voice activity detector
+(VAD) [21]. For the two augmented samples ˆya
+i and ˆyb
+j in (4) to
+have the same noise characteristics, the scalars Γbj→ai and Γai→bj
+should be computed such that (i) the SNR of ˆya
+i and ˆyb
+j with respect
+to each of the individual noises is the same and (ii) the SNR of ˆya
+i
+and ˆyb
+j with respect to the total noise is the same. These conditions
+are expressed through the system of equations:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SNR
+na
+i
+ˆya
+i = SNR
+Γai→bj ˆna
+i
+ˆyb
+j
+SNR
+Γbj →ai ˆnb
+j
+ˆya
+i
+= SNR
+nb
+j
+ˆyb
+j
+SNR
+na
+i +Γbj →ai ˆnb
+j
+ˆya
+i
+= SNR
+nb
+j+Γai→bj ˆna
+i
+ˆyb
+j
+(5)
+As shown in [20], the scalars Γai→bj and Γbj→ai satisfying (5) are
+given by
+Γai→bj =
+s
+Psb
+j
+Psa
+i
+, Γbj→ai =
+s
+Psa
+i
+Psb
+j
+,
+(6)
+ensuring that the two augmented samples ˆya
+i and ˆyb
+j have matched
+noise characteristics. Thus, in the two-class setting, each sample can
+be cross-augmented with a noise estimate from the other class using
+a uniquely defined scaling coefficient.
+4. NOISE DISPARITY IN THE MULTICLASS SETTING
+For C > 2 classes, the formulation of Section 3 does not specify
+which noise a sample should be augmented with, since the noises of
+C −1 other classes are available. The most direct extension is to
+augment each sample with the estimated noise of every other class,
+so that all augmented samples contain the same C noise sources.
+Generalizing (5), the augmented samples have matched noise char-
+acteristics if their SNR is the same with respect to each individual
+noise source and with respect to any combination of noise sources,
+which amounts to 2C −1 conditions. Under the same assumptions
+as in [20], these conditions are satisfied by the pairwise coefficients
+of (6). However, stacking several noise signals onto a single sample
+lowers its effective SNR, with the reduction increasing as the num-
+ber of classes grows. We therefore also consider two variants that
+randomly introduce noise from only a single class per sample. In
+this case, the formulation is equivalent to considering only pairwise
+conditions as in the binary classification setting, without a guarantee
+of matching all noise characteristics across all classes. In addition,
+we evaluate SE as an alternative approach that aims to suppress noise
+entirely prior to classification, rather than balancing it across classes.
+1. Augmentation with noise from all other classes.
+Each noisy
+sample is augmented with a scaled noise estimate from every other
+class, i.e.,
+ˆya
+i = sa
+i + na
+i
+| {z }
+ya
+i
++
+X
+b̸=a
+Γbj→ai ˆnb
+j,
+(7)
+with each Γbj→ai determined as in (6).
+Since every augmented
+sample contains contributions from the noise of all classes and sat-
+isfies all possible conditions, no individual noise pattern remains
+distinctive of any particular class. However, because multiple noise
+components are added at once, the SNR of the augmented sample
+decreases as the number of classes increases.
+2. Random augmentation with a single noise.
+At each training
+epoch, one noise sample is drawn from a randomly selected differ-
+ent class and added using (6). Thus, only one noise component is
+introduced at a time, and the SNR does not degrade as the number of
+classes increases. In contrast to the previous strategy, this approach
+does not satisfy all possible conditions in the multiclass setting and
+
+
+therefore does not guarantee effective suppression of noise disparity.
+3. Pairing samples in each batch. Within each training batch, sam-
+ples from different classes are randomly paired and cross-augmented
+via (4), which applies the exact symmetric two-class matching con-
+dition rather than the random matching used in the previous strategy.
+Samples that cannot be paired within a batch are instead assigned
+noise from a randomly chosen sample of another class. We consider
+this variant in addition to strategy 2 to test whether enforcing an
+exact mutual noise match for at least some class pairs per batch is
+more effective than the weaker additive exposure in strategy 2.
+4. Using speech enhancement as a preprocessing step.
+An alterna-
+tive approach to mitigating noise disparity is to suppress noise be-
+fore training. To the best of our knowledge, the effectiveness of SE
+as a preprocessing step for this purpose has not been systematically
+studied. We therefore apply an enhancement model to the noisy sam-
+ples prior to training the model, aiming to reduce class-specific noise
+cues. Specifically, we consider a complex-valued spectrogram-based
+regression model (CR) [16] and a Schr¨odinger Bridge-based model
+(SB) [22], representing discriminative and generative state-of-the-art
+SE paradigms. Their implementation and training configurations are
+detailed in Section 5.2.
+5. EXPERIMENTAL SETTINGS
+5.1. Databases
+To investigate noise disparity in a controlled setting, we require a
+dataset in which the association between class labels and noise char-
+acteristics can be explicitly controlled. To this end, we follow the
+procedure of [20] and construct a synthetic noisy dataset by adding
+selected environmental noises to clean speech samples. This allows
+us to introduce noise disparity while keeping the underlying speech
+signal unchanged.
+Clean dataset.
+For the clean dataset, we use the IEMOCAP
+dataset [23] which is a widely used benchmark for multiclass emo-
+tion recognition. IEMOCAP comprises five sessions, each featur-
+ing one male and one female speaker. Although the original dataset
+contains ten emotion classes, we follow the commonly used four-
+class protocol, considering the angry, neutral, sad, and happy classes
+(with excited merged into happy) [1,2]. These four classes comprise
+5, 531 samples with a total duration of approximately 7 hours.
+Noise dataset.
+For generating the noisy samples, we use
+the DEMAND noise dataset [24].
+Specifically, we select the
+DKITCHEN, NPARK, OMEETING, and PCAFETER noises. Each
+noise type is assigned to exactly one emotion class, such that the
+noise characteristics are systematically associated with the class la-
+bels. We consider three scenarios corresponding to high, moderate,
+and random SNRs:
+A. Samples from all classes are corrupted with their respective
+noises at an SNR of 20 dB.
+B. Samples from all classes are corrupted with their respective
+noises at an SNR of 10 dB.
+C. Samples from all classes are corrupted with their respective
+noises at an SNR randomly chosen from the range of 10 to
+20 dB.
+5.2. Speech enhancement models
+We consider two state-of-the-art SE models, the discriminative CR
+model from [16] and the generative SB model from [17].
+Both
+SE models follow a U-Net architecture. We took the best check-
+point trained on the widely used SE benchmark dataset WSJ0-
+CHiME3 [25]. This benchmark is composed of clean speech from
+the English Wall Street Journal dataset [26] and noise from the
+ChiME3 dataset [27].
+5.3. Training Protocol
+For conducting our experiments, we use a wav2vec2-based [9] ap-
+proach. We obtain the feature representation from the raw audio sig-
+nal using the last layer of the wav2vec 2.0 base model. We then pass
+these representations through two linear layers, which project the
+representation into 256 and 2 dimensions, respectively. We also use
+a ReLU nonlinearity between the linear layers. We segment signals
+into 5-second chunks with 50% overlap. The final residual segment
+of each utterance is also retained.
+Training is done using the Adam optimizer with a learning rate
+of 1 × 10−3. We also use ReduceLROnPlateau with a patience of
+5 and a factor of 0.5. Models are trained until a maximum number
+of 100 epochs or until the learning rate decreases below 10−4 of the
+initial learning rate. The best model is chosen based on the loss value
+on the validation set.
+Training and evaluation is done through the commonly used
+leave-one-session-out cross-validation setting [1]. At each fold, we
+use one of the sessions as the test set, and the remaining four ses-
+sions are split into a training set and a validation set with a ratio of
+0.8 and 0.2, respectively. Performance is evaluated using the Un-
+weighted Accuracy (UA), which is commonly used for evaluating
+emotion recognition systems with imbalanced emotion classes [1].
+6. EXPERIMENTAL RESULTS
+In this section, we compare the effectiveness of different training
+strategies for mitigating the effects of noise disparity. As a base-
+line, we consider standard training in which the model is trained
+directly on the noisy training data without any augmentation or pre-
+processing. This baseline is compared with the proposed augmen-
+tation strategies. In addition, we investigate the SE-based training
+strategy where the noisy training data are first enhanced using ei-
+ther the CR or SB model and the classifier is subsequently trained
+on the enhanced data. Furthermore, we train and test the model on
+clean data to obtain a sense of its performance when there is no noise
+disparity in the dataset. The obtained UA in this case is 59.3%.
+For the augmentation-based approaches described in Section 4,
+augmenting each signal with noise from another class according
+to (7) requires an estimate of the corresponding noise signal. To in-
+vestigate the effect of potential errors in the estimated noise signals,
+we consider two settings:
+1. Oracle.
+Since we generate the synthetic noisy dataset our-
+selves, the exact noise signal in each sample is known. In the
+oracle setting, we use this ground-truth noise signal during
+augmentation. This setting allows us to evaluate the augmen-
+tation strategy without errors in the noise estimate.
+2. Practical.
+In practice, the noise signal is unknown and must
+be estimated from the noisy speech. Following [20], we use
+the VAD from [21] to separate speech and non-speech seg-
+ments of the noisy samples. Assuming that the non-speech
+segments contain no speech information, we use them as an
+estimate of the background noise for augmentation. Errors
+in this estimate therefore reflect the noise estimation errors
+encountered in a practical setting.
+
+
+Table 1. UA (%) of the standard training approach and of different augmentation strategies under oracle and practical setups.
+Dataset
+SNR Setting
+Test set
+Training Strategy
+Standard
+All Noise
+Random Noise
+Batch Pairing
+Oracle
+Practical
+Oracle
+Practical
+Oracle
+Practical
+20 dB
+Noisy
+82.5
+53.3
+48.0
+74.3
+71.8
+75.3
+73.2
+Clean
+44.2
+52.3
+47.8
+47.9
+48.1
+46.9
+49.1
+10 dB
+Noisy
+94.4
+44.7
+50.1
+86.8
+89.2
+86.6
+88.8
+Clean
+28.2
+45.8
+37.9
+37.1
+28.0
+36.4
+28.3
+Random
+Noisy
+88.6
+50.3
+48.8
+81.7
+80.7
+81.1
+81.9
+Clean
+38.3
+49.6
+45.4
+47.0
+44.9
+46.1
+44.1
+Table 2. UA (%) using SE as a preprocessing step prior to training.
+Dataset
+SNR Setting
+Test set
+Enhancement
+CR
+SB
+20 dB
+Noisy
+39.5
+33.8
+Clean
+27.7
+35.6
+Enhanced SB
+64.1
+76.1
+Enhanced CR
+75.4
+61.8
+10 dB
+Noisy
+52.7
+31.9
+Clean
+31.1
+31.5
+Enhanced SB
+61.2
+79.4
+Enhanced CR
+85.4
+74.6
+Random
+Noisy
+44.9
+36.0
+Clean
+27.8
+35.7
+Enhanced SB
+64.4
+76.3
+Enhanced CR
+79.8
+69.6
+All models are evaluated on two common test sets, i.e., the orig-
+inal noisy test set, which exhibits the same class-dependent noise
+as the training data, and the corresponding clean test set. A model
+that relies only on speech content cannot have a higher accuracy on
+the noisy test set than on the clean one. A higher accuracy on the
+noisy test set therefore indicates reliance on class-dependent noise
+cues, and the gap between the two serves as our main measure of
+spurious-cue exploitation. Since SE-based models are trained on en-
+hanced data, and would also receive enhanced inputs at deployment,
+we additionally evaluate them on the noisy test set enhanced with
+the SB and the CR model. The clean-data reference (UA of 59.3%)
+indicates what can be achieved from speech content alone. Accuracy
+on enhanced data exceeding it therefore indicates that the classifier
+exploits cues introduced or preserved by SE rather than task-related
+information. Results for the augmentation strategies are given in Ta-
+ble 1, and for the SE-based strategies in Table 2.
+As can be seen in Table 1, when the model is trained under stan-
+dard training, its performance on the noisy test set is much higher
+than on the clean test set across all SNR settings. This confirms
+that the model learns noise-discriminant cues rather than actual task-
+related cues. When augmenting each sample with oracle noise from
+every other class, our proposed method can effectively close the per-
+formance gap between the noisy and clean test sets. This shows that
+given a precise estimate of the noise, our proposed method can make
+training robust to spurious correlations. Under the practical setup
+in the SNR setting of 20 dB, we also successfully close the gap be-
+tween the noisy and clean test sets, though this comes at the cost of
+lower overall performance compared to the oracle setup. Under the
+practical setup in the SNR settings of 10 dB and random, the gap
+between noisy and clean test set performance is reduced by a large
+margin but does not fully close. We argue that with a better estimate
+of the noise, this remaining gap could be closed to match that of the
+oracle scenario.
+In the training strategy in which noise from another class is ran-
+domly selected for each sample, clean set accuracy increases and
+noisy set accuracy decreases compared with standard training. How-
+ever, this strategy is overall not effective, with the performance gap
+between noisy and clean test sets remaining large. This trend can
+also be observed in the strategy where we pair samples within each
+batch and cross-augment their noise. We argue this occurs because
+the noise is changed for each sample at every training epoch, encour-
+aging the model to become invariant to the augmented noise and in-
+stead focus on the components that remain fixed across epochs. As a
+result, the model can still exploit the original class-dependent noise
+characteristics, leading to a persistent performance gap between the
+noisy and clean test sets.
+The enhancement-based strategies in Table 2 show a different
+behavior. While training with either CR or SB results in low per-
+formance on the noisy and clean test sets, performance is substan-
+tially higher on the enhanced test sets, particularly when the same
+enhancement model is used for training and testing. Notably, per-
+formance on the enhanced test sets is also substantially higher than
+when training and testing on the clean data (i.e., 59.3%). Since the
+clean data contain only the task-relevant speech information in our
+controlled setup, the additional discriminative information in the en-
+hanced data must originate from the enhancement of the noisy sig-
+nal. Thus, rather than removing the class-dependent noise cues, SE
+appears to preserve or introduce noise-dependent artifact cues that
+can be exploited by the classifier. Consequently, SE does not pro-
+vide an effective solution for suppressing noise disparity.
+In summary, experimental results show that augmenting each
+sample with the noise of every other class is the only strategy that
+removes the reliance on class-dependent noise cues in multiclass set-
+tings. In contrast, single-class augmentation leaves a substantial gap
+between noisy and clean test set performance, while SE introduces
+new spurious cues rather than removing existing ones.
+7. CONCLUSION
+We investigated noise disparity between classes in multiclass speech
+classification, using a synthetic dataset built by introducing con-
+trolled noise disparity into the IEMOCAP corpus [23]. Evaluating
+this setup across several SNR conditions and test sets, we showed
+that noise disparity leads models to learn spurious, noise-based cues
+rather than task-relevant information. To address this, we proposed
+and compared three cross-augmentation strategies, finding that aug-
+menting each sample with noise from every other class provides the
+strongest robustness. We further showed that speech enhancement
+applied as a preprocessing step does not resolve this issue, but in-
+stead introduces its own noise- and enhancement-specific artifacts.
+
+
+8. REFERENCES
+[1] T. Purohit, S. Yadav, B. Vlasenko, S. P. Dubagunta, and
+M. Magimai.-Doss, “Towards learning emotion information
+from short segments of speech,”
+in Proc. IEEE Interna-
+tional Conference on Acoustics, Speech and Signal Processing
+(ICASSP), 2023, pp. 1–5.
+[2] Z. Ma, M. Chen, H. Zhang, Z. Zheng, W. Chen, X. Li, J. Ye,
+X. Chen, and T. Hain, “EmoBox: Multilingual Multi-corpus
+Speech Emotion Recognition Toolkit and Benchmark,”
+in
+Proc. Interspeech, 2024, pp. 1580–1584.
+[3] M. Amiri and I. Kodrasi, “Test-time adaptation for automatic
+pathological speech detection in noisy environments,” in Proc.
+European Signal Processing Conference (EUSIPCO). IEEE,
+2024, pp. 86–90.
+[4] P. Janbakhshi and I. Kodrasi, “Experimental investigation on
+STFT phase representations for deep learning-based dysarthric
+speech detection,” in Proc. IEEE International Conference on
+Acoustics, Speech and Signal Processing (ICASSP), Philadel-
+phia, USA, May 2022, pp. 6477–6481.
+[5] P. Janbakhshi and I. Kodrasi,
+“Adversarial-free speaker
+identity-invariant
+representation
+learning
+for
+automatic
+dysarthric speech classification,” in Proc. Annual Conference
+of the International Speech Communication Association,
+Incheon, Korea, Sept. 2022, pp. 2138–2142.
+[6] P. Janbakhshi and I. Kodrasi, “Supervised speech representa-
+tion learning for Parkinson’s disease classification,” in Proc.
+ITG Conference on Speech Communication, Kiel, Germany,
+Sept. 2021, pp. 154–158.
+[7] Z. Fan, M. Li, S. Zhou, and B. Xu, “Exploring wav2vec 2.0
+on speaker verification and language identification,”
+arXiv
+preprint arXiv:2012.06185, 2020.
+[8] J. S. Kim, H. J. Park, W. Shin, and S. W. Han,
+“Rethink-
+ing Leveraging Pre-Trained Multi-Layer Representations for
+Speaker Verification,” in Proc. Interspeech, 2025, pp. 3713–
+3717.
+[9] A. Baevski, Y. Zhou, A. Mohamed, and M. Auli, “wav2vec
+2.0: A framework for self-supervised learning of speech repre-
+sentations,” in Proc. Annual Conference on Neural Information
+Processing Systems, Virtual, Dec. 2020, pp. 12449–12460.
+[10] A. Babu, C. Wang, A. Tjandra, K. Lakhotia, Q. Xu, N. Goyal,
+K. Singh, P. Von Platen, Y. Saraf, J. Pino, et al.,
+“Xls-r:
+Self-supervised cross-lingual speech representation learning at
+scale,” arXiv preprint arXiv:2111.09296, 2021.
+[11] G. Schu, P. Janbakhshi, and I. Kodrasi,
+“On using the ua-
+speech and torgo databases to validate automatic dysarthric
+speech classification approaches,”
+in Proc. IEEE Interna-
+tional Conference on Acoustics, Speech and Signal Processing
+(ICASSP). IEEE, 2023, pp. 1–5.
+[12] F. Rudzicz, A. K. Namasivayam, and T. Wolff, “The TORGO
+database of acoustic and articulatory speech from speakers
+with dysarthria,” Language resources and evaluation, vol. 46,
+pp. 523–541, 2012.
+[13] H. Kim, M. Hasegawa-Johnson, A. Perlman, J. R. Gunderson,
+T. S. Huang, K. L. Watkin, and S. Frame, “Dysarthric speech
+database for universal access research,” in Proc. Annual Con-
+ference of the International Speech Communication Associa-
+tion, Brisbane, Australia, Sept. 2008, pp. 1741–1744.
+[14] L. Gauder, P. Riera, A. Slachevsky, G. Forno, A. M. Gar-
+cia, and L. Ferrer, “The unreliability of acoustic systems in
+alzheimer’s speech datasets with heterogeneous recording con-
+ditions,” arXiv preprint arXiv:2409.12170, 2024.
+[15] L. Gauder, P. Riera, A. Slachevsky, G. Forno, A. M. Garc´ıa,
+and L. Ferrer, “A toolkit for detecting spurious correlations in
+speech datasets,” arXiv preprint arXiv:2604.26676, 2026.
+[16] J.-M. Lemercier, J. Richter, S. Welker, and T. Gerkmann,
+“Analysing diffusion-based generative approaches versus dis-
+criminative approaches for speech restoration,” in Proc. IEEE
+International Conference on Acoustics, Speech and Signal Pro-
+cessing (ICASSP), 2023, pp. 1–5.
+[17] A. Juki´c, R. Korostik, J. Balam, and B. Ginsburg, “Schr¨odinger
+Bridge for Generative Speech Enhancement,” in Proc. Inter-
+speech 2024, 2024, pp. 1175–1179.
+[18] H. Sato, T. Ochiai, M. Delcroix, K. Kinoshita, N. Kamo, and
+T. Moriya, “Learning to enhance or not: Neural network-based
+switching of enhanced and observed signals for overlapping
+speech recognition,” in Proc. IEEE International Conference
+on Acoustics, Speech and Signal Processing (ICASSP), 2022,
+pp. 6287–6291.
+[19] K. Iwamoto, T. Ochiai, M. Delcroix, R. Ikeshita, H. Sato,
+S. Araki, and S. Katagiri, “How bad are artifacts?: Analyzing
+the impact of speech enhancement errors on ASR,” in Proc.
+Interspeech, 2022, pp. 5418–5422.
+[20] M. Amiri and I. Kodrasi,
+“Suppressing noise disparity in
+training data for automatic pathological speech detection,” in
+Proc. International Workshop on Acoustic Signal Enhance-
+ment (IWAENC), 2024, pp. 110–114.
+[21] H. Bredin, “pyannote.audio 2.1 speaker diarization pipeline:
+Principle, benchmark, and recipe,” in Proc. Annual Confer-
+ence of the International Speech Communication Association,
+Dublin, Ireland, Aug. 2023, pp. 1983–1987.
+[22] A. Juki´c, R. Korostik, J. Balam, and B. Ginsburg, “Schr¨odinger
+bridge for generative speech enhancement,”
+in Proc. Inter-
+speech, 2024, pp. 1175–1179.
+[23] C. Busso, M. Bulut, C.-C. Lee, A. Kazemzadeh, E. Mower,
+S. Kim, J. N. Chang, S. Lee, and S. S. Narayanan, “Iemocap:
+Interactive emotional dyadic motion capture database,” Lan-
+guage resources and evaluation, vol. 42, no. 4, pp. 335–359,
+2008.
+[24] J. Thiemann, N. Ito, and E. Vincent,
+“The diverse envi-
+ronments multi-channel acoustic noise database (demand): A
+database of multichannel environmental noise recordings,” in
+Proceedings of Meetings on Acoustics. Acoustical Society of
+America, 2013, vol. 19, p. 035081.
+[25] M. Hou and I. Kodrasi, “Influence of Clean Speech Charac-
+teristics on Speech Enhancement Performance,” in Proc. IEEE
+International Conference on Acoustics, Speech and Signal Pro-
+cessing (ICASSP), 2026, pp. 17427–17431.
+[26] J. S. Garofolo, D. Graff, D. Paul, and D. Pallett,
+“CSR-I
+(WSJ0) Complete LDC93S6A,” Web Download Philadelphia:
+Linguistic Data Consortium, 1993.
+[27] J. Barker, R. Marxer, E. Vincent, and S. Watanabe, “The third
+‘chime’speech separation and recognition challenge: Dataset,
+task and baselines,”
+in Proc. IEEE workshop on automatic
+speech recognition and understanding (ASRU). IEEE, 2015,
+pp. 504–511.

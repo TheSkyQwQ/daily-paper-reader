@@ -1,0 +1,177 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-06T00:23:51.885554+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2610.03381v1",
+      "source": "arxiv",
+      "title": "Multiclass Speech Classification Under Noise Disparity",
+      "abstract": "We investigate noise disparity in multi-class speech classification tasks and develop a strategy to prevent classifiers from exploiting class-dependent noise characteristics. Building on our previous work for binary classification, we introduce a multi-class cross-augmentation scheme that exposes each class to the noise characteristics of the other classes, thereby removing the association between individual noise conditions and class labels. We compare this training-based approach with speech enhancement (SE) as a preprocessing strategy, which aims to suppress noise-related cues directly from the input. Experiments on multi-class emotion recognition show that cross-augmentation effectively mitigates the effect of noise disparity across a range of signal-to-noise-ratios, while SE has a detrimental effect on model performance.",
+      "authors": [
+        "Mahdi Amiri",
+        "Sayantan Biswas",
+        "Mingchi Hou",
+        "Pascal Frossard",
+        "Ina Kodrasi"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-10-02T14:35:12+00:00",
+      "link": "https://arxiv.org/pdf/2610.03381v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "noise disparity mitigation for multi-class emotion recognition robustness",
+      "llm_evidence_cn": "多类情感识别中的噪声差异缓解",
+      "llm_evidence": "多类情感识别中的噪声差异缓解",
+      "canonical_evidence": "多类情感识别中的噪声差异缓解",
+      "llm_tldr_en": "Multi-class cross-augmentation exposes each class to other classes' noise, removing class-dependent noise associations and improving emotion recognition under noise disparity.",
+      "llm_tldr_cn": "多类语音分类中，不同类别往往伴随各自特有的噪声条件，分类器会利用这种虚假关联而非真实语音线索，造成域偏移下的性能退化。作者提出多类交叉增强方案，将每个类别暴露于其他类别的噪声特征中，从而切断噪声条件与类别标签的关联，并与语音增强预处理策略进行对比。在多类情感识别实验上，该方法在多种信噪比下均能有效缓解噪声差异带来的负面影响。该工作为噪声与录制条件差异下的鲁棒语音情感识别提供了简单有效的训练策略。",
+      "llm_tldr": "多类语音分类中，不同类别往往伴随各自特有的噪声条件，分类器会利用这种虚假关联而非真实语音线索，造成域偏移下的性能退化。作者提出多类交叉增强方案，将每个类别暴露于其他类别的噪声特征中，从而切断噪声条件与类别标签的关联，并与语音增强预处理策略进行对比。在多类情感识别实验上，该方法在多种信噪比下均能有效缓解噪声差异带来的负面影响。该工作为噪声与录制条件差异下的鲁棒语音情感识别提供了简单有效的训练策略。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition under domain shift across different speech datasets and recording conditions",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.36921v1",
+      "source": "arxiv",
+      "title": "When Capabilities Fail to Compose: Diagnosing the Compositionality Gap in Large Audio-Language Models",
+      "abstract": "Large audio-language models (LALMs) perform strongly on individual audio tasks, but whether these capabilities can be reliably composed remains underexplored. We conduct a controlled diagnostic study of capability composition in LALMs, requiring models to integrate audio-attribute recognition, cue-conditioned segment selection, and downstream ASR or question answering. We construct two-utterance inputs with distinct acoustic cues to evaluate composition across environmental sound, gender, and emotion cues, with ASR, Math QA, and Factual QA as downstream tasks. Across four open-source LALMs, compositional QA accuracy decreases in 39 of 40 model-task-cue settings, by an average of 26.7 percentage points. ASR exhibits a similarly consistent degradation, with WER increasing in 39 of 40 settings by an average of 28.5 percentage points, while the magnitude of degradation varies across models, cue types, and cue salience. We further probe these failures through output format, positional preference, and chain-of-thought (CoT) analyses. Our study reveals a systematic gap between possessing individual audio capabilities and reliably composing them.",
+      "authors": [
+        "Chien-Feng Liu",
+        "Chih-Kai Yang",
+        "Bo-Han Feng",
+        "Yu-Hsuan Li Liang",
+        "Hung-yi Lee",
+        "Cheng-Fu Chou"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-09-29T07:40:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.36921v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "large audio-language models with emotion cues and composition diagnosis",
+      "llm_evidence_cn": "含情感线索的大型音频语言模型组合性诊断",
+      "llm_evidence": "含情感线索的大型音频语言模型组合性诊断",
+      "canonical_evidence": "含情感线索的大型音频语言模型组合性诊断",
+      "llm_tldr_en": "Diagnoses capability composition in large audio-language models using two-utterance inputs with emotion, gender, and environmental cues, finding large accuracy drops in compositional QA.",
+      "llm_tldr_cn": "大型音频语言模型单项任务表现优异，但能力能否可靠组合尚不清楚。本文构建带情感、性别与环境声线索的双话语输入，要求模型组合属性识别、线索定位与下游问答。结果显示在40个模型-任务-线索设置中有39个组合准确率下降，平均降低26.7个百分点，揭示音频语言模型在情感等线索组合推理上的显著缺口。",
+      "llm_tldr": "大型音频语言模型单项任务表现优异，但能力能否可靠组合尚不清楚。本文构建带情感、性别与环境声线索的双话语输入，要求模型组合属性识别、线索定位与下游问答。结果显示在40个模型-任务-线索设置中有39个组合准确率下降，平均降低26.7个百分点，揭示音频语言模型在情感等线索组合推理上的显著缺口。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.02638v1",
+      "source": "arxiv",
+      "title": "Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript",
+      "abstract": "Full-duplex voice agents make many small, closed decisions, which current systems answer by slow autoregressive decoding. We propose DuplexJev, which feeds ASR-encoder hidden states through a small connector into a frozen LLM and reads each question as a single-token distribution over its options. Nothing is decoded, and an 8-GPU node answers 80 decisions about eight utterances in about 0.1 s. With a last-layer connector, spoken QA stays close to reading the transcript (90% vs. 91%). DuplexJev also hears the speaker: gender and emotion accuracy both reach 90% (from 55% and 28%) with a cross-attention connector, whose spoken QA drops by only 1 point (83% to 82%). We train decisions with cross-entropy on the read-out answer token, instead of the usual transcript distillation, whose teacher never hears the voice, and keep distillation for content. Encoders and LLMs are interchangeable; we release weights, training recipe, a batched-inference pipeline for full-duplex serving and a bilingual spoken-QA set.",
+      "authors": [
+        "Jie Jin",
+        "Ziyin Ma",
+        "Min Yin",
+        "Jinyu Chen",
+        "Haigang Song",
+        "Zhikun Pang",
+        "Xiaowen Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-10-02T00:54:52+00:00",
+      "link": "https://arxiv.org/pdf/2610.02638v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "frozen LLM reads emotion from speech without decoding",
+      "llm_evidence_cn": "冻结大模型不解码直接识别语音情感",
+      "llm_evidence": "冻结大模型不解码直接识别语音情感",
+      "canonical_evidence": "冻结大模型不解码直接识别语音情感",
+      "llm_tldr_en": "Full-duplex voice agents make many small closed decisions, which autoregressive decoding answers slowly. DuplexJev feeds ASR-encoder hidden states through a connector into a frozen LLM and reads each question as a single-token distribution; with a cross-attention connector emotion accuracy reaches 90 percent without decoding.",
+      "llm_tldr_cn": "全双工语音代理需频繁做小型封闭决策，传统自回归解码过慢。本文提出DuplexJev，将ASR编码器隐状态经小型连接器送入冻结大模型，以单token分布直接读取答案，无需解码，8卡节点约0.1秒完成80项决策。采用交叉注意力连接器时，性别与情感识别准确率均达90%，而口语问答仅下降1个百分点。该工作表明冻结大模型可在不生成文本的情况下感知情感等副语言信息。",
+      "llm_tldr": "全双工语音代理需频繁做小型封闭决策，传统自回归解码过慢。本文提出DuplexJev，将ASR编码器隐状态经小型连接器送入冻结大模型，以单token分布直接读取答案，无需解码，8卡节点约0.1秒完成80项决策。采用交叉注意力连接器时，性别与情感识别准确率均达90%，而口语问答仅下降1个百分点。该工作表明冻结大模型可在不生成文本的情况下感知情感等副语言信息。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.03125v1",
+      "source": "arxiv",
+      "title": "ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry",
+      "abstract": "Speech delivery varies with both the requested paralinguistic attribute and the linguistic content. We introduce ParaGeo, a matched-content decomposition of paralinguistic variation in a frozen speech language model. Synthesized audio tokens are replayed with a fixed listening prompt; pooled key/value (K/V) representations are centered and projected into a shared low-dimensional space. Our GLM-4-Voice probe spans 80 requested controls from 12 benchmark families across eight sentences. With a globally fitted calibration basis, content-held-out centroid accuracy using this basis is 9.49% versus a 1.25% permutation baseline; same-label cross-content cosine similarity is 0.285 versus 0.017, and both conditional permutation tests yield p = 0.001. A separate ten-scenario, six-style probe reveals reproducible contrast directions across scenarios. Static, additive, and temporal interventions produce attribute-, layer-, and schedule-dependent response profiles. These results provide a shared coordinate representation for measuring paralinguistic structure and an empirical starting point for latent speech control. Code is available at https://github.com/yuhanlydia/ParaGeo.",
+      "authors": [
+        "Yuhan Liu",
+        "Yuxuan Ou",
+        "Ruoxi Su",
+        "Mohamed Ahmed Zaki",
+        "Yunbo Long"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.LG"
+      ],
+      "published": "2026-10-02T10:46:16+00:00",
+      "link": "https://arxiv.org/pdf/2610.03125v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "decomposing paralinguistic variation in a frozen speech language model",
+      "llm_evidence_cn": "在冻结语音语言模型中分解副语言变化",
+      "llm_evidence": "在冻结语音语言模型中分解副语言变化",
+      "canonical_evidence": "在冻结语音语言模型中分解副语言变化",
+      "llm_tldr_en": "ParaGeo decomposes paralinguistic variation in a frozen speech language model into a shared latent geometry using matched-content audio probes and K/V representations.",
+      "llm_tldr_cn": "语音表达的副语言属性常与语言内容纠缠，难以分离。本文提出ParaGeo，在冻结的语音语言模型中对副语言变化做匹配内容的分解，将合成的音频令牌以固定提示重放并汇集键值表示，再中心化投影到共享低维空间。在GLM-4-Voice上覆盖12类基准、80种控制与8个句子的探测显示，内容留出的质心准确率显著高于置换基线，跨内容同标签相似度也明显提升。该工作为副语言与情感表征的可分离建模提供了新几何视角。",
+      "llm_tldr": "语音表达的副语言属性常与语言内容纠缠，难以分离。本文提出ParaGeo，在冻结的语音语言模型中对副语言变化做匹配内容的分解，将合成的音频令牌以固定提示重放并汇集键值表示，再中心化投影到共享低维空间。在GLM-4-Voice上覆盖12类基准、80种控制与8个句子的探测显示，内容留出的质心准确率显著高于置换基线，跨内容同标签相似度也明显提升。该工作为副语言与情感表征的可分离建模提供了新几何视角。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
