@@ -1,0 +1,217 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-07T23:54:35.890050+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2610.06956v1",
+      "source": "arxiv",
+      "title": "EMODE: Dynamic Para-Semantic Experts for Emotion-Aware Speech Language Modeling",
+      "abstract": "Large speech language models have demonstrated strong capabilities in unified cross-modal understanding and generation, yet paralinguistic cues, especially emotion, remain difficult to preserve. Existing systems typically rely on entangled acoustic representations, which allow the underlying language model to depend excessively on recovered lexical content instead of grounding its behavior in acoustic-prosodic evidence. We address this limitation with EMODE, an emotion-aware speech language model built around \\textbf{Dynamic Para-Semantic Experts (DPSE)}. DPSE decomposes continuous speech features into semantic and paralinguistic pathways, routes them dynamically, and fuses them before integration into the language model. To turn this structural decomposition into functional specialization, EMODE is trained with a three-stage curriculum consisting of semantic warm-up, paralinguistic activation, and joint refinement, guided by Orthogonal Expert Guidance (OEG), Semantic-to-Acoustic Alignment (SAA), and Gating Diversity Regularization (GDR). Experiments on SER test, empathetic response evaluation, and the newly constructed bilingual MEPA benchmark show that EMODE improves the balance between lexical fidelity and emotional sensitivity, strengthens affect-grounded response generation, and exposes the value of explicit para-semantic factorization for robust cross-corpus emotion understanding.",
+      "authors": [
+        "Jianan Pan",
+        "Yiwen Gu",
+        "Xinze Li",
+        "Rui Wang",
+        "Kejie Huang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.MM",
+        "cs.SD"
+      ],
+      "published": "2026-10-03T14:33:36+00:00",
+      "link": "https://arxiv.org/pdf/2610.06956v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "emotion-aware speech language model with separate paralinguistic and semantic pathways",
+      "llm_evidence_cn": "情感感知语音语言模型，分离副语言与语义两条通路",
+      "llm_evidence": "情感感知语音语言模型，分离副语言与语义两条通路",
+      "canonical_evidence": "情感感知语音语言模型，分离副语言与语义两条通路",
+      "llm_tldr_en": "EMODE is an emotion-aware speech language model that addresses entangled acoustic representations causing LLMs to rely on lexical content, using Dynamic Para-Semantic Experts to decompose, route and fuse semantic and paralinguistic pathways.",
+      "llm_tldr_cn": "大型语音语言模型在跨模态理解上表现优异，但情感等副语言线索难以保留，现有系统依赖纠缠的声学表征，使语言模型过度依赖恢复的词汇内容而非声学韵律证据。作者提出EMODE，围绕动态副语义专家将连续语音特征分解为语义与副语言两条通路，动态路由并融合后再送入语言模型。该结构强化了情感与韵律信息的保留，为情感感知的语音语言建模提供了新的解耦思路。",
+      "llm_tldr": "大型语音语言模型在跨模态理解上表现优异，但情感等副语言线索难以保留，现有系统依赖纠缠的声学表征，使语言模型过度依赖恢复的词汇内容而非声学韵律证据。作者提出EMODE，围绕动态副语义专家将连续语音特征分解为语义与副语言两条通路，动态路由并融合后再送入语言模型。该结构强化了情感与韵律信息的保留，为情感感知的语音语言建模提供了新的解耦思路。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2610.07426v1",
+      "source": "arxiv",
+      "title": "AccentCL: Robust Accent Classification with Incremental Expansion",
+      "abstract": "Accent classifiers are typically trained with a fixed label inventory and cannot accommodate new accent categories as new data becomes available. Moreover, accented speech corpora often exhibit substantial class imbalance and/or domain shift due to differences in recording conditions across corpora. We present AccentCL, a class-incremental learning framework for English accent classification that is robust to class imbalance and cross-corpus domain shift. AccentCL extracts multi-layer representations from a frozen Whisper-Large-v3 encoder, optimized with an imbalance-aware cross-entropy loss to reduce bias toward the majority accent classes and a domain mean alignment loss that minimizes distributional mean shift across training corpora. The label space is then expanded via replay-based continual learning, using the frozen base model for knowledge retention and an old-to-new margin loss to reduce overprediction on newly added classes. On a five-class accent classification task, AccentCL achieves 77.1% balanced accuracy and a 76.9% macro-averaged F1 score. We further evaluate the model's ability to incrementally incorporate two new accent categories: Spanish-accented and Chinese-accented English. When adding Spanish-accented English to the pretrained model, AccentCL attains an F1 of 83.3% on the new class while retaining 77.3% balanced accuracy on the base classes. When subsequently adding Chinese-accented English, it achieves 61.8% F1 on the new class while preserving 77.6% balanced accuracy on the previously learned classes. These results show that AccentCL enables robust regional accent classification while allowing new accent categories to be added without full retraining.",
+      "authors": [
+        "Mu-Ruei Tseng",
+        "Waris Quamer",
+        "Ghady Nasrallah",
+        "Ricardo Gutierrez-Osuna"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG",
+        "eess.AS"
+      ],
+      "published": "2026-10-05T21:34:23+00:00",
+      "link": "https://arxiv.org/pdf/2610.07426v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "cross-corpus domain shift handled with domain mean alignment loss in speech classification",
+      "llm_evidence_cn": "语音分类中跨语料域偏移与域均值对齐损失",
+      "llm_evidence": "语音分类中跨语料域偏移与域均值对齐损失",
+      "canonical_evidence": "语音分类中跨语料域偏移与域均值对齐损失",
+      "llm_tldr_en": "AccentCL is a class-incremental accent classification framework robust to class imbalance and cross-corpus domain shift, using frozen Whisper features with imbalance-aware and domain mean alignment losses.",
+      "llm_tldr_cn": "口音分类器通常标签固定，难以适应新类别，且口音语料常因录音条件差异导致类别不平衡与域偏移。作者提出AccentCL，一个类增量学习框架，从冻结的Whisper-Large-v3编码器提取多层表征，并采用不平衡感知交叉熵损失与域均值对齐损失来抑制多数类偏差、减小跨语料分布均值偏移。该框架在保持增量扩展能力的同时提升了对跨语料域偏移的鲁棒性，为语音跨域分类提供了可迁移的对齐策略。",
+      "llm_tldr": "口音分类器通常标签固定，难以适应新类别，且口音语料常因录音条件差异导致类别不平衡与域偏移。作者提出AccentCL，一个类增量学习框架，从冻结的Whisper-Large-v3编码器提取多层表征，并采用不平衡感知交叉熵损失与域均值对齐损失来抑制多数类偏差、减小跨语料分布均值偏移。该框架在保持增量扩展能力的同时提升了对跨语料域偏移的鲁棒性，为语音跨域分类提供了可迁移的对齐策略。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.39810v1",
+      "source": "arxiv",
+      "title": "A Comprehensive Benchmark of Source-Free Universal Domain Adaptation on Time Series Representations",
+      "abstract": "Source-Free Universal Domain Adaptation (SF-UniDA) extends Universal Domain Adaptation by removing access to source data at adaptation time while still handling label-set mismatches between domains. Despite growing interest in this setting for image data, no benchmark exists for time series, which are more challenging. We present the first SF-UniDA benchmark on time series. In addition, we provide the first study of pretrained foundation models as feature extractors for time series domain adaptation. In this context, we identify a critical and previously underexplored limitation of all existing SF-UniDA methods: the inference threshold for unknown-sample rejection is highly sensitive. We address this by proposing a plug-in auto-thresholding module that can be integrated into any SF-UniDA method. Experiments on three well-known time series datasets confirm the suitability of this module. They also highlight that foundation models do not systematically outperform classical backbones and that SF-UniDA tailored for time series is yet to be developed.",
+      "authors": [
+        "Romain Mussard",
+        "Fannia Pacheco",
+        "Maxime Berar",
+        "Paul Honeine",
+        "Gilles Gasso"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-30T14:18:26+00:00",
+      "link": "https://arxiv.org/pdf/2609.39810v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "source-free universal domain adaptation benchmark handling label-set mismatch and domain shift",
+      "llm_evidence_cn": "无源通用域适应基准，处理标签集不匹配与域偏移",
+      "llm_evidence": "无源通用域适应基准，处理标签集不匹配与域偏移",
+      "canonical_evidence": "无源通用域适应基准，处理标签集不匹配与域偏移",
+      "llm_tldr_en": "This paper presents the first benchmark of Source-Free Universal Domain Adaptation on time series, studying pretrained foundation models as feature extractors and addressing the sensitive unknown-sample rejection threshold.",
+      "llm_tldr_cn": "无源通用域适应在适应阶段无法访问源数据，同时还需处理域间标签集不匹配，但现有研究多集中于图像，时间序列缺乏基准。作者构建了首个时间序列无源通用域适应基准，并首次系统研究预训练基础模型作为特征提取器的表现。研究揭示了所有现有方法对未知样本拒识阈值高度敏感这一被忽视的缺陷，并提出可插拔的改进方案。该工作为跨域语音等时序任务的域适应评测提供了重要参考。",
+      "llm_tldr": "无源通用域适应在适应阶段无法访问源数据，同时还需处理域间标签集不匹配，但现有研究多集中于图像，时间序列缺乏基准。作者构建了首个时间序列无源通用域适应基准，并首次系统研究预训练基础模型作为特征提取器的表现。研究揭示了所有现有方法对未知样本拒识阈值高度敏感这一被忽视的缺陷，并提出可插拔的改进方案。该工作为跨域语音等时序任务的域适应评测提供了重要参考。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "domain adaptation techniques to reduce distribution mismatch in speech emotion classification",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.02638v1",
+      "source": "arxiv",
+      "title": "Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript",
+      "abstract": "Full-duplex voice agents make many small, closed decisions, which current systems answer by slow autoregressive decoding. We propose DuplexJev, which feeds ASR-encoder hidden states through a small connector into a frozen LLM and reads each question as a single-token distribution over its options. Nothing is decoded, and an 8-GPU node answers 80 decisions about eight utterances in about 0.1 s. With a last-layer connector, spoken QA stays close to reading the transcript (90% vs. 91%). DuplexJev also hears the speaker: gender and emotion accuracy both reach 90% (from 55% and 28%) with a cross-attention connector, whose spoken QA drops by only 1 point (83% to 82%). We train decisions with cross-entropy on the read-out answer token, instead of the usual transcript distillation, whose teacher never hears the voice, and keep distillation for content. Encoders and LLMs are interchangeable; we release weights, training recipe, a batched-inference pipeline for full-duplex serving and a bilingual spoken-QA set.",
+      "authors": [
+        "Jie Jin",
+        "Ziyin Ma",
+        "Min Yin",
+        "Jinyu Chen",
+        "Haigang Song",
+        "Zhikun Pang",
+        "Xiaowen Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-10-02T00:54:52+00:00",
+      "link": "https://arxiv.org/pdf/2610.02638v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "frozen LLM reads emotion from speech via connector",
+      "llm_evidence_cn": "冻结LLM经连接器从语音读取情感",
+      "llm_evidence": "冻结LLM经连接器从语音读取情感",
+      "canonical_evidence": "冻结LLM经连接器从语音读取情感",
+      "llm_tldr_en": "DuplexJev feeds ASR encoder states through a connector into a frozen LLM and reads each decision as a single-token distribution; a cross-attention connector raises emotion accuracy to 90 percent while keeping spoken QA near transcript level.",
+      "llm_tldr_cn": "针对全双工语音代理需快速完成大量小决策、而自回归解码缓慢且难以捕捉副语言信息的问题，本文提出DuplexJev，将ASR编码器隐状态经小型连接器输入冻结的大语言模型，以单令牌分布直接给出每个问题的答案，全程无需解码。实验表明八卡节点可在约0.1秒内完成八段语音的80个决策，采用交叉注意力连接器时性别与情感识别准确率均升至90%，而语音问答性能仅下降1个百分点。该工作说明冻结LLM经连接器即可高效获取情感等副语言线索，兼顾推理速度与语音理解能力。",
+      "llm_tldr": "针对全双工语音代理需快速完成大量小决策、而自回归解码缓慢且难以捕捉副语言信息的问题，本文提出DuplexJev，将ASR编码器隐状态经小型连接器输入冻结的大语言模型，以单令牌分布直接给出每个问题的答案，全程无需解码。实验表明八卡节点可在约0.1秒内完成八段语音的80个决策，采用交叉注意力连接器时性别与情感识别准确率均升至90%，而语音问答性能仅下降1个百分点。该工作说明冻结LLM经连接器即可高效获取情感等副语言线索，兼顾推理速度与语音理解能力。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "Speech Large Language Model",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.07533v1",
+      "source": "arxiv",
+      "title": "SkillFormer: Skill-Decomposed Adaptation for Audio Language Models",
+      "abstract": "Audio language models must handle dozens of distinct skills, from pitch comparison and speaker counting to musical tempo estimation and emotion recognition. Joint training on all skills at once causes interference: gains on one skill often come at the cost of another. We propose \\textbf{SkillFormer}, which decomposes audio understanding into skill-specific low-rank adapters and composes them at inference time through a learned router. The router examines the question to decide which adapters to activate and how much weight each should carry, so that a pitch query engages different parameters than a genre classification query. An alternating training schedule updates each adapter on its own skill cluster before jointly calibrating the router, preventing the gradient conflicts that arise in standard multi-task optimization. SkillFormer adds fewer than 4\\% of the base model's parameters and requires no changes to the audio encoder or language backbone. Evaluated on three architecturally distinct models across MMSU, MMAU-Pro, and MMAR, it raises the average accuracy by 2.5 to 4.1 points, with balanced gains across perception, reasoning, and semantic subcategories.",
+      "authors": [
+        "Lee Seung-woo",
+        "Bowen Qi",
+        "Kim Min-jun",
+        "Jang Won-young"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.LG"
+      ],
+      "published": "2026-10-06T00:00:21+00:00",
+      "link": "https://arxiv.org/pdf/2610.07533v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Skill-specific adapters for audio language models including emotion recognition",
+      "llm_evidence_cn": "音频语言模型的技能分解适配，涵盖情感识别",
+      "llm_evidence": "音频语言模型的技能分解适配，涵盖情感识别",
+      "canonical_evidence": "音频语言模型的技能分解适配，涵盖情感识别",
+      "llm_tldr_en": "SkillFormer decomposes audio understanding into skill-specific low-rank adapters composed by a learned router, mitigating interference among skills like pitch comparison and emotion recognition in audio language models.",
+      "llm_tldr_cn": "该文针对音频语言模型需同时处理情感识别、音高比较、说话人计数等多种技能，联合训练时技能间相互干扰、此消彼长的问题，提出SkillFormer。方法将音频理解分解为技能专属的低秩适配器，并通过学习到的路由器在推理时依据问题动态选择与加权适配器，配合交替训练调度先分技能更新再联合校准路由器。实验表明该分解可缓解技能干扰、提升多技能表现。其价值在于为音频语言模型的多任务情感等技能适配提供可复用方案，与音频语言模型用于情感理解主题相关。",
+      "llm_tldr": "该文针对音频语言模型需同时处理情感识别、音高比较、说话人计数等多种技能，联合训练时技能间相互干扰、此消彼长的问题，提出SkillFormer。方法将音频理解分解为技能专属的低秩适配器，并通过学习到的路由器在推理时依据问题动态选择与加权适配器，配合交替训练调度先分技能更新再联合校准路由器。实验表明该分解可缓解技能干扰、提升多技能表现。其价值在于为音频语言模型的多任务情感等技能适配提供可复用方案，与音频语言模型用于情感理解主题相关。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "date": "20261007",
+  "date_label": "",
+  "generated_at": "2026-10-07 23:57:45 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2610.06956v1",
+      "route": "202610/07/2610.06956v1-emode-dynamic-para-semantic-experts-for-emotion-aware-speech-language-modeling",
+      "title": "EMODE: Dynamic Para-Semantic Experts for Emotion-Aware Speech Language Modeling",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "情感感知语音语言模型，分离副语言与语义两条通路",
+      "first_seen_at": "2026-10-07 23:57:45 UTC",
+      "updated_at": "2026-10-07 23:57:45 UTC"
+    },
+    {
+      "paper_id": "2610.07426v1",
+      "route": "202610/07/2610.07426v1-accentcl-robust-accent-classification-with-incremental-expansion",
+      "title": "AccentCL: Robust Accent Classification with Incremental Expansion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "语音分类中跨语料域偏移与域均值对齐损失",
+      "first_seen_at": "2026-10-07 23:57:45 UTC",
+      "updated_at": "2026-10-07 23:57:45 UTC"
+    },
+    {
+      "paper_id": "2609.39810v1",
+      "route": "202610/07/2609.39810v1-a-comprehensive-benchmark-of-source-free-universal-domain-adaptation-on-time-series-representations",
+      "title": "A Comprehensive Benchmark of Source-Free Universal Domain Adaptation on Time Series Representations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无源通用域适应基准，处理标签集不匹配与域偏移",
+      "first_seen_at": "2026-10-07 23:57:45 UTC",
+      "updated_at": "2026-10-07 23:57:45 UTC"
+    },
+    {
+      "paper_id": "2610.02638v1",
+      "route": "202610/07/2610.02638v1-batched-speech-decisions-without-decoding-single-token-supervision-lets-a-frozen-llm-hear-beyond-the-transcript",
+      "title": "Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "冻结LLM经连接器从语音读取情感",
+      "first_seen_at": "2026-10-07 23:57:45 UTC",
+      "updated_at": "2026-10-07 23:57:45 UTC"
+    },
+    {
+      "paper_id": "2610.07533v1",
+      "route": "202610/07/2610.07533v1-skillformer-skill-decomposed-adaptation-for-audio-language-models",
+      "title": "SkillFormer: Skill-Decomposed Adaptation for Audio Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ser-da"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "音频语言模型的技能分解适配，涵盖情感识别",
+      "first_seen_at": "2026-10-07 23:57:45 UTC",
+      "updated_at": "2026-10-07 23:57:45 UTC"
+    }
+  ]
+}
