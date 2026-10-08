@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-08</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-07 23:57:45 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-08 23:33:54 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 5 篇推荐（精读 1 篇，速读 4 篇）</p>
-<p>精读：《EMODE: Dynamic Para-Semantic Experts for Emotion-Aware Speech Language Modeling》（8.0/10）</p>
-<p>速读：《AccentCL: Robust Accent Classification with Incremental Expansion》（7.0/10）, 《A Comprehensive Benchmark of Source-Free Universal Domain Adaptation on Time Series Representations》（6.0/10）, 《Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript》（6.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今日速读3篇语音语言模型研究，聚焦副语言变化、潜空间推理与情感方向调控。最值得看的是最高分7.0的《ParaGeo》，用共享潜空间几何拆解副语言差异，以及《AdaLoop》的自适应深度潜推理思路。普通读者可先从这两篇的摘要和图示入手，感受语音模型如何理解语气与情感。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="EMODE: Dynamic Para-Semantic Experts for Emotion-Aware Speech Language Modeling">EMODE: Dynamic Para-Semantic Experts for Emotion-Aware Speech Language Modeling</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>1</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -94,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="AccentCL: Robust Accent Classification with Incremental Expansion">AccentCL: Robust Accent Classification with Incremental Expansion</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Comprehensive Benchmark of Source-Free Universal Domain Adaptation on Time Series Representations">A Comprehensive Benchmark of Source-Free Universal Domain Adaptation on Time Series Representations</span></li><li><span class="dpr-home-dashboard-paper-title" title="Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript">Batched Speech Decisions Without Decoding: Single-Token Supervision Lets a Frozen LLM Hear Beyond the Transcript</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry">ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry</span></li><li><span class="dpr-home-dashboard-paper-title" title="AdaLoop: Adaptive-Depth Latent Reasoning for Audio Language Models">AdaLoop: Adaptive-Depth Latent Reasoning for Audio Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Steering Follows Geometry, Not Labels: Emotion Directions in a Full-Duplex Speech Model">Steering Follows Geometry, Not Labels: Emotion Directions in a Full-Duplex Speech Model</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
 </section>
 </div>
 

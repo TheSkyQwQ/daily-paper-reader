@@ -1,0 +1,130 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-08T23:32:59.617926+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2610.03125v1",
+      "source": "arxiv",
+      "title": "ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry",
+      "abstract": "Speech delivery varies with both the requested paralinguistic attribute and the linguistic content. We introduce ParaGeo, a matched-content decomposition of paralinguistic variation in a frozen speech language model. Synthesized audio tokens are replayed with a fixed listening prompt; pooled key/value (K/V) representations are centered and projected into a shared low-dimensional space. Our GLM-4-Voice probe spans 80 requested controls from 12 benchmark families across eight sentences. With a globally fitted calibration basis, content-held-out centroid accuracy using this basis is 9.49% versus a 1.25% permutation baseline; same-label cross-content cosine similarity is 0.285 versus 0.017, and both conditional permutation tests yield p = 0.001. A separate ten-scenario, six-style probe reveals reproducible contrast directions across scenarios. Static, additive, and temporal interventions produce attribute-, layer-, and schedule-dependent response profiles. These results provide a shared coordinate representation for measuring paralinguistic structure and an empirical starting point for latent speech control. Code is available at https://github.com/yuhanlydia/ParaGeo.",
+      "authors": [
+        "Yuhan Liu",
+        "Yuxuan Ou",
+        "Ruoxi Su",
+        "Mohamed Ahmed Zaki",
+        "Yunbo Long"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.LG"
+      ],
+      "published": "2026-10-02T10:46:16+00:00",
+      "link": "https://arxiv.org/pdf/2610.03125v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "decomposition of paralinguistic variation in a speech language model",
+      "llm_evidence_cn": "语音语言模型中副语言变异的分解",
+      "llm_evidence": "语音语言模型中副语言变异的分解",
+      "canonical_evidence": "语音语言模型中副语言变异的分解",
+      "llm_tldr_en": "ParaGeo decomposes paralinguistic variation in a frozen speech language model by replaying matched-content audio and projecting pooled K/V representations into a shared latent geometry to isolate attribute-specific structure.",
+      "llm_tldr_cn": "针对语音表达同时受副语言属性与语言内容影响、难以分离的问题，ParaGeo在冻结语音语言模型中对副语言变异进行匹配内容分解。方法重放合成音频并固定提示，将池化的K/V表示中心化后投影到共享低维空间，并拟合全局校准基。实验在80种控制、12个基准族、8句语料上进行，内容留出质心准确率9.49%远高于1.25%的置换基线，同标签跨内容余弦相似度显著提升。该工作揭示了副语言信息在语音语言模型潜在空间中的几何结构。",
+      "llm_tldr": "针对语音表达同时受副语言属性与语言内容影响、难以分离的问题，ParaGeo在冻结语音语言模型中对副语言变异进行匹配内容分解。方法重放合成音频并固定提示，将池化的K/V表示中心化后投影到共享低维空间，并拟合全局校准基。实验在80种控制、12个基准族、8句语料上进行，内容留出质心准确率9.49%远高于1.25%的置换基线，同标签跨内容余弦相似度显著提升。该工作揭示了副语言信息在语音语言模型潜在空间中的几何结构。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "speech emotion recognition from paralinguistic speech and prosody",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2610.06949v1",
+      "source": "arxiv",
+      "title": "AdaLoop: Adaptive-Depth Latent Reasoning for Audio Language Models",
+      "abstract": "Large audio language models answer questions about speech, sound, and music, yet their accuracy drops sharply on tasks that need fine-grained acoustic analysis. Judging which of two speakers has the higher pitch demands iterative signal-level reasoning that a content question does not. Current models spend the same computational depth on both. We introduce AdaLoop, a lightweight recurrent module that learns how many latent refinement steps a given audio--question pair requires. A shared transformer block iterates over the audio representation, guided by the question, while a learned halting mechanism exits the loop once the representation is ready. AdaLoop adds fewer than 3\\% of the base model's parameters and plugs into any audio encoder--language model pair without modifying either component. Evaluated on three architecturally distinct models across MMSU, MMAU-Pro, and MMAR, AdaLoop raises the average accuracy by 2.9 to 3.8 points, with the largest gains on perception-heavy subtasks where the model learns to apply deeper reasoning.",
+      "authors": [
+        "Lee Seung-woo",
+        "Bowen Qi"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.LG"
+      ],
+      "published": "2026-10-03T11:27:41+00:00",
+      "link": "https://arxiv.org/pdf/2610.06949v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive latent reasoning for audio language models on acoustic tasks",
+      "llm_evidence_cn": "音频语言模型的自适应潜在推理",
+      "llm_evidence": "音频语言模型的自适应潜在推理",
+      "canonical_evidence": "音频语言模型的自适应潜在推理",
+      "llm_tldr_en": "Proposes AdaLoop, a lightweight recurrent module letting audio language models learn how many latent refinement steps an audio-question pair needs, improving fine-grained acoustic analysis.",
+      "llm_tldr_cn": "大型音频语言模型在需要细粒度声学分析的任务上准确率骤降，而现有模型对所有输入花费相同计算深度。本文提出轻量循环模块AdaLoop，由问题引导共享Transformer块对音频表示迭代精炼，并用学习到的停止机制决定迭代步数。该模块仅增加不到3%参数且可接入任意音频编码器-语言模型，提升了音高判断等声学推理能力，对音频语言模型用于情感相关的声学线索理解有参考价值。",
+      "llm_tldr": "大型音频语言模型在需要细粒度声学分析的任务上准确率骤降，而现有模型对所有输入花费相同计算深度。本文提出轻量循环模块AdaLoop，由问题引导共享Transformer块对音频表示迭代精炼，并用学习到的停止机制决定迭代步数。该模块仅增加不到3%参数且可接入任意音频编码器-语言模型，提升了音高判断等声学推理能力，对音频语言模型用于情感相关的声学线索理解有参考价值。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "audio language model features applied to emotional speech understanding and cross-domain inference",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.08887v1",
+      "source": "arxiv",
+      "title": "Steering Follows Geometry, Not Labels: Emotion Directions in a Full-Duplex Speech Model",
+      "abstract": "Full-duplex voice agents need to modulate emotion and delivery during real-time conversations, when de-escalating a complaint, carrying urgency in dispatch, softening a clinical result. Emotion and delivery control is well studied for TTS and turn based models through prompt-conditioned synthesis, reference-conditioned synthesis and activation steering; PersonaPlex controls identity in a duplex model but not affect.   We study emotion steering in Moshi, a fully open sourced full-duplex speech language model, across four emotions, using mean-difference activation steering, which costs only a few vector additions per frame and no retraining.   We show that emotion is linearly decodable from Moshi's residual stream, but activation steering is only partially achievable, and unevenly so; as happy, angry and surprise steer towards a shared direction while sad is distinctly steerable. We also show that the shared component across the three emotions cannot simply be projected away from all the emotions equally.",
+      "authors": [
+        "Pulak Kuli"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-10-06T15:29:37+00:00",
+      "link": "https://arxiv.org/pdf/2610.08887v1",
+      "tags": [
+        "keyword:SER-DA",
+        "query:SER-DA"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "emotion linearly decodable in speech language model residual stream via activation steering",
+      "llm_evidence_cn": "语音大模型残差流中情感可线性解码并可用激活引导调控",
+      "llm_evidence": "语音大模型残差流中情感可线性解码并可用激活引导调控",
+      "canonical_evidence": "语音大模型残差流中情感可线性解码并可用激活引导调控",
+      "llm_tldr_en": "Studies emotion steering in Moshi, an open full-duplex speech language model, showing emotion is linearly decodable from its residual stream but activation steering follows geometry rather than labels.",
+      "llm_tldr_cn": "面向全双工语音智能体的实时情感调制需求，现有TTS与轮次模型的情感控制方法难以直接迁移。本文以开源全双工语音语言模型Moshi为对象，采用均值差激活引导，在四种情感上研究情感方向的可解码性与可控性。实验表明情感可从残差流中线性解码，但引导效果遵循几何结构而非标签语义，为语音大模型中的情感表征与可控生成提供了新证据。",
+      "llm_tldr": "面向全双工语音智能体的实时情感调制需求，现有TTS与轮次模型的情感控制方法难以直接迁移。本文以开源全双工语音语言模型Moshi为对象，采用均值差激活引导，在四种情感上研究情感方向的可解码性与可控性。实验表明情感可从残差流中线性解码，但引导效果遵循几何结构而非标签语义，为语音大模型中的情感表征与可控生成提供了新证据。",
+      "llm_tags": [
+        "query:ser-da"
+      ],
+      "matched_query_tag": "query:ser-da",
+      "matched_query_text": "How are audio language models and acoustic cues used for transferable speech emotion representation learning?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
