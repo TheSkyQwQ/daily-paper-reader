@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-08</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-31 ~ 2026-11-09</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 0 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>0</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-08 23:33:54 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-11-09 06:55:21 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读3篇语音语言模型研究，聚焦副语言变化、潜空间推理与情感方向调控。最值得看的是最高分7.0的《ParaGeo》，用共享潜空间几何拆解副语言差异，以及《AdaLoop》的自适应深度潜推理思路。普通读者可先从这两篇的摘要和图示入手，感受语音模型如何理解语气与情感。</p>
+<p>今日无新推荐，系统未产出可展示论文。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -91,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry">ParaGeo: Decomposing Paralinguistic Variation into a Shared Latent Geometry</span></li><li><span class="dpr-home-dashboard-paper-title" title="AdaLoop: Adaptive-Depth Latent Reasoning for Audio Language Models">AdaLoop: Adaptive-Depth Latent Reasoning for Audio Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Steering Follows Geometry, Not Labels: Emotion Directions in a Full-Duplex Speech Model">Steering Follows Geometry, Not Labels: Emotion Directions in a Full-Duplex Speech Model</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ser-da <strong>3</strong></span></div>
+
 </section>
 </div>
 
